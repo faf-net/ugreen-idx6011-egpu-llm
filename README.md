@@ -73,6 +73,25 @@ at 1,080–1,270 tok/s from 16K on, over the x4 link. **Recall** (Strata's `need
 
 ![MTP acceptance vs context depth](bilder/mtp-annahme-en.png)
 
+### Does Strata cost quality? Strata vs llama.cpp on the same file
+
+Same GGUF (Flash-Next IQ3_XXS), same fixed text set from Strata's `tools/quant_quality.py` (code, docs, English,
+other languages, an agent transcript; 4,995 positions, teacher-forced). Strata through `quant_quality.py run`,
+mainline llama.cpp (build 11610, Vulkan, experts on the CPU) position by position through `llama-server`
+(`messen/qq_llamacpp.py`, same output format), compared with `messen/qq_vergleich.py`:
+
+| Comparison | same top token | KL mean | KL median | KL p99 | Perplexity |
+| --- | ---: | ---: | ---: | ---: | --- |
+| llama.cpp vs Strata (experts on CPU) | **95.7 %** | 0.020 | 0.0017 | 0.27 | 4.009 vs 4.017 |
+| llama.cpp vs Strata (experts on GPU) | 95.7 % | 0.020 | 0.0017 | 0.34 | 4.009 vs 4.019 |
+| Strata CPU path vs Strata GPU path | 95.7 % | 0.018 | 0.0017 | 0.27 | – |
+
+**Strata costs no measurable quality against llama.cpp:** the difference is as large as the one between Strata's
+own CPU and GPU kernels, i.e. numerical noise. For scale, Strata's docs put IQ3_XXS against Q8_0 at 84.5 % and KL
+0.20 – the quantization costs quality, the engine does not. Limits: perplexity over the 4,982 positions where
+llama.cpp returned the exact value (target among its top 4,000); Strata's yardstick runs FP16 K/V without MTP
+drafts, so the effect of int8 K/V is not covered; one text set.
+
 ### Strata settings that measurably matter
 
 | Setting | Value | Effect |
@@ -198,6 +217,9 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   messen/tiefe.py               decode/prefill vs context depth (1K to 248K)
   messen/charts.py              the charts in bilder/ (light Workbench design)
   messen/daten/                 raw data: depth sweep, strata_bench.py and needle_bench.py results
+  messen/qq_llamacpp.py         llama.cpp counterpart of Strata's quant_quality.py (teacher-forced top-64 per position)
+  messen/qq_vergleich.py        top-1 agreement, KL and perplexity of two runs
+  messen/daten/qualitaet/       the three runs (gzip) and the comparison results
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,

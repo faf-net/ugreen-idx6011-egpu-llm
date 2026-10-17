@@ -74,6 +74,25 @@ Codewort wurde bei 32K, 128K und 250K in 10, 50 und 90 % Tiefe 9 von 9 Mal gefun
 
 ![MTP-Annahmequote über die Kontexttiefe](bilder/mtp-annahme-de.png)
 
+### Kostet Strata Qualität? Strata gegen llama.cpp auf derselben Datei
+
+Dieselbe GGUF-Datei (Flash-Next IQ3_XXS), derselbe feste Textsatz aus Stratas `tools/quant_quality.py` (Code,
+Doku, Englisch, andere Sprachen, ein Agentenprotokoll; 4.995 Positionen, teacher-forced). Strata über
+`quant_quality.py run`, llama.cpp (Build 11610, Vulkan, Experten auf der CPU) Position für Position über
+`llama-server` (`messen/qq_llamacpp.py`, gleiches Ausgabeformat), verglichen mit `messen/qq_vergleich.py`:
+
+| Vergleich | gleiches Top-Token | KL Mittel | KL Median | KL p99 | Perplexität |
+| --- | ---: | ---: | ---: | ---: | --- |
+| llama.cpp gegen Strata (Experten auf der CPU) | **95,7 %** | 0,020 | 0,0017 | 0,27 | 4,009 gegen 4,017 |
+| llama.cpp gegen Strata (Experten auf der GPU) | 95,7 % | 0,020 | 0,0017 | 0,34 | 4,009 gegen 4,019 |
+| Stratas CPU-Pfad gegen seinen GPU-Pfad | 95,7 % | 0,018 | 0,0017 | 0,27 | – |
+
+**Strata kostet gegenüber llama.cpp keine messbare Qualität:** Der Unterschied ist so groß wie der zwischen Stratas
+eigenen CPU- und GPU-Kernels, also Rechenrauschen. Zum Maßstab: Laut Strata-Doku liegt IQ3_XXS gegen Q8_0 bei
+84,5 % und KL 0,20 – die Quantisierung kostet Qualität, die Engine nicht. Grenzen: Perplexität über die 4.982
+Positionen, an denen llama.cpp den exakten Wert lieferte (Ziel unter seinen Top-4000); Stratas Prüfwerkzeug rechnet
+mit FP16-KV ohne MTP-Vorschläge, der Einfluss von int8-KV ist also nicht erfasst; ein Textsatz.
+
 ### Strata-Einstellungen, die messbar etwas bringen
 
 | Einstellung | Wert | Wirkung |
@@ -200,6 +219,9 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   messen/tiefe.py               Schreib- und Einlesetempo über die Kontexttiefe (1K bis 248K)
   messen/charts.py              die Charts in bilder/ (helles Workbench-Design)
   messen/daten/                 Rohdaten: Tiefenmessung, strata_bench.py und needle_bench.py
+  messen/qq_llamacpp.py         llama.cpp-Gegenstück zu Stratas quant_quality.py (Top-64 je Position, teacher-forced)
+  messen/qq_vergleich.py        Top-1-Übereinstimmung, KL und Perplexität zweier Läufe
+  messen/daten/qualitaet/       die drei Läufe (gzip) und die Vergleichsergebnisse
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
