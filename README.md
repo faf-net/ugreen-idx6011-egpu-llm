@@ -51,11 +51,33 @@ All values from `messen/bench.py`, median of 3 runs each.
 
 Card at idle with no model loaded: about 9 W, 44–51 °C.
 
+### Throughput vs context depth (1K to 248K)
+
+One fresh prompt per run, then 256 new tokens; engine timings, median of 2–3 runs. "Without MTP head" is the same
+configuration with `--mtp` removed (a native pack still needs `--spec`, but gets almost no drafts).
+
+![Decode and prefill vs context depth](bilder/tiefe-en.png)
+
+| Prompt tokens | Decode with MTP | Decode without MTP head | Prefill with MTP | Prefill without MTP head | MTP acceptance |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 993 | 62.0 | 48.9 | 362 | 391 | 49 % |
+| 4,075 | 60.6 | 50.2 | 745 | 782 | 49 % |
+| 16,252 | 63.0 | 50.5 | 1,164 | 1,253 | 48 % |
+| 65,023 | 61.1 | 49.3 | 1,185 | 1,265 | 53 % |
+| 130,024 | 61.0 | 47.2 | 1,175 | 1,220 | 57 % |
+| 248,052 | 56.1 | 44.9 | 1,079 | 1,117 | 50 % |
+
+Decode barely drops with depth (62 → 56 tok/s with MTP up to 248K), MTP adds 21–29 % at every depth, prefill stays
+at 1,080–1,270 tok/s from 16K on, over the x4 link. **Recall** (Strata's `needle_bench.py`): the code word was found
+9 of 9 times at 32K, 128K and 250K, at depths of 10, 50 and 90 %.
+
+![MTP acceptance vs context depth](bilder/mtp-annahme-en.png)
+
 ### Strata settings that measurably matter
 
 | Setting | Value | Effect |
 |---|---|---|
-| `--pool-workers` | 9 | 76.8 instead of 56.1 T/s vs. automatic (+27 %) |
+| `--pool-workers` | 9 | 76.8 instead of 56.1 T/s vs. automatic (+27 %, measured with IQ2_XS) |
 | `--pcie-frac` | 0 | the CPU computes missing experts instead of copying them over x4; no speed loss, spares the link |
 | `--kv` | int8 | halves the KV cache, 256k context fits |
 | `--max-context` | 262144 | the trained maximum; 250k tokens read in about 4 min |
@@ -63,6 +85,8 @@ Card at idle with no model loaded: about 9 W, 44–51 °C.
 | `--conversation-cache-mib` | 4608 | parks a session of up to ~120,000 tokens while another request runs (parked in 0.16 s, restored in 0.06 s) |
 | `STRATA_HIPBLASLT_TUNING` | `tools/hip/gfx1100-hipblaslt-100200.txt` | must match the hipBLASLt version, otherwise prompt reading is ~45 % slower |
 | Quantization | IQ3_XXS instead of IQ3_S | 53 instead of 60 GiB RAM; IQ3_S leaves no room for other NAS services |
+
+![--pool-workers on a hybrid CPU](bilder/pool-workers-en.png)
 
 ### Strata 0.1.44.1 vs 0.1.45 (17 Oct 2026)
 
@@ -171,6 +195,9 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   messen/identitaet.py          same prompts greedy to two models, character-exact comparison
   messen/langprompt.py          read time of a fresh long prompt
   messen/auswertung045.py       results table
+  messen/tiefe.py               decode/prefill vs context depth (1K to 248K)
+  messen/charts.py              the charts in bilder/ (light Workbench design)
+  messen/daten/                 raw data: depth sweep, strata_bench.py and needle_bench.py results
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,

@@ -52,11 +52,33 @@ Alle Werte mit `messen/bench.py`, jeweils Median aus 3 Läufen.
 
 Karte im Leerlauf ohne geladenes Modell: rund 9 W, 44–51 °C.
 
+### Tempo über die Kontexttiefe (1K bis 248K)
+
+Je Lauf ein frischer Prompt, danach 256 neue Token; Zeiten der Engine, Median aus 2–3 Läufen. „Ohne MTP-Kopf“ ist
+dieselbe Konfiguration ohne `--mtp` (ein natives Pack braucht weiter `--spec`, bekommt aber kaum Vorschläge).
+
+![Schreib- und Einlesetempo über die Kontexttiefe](bilder/tiefe-de.png)
+
+| Prompt-Token | Schreiben mit MTP | Schreiben ohne MTP-Kopf | Einlesen mit MTP | Einlesen ohne MTP-Kopf | MTP-Annahme |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 993 | 62,0 | 48,9 | 362 | 391 | 49 % |
+| 4.075 | 60,6 | 50,2 | 745 | 782 | 49 % |
+| 16.252 | 63,0 | 50,5 | 1.164 | 1.253 | 48 % |
+| 65.023 | 61,1 | 49,3 | 1.185 | 1.265 | 53 % |
+| 130.024 | 61,0 | 47,2 | 1.175 | 1.220 | 57 % |
+| 248.052 | 56,1 | 44,9 | 1.079 | 1.117 | 50 % |
+
+Das Schreibtempo fällt mit der Tiefe kaum (mit MTP 62 → 56 T/s bis 248K), MTP bringt in jeder Tiefe 21–29 %, das
+Einlesen bleibt ab 16K bei 1.080–1.270 T/s, über die x4-Strecke. **Recall** (Stratas `needle_bench.py`): Das
+Codewort wurde bei 32K, 128K und 250K in 10, 50 und 90 % Tiefe 9 von 9 Mal gefunden.
+
+![MTP-Annahmequote über die Kontexttiefe](bilder/mtp-annahme-de.png)
+
 ### Strata-Einstellungen, die messbar etwas bringen
 
 | Einstellung | Wert | Wirkung |
 |---|---|---|
-| `--pool-workers` | 9 | 76,8 statt 56,1 T/s gegenüber der Automatik (+27 %) |
+| `--pool-workers` | 9 | 76,8 statt 56,1 T/s gegenüber der Automatik (+27 %, gemessen mit IQ2_XS) |
 | `--pcie-frac` | 0 | fehlende Experten rechnet die CPU, statt sie über x4 zu kopieren; kein Tempoverlust, schont den Link |
 | `--kv` | int8 | halbiert den KV-Cache, 256k Kontext passen |
 | `--max-context` | 262144 | trainiertes Maximum; 250k Token in rund 4 min eingelesen |
@@ -64,6 +86,8 @@ Karte im Leerlauf ohne geladenes Modell: rund 9 W, 44–51 °C.
 | `--conversation-cache-mib` | 4608 | parkt eine Sitzung bis ~120.000 Token, während eine andere Anfrage läuft (geparkt in 0,16 s, zurück in 0,06 s) |
 | `STRATA_HIPBLASLT_TUNING` | `tools/hip/gfx1100-hipblaslt-100200.txt` | muss zur hipBLASLt-Version passen, sonst ~45 % langsameres Einlesen |
 | Quantisierung | IQ3_XXS statt IQ3_S | 53 statt 60 GiB RAM; IQ3_S lässt neben den übrigen NAS-Diensten keinen Platz |
+
+![--pool-workers auf einer Hybrid-CPU](bilder/pool-workers-de.png)
 
 ### Strata 0.1.44.1 gegen 0.1.45 (17.10.2026)
 
@@ -173,6 +197,9 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   messen/identitaet.py          gleiche Prompts gierig an zwei Modelle, Vergleich zeichengenau
   messen/langprompt.py          Einlesezeit eines frischen langen Prompts
   messen/auswertung045.py       Tabelle aus den Ergebnissen
+  messen/tiefe.py               Schreib- und Einlesetempo über die Kontexttiefe (1K bis 248K)
+  messen/charts.py              die Charts in bilder/ (helles Workbench-Design)
+  messen/daten/                 Rohdaten: Tiefenmessung, strata_bench.py und needle_bench.py
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
