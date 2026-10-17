@@ -1,0 +1,40 @@
+# llama-swap: ein Endpunkt (OpenAI-Format) für Strata auf der XTX. Es läuft immer genau EIN Modell auf der Karte,
+# ein Aufruf mit anderem Namen tauscht es aus. Gestartet mit `llama-swap -config config.yaml -watch-config`.
+#
+# Auf UGOS (UGREEN) braucht die systemd-Unit Environment=GODEBUG= — UGOS setzt systemweit GODEBUG=tlskyber=0,
+# damit brechen Go-Programme ab 1.24 (auch llama-swap) sofort ab.
+
+healthCheckTimeout: 600     # Strata lädt aus dem warmen Seitencache in ~20 s, von der Platte deutlich länger
+startPort: 18100
+sendLoadingState: false     # sonst landen Ladehinweise im Denkteil der Antwort und stören Agenten
+globalTTL: 1800             # nach 30 min Leerlauf entladen (bei uns Schutz gegen eGPU-Dock-Ausfälle)
+unloadTimeout: 90           # Strata gibt beim Beenden viele GB festgepinnten RAM frei
+
+macros:
+  # Image aus dem Dockerfile dieses Repos. /strata/data: Modelle, Packs, MTP-Kopf (setup.py legt sie so an).
+  # Gruppen 44/105 = video/render auf dem Host (mit `getent group video render` prüfen).
+  strata: >-
+    docker run --rm --name ls-${MODEL_ID} --network host
+    --device /dev/kfd --device /dev/dri --group-add 44 --group-add 105
+    --security-opt seccomp=unconfined --ipc host --ulimit memlock=-1 --ulimit stack=67108864
+    -v /pfad/zu/strata-data:/strata/data
+    -v /pfad/zu/konfig:/strata/konfig:ro
+    -w /strata/src strata-hip:v0.1.45
+    /strata/src/.venv/bin/python serve/server.py --engine strata --port ${PORT} --config
+
+models:
+  arbeit:
+    name: "Flash-Next 125B (Strata IQ3_XXS)"
+    cmd: ${strata} /strata/konfig/arbeit.json
+    cmdStop: docker stop -t 80 ls-${MODEL_ID}
+    proxy: http://127.0.0.1:${PORT}
+    checkEndpoint: /health
+    ttl: 1800
+
+  schnell:
+    name: "Flash-Next 125B (Strata IQ2_XS)"
+    cmd: ${strata} /strata/konfig/schnell.json
+    cmdStop: docker stop -t 80 ls-${MODEL_ID}
+    proxy: http://127.0.0.1:${PORT}
+    checkEndpoint: /health
+    ttl: 1800

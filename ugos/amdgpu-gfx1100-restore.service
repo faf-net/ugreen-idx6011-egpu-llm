@@ -1,0 +1,16 @@
+[Unit]
+Description=Restore manually added gfx1100 firmware after a UGOS update
+After=local-fs.target
+# /volume1 haengt UGOS ueber storage_serv ein, nicht per fstab. Gemessen unter UGOS 1.19:
+# /volume1 kam 41 s nach local-fs.target. Ein ConditionPathExists auf /volume1
+# lief deshalb bei jedem Boot ins Leere (skipped) - die Unit hat nie geprueft.
+# Jetzt: bis zu 10 Minuten auf das Skript warten, dann pruefen/wiederherstellen.
+
+[Service]
+Type=oneshot
+TimeoutStartSec=900
+ExecStart=/bin/bash -c 'for i in {1..120}; do if [ -x /volume1/gpu-firmware/firmware-pruefen.sh ]; then exec /volume1/gpu-firmware/firmware-pruefen.sh auto; fi; sleep 5; done; echo "[gfx1100-restore] /volume1 nach 10 Minuten nicht eingehaengt - nichts geprueft"; exit 1'
+RemainAfterExit=no
+
+[Install]
+WantedBy=multi-user.target
