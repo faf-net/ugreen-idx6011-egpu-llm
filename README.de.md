@@ -243,6 +243,11 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   messen/qq_llamacpp.py         llama.cpp-Gegenstück zu Stratas quant_quality.py (Top-64 je Position, teacher-forced)
   messen/qq_vergleich.py        Top-1-Übereinstimmung, KL und Perplexität zweier Läufe
   messen/daten/qualitaet/       die drei Läufe (gzip) und die Vergleichsergebnisse
+  messen/visiontest.py          Bildleser auf der CPU: Testbilder, VRAM/RAM, Vergleich mit dem 27B-Bildmodell
+  messen/r3177.py               Nachstellversuch für Strata-Issue #3177 (lange Agentenanfrage mit MTP)
+  messen/folgetests.py          LP-E-Kerne A/B (--cpuset-cpus) und Einlesetempo frischer Engines
+  messen/t020.py                Strata 0.2.0-beta, fertige hip-rx7900-Engine: Bench, Recall, Worker, Bildleser
+  messen/daten/2026-10-19/      Rohdaten des Nachtrags (README im Ordner)
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
