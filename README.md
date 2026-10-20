@@ -96,7 +96,7 @@ drafts, so the effect of int8 K/V is not covered; one text set.
 
 | Setting | Value | Effect |
 |---|---|---|
-| `--pool-workers` | 9 | 76.8 instead of 56.1 T/s vs. automatic (+27 %, measured with IQ2_XS) |
+| `--pool-workers` | 9 up to 0.2.0, **leave it out from 0.2.1** | up to 0.2.0: 76.8 instead of 56.1 T/s vs. automatic (measured with IQ2_XS); 0.2.1 plans 10 workers itself and keeps them off the LP-E cores |
 | `--pcie-frac` | 0 | the CPU computes missing experts instead of copying them over x4; no speed loss, spares the link |
 | `--kv` | int8 | halves the KV cache, 256k context fits |
 | `--max-context` | 262144 | the trained maximum; 250k tokens read in about 4 min |
@@ -143,6 +143,29 @@ gfx12 only.
 **Fresh engines.** The 0.2.0 notes report that about half of the fresh engines with MTP on an R9700 read prompts 10–23 % slower. Here: 1 of 24 fresh 0.2.0 engines read both 4K prompts about 38 % slower (420 instead of about 675 tok/s), 0 of 24 with 0.1.44.1. The slow engine's start-up lines were the same as the others'. So it happens on gfx1100 too, but rarely.
 
 Scripts: `messen/visiontest.py`, `messen/r3177.py`, `messen/folgetests.py`, `messen/t020.py`. Raw data: `messen/daten/2026-10-19/`.
+
+### Follow-up 21 Oct 2026: Strata 0.2.1, now in production here
+
+**The hybrid-CPU fix from Strata issue #3262 works.** 0.2.1 counts the two LP-E cores (`cpu_lowpower`) as efficiency cores. Without `--pool-workers` it plans 10 workers on CPUs 1–10 and leaves CPUs 14/15 free, and setup inside the Docker image writes the same 10. Measured in 3 interleaved pairs, a fresh engine per run:
+
+| | decode tok/s | 63-token prompt tok/s |
+|---|---:|---:|
+| 0.1.44.1, `--pool-workers 9` (two of them on the LP-E cores) | 63.3 | 66.1 |
+| 0.2.1, `--pool-workers 9` (CPUs 1–9) | 61.5 | 88.0 |
+| **0.2.1 default, 10 workers** | **61.1** | **97.6** |
+
+Everything else stays as before: `strata_bench.py --long` 65.9 tok/s chat decode, 742 / 1,204 / 1,210 tok/s at 4K / 16K / 32K, needles 6/6 up to 128K, our task set 28 of 29, 8 of 8 fresh engines normal. Both packaging notes from #3263 are fixed in 0.1.46. **Since 21 Oct this NAS runs the prebuilt release packages** (engine 0.1.46 `hip-rx7900`, control 0.1.46.2) without `--pool-workers`; configs and the llama-swap macro are in `konfig/strata-0.2.1/`.
+
+**The Docker image `ghcr.io/niko1221/strata:0.2.1-rocm-gfx110x` runs on the XTX.** The release notes listed it as built but not run on a card. Its unchanged `strata bench run --suite standard-v1 --track default` is complete with 12/12 sanity checks. Its own choices read long prompts more slowly than our config, though: 3 slots, GPU picture reader, 128K, 700 MiB reserve, and no hipBLASLt table give 772 tok/s at 16K. **The gfx1100 hipBLASLt table that ships in the package but is opt-in in 0.2.1 is worth +23 % at 4K and +60 % at 16K** (`STRATA_HIPBLASLT_TABLE=on` → 1,238 tok/s). If you use the image, set it.
+
+| `standard-v1`, medians of 3, tok/s | short prompt / decode | 4K prompt / decode | 16K prompt / decode |
+|---|---:|---:|---:|
+| Docker image, defaults | 43.3 / 58.9 | 605.4 / 55.9 | 772.0 / 55.0 |
+| + `PARALLEL=1` | 57.8 / 63.7 | 623.9 / 59.3 | 773.8 / 58.7 |
+| + `PARALLEL=1 STRATA_HIPBLASLT_TABLE=on` | 60.4 / 65.8 | 768.3 / 62.4 | 1,238.5 / 69.3 |
+| release packages with `konfig/strata-0.2.1/arbeit.json` | 51.7 / 69.0 | 743.9 / 63.5 | 1,236.7 / 62.5 |
+
+Reported to Strata in #3262, #3263 and PR #2904, together with the results. Script: `messen/t021.py`. Raw data: `messen/daten/2026-10-21/`.
 
 ## Dock and link: what you need to know
 
@@ -246,6 +269,9 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   messen/folgetests.py          LP-E cores A/B (--cpuset-cpus) and fresh-engine prompt speed
   messen/t020.py                Strata 0.2.0-beta prebuilt hip-rx7900 engine: bench, needles, workers, picture readers
   messen/daten/2026-10-19/      raw data of the follow-up (README inside)
+  messen/t021.py                Strata 0.2.1: worker pairs, bench, needles, fresh engines, standard-v1
+  messen/daten/2026-10-21/      raw data incl. four standard-v1 results (README inside)
+  konfig/strata-0.2.1/          launch configs and llama-swap macro for the prebuilt 0.2.1 packages
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,
