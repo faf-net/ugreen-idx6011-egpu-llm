@@ -1,0 +1,27 @@
+# Strata 0.2.2 aus den fertigen Release-Paketen statt aus dem eigenen Bau (so läuft es hier seit 21.10.2026 abends; 0.2.1 lief von morgens bis dahin).
+# Engine:  strata-engine-0.1.47-linux-x86_64-hip-rx7900.tar.gz   → /pfad/zu/0.2.2/engine
+# Server:  strata-control-0.1.47-linux-x86_64.tar.gz            → /pfad/zu/0.2.2/control
+# Beide Archive gegen SHA256SUMS.txt des Releases prüfen und ohne --strip-components entpacken.
+# Das Image dient nur als Laufzeit (Ubuntu 24.04 mit /dev/kfd-Zugriff); Engine und ROCm-Bibliotheken kommen aus dem Paket.
+# Die Konfigurationen in diesem Ordner gehören nach /strata/konfig. Ohne --pool-workers plant 0.2.2 wie 0.2.1 auf der
+# Core Ultra 7 255H selbst 10 Worker und lässt die LP-E-Kerne frei (Strata #3262, hier gemessen).
+
+macros:
+  strata022: >-
+    docker run --rm --name ls-${MODEL_ID} --network host
+    --device /dev/kfd --device /dev/dri --group-add 44 --group-add 105
+    --security-opt seccomp=unconfined --ipc host --ulimit memlock=-1 --ulimit stack=67108864
+    -v /pfad/zu/strata-data:/strata/data
+    -v /pfad/zu/konfig/strata-0.2.2:/strata/konfig
+    -v /pfad/zu/0.2.2/engine:/opt/engine -v /pfad/zu/0.2.2/control:/opt/strata
+    -e STRATA_ENGINE=/opt/engine/strata -w /opt/strata strata-hip:v0.1.45
+    /opt/strata/python/bin/python3 serve/server.py --engine strata --port ${PORT} --config
+
+models:
+  arbeit:
+    name: "Flash-Next 125B (Strata 0.2.2, IQ3_XXS)"
+    cmd: ${strata022} /strata/konfig/arbeit.json
+    cmdStop: docker stop -t 80 ls-${MODEL_ID}
+    proxy: http://127.0.0.1:${PORT}
+    checkEndpoint: /health
+    ttl: 1800

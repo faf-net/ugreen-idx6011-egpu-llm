@@ -167,6 +167,18 @@ Everything else stays as before: `strata_bench.py --long` 65.9 tok/s chat decode
 
 Reported to Strata in #3262, #3263 and PR #2904, together with the results. Script: `messen/t021.py`. Raw data: `messen/daten/2026-10-21/`.
 
+### Follow-up 21 Oct 2026, evening: Strata 0.2.2, also in production
+
+0.2.2 (engine 0.1.47 `hip-rx7900`, control 0.1.47) brings no speed change for this combination, but more robustness: tool calls with a mistyped opener are read as calls, a NaN in a long prompt no longer fails the request, a rare hang of the first verify window on HIP is fixed. Measured against the 0.2.1 packages with the same run config, only engine and control swapped:
+
+| median tok/s | 0.2.2 | 0.2.1 |
+|---|---:|---:|
+| 3 interleaved pairs: decode / 63-token prompt | 62.1 / 93.6 | 60.5 / 93.9 |
+| `strata_bench.py --long`: chat / agent decode | 66.0 / 72.5 | 65.9 / 74.6 |
+| 4K / 16K / 32K prompt | 736 / 1,211 / 1,222 | 742 / 1,204 / 1,210 |
+
+Needles 6/6 up to 128K, 8 of 8 fresh engines normal, our task set 28 of 29 (the one miss is a false alarm of the check: the phishing mail was written, with a note in front). **`strata bench run` from the release package is complete now**, because the control archive carries a `COMMIT` file. The `0.2.2-rocm-gfx110x` Docker image runs too, with the same slow defaults as 0.2.1 (700 MiB reserve, no hipBLASLt table, 16K at 781 tok/s), so the advice above still holds. **Since the evening of 21 Oct this NAS serves with 0.2.2**; the configs are unchanged, only the macro mounts the new packages (`konfig/strata-0.2.2/`). Script: `messen/t022.py`. Raw data: `messen/daten/2026-10-21-v0.2.2/`. Reported in #3263 and PR #2904.
+
 ## Dock and link: what you need to know
 
 - **OCuLink is not hot-pluggable.** Switch the dock on first, then start the NAS. The card is only detected at
@@ -272,6 +284,9 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   messen/t021.py                Strata 0.2.1: worker pairs, bench, needles, fresh engines, standard-v1
   messen/daten/2026-10-21/      raw data incl. four standard-v1 results (README inside)
   konfig/strata-0.2.1/          launch configs and llama-swap macro for the prebuilt 0.2.1 packages
+  messen/t022.py                Strata 0.2.2 against 0.2.1: version pairs, bench, needles, fresh engines, standard-v1, Docker image
+  messen/daten/2026-10-21-v0.2.2/  raw data of the 0.2.2 follow-up (README inside)
+  konfig/strata-0.2.2/          the same launch configs, llama-swap macro for the prebuilt 0.2.2 packages
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,

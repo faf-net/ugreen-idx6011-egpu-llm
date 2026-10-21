@@ -1,0 +1,51 @@
+{
+ "exe": "/opt/engine/strata",
+ "args": [
+  "--pack",
+  "/strata/data/packs/iq3_xxs",
+  "--native",
+  "/strata/data/models/IQ3_XXS/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS-00001-of-00002.gguf",
+  "--ple-gguf",
+  "/strata/data/models/IQ3_XXS/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS-00002-of-00002.gguf",
+  "--expert-profile",
+  "/opt/strata/data/expert-profile.bin",
+  "--expert-cache",
+  "auto",
+  "--prefill",
+  "auto",
+  "--spec",
+  "4",
+  "--spec-min-p",
+  "0.5",
+  "--mtp",
+  "/strata/data/mtp/rt",
+  "--max-context",
+  "262144",
+  "--kv",
+  "int8",
+  "--pcie-frac",
+  "0",
+  "--conversation-cache-slots",
+  "2",
+  "--conversation-cache-min-tokens",
+  "8192",
+  "--conversation-cache-mib",
+  "4608"
+ ],
+ "cwd": "/opt/strata",
+ "tokenizer": "/strata/data/packs/iq3_xxs/tokenizer",
+ "model_name": "arbeit",
+ "log": "/strata/konfig/arbeit.log",
+ "lib_dirs": [
+  "/opt/engine"
+ ],
+ "backend": "hip",
+ "env": {
+  "STRATA_HIPBLASLT_TUNING": "/opt/engine/tuning/gfx1100-hipblaslt-100200.txt"
+ },
+ "open_browser": false,
+ "reasoning_effort": "high",
+ "allowed_hosts": [
+  "localhost"
+ ]
+}
