@@ -191,7 +191,7 @@ Needles 6/6 up to 128K, 8 of 8 fresh engines normal, our task set 28 of 29 (the 
   dock restarting); after another it stayed gone until the next reboot.
 - **Dropouts (cause still under investigation):** each starts with PCIe receiver errors, followed 50 ms later by
   "Link Down", with the card idle and cool. In 5 of 7 events the 10 GbE NIC on a different PCIe branch lost its
-  link at the same moment, which points to an electrical disturbance rather than the card. Not caused by the UPS.
+  link at the same moment, which points to an electrical disturbance rather than the card. Not caused by the UPS's eco mode (off); the weekly battery self-test of the UPS, however, is behind the Wednesday series (see below).
 - **PCIe quirk:** after one dropout the kernel clamped the link to 2.5 GT/s and failed to retrain. The fix
   ("Always lift 2.5GT/s restriction") is in 6.18.39; UGOS ships 6.18.15.
 
@@ -202,9 +202,11 @@ Logged with second resolution since 15 Oct (`messen/dock-mitschnitt.sh`, read-on
 | series | events | step per week | reading |
 |---|---|---|---|
 | Sunday | 13 Sep 17:14:33 · 20 Sep :36 · 27 Sep :39 · 4 Oct :43 · 18 Oct :49.8 | +3.3 s (about 5.5 ppm) | a free-running clock, like a quartz without time sync |
-| Wednesday | 23 Sep 17:40:00 · 30 Sep 18:01:10 · 7 Oct 18:22:22 · 14 Oct 18:43:32 · **21 Oct 19:04:41** | +21 min 9-12 s | a fixed interval of 7 days 21 min 10 s, not a wall clock |
+| Wednesday | 23 Sep 17:40:00 · 30 Sep 18:01:10 · 7 Oct 18:22:22 · 14 Oct 18:43:32 · **21 Oct 19:04:41** | +21 min 9-12 s | a fixed interval of 7 days 21 min 10 s: **the UPS's weekly battery self-test** (see below) |
 
 **The Wednesday prediction hit within 2 s.** Predicted 19:04:43, measured: the 10 GbE NIC lost its link at 19:04:41.3 for 5.1 s, and 1.5 s later the dock port logged a corrected receiver error (`RxErr`). The OCuLink link stayed at 16 GT/s x4, no model was loaded, the card idled at 17 W. On 14 Oct the 10 GbE link dropped on schedule while the card was not even on the bus, so the source sits outside the NAS. Both the copper network cable and the OCuLink cable pick it up; the dock is one victim, not the cause. The router's event log shows nothing at these times. Excerpt: `messen/daten/dock-2026-10-21/`.
+
+**Update, same night: the Wednesday series is the UPS testing its battery.** The NAS and the dock are the only loads on an Eaton Ellipse PRO 1200, read via NUT once a minute. In six weeks its battery charge left 100 % exactly six times, each time in the minute right after a Wednesday event (16 Sep 17:18:58, 23 Sep 17:40:12, 30 Sep 18:01:49, 7 Oct 18:22:49, 14 Oct 18:44:14, 21 Oct 19:05:29): 100 → 99 %, runtime 3,814 → 3,775 s, back to 100 % about 20 minutes later. Three of these samples even caught the runtime estimate on battery (1,037 s and 2,812 s instead of 3,814 s). The datasheet lists an automatic battery test once a week; the extra 21 minutes per week are the UPS's own timer. So the NAS is not disturbed from outside on Wednesdays, its own UPS switches it to battery for a few seconds, and that switch is what the copper network link and the OCuLink link pick up (5 of 6 tests; on 16 Sep nothing was logged). The status read once a minute stays `OL`, which is why this was missed at first. NUT on this model offers no command to start or schedule the test. The Sunday series shows no such trace and remains open.
 
 Next: on 25 Oct (end of daylight saving time) the Sunday series tells whether its device switches to winter time (17:14:53) or not (16:14:53); on 28 Oct the Wednesday series is due at 18:25:51 CET if it really is a fixed interval. If you see repeated `RxErr` on an OCuLink port, log with second resolution and look for a weekly pattern before you replace cables or the dock.
 
