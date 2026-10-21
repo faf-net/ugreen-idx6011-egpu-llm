@@ -197,6 +197,19 @@ Recall 6/6 bis 128K, 8 von 8 frischen Engines normal schnell, unser Aufgabensatz
 - **PCIe-Quirk:** Nach einem Abriss klemmte der Kernel den Link auf 2,5 GT/s und konnte ihn nicht neu trainieren.
   Die Korrektur („Always lift 2.5GT/s restriction“) steckt in 6.18.39, UGOS hat 6.18.15.
 
+### Nachtrag 21.10.2026: Die Störungen folgen zwei Wochenuhren
+
+Seit 15.10. sekundengenau mitgeschnitten (`messen/dock-mitschnitt.sh`, nur lesend: Kernel-Meldungen, Linkwechsel, AER-Zähler an Dock-, NVMe- und 10-GbE-Port, Linkstatus und Leistung der Karte). Rückwärts im Kernel-Protokoll zerfallen die Ereignisse in zwei Reihen:
+
+| Reihe | Ereignisse | Schritt je Woche | Deutung |
+|---|---|---|---|
+| Sonntag | 13.09. 17:14:33 · 20.09. :36 · 27.09. :39 · 04.10. :43 · 18.10. :49,8 | +3,3 s (etwa 5,5 ppm) | eine frei laufende Uhr, wie ein Quarz ohne Zeitabgleich |
+| Mittwoch | 23.09. 17:40:00 · 30.09. 18:01:10 · 07.10. 18:22:22 · 14.10. 18:43:32 · **21.10. 19:04:41** | +21 min 9–12 s | ein fester Abstand von 7 Tagen 21 min 10 s, keine Wanduhr |
+
+**Die Vorhersage für Mittwoch traf auf 2 s genau.** Vorhergesagt 19:04:43, gemessen: Die 10-GbE-Karte verlor um 19:04:41,3 für 5,1 s den Link, 1,5 s später meldete der Dock-Port einen korrigierten Empfangsfehler (`RxErr`). Der OCuLink-Link blieb bei 16 GT/s ×4, kein Modell war geladen, die Karte lag im Leerlauf bei 17 W. Am 14.10. fiel der 10-GbE-Link pünktlich aus, obwohl die Karte gar nicht am Bus hing. Die Quelle sitzt also außerhalb des NAS. Das Kupfer-Netzkabel und das OCuLink-Kabel fangen sie beide ein; das Dock ist ein Opfer, nicht die Ursache. Im Ereignisprotokoll des Routers steht zu diesen Zeiten nichts. Auszug: `messen/daten/dock-2026-10-21/`.
+
+Als Nächstes zeigt die Sonntagsreihe am 25.10. (Ende der Sommerzeit), ob ihr Gerät auf Winterzeit umstellt (17:14:53) oder nicht (16:14:53). Am 28.10. ist die Mittwochsreihe um 18:25:51 Uhr MEZ fällig, wenn sie wirklich ein fester Abstand ist. Wer an einem OCuLink-Port wiederholt `RxErr` sieht: erst sekundengenau mitschneiden und nach einem Wochenmuster suchen, bevor man Kabel oder Dock tauscht.
+
 ## Das größte offene Risiko: Ein Dock-Abriss startet das NAS neu
 
 Verliert das Dock die Verbindung, während ein ROCm-Modell geladen ist, baut `amdgpu` unter Kernel 6.18 die
@@ -289,6 +302,8 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   messen/t022.py                Strata 0.2.2 gegen 0.2.1: Versionspaare, Bench, Recall, frische Engines, standard-v1, Docker-Image
   messen/daten/2026-10-21-v0.2.2/  Rohdaten des 0.2.2-Nachtrags (README im Ordner)
   konfig/strata-0.2.2/          dieselben Startkonfigurationen, llama-swap-Makro für die fertigen 0.2.2-Pakete
+  messen/dock-mitschnitt.sh     sekundengenauer Mitschnitt um ein erwartetes Dock-Ereignis (nur lesend, braucht root)
+  messen/daten/dock-2026-10-21/ Auszug des Mitschnitts vom 21.10., das Mittwochsereignis auf die Minute
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen

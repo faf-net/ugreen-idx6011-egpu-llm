@@ -1,0 +1,39 @@
+# Mitschnitt ab 2026-10-21T18:55:05+02:00, 1800 s
+## lspci 00:06.0 2026-10-21T18:55:05+02:00
+		DevSta:	CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
+		LnkSta:	Speed 16GT/s, Width x4
+		SltCtl:	Enable: AttnBtn- PwrFlt- MRL- PresDet+ CmdCplt- HPIrq+ LinkChg+
+		SltSta:	Status: AttnBtn- PowerFlt- MRL- CmdCplt- PresDet+ Interlock-
+2026-10-21T19:04:38,554026+02:00 atlantic 0000:5c:00.0 eth0: atlantic: link change old 10000 new 0
+[2026-10-21T19:04:41.310503] 2: eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default 
+2026-10-21T19:04:40,062200+02:00 pcieport 0000:00:06.0: AER: Multiple Correctable error message received from 0000:00:06.0
+2026-10-21T19:04:40,062208+02:00 pcieport 0000:00:06.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+2026-10-21T19:04:40,062211+02:00 pcieport 0000:00:06.0:   device [8086:774d] error status/mask=00000001/00002000
+2026-10-21T19:04:40,062213+02:00 pcieport 0000:00:06.0:    [ 0] RxErr                  (First)
+[2026-10-21T19:04:46.426142] 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default 
+2026-10-21T19:04:43,670059+02:00 atlantic 0000:5c:00.0 eth0: atlantic: link change old 0 new 10000
+19:04:35.023 link=16.0/x4 aer 06.0=3 06.2=0 1c.6=0 karte_uW=18000000
+19:04:36.033 link=16.0/x4 aer 06.0=3 06.2=0 1c.6=0 karte_uW=18000000
+19:04:37.042 link=16.0/x4 aer 06.0=3 06.2=0 1c.6=0 karte_uW=18000000
+19:04:38.051 link=16.0/x4 aer 06.0=3 06.2=0 1c.6=0 karte_uW=18000000
+19:04:39.060 link=16.0/x4 aer 06.0=3 06.2=0 1c.6=0 karte_uW=18000000
+19:04:40.069 link=16.0/x4 aer 06.0=3 06.2=0 1c.6=0 karte_uW=18000000
+19:04:41.078 link=16.0/x4 aer 06.0=3 06.2=0 1c.6=0 karte_uW=27000000
+19:04:42.087 link=16.0/x4 aer 06.0=3 06.2=0 1c.6=0 karte_uW=17000000
+19:04:43.096 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:44.105 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:45.114 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:46.123 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:47.133 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:48.142 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:49.152 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:50.160 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:51.169 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:04:52.178 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=17000000
+19:25:21.207 link=16.0/x4 aer 06.0=4 06.2=0 1c.6=0 karte_uW=26000000
+## lspci 00:06.0 2026-10-21T19:25:22+02:00
+		DevSta:	CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
+		LnkSta:	Speed 16GT/s, Width x4
+		SltCtl:	Enable: AttnBtn- PwrFlt- MRL- PresDet+ CmdCplt- HPIrq+ LinkChg+
+		SltSta:	Status: AttnBtn- PowerFlt- MRL- CmdCplt- PresDet+ Interlock-
+# Ende 2026-10-21T19:25:22+02:00

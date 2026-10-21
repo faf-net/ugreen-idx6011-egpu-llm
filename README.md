@@ -195,6 +195,19 @@ Needles 6/6 up to 128K, 8 of 8 fresh engines normal, our task set 28 of 29 (the 
 - **PCIe quirk:** after one dropout the kernel clamped the link to 2.5 GT/s and failed to retrain. The fix
   ("Always lift 2.5GT/s restriction") is in 6.18.39; UGOS ships 6.18.15.
 
+### Follow-up 21 Oct 2026: the disturbances follow two weekly clocks
+
+Logged with second resolution since 15 Oct (`messen/dock-mitschnitt.sh`, read-only: kernel messages, link changes, AER counters of the dock port, the NVMe port and the 10 GbE port, link state and power of the card). Going back through the kernel log, the events fall into two series:
+
+| series | events | step per week | reading |
+|---|---|---|---|
+| Sunday | 13 Sep 17:14:33 · 20 Sep :36 · 27 Sep :39 · 4 Oct :43 · 18 Oct :49.8 | +3.3 s (about 5.5 ppm) | a free-running clock, like a quartz without time sync |
+| Wednesday | 23 Sep 17:40:00 · 30 Sep 18:01:10 · 7 Oct 18:22:22 · 14 Oct 18:43:32 · **21 Oct 19:04:41** | +21 min 9-12 s | a fixed interval of 7 days 21 min 10 s, not a wall clock |
+
+**The Wednesday prediction hit within 2 s.** Predicted 19:04:43, measured: the 10 GbE NIC lost its link at 19:04:41.3 for 5.1 s, and 1.5 s later the dock port logged a corrected receiver error (`RxErr`). The OCuLink link stayed at 16 GT/s x4, no model was loaded, the card idled at 17 W. On 14 Oct the 10 GbE link dropped on schedule while the card was not even on the bus, so the source sits outside the NAS. Both the copper network cable and the OCuLink cable pick it up; the dock is one victim, not the cause. The router's event log shows nothing at these times. Excerpt: `messen/daten/dock-2026-10-21/`.
+
+Next: on 25 Oct (end of daylight saving time) the Sunday series tells whether its device switches to winter time (17:14:53) or not (16:14:53); on 28 Oct the Wednesday series is due at 18:25:51 CET if it really is a fixed interval. If you see repeated `RxErr` on an OCuLink port, log with second resolution and look for a weekly pattern before you replace cables or the dock.
+
 ## The biggest open risk: a dock dropout reboots the NAS
 
 If the dock drops while a ROCm model is loaded, `amdgpu` under kernel 6.18 tears down the compute queues while
@@ -287,6 +300,8 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   messen/t022.py                Strata 0.2.2 against 0.2.1: version pairs, bench, needles, fresh engines, standard-v1, Docker image
   messen/daten/2026-10-21-v0.2.2/  raw data of the 0.2.2 follow-up (README inside)
   konfig/strata-0.2.2/          the same launch configs, llama-swap macro for the prebuilt 0.2.2 packages
+  messen/dock-mitschnitt.sh     second-by-second capture around an expected dock event (read-only, needs root)
+  messen/daten/dock-2026-10-21/ excerpt of the capture of 21 Oct, the Wednesday event on schedule
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,
