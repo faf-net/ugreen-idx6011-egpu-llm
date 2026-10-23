@@ -15,12 +15,14 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager as fm
 
-FONTS = os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\Windows\Fonts")
+FONTS = (os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\Windows\Fonts"), os.path.expandvars(r"%WINDIR%\Fonts"))
 for f in ("AtkinsonHyperlegibleNext-Regular.ttf", "AtkinsonHyperlegibleNext-SemiBold.ttf",
           "AtkinsonHyperlegibleNext-Bold.ttf", "JetBrainsMono-Regular.ttf"):
-    p = os.path.join(FONTS, f)
-    if os.path.exists(p):
-        fm.fontManager.addfont(p)
+    for ordner in FONTS:
+        p = os.path.join(ordner, f)
+        if os.path.exists(p):
+            fm.fontManager.addfont(p)
+            break
 
 GRUND, SCHRIFT, GEDAEMPFT, SCHWACH, LINIE, FETT = "#efeae1", "#2a2724", "#6a6258", "#8b8377", "#d3cabb", "#171512"
 BERNSTEIN, STAHL, PETROL, GOLD = "#975b34", "#456579", "#4e716a", "#7e6820"

@@ -1,0 +1,19 @@
+{
+ "measured": "2026-10-23, faber (0.2.3.1) loaded and idle, a few minutes after one request",
+ "ram_total_gib": 62.34,
+ "ram_available_gib": 7.51,
+ "strata_rss_gib": 44.6,
+ "strata_rss_anon_gib": 40.51,
+ "strata_rss_shmem_gib": 4.01,
+ "vram_total_gib": 23.98,
+ "vram_used_gib": 23.55,
+ "expert_cache_gib": 17.26,
+ "mtp_gib": 0.99,
+ "sources": [
+  "/proc/<pid>/status (VmRSS, RssAnon, RssShmem)",
+  "/proc/meminfo (MemTotal, MemAvailable)",
+  "/sys/class/drm/card1/device/mem_info_vram_used and _total",
+  "engine log: 'expert cache 10644 slots, 17.26 GiB of VRAM', 'draft layer loaded, 835 MiB', 'draft head ... (178.4 MiB)'"
+ ],
+ "run_config": "--max-context 262144 --kv int8 --kv-resident 32768 --spec 4 --vram-reserve-mib 832 --conversation-cache-slots 4 --conversation-cache-mib 9216"
+}

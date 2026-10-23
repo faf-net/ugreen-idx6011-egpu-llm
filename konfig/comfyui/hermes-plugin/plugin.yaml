@@ -1,0 +1,5 @@
+name: comfyui
+version: "1"
+kind: backend
+description: "Bilder aus ComfyUI auf der XTX der iDX (über llama-swap /comfyui/). Speichert nach $HERMES_HOME/cache/generated/images/."
+author: faf-net

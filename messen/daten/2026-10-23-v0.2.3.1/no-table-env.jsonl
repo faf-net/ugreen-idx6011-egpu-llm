@@ -1,0 +1,2 @@
+{"test": "ohne-tabelle", "variante": "b023n", "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 111.8, "decode_tps": 56.7, "draft_n": 764, "draft_ok": 317, "sekunden": 16.5}
+{"test": "ohne-tabelle", "variante": "b023n", "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 111.2, "decode_tps": 60.0, "draft_n": 709, "draft_ok": 314, "sekunden": 15.6}

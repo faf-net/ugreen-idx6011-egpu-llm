@@ -1,0 +1,12 @@
+{"test": "version", "variante": "b023", "paar": 1, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 66.5, "decode_tps": 56.7, "draft_n": 705, "draft_ok": 321, "sekunden": 16.8}
+{"test": "version", "variante": "b023", "paar": 1, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 111.6, "decode_tps": 62.7, "draft_n": 696, "draft_ok": 314, "sekunden": 14.9}
+{"test": "version", "variante": "p022", "paar": 1, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 107.2, "decode_tps": 59.4, "draft_n": 741, "draft_ok": 309, "sekunden": 16.0}
+{"test": "version", "variante": "p022", "paar": 1, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 107.5, "decode_tps": 63.7, "draft_n": 713, "draft_ok": 330, "sekunden": 14.7}
+{"test": "version", "variante": "b023", "paar": 2, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 114.8, "decode_tps": 62.6, "draft_n": 743, "draft_ok": 344, "sekunden": 14.9}
+{"test": "version", "variante": "b023", "paar": 2, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 126.8, "decode_tps": 62.4, "draft_n": 693, "draft_ok": 319, "sekunden": 14.9}
+{"test": "version", "variante": "p022", "paar": 2, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 119.3, "decode_tps": 60.1, "draft_n": 718, "draft_ok": 312, "sekunden": 15.5}
+{"test": "version", "variante": "p022", "paar": 2, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 117.7, "decode_tps": 62.7, "draft_n": 707, "draft_ok": 328, "sekunden": 14.9}
+{"test": "version", "variante": "b023", "paar": 3, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 104.1, "decode_tps": 62.2, "draft_n": 702, "draft_ok": 327, "sekunden": 15.1}
+{"test": "version", "variante": "b023", "paar": 3, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 111.7, "decode_tps": 62.8, "draft_n": 701, "draft_ok": 321, "sekunden": 14.9}
+{"test": "version", "variante": "p022", "paar": 3, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 107.6, "decode_tps": 62.5, "draft_n": 711, "draft_ok": 329, "sekunden": 15.0}
+{"test": "version", "variante": "p022", "paar": 3, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 116.9, "decode_tps": 60.6, "draft_n": 731, "draft_ok": 313, "sekunden": 15.4}

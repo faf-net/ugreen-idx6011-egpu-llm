@@ -1,0 +1,38 @@
+# Strata 0.2.3.1 aus den fertigen Release-Paketen (so läuft es hier seit 23.10.2026 abends; vorher 0.2.2).
+# Engine:  strata-engine-0.1.48-linux-x86_64-hip-rx7900.tar.gz   → /pfad/zu/0.2.3.1/engine
+# Server:  strata-control-0.1.48.1-linux-x86_64.tar.gz          → /pfad/zu/0.2.3.1/control
+# Beide Archive gegen SHA256SUMS.txt des Releases prüfen und ohne --strip-components entpacken.
+# Seit 0.2.3 findet die Engine ihre hipBLASLt-Tabelle für gfx1100 selbst; STRATA_HIPBLASLT_TUNING in den
+# Konfigurationen schadet nicht, ist aber nicht mehr nötig (hier gemessen: dieselbe Logzeile mit und ohne).
+# Die Modelle heißen hier seit 23.10.2026 faber (vorher arbeit) und velox (vorher schnell).
+# faber nutzt --kv-resident 32768 und einen Gesprächs-Cache von 4 Plätzen / 9.216 MiB; das braucht 64 GB RAM.
+
+macros:
+  strata0231: >-
+    docker run --rm --name ls-${MODEL_ID} --network host
+    --device /dev/kfd --device /dev/dri --group-add 44 --group-add 105
+    --security-opt seccomp=unconfined --ipc host --ulimit memlock=-1 --ulimit stack=67108864
+    -v /pfad/zu/strata-data:/strata/data
+    -v /pfad/zu/konfig/strata-0.2.3.1:/strata/konfig
+    -v /pfad/zu/0.2.3.1/engine:/opt/engine -v /pfad/zu/0.2.3.1/control:/opt/strata
+    -e STRATA_ENGINE=/opt/engine/strata -w /opt/strata strata-hip:v0.1.45
+    /opt/strata/python/bin/python3 serve/server.py --engine strata --port ${PORT} --config
+
+models:
+  faber:
+    name: "Flash-Next 125B (Strata 0.2.3.1, IQ3_XXS)"
+    aliases: [arbeit]
+    cmd: ${strata0231} /strata/konfig/faber.json
+    cmdStop: docker stop -t 80 ls-${MODEL_ID}
+    proxy: http://127.0.0.1:${PORT}
+    checkEndpoint: /health
+    ttl: 1800
+
+  velox:
+    name: "Flash-Next 125B (Strata 0.2.3.1, IQ2_XS)"
+    aliases: [schnell]
+    cmd: ${strata0231} /strata/konfig/velox.json
+    cmdStop: docker stop -t 80 ls-${MODEL_ID}
+    proxy: http://127.0.0.1:${PORT}
+    checkEndpoint: /health
+    ttl: 1800

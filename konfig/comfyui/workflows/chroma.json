@@ -1,0 +1,162 @@
+{
+ "1": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "Chroma1-HD.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "2": {
+  "class_type": "ModelSamplingAuraFlow",
+  "inputs": {
+   "model": [
+    "1",
+    0
+   ],
+   "shift": 1.0
+  }
+ },
+ "3": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "t5xxl_fp16.safetensors",
+   "type": "chroma",
+   "device": "default"
+  }
+ },
+ "4": {
+  "class_type": "T5TokenizerOptions",
+  "inputs": {
+   "clip": [
+    "3",
+    0
+   ],
+   "min_padding": 0,
+   "min_length": 0
+  }
+ },
+ "5": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "4",
+    0
+   ],
+   "text": "%%PROMPT%%"
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "4",
+    0
+   ],
+   "text": "This low quality greyscale unfinished sketch is inaccurate and flawed. The image is very blurred and lacks detail with excessive chromatic aberrations and artifacts. The image is overly saturated with excessive bloom. It has a toony aesthetic with bold outlines and flat colors."
+  }
+ },
+ "7": {
+  "class_type": "CFGGuider",
+  "inputs": {
+   "model": [
+    "2",
+    0
+   ],
+   "positive": [
+    "5",
+    0
+   ],
+   "negative": [
+    "6",
+    0
+   ],
+   "cfg": 3.5
+  }
+ },
+ "8": {
+  "class_type": "RandomNoise",
+  "inputs": {
+   "noise_seed": "%%SEED%%"
+  }
+ },
+ "9": {
+  "class_type": "KSamplerSelect",
+  "inputs": {
+   "sampler_name": "euler"
+  }
+ },
+ "10": {
+  "class_type": "BasicScheduler",
+  "inputs": {
+   "model": [
+    "2",
+    0
+   ],
+   "scheduler": "beta",
+   "steps": 26,
+   "denoise": 1.0
+  }
+ },
+ "11": {
+  "class_type": "EmptySD3LatentImage",
+  "inputs": {
+   "width": "%%WIDTH%%",
+   "height": "%%HEIGHT%%",
+   "batch_size": 1
+  }
+ },
+ "12": {
+  "class_type": "SamplerCustomAdvanced",
+  "inputs": {
+   "noise": [
+    "8",
+    0
+   ],
+   "guider": [
+    "7",
+    0
+   ],
+   "sampler": [
+    "9",
+    0
+   ],
+   "sigmas": [
+    "10",
+    0
+   ],
+   "latent_image": [
+    "11",
+    0
+   ]
+  }
+ },
+ "13": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "ae.safetensors"
+  }
+ },
+ "14": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "12",
+    0
+   ],
+   "vae": [
+    "13",
+    0
+   ]
+  }
+ },
+ "15": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "14",
+    0
+   ],
+   "filename_prefix": "hermes/chroma"
+  }
+ }
+}

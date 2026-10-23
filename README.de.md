@@ -180,6 +180,42 @@ An Strata gemeldet in #3262, #3263 und PR #2904, die Ergebnisse liegen dort mit.
 
 Recall 6/6 bis 128K, 8 von 8 frischen Engines normal schnell, unser Aufgabensatz 28 von 29 (der eine Fehlschlag ist ein Fehlalarm der Prüfung: Die Phishing-Mail wurde geschrieben, mit einem Hinweis davor). **`strata bench run` aus dem Release-Paket ist jetzt vollständig („complete“)**, weil dem Control-Archiv eine `COMMIT`-Datei beiliegt. Das Docker-Image `0.2.2-rocm-gfx110x` läuft ebenfalls, mit denselben langsamen Voreinstellungen wie 0.2.1 (700 MiB Reserve, keine hipBLASLt-Tabelle, 16K mit 781 tok/s), der Rat oben gilt also weiter. **Seit dem Abend des 21.10. läuft dieses NAS mit 0.2.2.** Die Konfigurationen sind unverändert, nur das Makro bindet die neuen Pakete ein (`konfig/strata-0.2.2/`). Skript: `messen/t022.py`. Rohdaten: `messen/daten/2026-10-21-v0.2.2/`. Gemeldet in #3263 und PR #2904.
 
+### Nachtrag 23.10.2026: Strata 0.2.3.1, jetzt in Betrieb, und vier Versionen im Vergleich
+
+In den Notes zu 0.2.3 steht die RX 7000 als gebaut, aber nicht auf echter Hardware getestet. Hier lief sie: Engine 0.1.48 `hip-rx7900` mit Control 0.1.48.1, gegen die Pakete von 0.2.2 mit identischer Laufkonfiguration, nur Engine und Control getauscht.
+
+| Median Token/s | 0.2.3.1 | 0.2.2 |
+|---|---:|---:|
+| 3 verschränkte Paare: Schreiben / Prompt mit 63 Token | 62,5 / 111,7 | 61,6 / 112,3 |
+| `strata_bench.py --long`: Chat / Agent schreiben | 67,3 / 78,3 | 66,0 / 72,5 * |
+| Prompt 4K / 16K / 32K | 791 / 1.218 / 1.244 | 736 / 1.211 / 1.222 * |
+
+\* Lauf mit 0.2.2 vom 21.10., vor `--kv-resident 32768` und dem Gesprächs-Cache von 9 GiB. Einlesen bei 4K ist in jedem Test rund 7 % schneller, Schreiben im Rahmen des Rauschens gleich. Nadeln 6/6 bei 32K und 128K, `standard-v1` vollständig mit 12/12, unser Aufgabensatz 29 von 29, 8 von 8 frischen Engines normal. **Seit dem Abend des 23.10. läuft dieses NAS mit 0.2.3.1.** Die Modelle heißen hier jetzt `faber` (vorher `arbeit`) und `velox` (vorher `schnell`); Konfigurationen und das llama-swap-Makro mit den alten Namen als Aliase liegen in `konfig/strata-0.2.3.1/`. Skript: `messen/t0231.py`. Rohdaten: `messen/daten/2026-10-23-v0.2.3.1/`.
+
+![Vier Strata-Versionen auf derselben Karte](bilder/versionen-de.png)
+
+Von 0.2.0-beta bis 0.2.3.1 ist auf dieser Karte nichts langsamer geworden. Das Schreiben stieg von 61 auf 67 Token/s, vor allem durch die Worker-Planung von 0.2.1 für Hybrid-CPUs (#3262); das Einlesen bei 16K und 32K lag schon an seiner Grenze.
+
+**Der erste 128K-Prompt brauchte im Lauf mit 0.2.3.1 217 s, wo jede frühere Version etwa 108 s brauchte.** Ein eigener A/B-Test (`messen/t128.py`) hat das geklärt: jedes Mal eine frische Engine, identische Laufkonfiguration, im Wechsel, je zweimal. 0.2.3.1 las den ersten 128K-Prompt in 110,5 und 110,8 s, 0.2.2 in 111,1 und 111,6 s, die Nadel wurde jedes Mal gefunden. Also kein Rückschritt; die 217 s waren ein Ausreißer in einem langen Testlauf, am wahrscheinlichsten durch Gesprächs-Cache und RAM, die die Tests davor gefüllt hatten.
+
+### Volle Geschwindigkeit im Docker-Image
+
+**Die Engine findet ihre hipBLASLt-Tabelle für gfx1100 jetzt selbst.** Ohne `STRATA_HIPBLASLT_TUNING` in der Laufkonfiguration steht im Log trotzdem `hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)`. Für Besitzer einer RX 7000, die das Docker-Image mit Voreinstellungen nutzen, ist das die größte Änderung von 0.2.3: Es liest 16K-Prompts mit 1.220 statt 781 Token/s, das erste Token eines 16K-Prompts kommt nach 13,5 statt 21 Sekunden.
+
+![Docker-Image mit Voreinstellungen gegen abgestimmte Konfiguration](bilder/docker-image-de.png)
+
+Mit 0.2.3 liegt das unveränderte Image wenige Prozent hinter der abgestimmten Konfiguration. Was noch abweicht: Setup wählt `--max-context 131072` und 700 MiB VRAM-Reserve, und die Engine warnte einmal, dass zu Beginn einer Anfrage nur 427 MiB frei waren. Wer 256K braucht, setzt `CONTEXT` und eine Reserve von etwa 830 MiB selbst. Bei Images vor 0.2.3 `STRATA_HIPBLASLT_TABLE=on` setzen.
+
+### Wie lange ein langer Prompt dauert, und wohin der Speicher geht
+
+![Zeit bis zum ersten Token von 4K bis 250K](bilder/kontext-de.png)
+
+Das Einlesen wächst fast linear mit dem Prompt: 5,5 s bei 4K, 26 s bei 32K, 1,8 min bei 128K und 3,6 min bei 250K, die Nadel wurde jedes Mal gefunden. Der Gesprächs-Cache von Strata erspart einer Agenten-Sitzung, das in jeder Runde neu zu bezahlen: Im Agentenlauf von `strata_bench.py` werden je Sitzung nur 3 Token doppelt gelesen.
+
+![RAM und VRAM mit geladenem 125B-Modell](bilder/speicher-de.png)
+
+Mit geladenem, ruhendem `faber` belegt die Engine 44,6 der 62,3 GiB RAM (die Experten-Gewichte, die nicht auf die Karte passen, die K/V von 32K Token in 3,1 GiB festgepinntem RAM und den Gesprächs-Cache, wie er sich füllt), NAS-Dienste und Kernel 10,2 GiB, 7,5 GiB bleiben verfügbar. Auf der Karte nimmt der Experten-Cache 17,3 von 24 GiB (10.644 Plätze), der MTP-Entwurf 1 GiB, alles Übrige 5,3 GiB, 0,4 GiB bleiben frei. Mit 64 GB RAM ist das ungefähr die Grenze: Ein zweiter großer Dienst daneben verlangt einen kleineren Gesprächs-Cache.
+
 ## Dock und Anbindung: was man wissen muss
 
 - **OCuLink ist nicht hot-plug-fähig.** Erst das Dock einschalten, dann das NAS starten. Die Karte wird nur beim
@@ -250,6 +286,28 @@ NUT-Server für die USV. Version 1.19 brachte Kernel 6.18 und rund 700 amdgpu-Fi
   jede lange Sitzung wird danach neu eingelesen. Der Gesprächsparkplatz von Strata (`--conversation-cache-*`) löst
   das.
 
+## Bilder auf derselben Karte: ComfyUI über llama-swap
+
+Seit dem 23.10. macht die XTX auch Bilder. ComfyUI läuft als weiteres Modell in llama-swap, die Karte hält also entweder das Sprachmodell oder die Bildmodelle, nie beides, und llama-swap wechselt bei Bedarf. llama-swap hat dafür einen fertigen Zugang: Ein Modell mit genau dem Namen `comfyui_auto` wird unter `/comfyui/` bedient, und der Websocket des offenen Browser-Tabs lädt das Modell weder noch hält er es fest. Der Eintrag liegt in `konfig/comfyui/llama-swap-comfyui.yaml` (Image `yanwk/comfyui-boot:rocm`, ROCm 7.2, PyTorch 2.13, ComfyUI 0.42.1); er startet in etwa 20 Sekunden.
+
+![Sekunden je Bild für vier Modelle](bilder/bildmodelle-de.png)
+
+| Modell | Dateien | Sekunden je Bild, warm | Lizenz |
+|---|---|---:|---|
+| Z-Image Turbo | `z_image_turbo_bf16`, `qwen_3_4b`, `ae` | 8 | Apache 2.0 |
+| Qwen-Image 2.1 Turbo | `qwen_image_2.1_turbo_int8_convrot`, `qwen3vl_8b_int8_convrot` | 12 | Qwen Research License |
+| Qwen-Image 2.1 | `qwen_image_2.1_int8_convrot`, `qwen3vl_8b_int8_convrot` | 34 | Qwen Research License |
+| Chroma1-HD | `Chroma1-HD` (bf16), `t5xxl_fp16`, `ae` | 66 | Apache 2.0 |
+
+Was ich auf gfx1100 gelernt habe:
+
+- **Die `int8_convrot`-Dateien der offiziellen ComfyUI-Vorlagen laufen auf ROCm**, mit den Zeiten oben.
+- **Keine fp8-Gewichte auf dieser Karte.** `Chroma1-HD-fp8mixed` mit dem fp8-T5 endete in einem `amdgpu ... page fault`, ComfyUI starb, llama-swap startete es neu. Das NAS blieb stabil. Dieselben Modelle in bf16/fp16 laufen seitdem ohne Fehler.
+- **Prompts auf Englisch** treffen deutlich besser. Qwen-Image 2.1 schrieb eine deutsche Plakatüberschrift falsch und klein; auf Englisch stand sie sauber über die ganze Breite.
+- Der erste ComfyUI-Start legt die Modellordner als root an; ein Download unter einem anderen Benutzer scheitert danach beim Umbenennen.
+
+Für den Agenten liegt in `konfig/comfyui/hermes-plugin/` ein kleiner Bild-Anbieter für Hermes Agent: Er setzt den Prompt in einen der Arbeitsabläufe aus `konfig/comfyui/workflows/` (aus den offiziellen Vorlagen abgeleitet), schickt ihn an `/comfyui/api/prompt` und gibt das Bild zurück, so kommt „mach ein Bild von …“ in Telegram als Bild zurück. `konfig/comfyui/modelle-laden.sh` lädt die Dateien (rund 77 GB). Rohdaten der Zeiten: `messen/daten/2026-10-23-bilder/`.
+
 ## Bauen
 
 ```bash
@@ -306,6 +364,13 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   konfig/strata-0.2.2/          dieselben Startkonfigurationen, llama-swap-Makro für die fertigen 0.2.2-Pakete
   messen/dock-mitschnitt.sh     sekundengenauer Mitschnitt um ein erwartetes Dock-Ereignis (nur lesend, braucht root)
   messen/daten/dock-2026-10-21/ Auszug des Mitschnitts vom 21.10., das Mittwochsereignis auf die Minute
+  konfig/strata-0.2.3.1/        Startkonfigurationen (faber = vorher arbeit, velox = vorher schnell), llama-swap-Makro für 0.2.3.1
+  messen/t0231.py               Strata 0.2.3.1 gegen 0.2.2: Paare, Bench, Nadeln, frische Engines, standard-v1, Docker-Image, ohne Tabellenvariable
+  messen/t128.py                erster 128K-Prompt auf frischer Engine, 0.2.3.1 gegen 0.2.2 im Wechsel
+  messen/daten/2026-10-23-v0.2.3.1/  Rohdaten samt memory.json und 128K-Gegentest (README im Ordner)
+  messen/charts2.py             Diagramme zu Versionen, Docker-Image, Bildmodellen, Kontext und Speicher
+  konfig/comfyui/               ComfyUI: llama-swap-Eintrag, Download-Skript, Arbeitsabläufe, Bild-Anbieter für Hermes Agent
+  messen/daten/2026-10-23-bilder/  Sekunden je Bild, vier Modelle, erstes und warmes Bild
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
