@@ -3,7 +3,7 @@
   # Browser-Verbindung (Websocket) das Modell weder laden noch festhalten.
   comfyui_auto:
     name: "Bilder — ComfyUI (Qwen-Image 2.1, Z-Image Turbo, Chroma1-HD)"
-    description: "Browser unter /comfyui/, Hermes über image_generate. Belegt die XTX allein; faber/velox/liber werden dafür entladen."
+    description: "Browser unter /comfyui/, Hermes über image_generate. Belegt die XTX allein; die Sprachmodelle werden dafür entladen."
     cmd: >-
       docker run --rm --name comfyui-auto
       --device /dev/kfd --device /dev/dri --group-add 44 --group-add 105

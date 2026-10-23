@@ -53,7 +53,7 @@ MODELS: dict[str, dict[str, Any]] = {
     },
     "chroma": {
         "display": "Chroma1-HD (lokal, XTX)", "speed": "mittel",
-        "strengths": "ohne Sicherheits-Ausrichtung trainiert, freie Motive",
+        "strengths": "kräftige Farben, Malstil, Apache 2.0",
         "sizes": {"landscape": (1344, 768), "square": (1024, 1024), "portrait": (768, 1344)},
     },
 }
