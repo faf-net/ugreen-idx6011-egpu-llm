@@ -19,7 +19,7 @@ from charts import GEDAEMPFT, SCHWACH, LINIE, FETT, SCHRIFT, BERNSTEIN, STAHL, P
 T = {
     "en": {
         "ver_t": "Strata releases on the same RX 7900 XTX", "ver_dec": "decode (tokens / s)", "ver_pre": "prompt reading (tokens / s)",
-        "chat": "chat", "agent": "agent", "ver_fuss": "tools/strata_bench.py --long · Flash-Next 125B IQ3_XXS · median · 0.2.3.1 ran with --kv-resident 32768 and a 9 GiB conversation cache",
+        "chat": "chat", "agent": "agent", "ver_fuss": "tools/strata_bench.py --long · Flash-Next 125B IQ3_XXS · median · from 0.2.3.1: --kv-resident 32768, 9 GiB conv. cache · 0.2.8: NAS services stopped",
         "dock_t": "Docker image defaults vs a tuned run config", "dock_y": "prompt reading (tokens / s)",
         "img021": "image 0.2.1", "img022": "image 0.2.2", "img023": "image 0.2.3", "tuned": "tuned, 0.2.3.1",
         "dock_fuss": "strata bench run --suite standard-v1 · median of 3 · the 0.2.3 engine finds the gfx1100 hipBLASLt table by itself",
@@ -35,7 +35,7 @@ T = {
     },
     "de": {
         "ver_t": "Strata-Versionen auf derselben RX 7900 XTX", "ver_dec": "Schreiben (Token / s)", "ver_pre": "Prompt einlesen (Token / s)",
-        "chat": "Chat", "agent": "Agent", "ver_fuss": "tools/strata_bench.py --long · Flash-Next 125B IQ3_XXS · Median · 0.2.3.1 lief mit --kv-resident 32768 und 9 GiB Gesprächs-Cache",
+        "chat": "Chat", "agent": "Agent", "ver_fuss": "tools/strata_bench.py --long · Flash-Next 125B IQ3_XXS · Median · ab 0.2.3.1: --kv-resident 32768, 9 GiB Gesprächs-Cache · 0.2.8: NAS-Dienste gestoppt",
         "dock_t": "Docker-Image mit Voreinstellungen gegen abgestimmte Konfiguration", "dock_y": "Prompt einlesen (Token / s)",
         "img021": "Image 0.2.1", "img022": "Image 0.2.2", "img023": "Image 0.2.3", "tuned": "abgestimmt, 0.2.3.1",
         "dock_fuss": "strata bench run --suite standard-v1 · Median aus 3 · die Engine 0.2.3 findet die hipBLASLt-Tabelle für gfx1100 selbst",
@@ -83,7 +83,8 @@ def versionen(d, ziel, sp):
     v = [("0.2.0-beta", "2026-10-19/strata-0.2.0-beta/strata-bench-results.json"),
          ("0.2.1", "2026-10-21/strata-bench/2026-10-21-community-unknown-b021/results.json"),
          ("0.2.2", "2026-10-21-v0.2.2/strata-bench/2026-10-21-community-unknown-b022/results.json"),
-         ("0.2.3.1", "2026-10-23-v0.2.3.1/strata-bench/2026-10-23-community-unknown-b023/results.json")]
+         ("0.2.3.1", "2026-10-23-v0.2.3.1/strata-bench/2026-10-23-community-unknown-b023/results.json"),
+         ("0.2.8", "2026-10-31-v0.2.8/strata-bench/2026-10-31-community-unknown-b028/results.json")]
     werte = [strata_bench(os.path.join(d, p)) for _, p in v]
     x = list(range(len(v)))
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 4.6))

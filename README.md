@@ -191,11 +191,30 @@ The 0.2.3 notes list RX 7000 as built but not run on real hardware. Here it ran:
 
 \* 0.2.2 run of 21 Oct, before `--kv-resident 32768` and the 9 GiB conversation cache. Prompt reading at 4K is about 7 % faster in every test, decode is equal within the noise. Needles 6/6 at 32K and 128K and 3/3 at 250K, `standard-v1` complete with 12/12, our task set 29 of 29, 8 of 8 fresh engines normal. **Since the evening of 23 Oct this NAS serves with 0.2.3.1.** The models are called `faber` (was `arbeit`) and `velox` (was `schnell`) here now; configs and the llama-swap macro with the old names as aliases are in `konfig/strata-0.2.3.1/`. Script: `messen/t0231.py`. Raw data: `messen/daten/2026-10-23-v0.2.3.1/`.
 
-![Four Strata releases on the same card](bilder/versionen-en.png)
+![Strata releases on the same card](bilder/versionen-en.png)
 
 From 0.2.0-beta to 0.2.3.1 nothing got slower on this card. Decode rose from 61 to 67 tok/s, mostly with 0.2.1's worker plan for hybrid CPUs (#3262); prompt reading at 16K and 32K was already at its ceiling.
 
 **The first 128K prompt of the 0.2.3.1 run took 217 s, where every earlier release needed about 108 s.** A separate A/B (`messen/t128.py`) settled it: a fresh engine each time, the identical run config, alternating, twice each. 0.2.3.1 read the first 128K prompt in 110.5 and 110.8 s, 0.2.2 in 111.1 and 111.6 s, the needle was found every time. So no regression; the 217 s was a one-off in a long test run, most likely the conversation cache and RAM filled by the tests before it.
+
+### Follow-up 31 Oct 2026: Strata 0.2.8, now in production, measured on a quiet machine
+
+Engine 0.1.54 `hip-rx7900` with control 0.1.54, against the 0.2.3.1 packages with the identical run config, only engine and control swapped. For this session I stopped every NAS service that was not needed (photo library, media server, agent, search, mail bridge, file sync), so the dates are not strictly comparable; the pairs are.
+
+| median tok/s | 0.2.8 | 0.2.3.1 |
+|---|---:|---:|
+| 3 interleaved pairs, same session: decode / 63-token prompt | 61.4 / 111.2 | 61.6 / 121.2 |
+| `strata_bench.py --long`: chat / agent decode | 68.3 / 75.6 | 67.3 / 78.3 * |
+| 4K / 16K / 32K prompt | 785 / 1,212 / 1,199 | 791 / 1,218 / 1,244 * |
+| `standard-v1`, package / unchanged Docker image: 4K / 16K prompt | 791 / 1,201 and 740 / 1,222 | 800 / 1,203 and 749 / 1,220 * |
+
+\* 0.2.3.1 run of 23 Oct, NAS services running. Decode is equal; prompt reading from 4K up is equal. Only the short 63-token prompt read about 8 % slower on 0.2.8 in the pairs, with overlapping ranges, where a request's fixed cost dominates. `standard-v1` complete with 12/12 on both tracks, our task set 29 of 29, needles 6/6 at 32K and 128K and 3/3 at 250K (223-237 s for 251,626 tokens), 8 of 8 fresh engines normal. **Since 31 Oct this NAS serves with 0.2.8.** The run configs are unchanged (`konfig/strata-0.2.8/`, with the llama-swap macro). Script: `messen/t028.py`. Raw data: `messen/daten/2026-10-31-v0.2.8/`, the same data went to Strata as [PR #4851](https://github.com/Niko1221/Strata/pull/4851).
+
+What else changed for this card:
+
+- **The unchanged Docker image leaves 854 MiB of VRAM free after loading** (0.2.3: 594 MiB) and gave no low-VRAM warning during the run.
+- **0.2.8 recovers slightly malformed tool calls by default** (`"tool_call_recovery": false` turns it off). In my small check, 10 agent tasks per version with four declared tools, every answer on both versions was already a well-formed tool call, so the check did not exercise the new path.
+- **The quiet machine shows in the long prompts:** the first 128K prompt took 98-111 s, against 129-149 s in a nightly run with all services up.
 
 ### Full speed in the Docker image
 
@@ -369,6 +388,9 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   messen/charts2.py             charts for releases, Docker image, picture models, context and memory
   konfig/comfyui/               ComfyUI: llama-swap entry, download script, workflows, image backend for Hermes Agent
   messen/daten/2026-10-23-bilder/  seconds per picture, four models, first and warm
+  konfig/strata-0.2.8/          launch configs and llama-swap macro for 0.2.8 (configs unchanged from 0.2.3.1)
+  messen/t028.py                Strata 0.2.8 against 0.2.3.1: standard-v1 first, bench, needles to 250K, tool calls, pairs, fresh engines, Docker image
+  messen/daten/2026-10-31-v0.2.8/  raw data of the 0.2.8 follow-up, also sent as Strata PR #4851 (README inside)
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,

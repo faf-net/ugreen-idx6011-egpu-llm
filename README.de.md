@@ -192,11 +192,30 @@ In den Notes zu 0.2.3 steht die RX 7000 als gebaut, aber nicht auf echter Hardwa
 
 \* Lauf mit 0.2.2 vom 21.10., vor `--kv-resident 32768` und dem Gesprächs-Cache von 9 GiB. Einlesen bei 4K ist in jedem Test rund 7 % schneller, Schreiben im Rahmen des Rauschens gleich. Nadeln 6/6 bei 32K und 128K und 3/3 bei 250K, `standard-v1` vollständig mit 12/12, unser Aufgabensatz 29 von 29, 8 von 8 frischen Engines normal. **Seit dem Abend des 23.10. läuft dieses NAS mit 0.2.3.1.** Die Modelle heißen hier jetzt `faber` (vorher `arbeit`) und `velox` (vorher `schnell`); Konfigurationen und das llama-swap-Makro mit den alten Namen als Aliase liegen in `konfig/strata-0.2.3.1/`. Skript: `messen/t0231.py`. Rohdaten: `messen/daten/2026-10-23-v0.2.3.1/`.
 
-![Vier Strata-Versionen auf derselben Karte](bilder/versionen-de.png)
+![Strata-Versionen auf derselben Karte](bilder/versionen-de.png)
 
 Von 0.2.0-beta bis 0.2.3.1 ist auf dieser Karte nichts langsamer geworden. Das Schreiben stieg von 61 auf 67 Token/s, vor allem durch die Worker-Planung von 0.2.1 für Hybrid-CPUs (#3262); das Einlesen bei 16K und 32K lag schon an seiner Grenze.
 
 **Der erste 128K-Prompt brauchte im Lauf mit 0.2.3.1 217 s, wo jede frühere Version etwa 108 s brauchte.** Ein eigener A/B-Test (`messen/t128.py`) hat das geklärt: jedes Mal eine frische Engine, identische Laufkonfiguration, im Wechsel, je zweimal. 0.2.3.1 las den ersten 128K-Prompt in 110,5 und 110,8 s, 0.2.2 in 111,1 und 111,6 s, die Nadel wurde jedes Mal gefunden. Also kein Rückschritt; die 217 s waren ein Ausreißer in einem langen Testlauf, am wahrscheinlichsten durch Gesprächs-Cache und RAM, die die Tests davor gefüllt hatten.
+
+### Nachtrag 31.10.2026: Strata 0.2.8, jetzt in Betrieb, gemessen auf ruhiger Maschine
+
+Engine 0.1.54 `hip-rx7900` mit Control 0.1.54, gegen die Pakete von 0.2.3.1 mit identischer Laufkonfiguration, nur Engine und Control getauscht. Für diese Messung habe ich alle Dienste des NAS gestoppt, die nicht gebraucht wurden (Fotoverwaltung, Mediathek, Agent, Suche, Mail-Brücke, Dateiabgleich). Die Daten verschiedener Tage sind deshalb nicht streng vergleichbar, die Paare schon.
+
+| Median Token/s | 0.2.8 | 0.2.3.1 |
+|---|---:|---:|
+| 3 verschränkte Paare, gleiche Sitzung: Schreiben / Prompt mit 63 Token | 61,4 / 111,2 | 61,6 / 121,2 |
+| `strata_bench.py --long`: Chat / Agent schreiben | 68,3 / 75,6 | 67,3 / 78,3 * |
+| Prompt 4K / 16K / 32K | 785 / 1.212 / 1.199 | 791 / 1.218 / 1.244 * |
+| `standard-v1`, Paket / unverändertes Docker-Image: Prompt 4K / 16K | 791 / 1.201 und 740 / 1.222 | 800 / 1.203 und 749 / 1.220 * |
+
+\* Lauf mit 0.2.3.1 vom 23.10., NAS-Dienste liefen. Schreiben ist gleich, Einlesen ab 4K ebenso. Nur den kurzen Prompt mit 63 Token las 0.2.8 in den Paaren rund 8 % langsamer, bei überlappenden Spannen; dort überwiegen die festen Kosten einer Anfrage. `standard-v1` auf beiden Wegen vollständig mit 12/12, unser Aufgabensatz 29 von 29, Nadeln 6/6 bei 32K und 128K und 3/3 bei 250K (223–237 s für 251.626 Token), 8 von 8 frischen Engines normal. **Seit dem 31.10. läuft dieses NAS mit 0.2.8.** Die Laufkonfigurationen sind unverändert (`konfig/strata-0.2.8/`, mit dem llama-swap-Makro). Skript: `messen/t028.py`. Rohdaten: `messen/daten/2026-10-31-v0.2.8/`; dieselben Daten gingen als [PR #4851](https://github.com/Niko1221/Strata/pull/4851) an Strata.
+
+Was sich für diese Karte sonst geändert hat:
+
+- **Das unveränderte Docker-Image lässt nach dem Laden 854 MiB VRAM frei** (0.2.3: 594 MiB) und hat im Lauf nicht mehr vor knappem VRAM gewarnt.
+- **0.2.8 rettet leicht fehlerhafte Tool-Calls standardmäßig** (`"tool_call_recovery": false` schaltet das ab). In meiner kleinen Prüfung, 10 Agenten-Aufgaben je Version mit vier deklarierten Werkzeugen, war jede Antwort auf beiden Versionen schon ein sauberer Tool-Call; der neue Weg wurde also nicht berührt.
+- **Die ruhige Maschine zeigt sich bei langen Prompts:** Der erste 128K-Prompt brauchte 98–111 s, in einem Nachtlauf mit allen Diensten 129–149 s.
 
 ### Volle Geschwindigkeit im Docker-Image
 
@@ -371,6 +390,9 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   messen/charts2.py             Diagramme zu Versionen, Docker-Image, Bildmodellen, Kontext und Speicher
   konfig/comfyui/               ComfyUI: llama-swap-Eintrag, Download-Skript, Arbeitsabläufe, Bild-Anbieter für Hermes Agent
   messen/daten/2026-10-23-bilder/  Sekunden je Bild, vier Modelle, erstes und warmes Bild
+  konfig/strata-0.2.8/          Startkonfigurationen und llama-swap-Makro für 0.2.8 (Konfigurationen wie bei 0.2.3.1)
+  messen/t028.py                Strata 0.2.8 gegen 0.2.3.1: zuerst standard-v1, Bench, Nadeln bis 250K, Tool-Calls, Paare, frische Engines, Docker-Image
+  messen/daten/2026-10-31-v0.2.8/  Rohdaten des Nachtrags zu 0.2.8, auch als Strata-PR #4851 eingereicht (README darin)
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
