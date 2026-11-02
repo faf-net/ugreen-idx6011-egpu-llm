@@ -275,11 +275,19 @@ times. Fixed upstream in Linux `6cca686dfce7` (7.0) and `81665e35f143` (7.1).
 **My mitigation:** llama-swap unloads the model after 30 minutes idle (`globalTTL: 1800`). With no model loaded,
 the iDX survives a dropout; the card is then gone until the next reboot.
 
+**Still present in UGOS 1.21 (tested 2 Nov 2026).** The kernel is still 6.18.15, rebuilt on 16 Oct 2026. Same test as
+before: model loaded (25 GB VRAM), card removed with `echo 1 > /sys/bus/pci/devices/<GPU>/remove`. The same warning
+appears at once, and the remove call itself never returns. About 8 minutes later `kswapd` reclaims memory, walks into
+`kfd_process_evict_queues` via `amdgpu_hmm_invalidate_hsa` / `amdgpu_amdkfd_evict_userptr` and hits a general
+protection fault: the KFD process still holds userptr mappings of the removed card. Kernel panic, restart. The delay
+(3 minutes in September, 8 now) depends on when memory reclaim touches those pages, not on a fixed timer. Reported
+to UGREEN with the pstore record. The mitigation stays the same.
+
 ## What I had to change on UGOS
 
 | # | Problem | Fix |
 |---|---|---|
-| 1 | UGOS ships **no firmware for Navi 31** (gfx1100), not even in 1.19. `amdgpu` ends with `Fatal error during GPU init` | copy 15 files from Debian's `firmware-amd-graphics` (20250410) to `/lib/firmware/amdgpu/`: `gc_11_0_0_{imu,me,mec,mes,mes1,mes_2,pfp,rlc,rlc_1}.bin`, `psp_13_0_0_{sos,ta}.bin`, `smu_13_0_0.bin`, `sdma_6_0_0.bin`, `vcn_4_0_0.bin`, `dcn_3_2_0_dmcub.bin`. They survived the update to 1.19 (UGOS uses an overlay). Safety net: `ugos/` |
+| 1 | **Solved in UGOS 1.21.** Up to 1.19, UGOS shipped **no firmware for Navi 31** (gfx1100). `amdgpu` ended with `Fatal error during GPU init`. 1.21 ships all 15 files plus five newer `*_kicker.bin` (late October 2026) | **On 1.21: remove your own copies** and disable the restore service, otherwise your older files in the overlay's upper layer hide UGREEN's newer ones (see below). Up to 1.19: copy 15 files from Debian's `firmware-amd-graphics` (20250410) to `/lib/firmware/amdgpu/`: `gc_11_0_0_{imu,me,mec,mes,mes1,mes_2,pfp,rlc,rlc_1}.bin`, `psp_13_0_0_{sos,ta}.bin`, `smu_13_0_0.bin`, `sdma_6_0_0.bin`, `vcn_4_0_0.bin`, `dcn_3_2_0_dmcub.bin`. They survived the update to 1.19 (UGOS uses an overlay). Safety net: `ugos/` |
 | 2 | UGOS sets `GODEBUG=tlskyber=0` system-wide; Go programs from Go 1.24 (e.g. llama-swap) abort immediately | `Environment=GODEBUG=` in the systemd unit |
 | 3 | Containers don't see the card | `--device /dev/kfd --device /dev/dri --group-add video --group-add render` (gid 44 and 105 here) |
 | 4 | `docker --device` rejects colons (`/dev/dri/by-path/pci-0000:…`); a renamed render node is not found by Vulkan, which then silently computes on the CPU | resolve the path first, keep the node name |
@@ -290,9 +298,17 @@ the iDX survives a dropout; the card is then gone until the next reboot.
 | 9 | UGOS occasionally rewrites the firewall; own rules in `DOCKER-USER` disappear | re-apply rules from a timer |
 | 10 | Journal capped at 50 MB, covers only about an hour | keep your own recordings for troubleshooting |
 | 11 | Non-interactive SSH sessions have no `/sbin` in PATH, `modinfo` is not installed | a `command not found` is not a negative result |
+| 12 | sshd offers no post-quantum key exchange (`high_crypt.conf`), although OpenSSH 9.2p1 supports it; current clients warn on every connection | `/etc/ssh/sshd_config.d/00-pq-kex.conf` with `KexAlgorithms sntrup761x25519-sha512@openssh.com,curve25519-sha256,…`; the name must sort before `high_crypt.conf`, because the first match wins |
+
+**Switching to UGREEN's firmware on 1.21** (what I did on 2 Nov 2026): move your copies out of
+`/overlay/upper/usr/lib/firmware/amdgpu/` (keep them on the data pool as a fallback), `systemctl disable
+amdgpu-gfx1100-restore.service`, reboot. Do not delete them through `/lib/firmware`: on an overlay that creates a
+whiteout and hides UGREEN's files as well. Result here: card ready 8 s after boot, DMUB firmware 0x07002D00 →
+0x07003101, models load, throughput unchanged within noise. Everything else in the upper layer (own units,
+`modprobe.d`, Docker) survived the update.
 
 What UGOS does well: watchdog, a readable last-reboot reason, pstore crash logs, a NUT server for the UPS, and
-version 1.19 brought kernel 6.18 with about 700 amdgpu firmware files.
+version 1.19 brought kernel 6.18 with about 700 amdgpu firmware files. 1.21 finally added the Navi 31 firmware.
 
 ## Running an agent (Hermes) on top
 
@@ -355,6 +371,7 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   konfig/arbeit.json            Flash-Next IQ3_XXS, 256k, reasoning effort high
   konfig/schnell.json           Flash-Next IQ2_XS
   konfig/llama-swap.yaml        one endpoint, one model at a time, unload after 30 min
+  ugos/                         only needed up to UGOS 1.19; on 1.21 and later see the note under "What I had to change"
   ugos/firmware-sichern.sh      backs up the 15 gfx1100 firmware files to the data pool
   ugos/firmware-pruefen.sh      checks and restores them after a UGOS update
   ugos/amdgpu-gfx1100-restore.service   runs the check after every boot
