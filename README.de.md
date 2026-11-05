@@ -217,6 +217,19 @@ Was sich für diese Karte sonst geändert hat:
 - **0.2.8 rettet leicht fehlerhafte Tool-Calls standardmäßig** (`"tool_call_recovery": false` schaltet das ab). In meiner kleinen Prüfung, 10 Agenten-Aufgaben je Version mit vier deklarierten Werkzeugen, war jede Antwort auf beiden Versionen schon ein sauberer Tool-Call; der neue Weg wurde also nicht berührt.
 - **Die ruhige Maschine zeigt sich bei langen Prompts:** Der erste 128K-Prompt brauchte 98–111 s, in einem Nachtlauf mit allen Diensten 129–149 s.
 
+### Nachtrag 05.11.2026: Strata 0.2.11, jetzt in Betrieb
+
+Engine 0.1.57 `hip-rx7900` mit Control 0.1.57, gegen die Pakete von 0.2.10 (0.1.56) mit identischer Laufkonfiguration, nur Engine und Control getauscht. Laut Release-Notiz hatte das Projekt dieses Paket noch nicht mit einem Modell laufen lassen; auf dieser Karte lädt es, antwortet und besteht alles unten. Anders als beim Nachtrag zu 0.2.8 liefen die NAS-Dienste, nur mein Agent war angehalten.
+
+| Median Token/s | 0.2.11 | 0.2.10 |
+|---|---:|---:|
+| 3 verschränkte Paare, gleiche Sitzung: Schreiben / Prompt mit 63 Token | 60,9 / 118,1 | 59,8 / 109,0 |
+| `standard-v1`, Paket: kurz Schreiben / 4K / 16K Prompt | 67,0 / 797 / 1.192 | 65,6 / 797 / 1.204 * |
+| `standard-v1`, unverändertes Docker-Image: kurz Schreiben / 4K / 16K Prompt | 65,0 / 758 / 1.182 | |
+| `strata_bench.py --long`: 4K / 16K / 32K Prompt | 781 / 1.212 / 1.226 | |
+
+\* nächtlicher Lauf mit 0.2.10 vom 03.11. Schreiben ist gleich; der Unterschied beim kurzen Prompt liegt in überlappenden Spannen. `standard-v1` auf beiden Wegen vollständig mit 12/12, unser Aufgabensatz 29 von 29, Nadeln 6/6 bei 32K und 128K und 1/1 bei 250K (239 s für 251.626 Token), 8 von 8 frischen Engines gesund (die erste, direkt nach dem Entpacken, las mit 457 Token/s, die übrigen sieben mit 670–750). Die Nadeln bei 128K und 250K waren rund 15 % schneller als im Nachtlauf von 0.2.10, aber nicht schneller als auf der ruhigen Maschine vom 31.10.; das schreibe ich deshalb nicht dem Release zu. Leistung der Karte beim Schreiben: 208 W im Median. **Seit dem 05.11. läuft dieses NAS mit 0.2.11**, dazwischen liefen 0.2.9 (Korrektur für still falsch gelesene lange Prompts, wenn der Engine-Stack im gepinnten Expertenspeicher lag, #3431) und 0.2.10. Laufkonfigurationen unverändert (`konfig/strata-0.2.11/`). Rohdaten: `messen/daten/2026-11-05-v0.2.11/`, an Strata als [Issue #5321](https://github.com/Niko1221/Strata/issues/5321).
+
 ### Volle Geschwindigkeit im Docker-Image
 
 **Die Engine findet ihre hipBLASLt-Tabelle für gfx1100 jetzt selbst.** Ohne `STRATA_HIPBLASLT_TUNING` in der Laufkonfiguration steht im Log trotzdem `hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)`. Für Besitzer einer RX 7000, die das Docker-Image mit Voreinstellungen nutzen, ist das die größte Änderung von 0.2.3: Es liest 16K-Prompts mit 1.220 statt 781 Token/s, das erste Token eines 16K-Prompts kommt nach 13,5 statt 21 Sekunden.
@@ -411,6 +424,8 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   konfig/strata-0.2.8/          Startkonfigurationen und llama-swap-Makro für 0.2.8 (Konfigurationen wie bei 0.2.3.1)
   messen/t028.py                Strata 0.2.8 gegen 0.2.3.1: zuerst standard-v1, Bench, Nadeln bis 250K, Tool-Calls, Paare, frische Engines, Docker-Image
   messen/daten/2026-10-31-v0.2.8/  Rohdaten des Nachtrags zu 0.2.8, auch als Strata-PR #4851 eingereicht (README darin)
+  konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
+  messen/daten/2026-11-05-v0.2.11/  Rohdaten des Nachtrags zu 0.2.11, auch als Strata-Issue #5321 eingereicht (README darin)
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
