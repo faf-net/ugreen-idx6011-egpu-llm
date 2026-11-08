@@ -6,7 +6,7 @@ New this time: **Strata's tuned DFlash2 drafter** (`qwen3.8-flash-next-dflash2.s
 
 The NAS services were running for everything here; only my agent was paused. The automated night run (version pairs, needles, fresh engines, `strata_bench.py`, Docker image) ran at about 02:00 local time with other background jobs active. Its package `standard-v1` came out low (short decode 53.9 tok/s) and is **replaced** by a clean re-run the same evening (`standard-v1/package-0.2.12/`).
 
-The same data went to Strata as [issue #TBD](https://github.com/Niko1221/Strata/issues).
+The same data went to Strata as [issue #5615](https://github.com/Niko1221/Strata/issues/5615).
 
 | File | What |
 |---|---|

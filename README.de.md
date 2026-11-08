@@ -236,7 +236,7 @@ Engine 0.1.58 `hip-rx7900` mit Control 0.1.58 gegen 0.2.11, gleiche Laufkonfigur
 
 ![Getunter DFlash2 gegen MTP: im festen Test schneller je Token, bei echten Aufgaben langsamer](bilder/dflash2-0.2.12.png)
 
-Das Release bringt einen **getunten DFlash2-Drafter** mit, meines Wissens auf gfx1100 bisher nicht gemessen. Er lädt sauber (591 MiB VRAM, keine MTP-Schicht) und schreibt im festen Test mit 900 Token bei Konfidenz 0,7 um 10–15 % schneller als MTP (92,6 gegen 83,0 Token/s im leisen Kartenprofil, 90,5 gegen 79,0 bei Werkstakt), wobei deutsche Prosa langsamer wird und nur Code gewinnt. Auf dem echten Aufgabensatz mit natürlicher Antwortlänge verliert er: Je Token gleich schnell (+1 %), aber nur 51 von 114 Antworten gleichen bei Temperatur 0 denen mit MTP, die geänderten werden länger (+28 % Token), die Gesamtzeit steigt um 16 %, und zwei mehrstufige Preisrechnungen gehen schief (96 gegen 98). Halb so viele CPU-Pool-Worker ändern nichts. DFlash2 bleibt auf dieser Karte aus. Startkonfigurationen (Betrieb und DFlash2-Test): `konfig/strata-0.2.12/`. Rohdaten: `messen/daten/2026-11-08-v0.2.12/`, an Strata als [Issue #TBD](https://github.com/Niko1221/Strata/issues).
+Das Release bringt einen **getunten DFlash2-Drafter** mit, meines Wissens auf gfx1100 bisher nicht gemessen. Er lädt sauber (591 MiB VRAM, keine MTP-Schicht) und schreibt im festen Test mit 900 Token bei Konfidenz 0,7 um 10–15 % schneller als MTP (92,6 gegen 83,0 Token/s im leisen Kartenprofil, 90,5 gegen 79,0 bei Werkstakt), wobei deutsche Prosa langsamer wird und nur Code gewinnt. Auf dem echten Aufgabensatz mit natürlicher Antwortlänge verliert er: Je Token gleich schnell (+1 %), aber nur 51 von 114 Antworten gleichen bei Temperatur 0 denen mit MTP, die geänderten werden länger (+28 % Token), die Gesamtzeit steigt um 16 %, und zwei mehrstufige Preisrechnungen gehen schief (96 gegen 98). Halb so viele CPU-Pool-Worker ändern nichts. DFlash2 bleibt auf dieser Karte aus. Startkonfigurationen (Betrieb und DFlash2-Test): `konfig/strata-0.2.12/`. Rohdaten: `messen/daten/2026-11-08-v0.2.12/`, an Strata als [Issue #5615](https://github.com/Niko1221/Strata/issues/5615).
 
 ### Volle Geschwindigkeit im Docker-Image
 
@@ -435,7 +435,7 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
   messen/daten/2026-11-05-v0.2.11/  Rohdaten des Nachtrags zu 0.2.11, auch als Strata-Issue #5321 eingereicht (README darin)
   konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration
-  messen/daten/2026-11-08-v0.2.12/  Rohdaten des Nachtrags zu 0.2.12 und des DFlash2-Tests, auch als Strata-Issue #TBD eingereicht (README darin)
+  messen/daten/2026-11-08-v0.2.12/  Rohdaten des Nachtrags zu 0.2.12 und des DFlash2-Tests, auch als Strata-Issue #5615 eingereicht (README darin)
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
