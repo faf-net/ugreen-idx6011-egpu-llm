@@ -230,6 +230,14 @@ Engine 0.1.57 `hip-rx7900` mit Control 0.1.57, gegen die Pakete von 0.2.10 (0.1.
 
 \* nächtlicher Lauf mit 0.2.10 vom 03.11. Schreiben ist gleich; der Unterschied beim kurzen Prompt liegt in überlappenden Spannen. `standard-v1` auf beiden Wegen vollständig mit 12/12, unser Aufgabensatz 29 von 29, Nadeln 6/6 bei 32K und 128K und 1/1 bei 250K (239 s für 251.626 Token), 8 von 8 frischen Engines gesund (die erste, direkt nach dem Entpacken, las mit 457 Token/s, die übrigen sieben mit 670–750). Die Nadeln bei 128K und 250K waren rund 15 % schneller als im Nachtlauf von 0.2.10, aber nicht schneller als auf der ruhigen Maschine vom 31.10.; das schreibe ich deshalb nicht dem Release zu. Leistung der Karte beim Schreiben: 208 W im Median. **Seit dem 05.11. läuft dieses NAS mit 0.2.11**, dazwischen liefen 0.2.9 (Korrektur für still falsch gelesene lange Prompts, wenn der Engine-Stack im gepinnten Expertenspeicher lag, #3431) und 0.2.10. Laufkonfigurationen unverändert (`konfig/strata-0.2.11/`). Rohdaten: `messen/daten/2026-11-05-v0.2.11/`, an Strata als [Issue #5321](https://github.com/Niko1221/Strata/issues/5321).
 
+### Nachtrag 08.11.2026: Strata 0.2.12, jetzt in Betrieb, und der getunte DFlash2-Drafter auf gfx1100
+
+Engine 0.1.58 `hip-rx7900` mit Control 0.1.58 gegen 0.2.11, gleiche Laufkonfiguration, NAS-Dienste an. **0.2.12 ist hier gleich gut wie 0.2.11**: Auf meinem eigenen Aufgabensatz (114 Aufgaben, 102 automatisch bewertet) bestehen beide 98 und brauchen 1.430 s; Paare in derselben Sitzung 59,9 gegen 61,2 Token/s beim Schreiben, im Rauschen. `standard-v1` vollständig mit 12/12 im Paket (kurz schreiben / 4K / 16K: 63,6 / 788 / 1.202) und im unveränderten Docker-Image (69,1 / 756 / 1.186), Nadeln 7/7 bis 250K. **Seit 08.11. läuft dieses NAS mit 0.2.12**, weiter mit MTP.
+
+![Getunter DFlash2 gegen MTP: im festen Test schneller je Token, bei echten Aufgaben langsamer](bilder/dflash2-0.2.12.png)
+
+Das Release bringt einen **getunten DFlash2-Drafter** mit, meines Wissens auf gfx1100 bisher nicht gemessen. Er lädt sauber (591 MiB VRAM, keine MTP-Schicht) und schreibt im festen Test mit 900 Token bei Konfidenz 0,7 um 10–15 % schneller als MTP (92,6 gegen 83,0 Token/s im leisen Kartenprofil, 90,5 gegen 79,0 bei Werkstakt), wobei deutsche Prosa langsamer wird und nur Code gewinnt. Auf dem echten Aufgabensatz mit natürlicher Antwortlänge verliert er: Je Token gleich schnell (+1 %), aber nur 51 von 114 Antworten gleichen bei Temperatur 0 denen mit MTP, die geänderten werden länger (+28 % Token), die Gesamtzeit steigt um 16 %, und zwei mehrstufige Preisrechnungen gehen schief (96 gegen 98). Halb so viele CPU-Pool-Worker ändern nichts. DFlash2 bleibt auf dieser Karte aus. Startkonfigurationen (Betrieb und DFlash2-Test): `konfig/strata-0.2.12/`. Rohdaten: `messen/daten/2026-11-08-v0.2.12/`, an Strata als [Issue #TBD](https://github.com/Niko1221/Strata/issues).
+
 ### Volle Geschwindigkeit im Docker-Image
 
 **Die Engine findet ihre hipBLASLt-Tabelle für gfx1100 jetzt selbst.** Ohne `STRATA_HIPBLASLT_TUNING` in der Laufkonfiguration steht im Log trotzdem `hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)`. Für Besitzer einer RX 7000, die das Docker-Image mit Voreinstellungen nutzen, ist das die größte Änderung von 0.2.3: Es liest 16K-Prompts mit 1.220 statt 781 Token/s, das erste Token eines 16K-Prompts kommt nach 13,5 statt 21 Sekunden.
@@ -426,6 +434,8 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   messen/daten/2026-10-31-v0.2.8/  Rohdaten des Nachtrags zu 0.2.8, auch als Strata-PR #4851 eingereicht (README darin)
   konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
   messen/daten/2026-11-05-v0.2.11/  Rohdaten des Nachtrags zu 0.2.11, auch als Strata-Issue #5321 eingereicht (README darin)
+  konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration
+  messen/daten/2026-11-08-v0.2.12/  Rohdaten des Nachtrags zu 0.2.12 und des DFlash2-Tests, auch als Strata-Issue #TBD eingereicht (README darin)
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen

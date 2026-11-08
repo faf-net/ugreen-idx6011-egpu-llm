@@ -229,6 +229,14 @@ Engine 0.1.57 `hip-rx7900` with control 0.1.57, against the 0.2.10 packages (0.1
 
 \* nightly 0.2.10 run of 3 Nov. Decode is equal; the short-prompt difference sits inside overlapping ranges. `standard-v1` complete with 12/12 on both tracks, our task set 29 of 29, needles 6/6 at 32K and 128K and 1/1 at 250K (239 s for 251,626 tokens), 8 of 8 fresh engines healthy (the first one, right after unpacking, read at 457 tok/s, the other seven at 670-750). The 128K and 250K needles were about 15 % faster than in the 0.2.10 night run, but no faster than on the quiet machine of 31 Oct, so I do not credit the release with it. Card power while writing: 208 W median. **Since 5 Nov this NAS serves with 0.2.11**, after 0.2.9 (fix for silently wrong long prompts when the engine stack landed in pinned expert memory, #3431) and 0.2.10 in between. Run configs unchanged (`konfig/strata-0.2.11/`). Raw data: `messen/daten/2026-11-05-v0.2.11/`, sent to Strata as [issue #5321](https://github.com/Niko1221/Strata/issues/5321).
 
+### Follow-up 8 Nov 2026: Strata 0.2.12, now in production, and the tuned DFlash2 drafter on gfx1100
+
+Engine 0.1.58 `hip-rx7900` with control 0.1.58 against 0.2.11, identical run config, NAS services running. **0.2.12 is equal to 0.2.11 here**: on my own task set (114 tasks, 102 auto-graded) both pass 98 and take 1,430 s; same-session pairs 59.9 against 61.2 tok/s decode, inside the noise. `standard-v1` complete with 12/12 on the package (short decode / 4K / 16K: 63.6 / 788 / 1,202) and on the unchanged Docker image (69.1 / 756 / 1,186), needles 7/7 to 250K. **Since 8 Nov this NAS serves with 0.2.12**, still with MTP.
+
+![Tuned DFlash2 against MTP: faster per token in a fixed test, slower on real tasks](bilder/dflash2-0.2.12.png)
+
+The release ships a **tuned DFlash2 drafter**, as far as I can tell not measured on gfx1100 before. It loads cleanly (591 MiB of VRAM, no MTP layer) and in a fixed 900-token test it decodes 10-15 % faster than MTP at confidence 0.7 (92.6 against 83.0 tok/s on my quiet card profile, 90.5 against 79.0 at stock clocks), although German prose is slower and only code gains. On the real task set, with natural answer length, it loses: decode per token is the same (+1 %), but only 51 of 114 answers are identical to MTP at temperature 0, the changed ones are longer (+28 % tokens), wall time is +16 %, and two multi-step price calculations go wrong (96 against 98). Halving the CPU pool workers changed nothing. DFlash2 stays off on this card. Run configs (production and the DFlash2 test): `konfig/strata-0.2.12/`. Raw data: `messen/daten/2026-11-08-v0.2.12/`, sent to Strata as [issue #TBD](https://github.com/Niko1221/Strata/issues).
+
 ### Full speed in the Docker image
 
 **The engine now finds its gfx1100 hipBLASLt table by itself.** With `STRATA_HIPBLASLT_TUNING` removed from the run config, the log still says `hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)`. That is the biggest change of 0.2.3 for RX 7000 owners who use the Docker image with its defaults: it reads 16K prompts at 1,220 instead of 781 tok/s, the first token of a 16K prompt comes after 13.5 s instead of 21 s.
@@ -423,6 +431,8 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   messen/daten/2026-10-31-v0.2.8/  raw data of the 0.2.8 follow-up, also sent as Strata PR #4851 (README inside)
   konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
   messen/daten/2026-11-05-v0.2.11/  raw data of the 0.2.11 follow-up, also sent as Strata issue #5321 (README inside)
+  konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config
+  messen/daten/2026-11-08-v0.2.12/  raw data of the 0.2.12 follow-up and the DFlash2 test, also sent as Strata issue #TBD (README inside)
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,

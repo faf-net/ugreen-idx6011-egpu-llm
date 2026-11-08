@@ -1,0 +1,181 @@
+{
+ "date": "2026-11-08",
+ "model": "Flash-Next IQ3_XXS native pack (faber)",
+ "tasks": 114,
+ "auto_graded": 102,
+ "note": "own German-language task set; temperature 0, thinking on, max 8000 tokens; german-writing (12) is not auto-graded",
+ "runs": {
+  "0.2.11 MTP": {
+   "passed": 98,
+   "graded": 102,
+   "wall_s": 1430.7,
+   "output_tokens": 72218,
+   "decode_tok_s_median": 74.7,
+   "by_category": {
+    "code": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 477.3,
+     "tokens": 32111
+    },
+    "logic": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 87.7,
+     "tokens": 5092
+    },
+    "german-writing": {
+     "passed": 0,
+     "graded": 0,
+     "seconds": 118.4,
+     "tokens": 7433
+    },
+    "tool-calls": {
+     "passed": 20,
+     "graded": 20,
+     "seconds": 103.4,
+     "tokens": 1972
+    },
+    "agent-safety": {
+     "passed": 17,
+     "graded": 18,
+     "seconds": 145.4,
+     "tokens": 5396
+    },
+    "facts": {
+     "passed": 12,
+     "graded": 15,
+     "seconds": 216.4,
+     "tokens": 17303
+    },
+    "instruction": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 49.1,
+     "tokens": 2280
+    },
+    "long-context": {
+     "passed": 4,
+     "graded": 4,
+     "seconds": 233.1,
+     "tokens": 631
+    }
+   }
+  },
+  "0.2.12 MTP": {
+   "passed": 98,
+   "graded": 102,
+   "wall_s": 1429.6,
+   "output_tokens": 72321,
+   "decode_tok_s_median": 75.6,
+   "by_category": {
+    "code": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 526.7,
+     "tokens": 35477
+    },
+    "logic": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 80.7,
+     "tokens": 4589
+    },
+    "german-writing": {
+     "passed": 0,
+     "graded": 0,
+     "seconds": 131.6,
+     "tokens": 8577
+    },
+    "tool-calls": {
+     "passed": 20,
+     "graded": 20,
+     "seconds": 102.1,
+     "tokens": 1966
+    },
+    "agent-safety": {
+     "passed": 17,
+     "graded": 18,
+     "seconds": 139.2,
+     "tokens": 4987
+    },
+    "facts": {
+     "passed": 12,
+     "graded": 15,
+     "seconds": 177.1,
+     "tokens": 13869
+    },
+    "instruction": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 46.2,
+     "tokens": 2243
+    },
+    "long-context": {
+     "passed": 4,
+     "graded": 4,
+     "seconds": 225.9,
+     "tokens": 613
+    }
+   }
+  },
+  "0.2.12 DFlash2 tuned, conf 0.7, spec 6": {
+   "passed": 96,
+   "graded": 102,
+   "wall_s": 1659.7,
+   "output_tokens": 92268,
+   "decode_tok_s_median": 76.1,
+   "by_category": {
+    "code": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 633.6,
+     "tokens": 44685
+    },
+    "logic": {
+     "passed": 13,
+     "graded": 15,
+     "seconds": 82.0,
+     "tokens": 4908
+    },
+    "german-writing": {
+     "passed": 0,
+     "graded": 0,
+     "seconds": 147.4,
+     "tokens": 10504
+    },
+    "tool-calls": {
+     "passed": 20,
+     "graded": 20,
+     "seconds": 102.3,
+     "tokens": 2043
+    },
+    "agent-safety": {
+     "passed": 17,
+     "graded": 18,
+     "seconds": 154.2,
+     "tokens": 5711
+    },
+    "facts": {
+     "passed": 12,
+     "graded": 15,
+     "seconds": 270.3,
+     "tokens": 21813
+    },
+    "instruction": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 44.2,
+     "tokens": 2052
+    },
+    "long-context": {
+     "passed": 4,
+     "graded": 4,
+     "seconds": 225.7,
+     "tokens": 552
+    }
+   }
+  }
+ },
+ "identical_answers_dflash2_vs_mtp": 51
+}
