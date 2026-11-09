@@ -241,7 +241,7 @@ The release ships a **tuned DFlash2 drafter**, as far as I can tell not measured
 
 Engine 0.1.59 `hip-rx7900` with control 0.1.59 against 0.2.12, identical run config (`konfig/strata-0.2.12/`), NAS services running. **0.2.13 is equal to 0.2.12 here**: same-session pairs 60.0 against 60.7 tok/s decode, `standard-v1` on the package complete with 12/12 (short decode / 4K / 16K: 67.7 / 799 / 1,203), `strata_bench.py --long` 4K / 16K / 32K at 782 / 1,203 / 1,217, needles 7/7 to 250K (238 s at 250K). My task set: 97 of 102 against 98 for 0.2.12, one code task flipped, 1,381 s against 1,430 s. This NAS stays on 0.2.12 for now.
 
-**The unchanged Docker image `0.2.13-rocm-gfx110x` no longer uses the gfx1100 hipBLASLt table.** The engine logs that the table is in the package and off by default; the release notes name only Windows for this. On Linux it costs 14 % at 4K and 35 % at 16K prompt reading (649 and 769 instead of 756 and 1,186 tok/s with the 0.2.12 image). `-e STRATA_HIPBLASLT_TABLE=on` brings it back (766 / 1,193). If you run the image on an RX 7900, set that variable. My run config sets `STRATA_HIPBLASLT_TUNING` explicitly and is not affected. Raw data: `messen/daten/2026-11-09-v0.2.13/`, sent to Strata as [issue #ISSUE](https://github.com/Niko1221/Strata/issues/ISSUE).
+**The unchanged Docker image `0.2.13-rocm-gfx110x` no longer uses the gfx1100 hipBLASLt table.** The engine logs that the table is in the package and off by default; the release notes name only Windows for this. On Linux it costs 14 % at 4K and 35 % at 16K prompt reading (649 and 769 instead of 756 and 1,186 tok/s with the 0.2.12 image). `-e STRATA_HIPBLASLT_TABLE=on` brings it back (766 / 1,193). If you run the image on an RX 7900, set that variable. My run config sets `STRATA_HIPBLASLT_TUNING` explicitly and is not affected. Raw data: `messen/daten/2026-11-09-v0.2.13/`, sent to Strata as [issue #5666](https://github.com/Niko1221/Strata/issues/5666).
 
 ### Full speed in the Docker image
 
@@ -439,7 +439,7 @@ into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
   messen/daten/2026-11-05-v0.2.11/  raw data of the 0.2.11 follow-up, also sent as Strata issue #5321 (README inside)
   konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config
   messen/daten/2026-11-08-v0.2.12/  raw data of the 0.2.12 follow-up and the DFlash2 test, also sent as Strata issue #5615 (README inside)
-  messen/daten/2026-11-09-v0.2.13/  raw data of the 0.2.13 follow-up, incl. the Docker image with and without the gfx1100 table (README inside)
+  messen/daten/2026-11-09-v0.2.13/  raw data of the 0.2.13 follow-up, incl. the Docker image with and without the gfx1100 table also sent as Strata issue #5666 (README inside)
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,

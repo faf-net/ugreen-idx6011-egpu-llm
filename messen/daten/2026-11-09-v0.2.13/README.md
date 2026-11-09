@@ -4,6 +4,8 @@ Prebuilt engine 0.1.59 `hip-rx7900` with control 0.1.59 (SHA-256 checked against
 
 Everything ran in the afternoon of 9 Nov with the NAS services running; only my agent was paused.
 
+The same data went to Strata as [issue #5666](https://github.com/Niko1221/Strata/issues/5666).
+
 | File | What |
 |---|---|
 | `standard-v1/package-0.2.13/` | `strata bench run --suite standard-v1 --track custom` against the 0.2.13 packages with this run config: complete |

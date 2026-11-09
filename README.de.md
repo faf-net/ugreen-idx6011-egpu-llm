@@ -242,7 +242,7 @@ Das Release bringt einen **getunten DFlash2-Drafter** mit, meines Wissens auf gf
 
 Engine 0.1.59 `hip-rx7900` mit Control 0.1.59 gegen 0.2.12, gleiche Laufkonfiguration (`konfig/strata-0.2.12/`), NAS-Dienste an. **0.2.13 ist hier gleich gut wie 0.2.12**: Paare in derselben Sitzung 60,0 gegen 60,7 Token/s beim Schreiben, `standard-v1` im Paket vollständig mit 12/12 (kurz schreiben / 4K / 16K: 67,7 / 799 / 1.203), `strata_bench.py --long` 4K / 16K / 32K mit 782 / 1.203 / 1.217, Nadeln 7/7 bis 250K (238 s bei 250K). Mein Aufgabensatz: 97 von 102 gegen 98 bei 0.2.12, eine Code-Aufgabe ist gekippt, 1.381 s gegen 1.430 s. Dieses NAS bleibt vorerst bei 0.2.12.
 
-**Das unveränderte Docker-Image `0.2.13-rocm-gfx110x` nutzt die hipBLASLt-Tabelle für gfx1100 nicht mehr.** Die Engine schreibt ins Log, dass die Tabelle im Paket liegt und standardmäßig aus ist; die Release-Notiz nennt das nur für Windows. Unter Linux kostet es beim Prompt-Einlesen 14 % bei 4K und 35 % bei 16K (649 und 769 statt 756 und 1.186 Token/s mit dem Image von 0.2.12). `-e STRATA_HIPBLASLT_TABLE=on` holt es zurück (766 / 1.193). Wer das Image auf einer RX 7900 betreibt, sollte diese Variable setzen. Meine Laufkonfiguration setzt `STRATA_HIPBLASLT_TUNING` ausdrücklich und ist nicht betroffen. Rohdaten: `messen/daten/2026-11-09-v0.2.13/`, an Strata als [Issue #ISSUE](https://github.com/Niko1221/Strata/issues/ISSUE).
+**Das unveränderte Docker-Image `0.2.13-rocm-gfx110x` nutzt die hipBLASLt-Tabelle für gfx1100 nicht mehr.** Die Engine schreibt ins Log, dass die Tabelle im Paket liegt und standardmäßig aus ist; die Release-Notiz nennt das nur für Windows. Unter Linux kostet es beim Prompt-Einlesen 14 % bei 4K und 35 % bei 16K (649 und 769 statt 756 und 1.186 Token/s mit dem Image von 0.2.12). `-e STRATA_HIPBLASLT_TABLE=on` holt es zurück (766 / 1.193). Wer das Image auf einer RX 7900 betreibt, sollte diese Variable setzen. Meine Laufkonfiguration setzt `STRATA_HIPBLASLT_TUNING` ausdrücklich und ist nicht betroffen. Rohdaten: `messen/daten/2026-11-09-v0.2.13/`, an Strata als [Issue #5666](https://github.com/Niko1221/Strata/issues/5666).
 
 ### Volle Geschwindigkeit im Docker-Image
 
@@ -442,7 +442,7 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   messen/daten/2026-11-05-v0.2.11/  Rohdaten des Nachtrags zu 0.2.11, auch als Strata-Issue #5321 eingereicht (README darin)
   konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration
   messen/daten/2026-11-08-v0.2.12/  Rohdaten des Nachtrags zu 0.2.12 und des DFlash2-Tests, auch als Strata-Issue #5615 eingereicht (README darin)
-  messen/daten/2026-11-09-v0.2.13/  Rohdaten des Nachtrags zu 0.2.13, samt Docker-Image mit und ohne gfx1100-Tabelle (README darin)
+  messen/daten/2026-11-09-v0.2.13/  Rohdaten des Nachtrags zu 0.2.13, samt Docker-Image mit und ohne gfx1100-Tabelle auch als Strata-Issue #5666 eingereicht (README darin)
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
