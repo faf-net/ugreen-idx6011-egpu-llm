@@ -1,0 +1,128 @@
+{
+ "date": "2026-11-09",
+ "model": "Flash-Next IQ3_XXS native pack (faber)",
+ "tasks": 114,
+ "auto_graded": 102,
+ "note": "own German-language task set; temperature 0, thinking on, max 8000 tokens; german-writing (12) is not auto-graded; 0.2.12 run of 8 Nov, 0.2.13 run of 9 Nov, same run config",
+ "runs": {
+  "0.2.12 MTP": {
+   "passed": 98,
+   "graded": 102,
+   "wall_s": 1429.6,
+   "output_tokens": 72321,
+   "decode_tok_s_median": 75.6,
+   "by_category": {
+    "code": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 526.5,
+     "tokens": 35477
+    },
+    "logic": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 80.8,
+     "tokens": 4589
+    },
+    "german-writing": {
+     "passed": 0,
+     "graded": 0,
+     "seconds": 131.6,
+     "tokens": 8577
+    },
+    "tool-calls": {
+     "passed": 20,
+     "graded": 20,
+     "seconds": 102.1,
+     "tokens": 1966
+    },
+    "agent-safety": {
+     "passed": 17,
+     "graded": 18,
+     "seconds": 139.1,
+     "tokens": 4987
+    },
+    "facts": {
+     "passed": 12,
+     "graded": 15,
+     "seconds": 177.1,
+     "tokens": 13869
+    },
+    "instruction": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 46.2,
+     "tokens": 2243
+    },
+    "long-context": {
+     "passed": 4,
+     "graded": 4,
+     "seconds": 225.9,
+     "tokens": 613
+    }
+   }
+  },
+  "0.2.13 MTP": {
+   "passed": 97,
+   "graded": 102,
+   "wall_s": 1381.2,
+   "output_tokens": 70716,
+   "decode_tok_s_median": 75.8,
+   "by_category": {
+    "code": {
+     "passed": 14,
+     "graded": 15,
+     "seconds": 451.2,
+     "tokens": 32619
+    },
+    "logic": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 88.7,
+     "tokens": 5260
+    },
+    "german-writing": {
+     "passed": 0,
+     "graded": 0,
+     "seconds": 125.7,
+     "tokens": 8207
+    },
+    "tool-calls": {
+     "passed": 20,
+     "graded": 20,
+     "seconds": 103.4,
+     "tokens": 2095
+    },
+    "agent-safety": {
+     "passed": 17,
+     "graded": 18,
+     "seconds": 142.1,
+     "tokens": 5103
+    },
+    "facts": {
+     "passed": 12,
+     "graded": 15,
+     "seconds": 197.5,
+     "tokens": 14634
+    },
+    "instruction": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 45.9,
+     "tokens": 2189
+    },
+    "long-context": {
+     "passed": 4,
+     "graded": 4,
+     "seconds": 226.3,
+     "tokens": 609
+    }
+   }
+  }
+ },
+ "identical_answers_0212_0213": 41,
+ "differing_result": {
+  "code-2-iban": "0.2.12 pass, 0.2.13 fail (IBAN mod-97 with letters mapped to one digit instead of two)"
+ },
+ "identical_note": "answer text and tool calls both identical, temperature 0"
+}

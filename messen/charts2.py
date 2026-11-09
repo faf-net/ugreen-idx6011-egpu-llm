@@ -19,7 +19,7 @@ from charts import GEDAEMPFT, SCHWACH, LINIE, FETT, SCHRIFT, BERNSTEIN, STAHL, P
 T = {
     "en": {
         "ver_t": "Strata releases on the same RX 7900 XTX", "ver_dec": "decode (tokens / s)", "ver_pre": "prompt reading (tokens / s)",
-        "chat": "chat", "agent": "agent", "ver_fuss": "tools/strata_bench.py --long · Flash-Next 125B IQ3_XXS · median · from 0.2.3.1: --kv-resident 32768, 9 GiB conv. cache · 0.2.8: NAS services stopped · 0.2.11/0.2.12: running",
+        "chat": "chat", "agent": "agent", "ver_fuss": "tools/strata_bench.py --long · Flash-Next 125B IQ3_XXS · median · from 0.2.3.1: --kv-resident 32768, 9 GiB conv. cache · 0.2.8: NAS services stopped · 0.2.11–0.2.13: running",
         "dock_t": "Docker image defaults vs a tuned run config", "dock_y": "prompt reading (tokens / s)",
         "img021": "image 0.2.1", "img022": "image 0.2.2", "img023": "image 0.2.3", "tuned": "tuned, 0.2.3.1",
         "dock_fuss": "strata bench run --suite standard-v1 · median of 3 · the 0.2.3 engine finds the gfx1100 hipBLASLt table by itself",
@@ -86,7 +86,8 @@ def versionen(d, ziel, sp):
          ("0.2.3.1", "2026-10-23-v0.2.3.1/strata-bench/2026-10-23-community-unknown-b023/results.json"),
          ("0.2.8", "2026-10-31-v0.2.8/strata-bench/2026-10-31-community-unknown-b028/results.json"),
          ("0.2.11", "2026-11-05-v0.2.11/strata-bench/2026-11-05-community-unknown-t-neu/results.json"),
-         ("0.2.12", "2026-11-08-v0.2.12/strata-bench/2026-11-08-community-unknown-t-neu/results.json")]
+         ("0.2.12", "2026-11-08-v0.2.12/strata-bench/2026-11-08-community-unknown-t-neu/results.json"),
+         ("0.2.13", "2026-11-09-v0.2.13/strata-bench/2026-11-09-community-unknown-t-neu/results.json")]
     werte = [strata_bench(os.path.join(d, p)) for _, p in v]
     x = list(range(len(v)))
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 4.6))
