@@ -1,0 +1,20 @@
+{
+ "stand": "2026-11-14",
+ "beschreibung": "Nachtvergleich 13./14.11.2026 auf der RX 7900 XTX, alles im VRAM. 102 automatisch bewertete Aufgaben (Werkzeug 20, Code 15, Logik 15, Fakten 15, Anweisung 15, Kontext 4, Sicherheit 18), Faktenprüfung nachgelesen. Deutsch: 12 Aufgaben, Noten 1-5, Antworten anonymisiert und blind bewertet. Urteil: 3 Lagen je 3 Runden. Tempo: bench.py, Median.",
+ "modelle": {
+  "faber":   {"engine": "Strata 0.2.12, MoE, MTP", "modell": "Qwen3.8-Flash-Next 125B IQ3_XXS",
+              "punkte": {"werkzeug": 20, "code": 14, "logik": 14, "fakten": 12, "anweisung": 15, "kontext": 4, "sicherheit": 17, "gesamt": 96},
+              "deutsch_60": 51, "urteil_9": 7.5, "schreiben_leise": 63.7, "schreiben_max": 65.5, "einlesen_8k": 1129, "einlesen_32k": 1183, "erste_antwort_32k_s": 27.0},
+  "velox":   {"engine": "Strata 0.2.12, MoE, MTP", "modell": "Qwen3.8-Flash-Next 125B IQ2_XS",
+              "punkte": {"werkzeug": 20, "code": 14, "logik": 15, "fakten": 12, "anweisung": 15, "kontext": 4, "sicherheit": 17, "gesamt": 97},
+              "deutsch_60": 46, "urteil_9": 6.5, "schreiben_leise": 73.5, "schreiben_max": 74.3, "einlesen_8k": 1227, "einlesen_32k": 1321, "erste_antwort_32k_s": 24.3},
+  "qwen27":  {"engine": "llama.cpp Vulkan, dicht", "modell": "Qwen3.8-27B UD-Q4_K_XL",
+              "punkte": {"werkzeug": 19, "code": 10, "logik": 15, "fakten": 12, "anweisung": 15, "kontext": 4, "sicherheit": 17, "gesamt": 92},
+              "deutsch_60": 52, "urteil_9": 7, "schreiben_leise": 36.2, "schreiben_max": 36.4, "einlesen_8k": 907, "einlesen_32k": 796, "erste_antwort_32k_s": 40.3,
+              "anmerkung": "Code 10/15: fünfmal Denkbudget 8.000 Token erschöpft"},
+  "gemma31": {"engine": "llama.cpp Vulkan, dicht", "modell": "gemma-4-31B-it QAT UD-Q4_K_XL",
+              "punkte": {"werkzeug": 20, "code": 15, "logik": 15, "fakten": 12, "anweisung": 14, "kontext": 4, "sicherheit": 17, "gesamt": 97},
+              "deutsch_60": 38, "urteil_9": 4, "schreiben_leise": 34.8, "schreiben_max": 35.0, "einlesen_8k": 756, "einlesen_32k": 602, "erste_antwort_32k_s": 52.9,
+              "anmerkung": "Werkzeug fehlt: liest in allen drei Runden die eigene Konfiguration"}
+ }
+}
