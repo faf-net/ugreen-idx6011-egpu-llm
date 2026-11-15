@@ -87,3 +87,10 @@ section{border-top:0;margin-top:24px}
 section{scroll-margin-top:72px}
 @media (max-width:760px){.kopf{gap:6px 16px;padding-top:12px;padding-bottom:10px}.kopf nav{flex:1 1 100%;order:3;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none}.kopf nav::-webkit-scrollbar{display:none}.sprache{margin-left:auto}section{scroll-margin-top:96px}}
 @media print{.kopf{position:static}}
+/* Lesebreite: Fließtext etwas größer und breiter, damit rechts weniger Fläche leer bleibt, die Zeile aber lesbar kurz bleibt */
+body{font-size:17px}
+p{max-width:78ch}
+.vorspann{font-size:20px;max-width:70ch}
+.band{max-width:none}
+footer p{max-width:none}
+@media (max-width:640px){body{font-size:16px}.vorspann{font-size:17px}}
