@@ -17,13 +17,13 @@ function Anlage(canvas, s) {
   for (var j = 0; j < 4; j++) { S.beginPath(); S.moveTo(0, 188 + j * j * 4 + j * 5); S.lineTo(W, 188 + j * j * 4 + j * 5); S.stroke(); }
 
   // ── NAS (Frontansicht) ──
-  var NX = 36, NY = 44, NW = 252, NH = 126;
+  var NX = 60, NY = 44, NW = 218, NH = 126;                                                // schmaler: die Einschübe füllen die Blende
   kasten(NX + 14, NY + NH, NW - 28, 10, '#232120', '#151413', true);                       // Sockel
   kasten(NX + 22, NY + NH + 8, 26, 4, '#151413', '#0d0c0b'); kasten(NX + NW - 48, NY + NH + 8, 26, 4, '#151413', '#0d0c0b');
   S.fillStyle = verlauf(NX, NY, NX, NY + NH, [[0, '#a49c90'], [.06, '#6f6961'], [.62, '#4f4a46'], [1, '#3a3634']]); S.fillRect(NX, NY, NW, NH);  // Gehäuse
   kasten(NX, NY, 3, NH, '#a49c90', '#6f6961', true); kasten(NX + NW - 3, NY, 3, NH, '#a49c90', '#4f4a46', true);                              // helle Kanten
   kasten(NX + 10, NY + 9, NW - 20, 82, '#151413', '#0d0c0b', true);                         // schwarze Blende
-  var TB = 20, TA = 25, TX = NX + NW - 42 - (5 * TA + TB);   // Einschübe ein Viertel schmaler, rechts an die Anzeige gerückt wie am Gerät                                                      // Einschübe
+  var TB = 22, TA = 27, TX = NX + NW - 42 - (5 * TA + TB);   // Einschübe ein Viertel schmaler, rechts an die Anzeige gerückt wie am Gerät                                                      // Einschübe
   kasten(TX - 6, NY + 13, 6 * TA + 6, 74, '#0d0c0b', '#151413', true);
   for (var e = 0; e < 6; e++) {
     var x = TX + e * TA;
@@ -44,9 +44,9 @@ function Anlage(canvas, s) {
   // untere Leiste: Taster, Leuchtdioden, Kartenleser, zweimal USB-C, USB blau
   kasten(NX + 22, NY + 104, 10, 6, '#a49c90', '#6f6961'); kasten(NX + 24, NY + 106, 6, 2, '#3a3634', '#3a3634');
   for (var d = 0; d < 8; d++) { S.fillStyle = '#f5f1eb'; S.fillRect(NX + 42 + d * 9, NY + 106, 2, 2); leuchte(NX + 43 + d * 9, NY + 107, 6, d < 2 ? '#7d97ab' : '#93a373', .8); }
-  kasten(NX + 150, NY + 106, 20, 2, '#151413', '#151413');
-  kasten(NX + 180, NY + 105, 9, 4, '#1a1918', '#1a1918'); kasten(NX + 196, NY + 105, 9, 4, '#1a1918', '#1a1918');
-  kasten(NX + 214, NY + 104, 10, 6, '#a9bfcf', '#5a7385'); leuchte(NX + 219, NY + 107, 9, '#7d97ab', .6);
+  kasten(NX + 124, NY + 106, 18, 2, '#151413', '#151413');
+  kasten(NX + 152, NY + 105, 9, 4, '#1a1918', '#1a1918'); kasten(NX + 167, NY + 105, 9, 4, '#1a1918', '#1a1918');
+  kasten(NX + 186, NY + 104, 10, 6, '#a9bfcf', '#5a7385'); leuchte(NX + 191, NY + 107, 9, '#7d97ab', .6);
 
   // ── Dock: offener Rahmen, Netzteil, Karte mit drei Lüftern ──
   kasten(408, 150, 232, 26, '#4f4a46', '#2b2827');
