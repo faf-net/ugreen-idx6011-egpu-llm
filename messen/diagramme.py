@@ -848,15 +848,17 @@ def aufbau(d, sp):
     pfeil("M 432,380 H 510")                                                     # Hermes -> llama-swap
     pfeil("M 672,356 H 696 Q 704,356 704,348 V 184 Q 704,176 712,176 H 742", fokus=True)  # llama-swap -> Sprachmodell
     pfeil("M 672,380 H 742")                                                     # llama-swap -> ComfyUI
+    pfeil("M 200,464 H 584 Q 592,464 592,456 V 398")                             # OpenCode 2 -> llama-swap, unter dem Agenten hindurch
     knoten(72, 132, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
     knoten(72, 340, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
+    knoten(72, 436, "Terminal", "OpenCode 2", T("am eigenen Rechner", "on your own computer"), w=128)
     knoten(272, 132, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
     knoten(512, 132, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches the web through a VPN"), "extern")
     knoten(272, 340, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
     knoten(512, 340, T("Weiche", "Switch"), "llama-swap", T("ein Modell zur Zeit", "one model at a time"))
     knoten(744, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 67 Token/s · 256K", "Strata · 67 tokens/s · 256K"), "fokus", w=152)
     knoten(744, 340, T("Bilder", "Pictures"), "ComfyUI", T("8–66 s je Bild", "8–66 s per picture"), w=152)
-    y = 448
+    y = 536
     s.line(40, y, W - 40, y, 'stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"')
     s.roh(f'<path d="M 72,{y + 22} H 104" fill="none" stroke="{MUTED}" stroke-width="1.2" marker-end="url(#{pf})"/>')
     s.text(116, y + 26, T("bleibt im Heimnetz", "stays in the home network"), 10, INK, "sans")
@@ -865,8 +867,8 @@ def aufbau(d, sp):
     s.text(R, y + 27, T("Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.", "Only search queries and messenger messages leave the house."), 15, INK, "serif", "end", kursiv=True)
     s.text(L, y + 48, T("Chat, Suche und Agent laufen als Container, die Modelle auf der Karte im Dock · Zugang von unterwegs über einen eigenen Zugang mit Anmeldung",
                         "Chat, search and agent run as containers, the models on the card in the dock · access from outside through an own gateway with login"), 8.5, MUTED, "mono")
-    return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, das auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI lädt. Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.",
-                              "Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, which loads either the language model or ComfyUI on the RX 7900 XTX. Only search queries and messenger messages leave the house."), s, 512
+    return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, ebenso OpenCode 2 aus dem Terminal des eigenen Rechners. llama-swap lädt auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI. Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.",
+                              "Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, as does OpenCode 2 from the terminal of your own computer. llama-swap loads either the language model or ComfyUI on the RX 7900 XTX. Only search queries and messenger messages leave the house."), s, 600
 
 
 def parallel(d, sp):
