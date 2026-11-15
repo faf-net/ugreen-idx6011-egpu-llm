@@ -317,8 +317,8 @@ def seite(sp):
 
     kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
     A(bild(D.versionen, sp))
-    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Nichts wurde langsamer.",
-        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Nothing got slower.")
+    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Bis 0.2.13 wurde nichts langsamer. <b>0.2.14</b>, getestet am 15.11.2026 und noch nicht in Betrieb, liest Prompts von 16K und 32K rund 15 % schneller. Im Agenten-Test dieses Laufs lag das Schreibtempo niedriger; im direkten Vergleich in derselben Sitzung schreiben 0.2.14 und 0.2.12 gleich schnell (59 gegen 61 Token je Sekunde).",
+        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Up to 0.2.13 nothing got slower. <b>0.2.14</b>, tested on 15 Nov 2026 and not in production yet, reads prompts of 16K and 32K about 15 % faster. In this run's agent test decode was lower; in the direct comparison within the same session 0.2.14 and 0.2.12 write equally fast (59 against 61 tokens per second).")
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 

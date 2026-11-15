@@ -6,6 +6,27 @@ In configs, scripts and file names the two models go by short names: `faber` is 
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
 
+## Follow-up 15 Nov 2026: Strata 0.2.14 reads long prompts faster, tested and not in production yet
+
+Engine 0.1.60 `hip-rx7900` with control 0.1.60 against 0.2.12, identical run config (`konfig/strata-0.2.12/`), NAS services running, only my agent paused. The release moves prompt reading to Strata's own kernels on AMD and NVIDIA, and its notes carry no measurement for the RX 7900 under Linux. Here is one.
+
+| median tok/s | 0.2.14 | 0.2.12 | 0.2.13 |
+|---|---:|---:|---:|
+| 3 interleaved pairs, same session: decode / 63-token prompt | 59.3 / 117.9 | 60.5 / 107.5 | |
+| `standard-v1`, package: short decode / 4K / 16K prompt | 67.8 / 800 / 1,411 | 63.6 / 788 / 1,202 * | 67.7 / 799 / 1,203 * |
+| `strata_bench.py --long`: 4K / 16K / 32K prompt | 789 / 1,405 / 1,390 | 781 / 1,200 / 1,217 * | 782 / 1,203 / 1,217 * |
+| needles, seconds: 128K / 250K | 66-96 / 206 | 120-158 / 294 * | 99-112 / 238 * |
+
+\* earlier sessions (8 and 9 Nov). Only the pairs ran both versions back to back.
+
+**Decode is equal, prompt reading is faster from 16K up.** In the same-session pairs decode sits inside the noise and the short prompt is 10 % faster. Against the earlier runs, 4K is unchanged, 16K is 17 % faster and 32K 14 % faster, the first token of a 16K prompt comes after 11.6 s instead of 13.7 s, and the 250K needle is found in 206 s instead of 238 s. Needles 7/7, 8 of 8 fresh engines healthy (637-758 tok/s), my small task set 28 of 29.
+
+One number goes the other way: in the agent test of `strata_bench.py` the decode median over all 18 requests is 63.7 tok/s, against 70.8 on 0.2.13 and 71.8 on 0.2.12 (the tool's own summary without the first turns: 70.4 against 73.7 and 73.2). That test generates only 756 tokens, single requests range from 41 to 101 tok/s on every version, and the drafter's proposals were accepted less often this time (54 % against 56 % and 59 %). The pairs, which ran both versions back to back with 900 tokens each, show no difference. Measured, cause open.
+
+Two things I looked for. The release notes list driver pauses and one card reset for a Radeon R9700 under Linux; in 192 kB of engine log from this session there is no such line, and the kernel log is clean. And `standard-v1` is complete but passes 11 of 12 sanity checks instead of 12: in T2 the model returned no structured tool call and wrote that it had already called the tool. One run does not tell me whether that is the sampling at temperature 1.0 or the new version.
+
+No Docker image run this time, the `0.2.14-rocm-gfx110x` image was not published when I measured. **This NAS still serves with 0.2.12**; my large task set on 0.2.14 comes first. Raw data: `messen/daten/2026-11-15-v0.2.14/`.
+
 ## Follow-up 9 Nov 2026: Strata 0.2.13, and without the gfx1100 table the Docker image reads 16K prompts 35 % slower
 
 Engine 0.1.59 `hip-rx7900` with control 0.1.59 against 0.2.12, identical run config (`konfig/strata-0.2.12/`), NAS services running. **0.2.13 is equal to 0.2.12 here**: same-session pairs 60.0 against 60.7 tok/s decode, `standard-v1` on the package complete with 12/12 (short decode / 4K / 16K: 67.7 / 799 / 1,203), `strata_bench.py --long` 4K / 16K / 32K at 782 / 1,203 / 1,217, needles 7/7 to 250K (238 s at 250K). My task set: 97 of 102 against 98 for 0.2.12, one code task flipped, 1,381 s against 1,430 s. This NAS stays on 0.2.12 for now.

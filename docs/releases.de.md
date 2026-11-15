@@ -6,6 +6,27 @@ In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen:
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
+## Nachtrag 15.11.2026: Strata 0.2.14 liest lange Prompts schneller, getestet und noch nicht in Betrieb
+
+Engine 0.1.60 `hip-rx7900` mit Control 0.1.60 gegen 0.2.12, gleiche Laufkonfiguration (`konfig/strata-0.2.12/`), NAS-Dienste an, nur mein Agent angehalten. Die Version verlegt das Prompt-Einlesen auf AMD und NVIDIA auf Stratas eigene Kernel, und die Release-Notiz enthält keine Messung für die RX 7900 unter Linux. Hier ist eine.
+
+| Median Token/s | 0.2.14 | 0.2.12 | 0.2.13 |
+|---|---:|---:|---:|
+| 3 verschränkte Paare, gleiche Sitzung: Schreiben / Prompt mit 63 Token | 59,3 / 117,9 | 60,5 / 107,5 | |
+| `standard-v1`, Paket: kurz Schreiben / 4K / 16K Prompt | 67,8 / 800 / 1.411 | 63,6 / 788 / 1.202 * | 67,7 / 799 / 1.203 * |
+| `strata_bench.py --long`: 4K / 16K / 32K Prompt | 789 / 1.405 / 1.390 | 781 / 1.200 / 1.217 * | 782 / 1.203 / 1.217 * |
+| Nadeln, Sekunden: 128K / 250K | 66–96 / 206 | 120–158 / 294 * | 99–112 / 238 * |
+
+\* frühere Sitzungen (08. und 09.11.). Nur die Paare liefen mit beiden Versionen direkt nacheinander.
+
+**Schreiben ist gleich, das Prompt-Einlesen ab 16K schneller.** In den Paaren derselben Sitzung liegt das Schreiben im Rauschen, der kurze Prompt ist 10 % schneller. Gegen die früheren Läufe ist 4K unverändert, 16K 17 % schneller und 32K 14 % schneller; das erste Token eines 16K-Prompts kommt nach 11,6 s statt 13,7 s, und die Nadel bei 250K ist nach 206 s statt 238 s gefunden. Nadeln 7/7, 8 von 8 frischen Engines gesund (637–758 Token/s), mein kleiner Aufgabensatz 28 von 29.
+
+Eine Zahl geht in die andere Richtung: Im Agenten-Test von `strata_bench.py` liegt der Median des Schreibtempos über alle 18 Anfragen bei 63,7 Token/s, gegen 70,8 bei 0.2.13 und 71,8 bei 0.2.12 (die eigene Zusammenfassung des Werkzeugs ohne die ersten Züge: 70,4 gegen 73,7 und 73,2). Dieser Test erzeugt nur 756 Token, einzelne Anfragen streuen bei jeder Version zwischen 41 und 101 Token/s, und die Vorschläge des Drafters wurden diesmal seltener angenommen (54 % gegen 56 % und 59 %). Die Paare, die beide Versionen direkt nacheinander mit je 900 Token fuhren, zeigen keinen Unterschied. Gemessen, Ursache offen.
+
+Zwei Dinge habe ich gezielt gesucht. Die Release-Notiz nennt für eine Radeon R9700 unter Linux Treiberpausen und einen Karten-Reset; in 192 kB Engine-Log dieser Sitzung steht keine solche Zeile, und das Kernel-Log ist sauber. Und `standard-v1` ist vollständig, besteht aber 11 von 12 Plausibilitätsprüfungen statt 12: Bei T2 kam kein strukturierter Tool-Call, das Modell schrieb, es habe das Werkzeug schon aufgerufen. Ein Lauf sagt mir nicht, ob das am Sampling bei Temperatur 1,0 liegt oder an der neuen Version.
+
+Diesmal ohne Lauf im Docker-Image, `0.2.14-rocm-gfx110x` war zum Messzeitpunkt nicht veröffentlicht. **Dieses NAS läuft weiter mit 0.2.12**; zuerst kommt mein großer Aufgabensatz auf 0.2.14. Rohdaten: `messen/daten/2026-11-15-v0.2.14/`.
+
 ## Nachtrag 09.11.2026: Strata 0.2.13, und ohne gfx1100-Tabelle liest das Docker-Image 16K-Prompts 35 % langsamer
 
 Engine 0.1.59 `hip-rx7900` mit Control 0.1.59 gegen 0.2.12, gleiche Laufkonfiguration (`konfig/strata-0.2.12/`), NAS-Dienste an. **0.2.13 ist hier gleich gut wie 0.2.12**: Paare in derselben Sitzung 60,0 gegen 60,7 Token/s beim Schreiben, `standard-v1` im Paket vollständig mit 12/12 (kurz schreiben / 4K / 16K: 67,7 / 799 / 1.203), `strata_bench.py --long` 4K / 16K / 32K mit 782 / 1.203 / 1.217, Nadeln 7/7 bis 250K (238 s bei 250K). Mein Aufgabensatz: 97 von 102 gegen 98 bei 0.2.12, eine Code-Aufgabe ist gekippt, 1.381 s gegen 1.430 s. Dieses NAS bleibt vorerst bei 0.2.12.

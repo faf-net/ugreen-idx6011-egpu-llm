@@ -246,6 +246,7 @@ Every release since 0.2.0-beta was measured here against the one before it, with
 | 0.2.11 | 5 Nov | **in production**; equal to 0.2.10 | [#5321](https://github.com/Niko1221/Strata/issues/5321) |
 | 0.2.12 | 8 Nov | **in production, current**; equal to 0.2.11; the tuned DFlash2 drafter is slower end to end and stays off | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 9 Nov | equal with the tuned config, not adopted; the Linux Docker image no longer uses the gfx1100 table and reads 16K prompts 35 % slower | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
+| 0.2.14 | 15 Nov | tested, not in production yet; decode equal, prompt reading 17 % faster at 16K and 14 % at 32K; no driver pauses on this card; `standard-v1` sanity 11 of 12 | – |
 
 ## Run
 
@@ -450,6 +451,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/daten/2026-11-05-v0.2.11/  raw data of the 0.2.11 follow-up, also sent as Strata issue #5321 (README inside)
   messen/daten/2026-11-08-v0.2.12/  raw data of the 0.2.12 follow-up and the DFlash2 test, also sent as Strata issue #5615 (README inside)
   messen/daten/2026-11-09-v0.2.13/  raw data of the 0.2.13 follow-up, incl. the Docker image with and without the gfx1100 table also sent as Strata issue #5666 (README inside)
+  messen/daten/2026-11-15-v0.2.14/  raw data of the 0.2.14 test: pairs against 0.2.12, standard-v1, strata_bench, needles, fresh engines (README inside)
   messen/daten/2026-11-14-erfinden/  counts: probe per model and area, night comparison, judgement with 10 rounds
   messen/daten/2026-11-15-betrieb/  power, cold start, NAS at work, dense 70B, UGREEN's built-in model
 ```

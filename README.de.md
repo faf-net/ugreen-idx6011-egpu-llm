@@ -247,6 +247,7 @@ Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit iden
 | 0.2.11 | 05.11. | **in Betrieb**; gleich wie 0.2.10 | [#5321](https://github.com/Niko1221/Strata/issues/5321) |
 | 0.2.12 | 08.11. | **in Betrieb, aktuell**; gleich wie 0.2.11; der getunte DFlash2-Drafter ist am Ende langsamer und bleibt aus | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 09.11. | mit abgestimmter Konfiguration gleich, nicht übernommen; das Linux-Docker-Image nutzt die gfx1100-Tabelle nicht mehr und liest 16K-Prompts 35 % langsamer | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
+| 0.2.14 | 15.11. | getestet, noch nicht in Betrieb; Schreiben gleich, Prompt-Einlesen bei 16K 17 % und bei 32K 14 % schneller; keine Treiberpausen auf dieser Karte; `standard-v1` Plausibilität 11 von 12 | – |
 
 ## Starten
 
@@ -453,6 +454,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/daten/2026-11-05-v0.2.11/  Rohdaten des Nachtrags zu 0.2.11, auch als Strata-Issue #5321 eingereicht (README darin)
   messen/daten/2026-11-08-v0.2.12/  Rohdaten des Nachtrags zu 0.2.12 und des DFlash2-Tests, auch als Strata-Issue #5615 eingereicht (README darin)
   messen/daten/2026-11-09-v0.2.13/  Rohdaten des Nachtrags zu 0.2.13, samt Docker-Image mit und ohne gfx1100-Tabelle auch als Strata-Issue #5666 eingereicht (README darin)
+  messen/daten/2026-11-15-v0.2.14/  Rohdaten des Tests von 0.2.14: Paare gegen 0.2.12, standard-v1, strata_bench, Nadeln, frische Engines (README darin)
   messen/daten/2026-11-14-erfinden/  Zählwerte: Probe je Modell und Bereich, Nachtvergleich, Urteil mit 10 Runden
   messen/daten/2026-11-15-betrieb/  Strom, Kaltstart, NAS-Betrieb, dichtes 70B, UGREENs eingebautes Modell
 ```
