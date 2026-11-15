@@ -205,8 +205,8 @@ def seite(sp):
          T("<b>8–66 s</b> je Bild · Wechsel vom Sprachmodell 21–27 s", "<b>8–66 s</b> per picture · swapping from the language model 21–27 s")),
     ]
     A('<div class="anwendungen">' + "".join(f'<div class="anwendung"><span class="dach">{e(a)}</span><h3>{e(b)}</h3><p>{c}</p><div class="mess">{m}</div></div>' for a, b, c, m in karten) + "</div>")
-    P(T("Zwei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen (bei Signal Ende-zu-Ende-verschlüsselt). Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten. Von unterwegs ist die Anlage über einen eigenen Zugang mit Anmeldung erreichbar.",
-        "Two things leave the house: the search queries of the web search, and the messages that travel to the agent through the messenger service (end-to-end encrypted with Signal). Everything else, including every uploaded document, stays on your own machines. From outside, the setup is reachable through an own gateway with login."))
+    P(T("Zwei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen (bei Signal Ende-zu-Ende-verschlüsselt). Die Suchanfragen gehen über ein VPN hinaus: Die Suchmaschinen sehen die Adresse des VPN-Anbieters, nicht den eigenen Anschluss. Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten. Von unterwegs ist die Anlage über einen eigenen Zugang mit Anmeldung erreichbar.",
+        "Two things leave the house: the search queries of the web search, and the messages that travel to the agent through the messenger service (end-to-end encrypted with Signal). The search queries go out through a VPN: the search engines see the VPN provider's address, not your own line. Everything else, including every uploaded document, stays on your own machines. From outside, the setup is reachable through an own gateway with login."))
     zu()
 
     kapitel(2, "nas", T("Das NAS bleibt ein NAS", "The NAS stays a NAS"),
@@ -321,8 +321,8 @@ def seite(sp):
         (T("Chat dazu", "Add the chat"), T("Open WebUI im Container, mit einem Konto je Person. Es spricht die Adresse von llama-swap an, mehr ist nicht einzustellen.",
                                            "Open WebUI in a container, with one account per person. It talks to llama-swap's address, nothing else needs setting."),
          stack, T("Compose-Datei", "Compose file")),
-        (T("Websuche dazu", "Add web search"), T("SearXNG im selben Stapel. Der Chat sucht darüber im Netz, ohne dass ein Suchkonto oder ein Schlüssel nötig ist.",
-                                                 "SearXNG in the same stack. The chat searches the web through it, with no search account and no key."),
+        (T("Websuche dazu", "Add web search"), T("SearXNG im selben Stapel. Der Chat sucht darüber im Netz, ohne dass ein Suchkonto oder ein Schlüssel nötig ist. Bei mir fragt SearXNG die Suchmaschinen über ein VPN ab.",
+                                                 "SearXNG in the same stack. The chat searches the web through it, with no search account and no key. In my setup SearXNG queries the search engines through a VPN."),
          stack, T("Compose-Datei", "Compose file")),
         (T("Agent dazu", "Add the agent"), T("Hermes Agent mit dem lokalen Modell: Kontext auf 256K stellen, ein Token-Budget für das Nachdenken setzen und die vier Regeln gegen das Erfinden in den Systemprompt nehmen.",
                                              "Hermes Agent with the local model: set the context to 256K, give the reasoning a token budget and put the four rules against making things up into the system prompt."),
