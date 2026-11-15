@@ -853,7 +853,7 @@ def aufbau(d, sp):
     knoten(72, 340, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
     knoten(72, 436, "Terminal", "OpenCode 2", T("am eigenen Rechner", "on your own computer"), w=128)
     knoten(272, 132, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
-    knoten(512, 132, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches the web through a VPN"), "extern")
+    knoten(512, 132, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches through a VPN"), "extern")
     knoten(272, 340, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
     knoten(512, 340, T("Weiche", "Switch"), "llama-swap", T("ein Modell zur Zeit", "one model at a time"))
     knoten(744, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 67 Token/s · 256K", "Strata · 67 tokens/s · 256K"), "fokus", w=152)
