@@ -1,0 +1,34 @@
+{
+ "gguf": "Llama-3.3-70B-Instruct-Q4_K_M.gguf",
+ "faeden": 6,
+ "kontext": 8192,
+ "beginn": "2026-11-15T13:23:36",
+ "stufen": [
+  {
+   "ngl": 0,
+   "laden_s": 12.1,
+   "vram_mib": 358,
+   "schreiben_tps": [
+    1.45,
+    1.44
+   ],
+   "schreiben_tps_median": 1.44,
+   "messpunkte": 89,
+   "usv_w": {
+    "mittel": 219.0,
+    "min": 216.0,
+    "max": 242.0
+   },
+   "karte_w": {
+    "mittel": 13.2,
+    "min": 5.0,
+    "max": 44.0
+   },
+   "einlesen": {
+    "prompt_token": 2610,
+    "tps": 45.4
+   },
+   "wh_je_1000_token_gesamt": 42.245
+  }
+ ]
+}

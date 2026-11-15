@@ -1,0 +1,43 @@
+{
+ "gguf": "Qwen3.8-27B-UD-Q4_K_XL.gguf",
+ "faeden": 6,
+ "kontext": 8192,
+ "beginn": "2026-11-15T16:40:24",
+ "stufen": [
+  {
+   "ngl": 99,
+   "laden_s": 9.1,
+   "vram_mib": 16665,
+   "schreiben_tps": [
+    36.79,
+    36.78,
+    36.79,
+    36.71,
+    36.67,
+    36.78,
+    36.63,
+    36.79,
+    36.77,
+    36.83,
+    36.81
+   ],
+   "schreiben_tps_median": 36.78,
+   "messpunkte": 26,
+   "usv_w": {
+    "mittel": 386.0,
+    "min": 382.0,
+    "max": 390.0
+   },
+   "karte_w": {
+    "mittel": 257.4,
+    "min": 215.0,
+    "max": 270.0
+   },
+   "einlesen": {
+    "prompt_token": 3663,
+    "tps": 845.4
+   },
+   "wh_je_1000_token_gesamt": 2.915
+  }
+ ]
+}

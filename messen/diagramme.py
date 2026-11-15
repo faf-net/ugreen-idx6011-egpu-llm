@@ -506,28 +506,33 @@ def dicht_moe(d, sp):
     kopf(s, T("RX 7900 XTX · sechs Modelle · 13. bis 15.11.2026", "RX 7900 XTX · six models · 13 to 15 Nov 2026"), titel)
     feld(s, L, 104, T("Deutsch (verdeckt benotet, von 60) gegen Schreibtempo", "German (graded blind, of 60) against decode speed"),
          T("weiter rechts ist schneller, weiter oben ist besser · die Deutschachse beginnt bei 30", "further right is faster, further up is better · the German axis starts at 30"))
-    p = Hoch(s, L, R, 144, 384, 60, 30)
+    p = Hoch(s, L, R, 144, 504, 60, 30)
     X = lambda v: L + (v - 20) / 100 * (R - L)
-    s.rect(X(50), p.Y(60), R - X(50), p.Y(48) - p.Y(60), TON["salbei"][0], deck=0.45)
-    s.text(R - 10, p.Y(60) + 16, T("SCHNELL UND GUTES DEUTSCH", "FAST AND GOOD GERMAN"), 8, TON["salbei"][2], "mono", "end", 600, sperr="0.14em")
     p.achse(5, sp)
+    s.rect(X(50), p.Y(60), R - X(50), p.Y(48) - p.Y(60), TON["salbei"][0], deck=0.16, kante=False)
+    strich = f'stroke="{TON["salbei"][1]}" stroke-width="1.2" stroke-dasharray="5 4"'
+    s.line(X(50), p.Y(60), X(50), p.Y(48), strich)
+    s.line(X(50), p.Y(48), R, p.Y(48), strich)
+    s.text(R - 10, p.Y(48) - 10, T("SCHNELL UND GUTES DEUTSCH", "FAST AND GOOD GERMAN"), 8, TON["salbei"][2], "mono", "end", 600, sperr="0.14em")
+    s.text(X(50) + 6, p.Y(30) - 8, T("ab 50 Token/s", "from 50 tokens/s"), 8.5, MUTED, "mono")
+    s.line(X(50), p.Y(48), X(50), p.Y(30), f'stroke="{TON["salbei"][1]}" stroke-width="1" stroke-dasharray="2 5" stroke-opacity="0.6"')
     for v in range(40, 121, 20):
-        s.line(X(v), 144, X(v), 384)
-        s.text(X(v), 400, str(v), 9, MUTED, "mono", "middle")
-    s.text(X(20), 400, "20", 9, MUTED, "mono", "middle")
-    s.text((L + R) / 2, 420, T("Schreiben, lange Antwort (Token/s)", "decode, long answer (tokens/s)").upper(), 8, MUTED, "mono", "middle", sperr="0.14em")
+        s.line(X(v), 144, X(v), 504)
+        s.text(X(v), 520, str(v), 9, MUTED, "mono", "middle")
+    s.text(X(20), 520, "20", 9, MUTED, "mono", "middle")
+    s.text((L + R) / 2, 542, T("Schreiben, lange Antwort (Token/s)", "decode, long answer (tokens/s)").upper(), 8, MUTED, "mono", "middle", sperr="0.14em")
     for m, w in daten.items():
         moe = m in ("faber", "velox", "liber")
         x, y = X(w["schreiben_leise"]), p.Y(w["deutsch_60"])
         s.punkt(x, y, ACC if moe else STAHL, not moe, r=7 if m == "liber" else 6)
         links = m == "qwen35"
         tx, anker = (x - 14, "end") if links else (x + 14, None)
-        ty = y - 16 if m == "liber" else y - 10 if m == "qwen27" else y + 4
+        ty = y - 20 if m == "liber" else y - 10 if m == "qwen27" else y + 4
         s.text(tx, ty, modellname(m, sp) + (" *" if m == "qwen35" else ""), 11, ACC if moe else INK, "sans", anker, 600)
         s.text(tx, ty + 13, f"{z(w['schreiben_leise'], sp)} tok/s · {w['deutsch_60']}/60 · {w['punkte']['gesamt']}/102", 9, MUTED, "mono", anker)
-    h = fuss(s, 444, (("punkt", ACC, T("Flash-Next 125B, auf VRAM und RAM verteilt (Strata)", "Flash-Next 125B, split between VRAM and RAM (Strata)")),
+    h = fuss(s, 566, (("punkt", ACC, T("Flash-Next 125B, auf VRAM und RAM verteilt (Strata)", "Flash-Next 125B, split between VRAM and RAM (Strata)")),
                       ("punkt-hohl", STAHL, T("kleinere Modelle, ganz im VRAM (llama.cpp)", "smaller models, fully in VRAM (llama.cpp)")),
-                      ("ton", "salbei", T("ab 50 Token/s und ab 48 von 60", "from 50 tokens/s and from 48 of 60"))),
+                      ("ton", "salbei", T("Zielbereich: ab 50 Token/s und ab 48 von 60", "target area: from 50 tokens/s and from 48 of 60"))),
              T("Deutsch: 12 Aufgaben, Antworten anonymisiert und verdeckt benotet · dritte Zahl: bestandene von 102 automatisch bewerteten Aufgaben · * UGREENs Werksmodell: eigene Benotungsrunde am 15.11., in der Flash-Next IQ3_XXS 47 statt 51 Punkte erhielt; sein Wert liegt auf der Skala der übrigen also eher etwas höher · Daten: messen/daten/2026-11-14-erfinden/nacht.json, 2026-11-15-betrieb/qualitaet.json",
                "German: 12 tasks, answers anonymised and graded blind · third number: passed out of 102 auto-graded tasks · * UGREEN's stock model: separate grading round on 15 Nov in which Flash-Next IQ3_XXS got 47 instead of 51 points, so on the others' scale its value is probably a little higher · data: messen/daten/2026-11-14-erfinden/nacht.json, 2026-11-15-betrieb/qualitaet.json"))
     return "dicht-moe", titel, T("Sechs Modelle auf einer Karte nach Schreibtempo und verdeckt benotetem Deutsch: die drei 125B-Modelle schreiben mit 62 bis 74 Token je Sekunde bei 46 bis 54 von 60 Punkten, zwei dichte Modelle mit 35 und 36 bei 38 und 52, UGREENs Qwen 3.5 mit 114 bei 37.",
@@ -719,15 +724,8 @@ def dflash2(d, sp):
 
 
 def ohne_switch(d, eintraege):
-    """Zieht von den USV-Werten ab, was Switch und PoE-Geräte an derselben USV ziehen (switch.json), und rechnet die Wh neu."""
-    ab = json.load(open(os.path.join(d, "2026-11-15-betrieb", "switch.json"), encoding="utf-8"))["abzug_w"]
-    for e in eintraege:
-        if isinstance(e.get("usv_w"), dict):
-            e["usv_w"] = dict(e["usv_w"], mittel=round(e["usv_w"]["mittel"] - ab, 1))
-            tps = e.get("tps") or e.get("schreiben_tps_median")
-            if tps:
-                e["wh_je_1000_token_gesamt"] = round(e["usv_w"]["mittel"] / tps / 3.6, 3)
-    return ab
+    """Früher: Abzug für den Netzwerk-Switch an derselben USV. Seit der Nachmessung am 15.11.2026 hängen NAS und Dock allein an der USV; nichts mehr abzuziehen."""
+    return 0
 
 
 def betrieb(d, sp):
@@ -743,7 +741,7 @@ def betrieb(d, sp):
     whs = z(ph["schreiben"]["wh_je_1000_token_gesamt"], sp)
     titel = f"{whs} Wh per 1,000 written tokens, and a dense 70B is {faktor} times slower" if en else f"{whs} Wh je 1.000 geschriebene Token, und ein dichtes 70B ist {faktor}-mal langsamer"
     kopf(s, "UGREEN iDX6011 Pro + RX 7900 XTX · measured at the UPS · 15 Nov 2026" if en else "UGREEN iDX6011 Pro + RX 7900 XTX · an der USV gemessen · 15.11.2026", titel)
-    feld(s, L, 104, "A · Power · watts" if en else "A · Leistung · Watt", "Flash-Next 125B (MoE) · NAS and dock, without the network switch" if en else "Flash-Next 125B (MoE) · NAS und Dock, ohne den Netzwerk-Switch")
+    feld(s, L, 104, "A · Power · watts" if en else "A · Leistung · Watt", "Flash-Next 125B (MoE) · NAS and dock together" if en else "Flash-Next 125B (MoE) · NAS und Dock zusammen")
     p = Hoch(s, L, 456, 144, 384, 600)
     p.achse(100, sp)
     for g, (schl, name, sub) in enumerate((("leer", "idle" if en else "Leerlauf", "no model" if en else "kein Modell"), ("geladen", "loaded" if en else "geladen", "idle" if en else "ruhend"),
@@ -770,8 +768,8 @@ def betrieb(d, sp):
             s.text(gm, 433, f"{z(wh, sp, 1)} Wh / 1.000 Token" if not en else f"{z(wh, sp, 1)} Wh / 1,000 tokens", 8.5, ACC if fokus else MUTED, "mono", "middle", 600 if fokus else None)
     s.text(R, 172, "Dense weights must all be read for every token." if en else "Dichte Gewichte werden für jedes Token alle gelesen.", 15, INK, "serif", "end", kursiv=True)
     h = fuss(s, 458, (("balken", STAHL, "NAS and dock at the wall" if en else "NAS und Dock an der Steckdose"), ("balken", ACC, "card alone (sysfs)" if en else "Karte allein (sysfs)")),
-             f"UPS values via NUT, the first 45 s of each phase discarded · minus {z(ab, sp, 0)} W for the network switch and its PoE devices on the same UPS (calculated, ±10 W) · dense 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K context · messen/betrieb.py, messen/dicht70.py · data: messen/daten/2026-11-15-betrieb/" if en else
-             f"USV-Werte über NUT, die ersten 45 s jeder Phase verworfen · abzüglich {z(ab, sp, 0)} W für den Netzwerk-Switch und seine PoE-Geräte an derselben USV (gerechnet, ±10 W) · dichtes 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K Kontext · messen/betrieb.py, messen/dicht70.py · Daten: messen/daten/2026-11-15-betrieb/")
+             f"UPS values via NUT, the first 45 s of each phase discarded · NAS and dock alone on the UPS · dense 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K context · messen/betrieb.py, messen/dicht70.py · data: messen/daten/2026-11-15-betrieb/" if en else
+             f"USV-Werte über NUT, die ersten 45 s jeder Phase verworfen · NAS und Dock allein an der USV · dichtes 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K Kontext · messen/betrieb.py, messen/dicht70.py · Daten: messen/daten/2026-11-15-betrieb/")
     return "betrieb", titel, ("Power at the UPS and at the card for idle, model loaded, writing and reading, and decode speed of the MoE 125B model against a dense 70B model on the same card." if en else
                               "Leistung an der USV und an der Karte für Leerlauf, geladenes Modell, Schreiben und Einlesen, dazu das Schreibtempo des MoE-125B-Modells gegen ein dichtes 70B-Modell auf derselben Karte."), s, h
 
@@ -803,8 +801,8 @@ def werksmodell(d, sp):
                 w, wh = st[schl]["usv_w"]["mittel"], st[schl]["wh_je_1000_token_gesamt"]
                 s.text(gm, 433, f"{z(w, sp, 0)} W · {z(wh, sp, 1)} Wh/1k", 8.5, ACC if farbe == ACC else MUTED, "mono", "middle", 600 if farbe == ACC else None)
     s.text(L + 24, 172, "The CPU alone out-writes the iGPU." if en else "Die CPU schreibt schneller als die iGPU.", 15, INK, "serif", kursiv=True)
-    h = fuss(s, 458, None, "as shipped = the llama-server (SYCL) that UGOS starts by itself after the download, 4 threads, 7 slots, queried over its Unix socket · W for NAS and dock: UPS reading minus the network switch on the same UPS (calculated, ±10 W), Wh per 1,000 written tokens · messen/werksmodell.py · data: messen/daten/2026-11-15-betrieb/werksmodell.json" if en else
-             "ab Werk = der llama-server (SYCL), den UGOS nach dem Download selbst startet, 4 Fäden, 7 Plätze, über seinen Unix-Socket angesprochen · W für NAS und Dock: USV-Wert abzüglich des Netzwerk-Switches an derselben USV (gerechnet, ±10 W), Wh je 1.000 geschriebene Token · messen/werksmodell.py · Daten: messen/daten/2026-11-15-betrieb/werksmodell.json")
+    h = fuss(s, 458, None, "as shipped = the llama-server (SYCL) that UGOS starts by itself after the download, 4 threads, 7 slots, queried over its Unix socket · W for NAS and dock at the UPS, Wh per 1,000 written tokens · the as-shipped watts are calculated (measured with a network switch on the same UPS, 107.5 W deducted, ±10 W) · messen/werksmodell.py · data: messen/daten/2026-11-15-betrieb/werksmodell.json" if en else
+             "ab Werk = der llama-server (SYCL), den UGOS nach dem Download selbst startet, 4 Fäden, 7 Plätze, über seinen Unix-Socket angesprochen · W für NAS und Dock an der USV, Wh je 1.000 geschriebene Token · die Watt ab Werk sind gerechnet (mit einem Netzwerk-Switch an derselben USV gemessen, 107,5 W abgezogen, ±10 W) · messen/werksmodell.py · Daten: messen/daten/2026-11-15-betrieb/werksmodell.json")
     return "werksmodell", titel, ("Decode and prompt reading speed of UGREEN's built-in Qwen 3.5 35B model on three paths: the UGOS server on the Arc iGPU, CPU only, and the RX 7900 XTX in the dock." if en else
                                   "Schreib- und Einlesetempo von UGREENs eingebautem Qwen 3.5 35B auf drei Wegen: UGOS-Server auf der Arc-iGPU, nur CPU, und RX 7900 XTX im Dock."), s, h
 

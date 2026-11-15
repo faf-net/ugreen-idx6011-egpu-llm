@@ -19,7 +19,7 @@
    "schreiben_tps_median": 10.28,
    "messpunkte": 38,
    "usv_w": {
-    "mittel": 185.3,
+    "mittel": 77.8,
     "min": 181.0,
     "max": 188.0
    },
@@ -32,97 +32,129 @@
     "prompt_token": 3732,
     "tps": 559.3
    },
-   "wh_je_1000_token_gesamt": 5.007
+   "wh_je_1000_token_gesamt": 2.102,
+   "usv_gerechnet": true,
+   "hinweis": "USV-Wert gerechnet: am Vormittag mit dem Netzwerk-Switch an derselben USV gemessen (185,3 W), 107,5 W abgezogen. Nachmessen ging nicht, weil UGOS seine SYCL-Laufzeit mit dem Modell entfernt hat."
+  },
+  {
+   "stufe": "arc-vulkan",
+   "ram_frei_vorher_gib": 51.1,
+   "laden_s": 12.1,
+   "vram_xtx_mib": 30,
+   "ram_frei_geladen_gib": 30.2,
+   "schreiben_tps": [
+    10.16,
+    10.23,
+    10.23
+   ],
+   "schreiben_tps_median": 10.23,
+   "messpunkte": 24,
+   "usv_w": {
+    "mittel": 64.0,
+    "min": 64.0,
+    "max": 64.0
+   },
+   "karte_w": {
+    "mittel": 7.8,
+    "min": 6.0,
+    "max": 11.0
+   },
+   "einlesen": {
+    "prompt_token": 3504,
+    "tps": 190.6
+   },
+   "wh_je_1000_token_gesamt": 1.738
   },
   {
    "stufe": "cpu",
-   "ram_frei_vorher_gib": 22.4,
-   "laden_s": 24.6,
+   "ram_frei_vorher_gib": 51.1,
+   "laden_s": 9.0,
    "vram_xtx_mib": 30,
-   "ram_frei_geladen_gib": 15.7,
+   "ram_frei_geladen_gib": 39.7,
    "schreiben_tps": [
-    15.36,
-    15.22,
-    15.12,
-    15.4,
-    14.87
+    15.92,
+    15.67,
+    15.53,
+    15.54,
+    15.34
    ],
-   "schreiben_tps_median": 15.22,
-   "messpunkte": 29,
+   "schreiben_tps_median": 15.54,
+   "messpunkte": 27,
    "usv_w": {
-    "mittel": 217.4,
-    "min": 215.0,
-    "max": 220.0
+    "mittel": 97.4,
+    "min": 95.0,
+    "max": 109.0
    },
    "karte_w": {
-    "mittel": 13.7,
-    "min": 13.0,
-    "max": 15.0
+    "mittel": 8.4,
+    "min": 8.0,
+    "max": 9.0
    },
    "einlesen": {
-    "prompt_token": 3721,
-    "tps": 75.0
+    "prompt_token": 3621,
+    "tps": 78.6
    },
-   "wh_je_1000_token_gesamt": 3.968
+   "wh_je_1000_token_gesamt": 1.741
   },
   {
    "stufe": "xtx-vulkan",
-   "ram_frei_vorher_gib": 27.0,
+   "ram_frei_vorher_gib": 51.1,
    "laden_s": 9.0,
    "vram_xtx_mib": 20818,
-   "ram_frei_geladen_gib": 26.7,
+   "ram_frei_geladen_gib": 50.9,
    "schreiben_tps": [
-    115.03,
-    114.44,
-    114.24,
-    114.33,
+    114.69,
+    114.4,
+    113.92,
+    114.88,
+    114.34,
+    114.59,
+    113.91,
+    114.67,
+    114.74,
+    114.48,
+    114.55,
+    114.14,
+    114.06,
+    113.67,
+    114.45,
+    114.2,
+    114.76,
+    114.46,
+    114.49,
+    114.31,
+    114.07,
+    114.6,
+    115.07,
+    114.68,
+    114.86,
+    114.43,
+    114.17,
     114.36,
-    114.9,
-    114.26,
-    114.21,
     114.37,
-    114.19,
-    115.2,
-    114.2,
-    113.81,
-    114.12,
-    114.48,
-    114.63,
-    114.81,
-    114.48,
-    114.39,
-    113.98,
-    114.71,
-    114.35,
-    114.42,
-    114.2,
+    114.67,
+    113.96,
     114.38,
-    113.84,
-    114.22,
-    114.19,
-    114.77,
-    114.81,
-    114.27,
-    114.2,
-    114.08
+    114.47
    ],
-   "schreiben_tps_median": 114.35,
+   "schreiben_tps_median": 114.45,
    "messpunkte": 23,
    "usv_w": {
-    "mittel": 413.3,
-    "min": 413.0,
-    "max": 415.0
+    "mittel": 287.5,
+    "min": 285.0,
+    "max": 292.0
    },
    "karte_w": {
-    "mittel": 184.6,
-    "min": 178.0,
-    "max": 194.0
+    "mittel": 186.7,
+    "min": 180.0,
+    "max": 193.0
    },
    "einlesen": {
-    "prompt_token": 3600,
-    "tps": 2900.7
+    "prompt_token": 3518,
+    "tps": 2977.4
    },
-   "wh_je_1000_token_gesamt": 1.004
+   "wh_je_1000_token_gesamt": 0.698
   }
- ]
+ ],
+ "hinweis": "Stufen cpu, arc-vulkan und xtx-vulkan am 15.11.2026 nachmittags gemessen, als der Netzwerk-Switch nicht mehr an der USV hing. Die Vormittagsmessung mit Switch liegt in mit-switch/."
 }

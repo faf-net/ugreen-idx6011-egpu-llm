@@ -79,7 +79,7 @@ def terminal_strom(strom, sp):
     zeilen.append(f'<b>→ {z(s["wh_je_1000_token_gesamt"], sp)} Wh {"per 1,000 written tokens" if en else "je 1.000 geschriebene Token"}</b> '
                   f'<span class="g">({z(s["wh_je_1000_token_ueber_leerlauf"], sp)} Wh {"above idle" if en else "über Leerlauf"})</span>')
     legende = ('<span class="a">█</span> card alone  <span class="s">█</span> NAS and dock without the card' if en else '<span class="a">█</span> Karte allein  <span class="s">█</span> NAS und Dock ohne die Karte')
-    schild = "NAS AND DOCK · WITHOUT THE NETWORK SWITCH" if en else "NAS UND DOCK · OHNE DEN NETZWERK-SWITCH"
+    schild = "NAS AND DOCK · MEASURED AT THE UPS" if en else "NAS UND DOCK · AN DER USV GEMESSEN"
     return f'<div class="rahmen"><span class="schild">{schild}</span><pre class="plan konsole-block">' + "\n".join(zeilen) + f'\n<span class="g">{legende}</span></pre></div>'
 
 
@@ -147,6 +147,7 @@ def seite(sp):
     pfad = lambda n: os.path.join(DATEN, "2026-11-15-betrieb", n)
     zwei = L("2026-11-15-betrieb", "zwei.json")["phasen"] if os.path.exists(pfad("zwei.json")) else None
     qual = L("2026-11-15-betrieb", "qualitaet.json") if os.path.exists(pfad("qualitaet.json")) else None
+    warte = L("2026-11-15-betrieb", "wartezeit.json")["faelle"] if os.path.exists(pfad("wartezeit.json")) else None
     s, l = strom["schreiben"], strom["lesen"]
     faktor = round(werk["xtx-vulkan"]["schreiben_tps_median"] / werk["ugreen-werk"]["schreiben_tps_median"])
     readme = GH + ("#readme" if en else "/blob/main/README.de.md")
@@ -155,7 +156,7 @@ def seite(sp):
     zahlen = [
         (z(s["tps"], sp, 0), T("Token je Sekunde", "tokens per second"), T("Schreiben, 125B-Modell", "writing, 125B model"), True),
         ("256K", T("Token Kontext", "tokens of context"), T("Nadel bis 250K in 9 von 9 Fällen gefunden", "needle found 9 of 9 times up to 250K"), False),
-        (z(s["wh_je_1000_token_gesamt"], sp), T("Wh je 1.000 Token", "Wh per 1,000 tokens"), T("NAS und Dock, ohne Switch", "NAS and dock, without the switch"), False),
+        (z(s["wh_je_1000_token_gesamt"], sp), T("Wh je 1.000 Token", "Wh per 1,000 tokens"), T("NAS und Dock zusammen", "NAS and dock together"), False),
         (z(statistics.median(kalt), sp, 0) + " s", T("Kaltstart", "cold start"), T("leere Karte bis erstes Wort", "empty card to first word"), False),
         (f"{faktor}×", T("schneller als ab Werk", "faster than as shipped"), T("UGREENs eigenes Modell auf der Karte", "UGREEN's own model on the card"), False),
     ]
@@ -257,6 +258,30 @@ def seite(sp):
     A(bild(D.dicht_moe, sp))
     P(T("Auf der Karte laufen auch kleinere Modelle, die ganz in den Grafikspeicher passen. Zwei dichte Modelle schreiben halb so schnell wie das 125B-Modell und bestehen nicht mehr Aufgaben. UGREENs mitgeliefertes Qwen 3.5 schreibt am schnellsten, hat aber das schwächste Deutsch und besteht die wenigsten Aufgaben. Schnell und gut im Deutschen zugleich sind nur die Fassungen des 125B-Modells; die unzensierte liegt im Deutschen vorn.",
         "Smaller models that fit entirely into video memory run on the card as well. Two dense models write at half the speed of the 125B model and do not pass more tasks. UGREEN's bundled Qwen 3.5 writes fastest but has the weakest German and passes the fewest tasks. Only the versions of the 125B model are both fast and good at German; the uncensored one leads in German."))
+    A(f"<h3 id=\"warten\">{T('Wartezeiten im Alltag', 'Waiting times in everyday use')}</h3>")
+    zeilen = []
+    if zwei:
+        zeilen.append([T("Folgefrage im laufenden Gespräch", "follow-up question in a running conversation"), f"{z(zwei['allein']['A']['warten_median_s'], sp, 2)} s"])
+    if warte:
+        med = lambda name, feld: statistics.median(x[feld] for x in warte[name])
+        sek = lambda v: f"{z(v, sp, 1)} s" if v < 90 else f"{z(v / 60, sp, 1)} min"
+        for name, de, en_ in (("kurze_frage", "neue kurze Frage", "new short question"), ("eine_seite", "eine Seite Text zum Lesen", "one page of text to read"),
+                              ("artikel_10_seiten", "ein Artikel von zehn Seiten", "a ten-page article"), ("bericht_50_seiten", "ein Bericht von 50 Seiten", "a 50-page report"),
+                              ("buch_300_seiten", "ein Buch von 300 Seiten", "a 300-page book")):
+            if name in warte:
+                zeilen.append([T(de, en_), sek(med(name, "erste_anfrage_s"))])
+        lang = [n for n in ("bericht_50_seiten", "buch_300_seiten") if n in warte]
+        if lang:
+            zeilen.append([T("Folgefrage zum selben langen Text", "follow-up question on the same long text"), sek(max(med(n, "folgefrage_s") for n in lang))])
+    zeilen.append([T("erste Frage nach einer Pause von 30 Minuten", "first question after a 30-minute break"), f"{z(statistics.median(kalt), sp, 0)} s"])
+    if zwei:
+        g = zwei["gleichzeitig"]
+        zeilen.append([T("zwei Personen fragen gleichzeitig", "two people ask at the same time"), f"{z(min(g['A']['warten_median_s'], g['B']['warten_median_s']), sp, 0)}–{z(max(g['A']['warten_median_s'], g['B']['warten_median_s']), sp, 0)} s"])
+    A(tabelle([T("Situation", "Situation"), T("Warten bis zum ersten Wort", "Wait for the first word")], zeilen))
+    P(T("Im laufenden Gespräch kommt die Antwort sofort, weil das Modell den bisherigen Verlauf behält. Lange Texte liest es einmal; Folgefragen dazu sind wieder schnell. Nach 30 Minuten ohne Anfrage wird das Modell entladen und beim nächsten Mal neu geladen.",
+        "In a running conversation the answer comes at once, because the model keeps the conversation so far. It reads a long text once; follow-up questions on it are fast again. After 30 minutes without a request the model is unloaded and loaded again next time.")
+      + (T(f" Für gemeinsame Nutzung ein Modell für alle: Wechseln zwei Personen zwischen zwei Modellen, lädt die Karte jedes Mal um ({z(zwei['wechsel']['warten_median_s'], sp, 0)} s).",
+           f" For shared use, pick one model for everyone: if two people alternate between two models, the card reloads every time ({z(zwei['wechsel']['warten_median_s'], sp, 0)} s).") if zwei and "wechsel" in zwei else ""))
     zu()
 
     kapitel(5, "agent", T("Damit der Agent nicht erfindet", "Keeping the agent from making things up"),
@@ -297,33 +322,18 @@ def seite(sp):
 
     kapitel(7, "strom", T("Was kostet es an Strom?", "What does it cost in power?"))
     A(terminal_strom(strom, sp))
-    P(T(f"Das sind <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh je 1.000 geschriebene Token</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh über Leerlauf). Ein geladenes Modell kostet rund 3 W mehr als eine leere Karte. Gemessen ist an der USV. An ihr hängen bei mir auch der Netzwerk-Switch und die Geräte, die er versorgt; ihre {z(ab, sp, 0)} W sind hier abgezogen (Leerlauf heute {z(strom['leer']['usv_w']['mittel'] + ab, sp, 0)} W, mit NAS und Dock allein 60 W). Die Werte ohne Switch sind deshalb gerechnet und auf etwa ±10 W genau.",
-        f"That is <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh per 1,000 written tokens</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh above idle). A loaded model costs about 3 W more than an empty card. The measurement is taken at the UPS. In my setup the network switch and the devices it feeds hang on it too; their {z(ab, sp, 0)} W are deducted here (idle today {z(strom['leer']['usv_w']['mittel'] + ab, sp, 0)} W, with NAS and dock alone 60 W). The figures without the switch are therefore calculated and accurate to about ±10 W."))
+    P(T(f"Das sind <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh je 1.000 geschriebene Token</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh über Leerlauf). Ein geladenes Modell kostet rund 3 W mehr als eine leere Karte. Gemessen ist an der USV, an der nur NAS und Dock hängen; im Leerlauf ziehen beide zusammen {z(strom['leer']['usv_w']['mittel'], sp, 0)} W.",
+        f"That is <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh per 1,000 written tokens</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh above idle). A loaded model costs about 3 W more than an empty card. The measurement is taken at the UPS, which feeds only the NAS and the dock; idle, both together draw {z(strom['leer']['usv_w']['mittel'], sp, 0)} W."))
     zu()
 
-    kapitel(8, "warten", T("Wie lange warte ich?", "How long do I wait?"))
-    A(bild(D.kontext, sp))
-    P(T(f"Das Einlesen wächst fast linear mit der Länge: 5,5 s bei 4K, 26 s bei 32K, 3,6 min bei 250K Token. Der Gesprächs-Cache erspart einer laufenden Sitzung, das in jeder Runde neu zu zahlen. Nach 30 Minuten Leerlauf wird das Modell entladen; der Kaltstart bis zum ersten Wort dauert dann <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>.",
-        f"Reading grows almost linearly with length: 5.5 s at 4K, 26 s at 32K, 3.6 min at 250K tokens. The conversation cache keeps a running session from paying this again on every turn. After 30 minutes idle the model is unloaded; the cold start to the first word then takes <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>."))
-    if zwei:
-        a, g = zwei["allein"]["A"], zwei["gleichzeitig"]
-        A(tabelle([T("Zwei Personen am selben Modell", "Two people on the same model"), T("Warten bis zum ersten Wort", "Wait for the first word"), T("Schreibtempo", "Decode speed")],
-                  [[T("eine Person allein", "one person alone"), f"{z(a['warten_median_s'], sp)} s", f"{z(a['tps_median'], sp)} T/s"],
-                   [T("zwei gleichzeitig, Person A", "two at once, person A"), f"{z(g['A']['warten_median_s'], sp)} s", f"{z(g['A']['tps_median'], sp)} T/s"],
-                   [T("zwei gleichzeitig, Person B", "two at once, person B"), f"{z(g['B']['warten_median_s'], sp)} s", f"{z(g['B']['tps_median'], sp)} T/s"]]))
-        if "wechsel" in zwei:
-            P(T(f"Fragen zwei Personen abwechselnd zwei <em>verschiedene</em> Modelle, lädt die Karte jedes Mal um: im Mittel {z(zwei['wechsel']['warten_median_s'], sp, 0)} s bis zum ersten Wort. Für gemeinsame Nutzung also ein Modell für alle.",
-                f"If two people alternate between two <em>different</em> models, the card reloads every time: {z(zwei['wechsel']['warten_median_s'], sp, 0)} s on average to the first word. For shared use, pick one model for everyone."))
-    zu()
-
-    kapitel(9, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
+    kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
     A(bild(D.versionen, sp))
     P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Nichts wurde langsamer.",
         "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Nothing got slower.")
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
-    kapitel(10, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
+    kapitel(9, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
             T("Der Grundaufbau braucht nur das NAS, das Dock und die Karte und läuft ganz im Heimnetz. Wer nur den Chat will, hört nach Schritt 3 auf.",
               "The basic setup needs only the NAS, the dock and the card, and runs entirely in the home network. If you only want the chat, stop after step 3."))
     anker = (lambda de_, en_: f"{GH}{'#' + en_ if en else '/blob/main/README.de.md#' + de_}")
@@ -360,7 +370,7 @@ def seite(sp):
     basis = ""
     ordner = ORDNER[sp]
     kanon = f"https://faf.net/{ordner}/"
-    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("vektor", T("Unzensiert", "Uncensored")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
+    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("vektor", T("Unzensiert", "Uncensored")), ("strom", T("Strom", "Power")),
            ("versionen", T("Versionen", "Releases")), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
 <html lang="{sp}">

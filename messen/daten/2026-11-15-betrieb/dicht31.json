@@ -1,0 +1,43 @@
+{
+ "gguf": "gemma-4-31B-it-qat-UD-Q4_K_XL.gguf",
+ "faeden": 6,
+ "kontext": 8192,
+ "beginn": "2026-11-15T16:42:31",
+ "stufen": [
+  {
+   "ngl": 99,
+   "laden_s": 10.0,
+   "vram_mib": 18540,
+   "schreiben_tps": [
+    37.38,
+    37.61,
+    37.5,
+    37.38,
+    37.46,
+    37.41,
+    37.39,
+    37.45,
+    37.54,
+    37.38,
+    37.4
+   ],
+   "schreiben_tps_median": 37.41,
+   "messpunkte": 23,
+   "usv_w": {
+    "mittel": 398.5,
+    "min": 396.0,
+    "max": 399.0
+   },
+   "karte_w": {
+    "mittel": 270.8,
+    "min": 234.0,
+    "max": 288.0
+   },
+   "einlesen": {
+    "prompt_token": 3514,
+    "tps": 762.8
+   },
+   "wh_je_1000_token_gesamt": 2.959
+  }
+ ]
+}
