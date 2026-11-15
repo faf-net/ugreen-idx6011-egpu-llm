@@ -246,7 +246,7 @@ Every release since 0.2.0-beta was measured here against the one before it, with
 | 0.2.11 | 5 Nov | **in production**; equal to 0.2.10 | [#5321](https://github.com/Niko1221/Strata/issues/5321) |
 | 0.2.12 | 8 Nov | **in production, current**; equal to 0.2.11; the tuned DFlash2 drafter is slower end to end and stays off | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 9 Nov | equal with the tuned config, not adopted; the Linux Docker image no longer uses the gfx1100 table and reads 16K prompts 35 % slower | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
-| 0.2.14 | 15 Nov | tested, not in production yet; decode equal, prompt reading 17 % faster at 16K and 14 % at 32K; no driver pauses on this card; `standard-v1` sanity 11 of 12 | – |
+| 0.2.14 | 15 Nov | tested, not in production yet; decode equal, prompt reading 17 % faster at 16K and 14 % at 32K; no driver pauses on this card; `standard-v1` sanity 11 of 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 
 ## Run
 

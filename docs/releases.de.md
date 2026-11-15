@@ -25,7 +25,7 @@ Eine Zahl geht in die andere Richtung: Im Agenten-Test von `strata_bench.py` lie
 
 Zwei Dinge habe ich gezielt gesucht. Die Release-Notiz nennt für eine Radeon R9700 unter Linux Treiberpausen und einen Karten-Reset; in 192 kB Engine-Log dieser Sitzung steht keine solche Zeile, und das Kernel-Log ist sauber. Und `standard-v1` ist vollständig, besteht aber 11 von 12 Plausibilitätsprüfungen statt 12: Bei T2 kam kein strukturierter Tool-Call, das Modell schrieb, es habe das Werkzeug schon aufgerufen. Ein Lauf sagt mir nicht, ob das am Sampling bei Temperatur 1,0 liegt oder an der neuen Version.
 
-Diesmal ohne Lauf im Docker-Image, `0.2.14-rocm-gfx110x` war zum Messzeitpunkt nicht veröffentlicht. **Dieses NAS läuft weiter mit 0.2.12**; zuerst kommt mein großer Aufgabensatz auf 0.2.14. Rohdaten: `messen/daten/2026-11-15-v0.2.14/`.
+Diesmal ohne Lauf im Docker-Image, `0.2.14-rocm-gfx110x` war zum Messzeitpunkt nicht veröffentlicht. **Dieses NAS läuft weiter mit 0.2.12**; zuerst kommt mein großer Aufgabensatz auf 0.2.14. Rohdaten: `messen/daten/2026-11-15-v0.2.14/`, an Strata gemeldet als [#6056](https://github.com/Niko1221/Strata/issues/6056).
 
 ## Nachtrag 09.11.2026: Strata 0.2.13, und ohne gfx1100-Tabelle liest das Docker-Image 16K-Prompts 35 % langsamer
 

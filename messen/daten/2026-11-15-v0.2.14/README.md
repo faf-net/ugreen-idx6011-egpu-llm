@@ -13,6 +13,8 @@ Everything ran in the evening of 15 Nov with the NAS services running; only my a
 
 There is no Docker image run this time: `ghcr.io/niko1221/strata:0.2.14-rocm-gfx110x` was not published when I measured. The task-set summary follows once that run is done.
 
+The same data went to Strata as [issue #6056](https://github.com/Niko1221/Strata/issues/6056).
+
 ## 0.2.14 against 0.2.12 and 0.2.13
 
 | | 0.2.14 | 0.2.12 | 0.2.13 |

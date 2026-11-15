@@ -25,7 +25,7 @@ One number goes the other way: in the agent test of `strata_bench.py` the decode
 
 Two things I looked for. The release notes list driver pauses and one card reset for a Radeon R9700 under Linux; in 192 kB of engine log from this session there is no such line, and the kernel log is clean. And `standard-v1` is complete but passes 11 of 12 sanity checks instead of 12: in T2 the model returned no structured tool call and wrote that it had already called the tool. One run does not tell me whether that is the sampling at temperature 1.0 or the new version.
 
-No Docker image run this time, the `0.2.14-rocm-gfx110x` image was not published when I measured. **This NAS still serves with 0.2.12**; my large task set on 0.2.14 comes first. Raw data: `messen/daten/2026-11-15-v0.2.14/`.
+No Docker image run this time, the `0.2.14-rocm-gfx110x` image was not published when I measured. **This NAS still serves with 0.2.12**; my large task set on 0.2.14 comes first. Raw data: `messen/daten/2026-11-15-v0.2.14/`, reported to Strata as [#6056](https://github.com/Niko1221/Strata/issues/6056).
 
 ## Follow-up 9 Nov 2026: Strata 0.2.13, and without the gfx1100 table the Docker image reads 16K prompts 35 % slower
 
