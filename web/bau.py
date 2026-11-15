@@ -9,7 +9,7 @@ kommen aus messen/daten/, der Verdrahtungsplan aus dem README. Der Fließtext st
 
 Farben: web/workbench-farben.json (aus dem Design System Workbench). Schriften: web/fonts/ (OFL, selbst ausgeliefert).
 """
-import html, json, math, os, re, shutil, statistics, subprocess, sys, time
+import html, json, os, re, shutil, statistics, subprocess, sys, time
 
 HIER = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HIER)
@@ -54,36 +54,6 @@ def bild(funktion, sp):
     svg = (f'<svg viewBox="0 0 {D.W} {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="{slug}-title {slug}-desc">'
            f'<title id="{slug}-title">{e(titel[:60])}</title><desc id="{slug}-desc">{e(desc)}</desc>' + "".join(s.e) + "</svg>")
     return f'<figure class="bild"><div class="rollen">{themen(svg)}</div></figure>'
-
-
-def vergleich(namen, zeilen):
-    """Zwei Modelle nebeneinander: je Zelle die Zahl und ein Balken auf der Skala der Zeile.
-    zeilen: (art, bezeichnung, wert_a, wert_b, text_a, text_b, skala); art: gesamt | teil | normal | weniger"""
-    th = '<th></th>' + "".join(f'<th class="v{i}"><span class="schluessel"></span>{e(n)}</th>' for i, n in enumerate(namen))
-    tr = []
-    for art, name, a, b, ta, tb, skala in zeilen:
-        zelle = lambda i, v, txt: (f'<td class="v{i}"><span class="messwert">{txt}</span>'
-                                   f'<span class="spur" aria-hidden="true"><i style="width:{max(0, min(100, 100 * v / skala)):.1f}%"></i></span></td>')
-        tr.append(f'<tr class="{art}"><th scope="row">{name}</th>{zelle(0, a, ta)}{zelle(1, b, tb)}</tr>')
-    return f'<div class="rollen"><table class="vergleich"><thead><tr>{th}</tr></thead><tbody>{"".join(tr)}</tbody></table></div>'
-
-
-def zeitleiste(gruppen, marken, hinweis, lo=0.1, hi=300.0):
-    """Wartezeiten als Punkte auf einer logarithmischen Zeitachse. gruppen: (titel, [(bezeichnung, von_s, bis_s, text)])"""
-    ort = lambda s: 100 * (math.log10(max(s, lo)) - math.log10(lo)) / (math.log10(hi) - math.log10(lo))
-    raster = "".join(f'<span class="strich" style="left:{ort(s):.2f}%"></span>' for s, _ in marken)
-    kopf = ('<li class="achse" aria-hidden="true"><span></span><span class="bahn">'
-            + "".join(f'<span class="zeitmarke" style="left:{ort(s):.2f}%">{n}</span>' for s, n in marken) + '</span><span></span></li>')
-    teile = []
-    for titel, zeilen in gruppen:
-        teile.append(f'<li class="gruppe">{e(titel)}</li>')
-        for name, von, bis, text in zeilen:
-            a, b = ort(von), ort(bis)
-            punkt = (f'<span class="punkt" style="left:{a:.2f}%"></span>' if von == bis
-                     else f'<span class="spanne" style="left:{a:.2f}%;width:{b - a:.2f}%"></span>')
-            teile.append(f'<li><span class="fall">{name}</span><span class="bahn" aria-hidden="true">{raster}'
-                         f'<span class="zug" style="width:{b:.2f}%"></span>{punkt}</span><span class="dauer">{text}</span></li>')
-    return f'<ul class="warte">{kopf}{"".join(teile)}</ul><p class="unter">{hinweis}</p>'
 
 
 def tabelle(kopf, zeilen, klasse=""):
@@ -275,18 +245,7 @@ def seite(sp):
     if qual:
         F, Q = qual["modelle"]["faber"], qual["modelle"]["qwen35"]
         A(f"<h3>{T('Und die Qualität? Dieselben Aufgaben für beide Modelle', 'And the quality? The same tasks for both models')}</h3>")
-        von = lambda x, n: f'<b>{x}</b><small> {T("von", "of")} {n}</small>'
-        teil = lambda k, name: ("teil", name, F["bestanden"][k][0], Q["bestanden"][k][0], von(*F["bestanden"][k]), von(*Q["bestanden"][k]), F["bestanden"][k][1])
-        weniger = f'<small>{T("weniger ist besser", "less is better")}</small>'
-        fmin, qmin = F["sekunden_114_aufgaben"] / 60, Q["sekunden_114_aufgaben"] / 60
-        A(vergleich(["Flash-Next 125B", T("Qwen3.5-35B (UGREENs Modell)", "Qwen3.5-35B (UGREEN's model)")], [
-            ("gesamt", T("Bestandene Aufgaben", "Graded tasks passed"), F["bestanden_gesamt"], Q["bestanden_gesamt"], von(F["bestanden_gesamt"], 102), von(Q["bestanden_gesamt"], 102), 102),
-            teil("code", "Code"), teil("logik", T("Logik", "Logic")), teil("anweisung", T("Anweisungen befolgen", "Following instructions")), teil("fakten", T("Fakten", "Facts")),
-            ("normal", T("Deutsch, verdeckt benotet", "German, graded blind"), F["deutsch_blind_60"], Q["deutsch_blind_60"], von(F["deutsch_blind_60"], 60), von(Q["deutsch_blind_60"], 60), 60),
-            ("weniger", T("Denkbudget aufgebraucht, keine Antwort", "Reasoning budget used up, no answer") + weniger, 0, Q["denkbudget_erschoepft"],
-             von(0, 102), von(Q["denkbudget_erschoepft"], 102), 102),
-            ("weniger", T("Zeit für alle 114 Aufgaben", "Time for all 114 tasks") + weniger, fmin, qmin, f'<b>{z(fmin, sp, 0)}</b><small> min</small>', f'<b>{z(qmin, sp, 0)}</b><small> min</small>', max(fmin, qmin)),
-        ]))
+        A(bild(D.qualitaet, sp))
         P(T("Das kleine Modell schreibt fast doppelt so schnell, denkt aber viel länger nach: 2,6-mal so viele Token für dieselben Aufgaben, und in neun Aufgaben war das Denkbudget aufgebraucht, bevor eine Antwort kam. Dafür lässt es den Arbeitsspeicher des NAS frei. Wer vor allem ein NAS will und gelegentlich chattet, ist mit dem kleinen Modell auf der Karte gut bedient; für einen Agenten und lange Texte lohnt das große.",
             "The small model writes almost twice as fast but thinks much longer: 2.6 times as many tokens for the same tasks, and in nine tasks the reasoning budget was used up before an answer came. In return it leaves the RAM of the NAS free. If you mainly want a NAS and chat now and then, the small model on the card serves you well; for an agent and long texts the big one pays off."))
     zu()
@@ -306,35 +265,8 @@ def seite(sp):
     P(T("Auf der Karte laufen auch kleinere Modelle, die ganz in den Grafikspeicher passen. Zwei dichte Modelle schreiben halb so schnell wie das 125B-Modell und bestehen nicht mehr Aufgaben. UGREENs mitgeliefertes Qwen 3.5 schreibt am schnellsten, hat aber das schwächste Deutsch und besteht die wenigsten Aufgaben. Schnell und gut im Deutschen zugleich sind nur die Fassungen des 125B-Modells; die unzensierte liegt im Deutschen vorn.",
         "Smaller models that fit entirely into video memory run on the card as well. Two dense models write at half the speed of the 125B model and do not pass more tasks. UGREEN's bundled Qwen 3.5 writes fastest but has the weakest German and passes the fewest tasks. Only the versions of the 125B model are both fast and good at German; the uncensored one leads in German."))
     A(f"<h3 id=\"warten\">{T('Wartezeiten im Alltag', 'Waiting times in everyday use')}</h3>")
-    sek = lambda v: f"<b>{z(v, sp, 2 if v < 0.3 else 1)}</b> s" if v < 90 else f"<b>{z(v / 60, sp, 1)}</b> min"
-    med = lambda name, feld: statistics.median(x[feld] for x in warte[name])
-    reden, lesen, sonst = [], [], []
-    if zwei:
-        v = zwei["allein"]["A"]["warten_median_s"]
-        reden.append((T("Folgefrage im laufenden Gespräch", "Follow-up question in a running conversation"), v, v, sek(v)))
-    if warte:
-        if "kurze_frage" in warte:
-            v = med("kurze_frage", "erste_anfrage_s")
-            reden.append((T("Neue kurze Frage", "New short question"), v, v, sek(v)))
-        for name, de, en_ in (("eine_seite", "Eine Seite", "One page"), ("artikel_10_seiten", "Ein Artikel von zehn Seiten", "A ten-page article"),
-                              ("bericht_50_seiten", "Ein Bericht von 50 Seiten", "A 50-page report"), ("buch_300_seiten", "Ein Buch von 300 Seiten", "A 300-page book")):
-            if name in warte:
-                v = med(name, "erste_anfrage_s")
-                lesen.append((T(de, en_), v, v, sek(v)))
-        lang = [n for n in ("bericht_50_seiten", "buch_300_seiten") if n in warte]
-        if lang:
-            v = max(med(n, "folgefrage_s") for n in lang)
-            lesen.append((T("Folgefrage zum selben langen Text", "Follow-up question on the same long text"), v, v, sek(v)))
-    v = statistics.median(kalt)
-    sonst.append((T("Erste Frage nach 30 Minuten Pause", "First question after a 30-minute break"), v, v, f"<b>{z(v, sp, 0)}</b> s"))
-    if zwei:
-        g = zwei["gleichzeitig"]
-        a, b = sorted((g["A"]["warten_median_s"], g["B"]["warten_median_s"]))
-        sonst.append((T("Zwei Personen fragen gleichzeitig", "Two people ask at the same time"), a, b, f"<b>{z(a, sp, 0)}–{z(b, sp, 0)}</b> s"))
-    A(zeitleiste([(T("Im Gespräch", "In a conversation"), reden), (T("Mit einem Text zum Lesen", "With a text to read"), lesen), (T("Besondere Fälle", "Special cases"), sonst)],
-                 [(1, "1 s"), (10, "10 s"), (60, "1 min"), (180, "3 min")],
-                 T("Wartezeit bis zum ersten Wort der Antwort, gemessen. Die Achse ist logarithmisch: Jeder Strich nach rechts ist ein Vielfaches, nicht ein gleicher Abstand.",
-                   "Wait until the first word of the answer, measured. The axis is logarithmic: each tick to the right is a multiple, not an equal step.")))
+    if warte and zwei:
+        A(bild(D.wartezeit, sp))
     P(T("Im laufenden Gespräch kommt die Antwort sofort, weil das Modell den bisherigen Verlauf behält. Lange Texte liest es einmal; Folgefragen dazu sind wieder schnell. Nach 30 Minuten ohne Anfrage wird das Modell entladen und beim nächsten Mal neu geladen.",
         "In a running conversation the answer comes at once, because the model keeps the conversation so far. It reads a long text once; follow-up questions on it are fast again. After 30 minutes without a request the model is unloaded and loaded again next time.")
       + (T(f" Für gemeinsame Nutzung ein Modell für alle: Wechseln zwei Personen zwischen zwei Modellen, lädt die Karte jedes Mal um ({z(zwei['wechsel']['warten_median_s'], sp, 0)} s).",

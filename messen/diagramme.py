@@ -807,6 +807,114 @@ def werksmodell(d, sp):
                                   "Schreib- und Einlesetempo von UGREENs eingebautem Qwen 3.5 35B auf drei Wegen: UGOS-Server auf der Arc-iGPU, nur CPU, und RX 7900 XTX im Dock."), s, h
 
 
+def qualitaet(d, sp):
+    """Zwei Modelle, dieselben Aufgaben: Anteil bestandener Aufgaben je Bereich, dazu zwei Zahlenpaare."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    q = json.load(open(os.path.join(d, "2026-11-15-betrieb", "qualitaet.json"), encoding="utf-8"))["modelle"]
+    F, Q = q["faber"], q["qwen35"]
+    s = Svg()
+    titel = T("Das 125B-Modell besteht mehr Aufgaben und schreibt das bessere Deutsch", "The 125B model passes more tasks and writes the better German")
+    kopf(s, T("Flash-Next 125B gegen UGREENs Qwen3.5-35B · dieselben Aufgaben · RX 7900 XTX · 15.11.2026", "Flash-Next 125B against UGREEN's Qwen3.5-35B · the same tasks · RX 7900 XTX · 15 Nov 2026"), titel)
+    feld(s, L, 104, T("A · Bestanden · Anteil der Aufgaben", "A · Passed · share of tasks"), T("länger ist besser", "longer is better"))
+    x0, x1 = 232, 560
+    reihen = [(T("Alle benoteten Aufgaben", "All graded tasks"), F["bestanden_gesamt"], Q["bestanden_gesamt"], 102, True)]
+    for k, name in (("code", "Code"), ("logik", T("Logik", "Logic")), ("anweisung", T("Anweisungen befolgen", "Following instructions")), ("fakten", T("Fakten", "Facts"))):
+        reihen.append((name, F["bestanden"][k][0], Q["bestanden"][k][0], F["bestanden"][k][1], False))
+    reihen.append((T("Deutsch, verdeckt benotet", "German, graded blind"), F["deutsch_blind_60"], Q["deutsch_blind_60"], 60, True))
+    y = 144
+    oben, unten = y - 6, y + len(reihen) * 42 - 8
+    for anteil in (0.25, 0.5, 0.75, 1.0):
+        x = x0 + anteil * (x1 - x0)
+        s.line(x, oben, x, unten)
+        s.text(x, unten + 16, f"{int(anteil * 100)} %", 9, MUTED, "mono", "middle")
+    s.line(x0, oben, x0, unten, ACHSE)
+    for name, a, b, n, stark in reihen:
+        s.text(x0 - 14, y + 15, name, 11.5 if stark else 10.5, INK if stark else MUTED, "sans", "end", 600 if stark else None)
+        for k, (v, farbe) in enumerate(((a, ACC), (b, STAHL))):
+            yy = y + k * 13
+            w = v / n * (x1 - x0)
+            s.rect(x0, yy, w, 10, farbe, deck=0.3 if farbe == ACC else 0.18, sw=1.6 if farbe == ACC else 1, rx=1.5)
+            s.text(x0 + w + 8, yy + 8.5, f"{v}/{n}", 9, farbe, "mono", weight=600 if farbe == ACC else None)
+        y += 42
+    # rechts: zwei Zahlenpaare
+    xr = 668
+    def paar(yk, was, hilfe, va, vb, einheit):
+        feld(s, xr, yk, was, hilfe)
+        for k, (v, farbe, name) in enumerate(((va, ACC, "Flash-Next 125B"), (vb, STAHL, "Qwen3.5-35B"))):
+            xx = xr + k * 132
+            s.text(xx, yk + 62, v, 34, farbe, "mono", weight=800)
+            s.text(xx + len(v) * 20.5 + 6, yk + 62, einheit, 11, MUTED, "mono")
+            s.text(xx, yk + 80, name, 10, farbe, "sans", weight=600)
+    paar(104, T("B · Denkbudget aufgebraucht", "B · Reasoning budget used up"), T("Aufgaben ohne Antwort · weniger ist besser", "tasks without an answer · less is better"),
+         "0", str(Q["denkbudget_erschoepft"]), T("von 102", "of 102"))
+    paar(236, T("C · Zeit für alle 114 Aufgaben", "C · Time for all 114 tasks"), T("weniger ist besser", "less is better"),
+         z(F["sekunden_114_aufgaben"] / 60, sp, 0), z(Q["sekunden_114_aufgaben"] / 60, sp, 0), "min")
+    s.text(xr, 356, T("Das kleine Modell schreibt schneller,", "The small model writes faster"), 15, INK, "serif", kursiv=True)
+    s.text(xr, 374, T("denkt aber viel länger nach.", "but thinks much longer."), 15, INK, "serif", kursiv=True)
+    h = fuss(s, unten + 40, [("balken", ACC, "Flash-Next 125B"), ("balken", STAHL, T("Qwen3.5-35B (UGREENs Modell)", "Qwen3.5-35B (UGREEN's model)"))],
+             T("102 automatisch benotete Aufgaben, davon je 15 in den vier gezeigten Bereichen · Deutsch: 12 Texte, verdeckt benotet, höchstens 60 Punkte · beide Modelle auf derselben Karte, gleiche Aufgaben, ein Lauf",
+               "102 automatically graded tasks, 15 each in the four areas shown · German: 12 texts, graded blind, at most 60 points · both models on the same card, the same tasks, one run"))
+    return "qualitaet", titel, T(f"Flash-Next 125B besteht {F['bestanden_gesamt']} von 102 Aufgaben, UGREENs Qwen3.5-35B {Q['bestanden_gesamt']}; im Deutschen {F['deutsch_blind_60']} gegen {Q['deutsch_blind_60']} von 60 Punkten. Beim kleinen Modell war in {Q['denkbudget_erschoepft']} Aufgaben das Denkbudget aufgebraucht.",
+                                 f"Flash-Next 125B passes {F['bestanden_gesamt']} of 102 tasks, UGREEN's Qwen3.5-35B {Q['bestanden_gesamt']}; in German {F['deutsch_blind_60']} against {Q['deutsch_blind_60']} of 60 points. The small model used up its reasoning budget in {Q['denkbudget_erschoepft']} tasks."), s, h
+
+
+def wartezeit(d, sp):
+    """Wartezeit bis zum ersten Wort als Zeitstrahl: oben Texte zum Lesen nach Länge, unten Gespräch und besondere Fälle."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    lade = lambda name: json.load(open(os.path.join(d, "2026-11-15-betrieb", name), encoding="utf-8"))
+    warte = lade("wartezeit.json")["faelle"]
+    zwei = lade("zwei.json")["phasen"]
+    kalt = statistics.median(k["erste_antwort_s"] for k in lade("kaltstart-faber.json")["laeufe"])
+    med = lambda name, f: statistics.median(x[f] for x in warte[name])
+    s = Svg()
+    titel = T("Im Gespräch kommt die Antwort sofort, ein ganzes Buch liest das Modell in drei Minuten", "In a conversation the answer comes at once, a whole book takes the model three minutes to read")
+    kopf(s, T("Qwen3.8-Flash-Next 125B · Warten bis zum ersten Wort der Antwort · iDX6011 Pro · 15.11.2026", "Qwen3.8-Flash-Next 125B · wait for the first word of the answer · iDX6011 Pro · 15 Nov 2026"), titel)
+    x0, x1, lo, hi, ya = 96, 896, 0.2, 300.0, 240
+    X = lambda v: x0 + (math.log10(v) - math.log10(lo)) / (math.log10(hi) - math.log10(lo)) * (x1 - x0)
+    dauer = lambda v: (f"{z(v, sp, 1)} s" if v < 90 else f"{z(v / 60, sp, 1)} min")
+    feld(s, L, 104, T("Oben · mit einem Text zum Lesen", "Above · with a text to read"))
+    s.text(L, 372, T("UNTEN · IM GESPRÄCH UND IN BESONDEREN FÄLLEN", "BELOW · IN A CONVERSATION AND IN SPECIAL CASES"), 8.5, MUTED, "mono", weight=500, sperr="0.14em")
+    for v, name in ((1, "1 s"), (10, "10 s"), (60, "1 min"), (180, "3 min")):
+        s.line(X(v), 132, X(v), 352)
+        s.text(X(v), 126, name, 8.5, MUTED, "mono", "middle")
+    s.line(x0 - 16, ya, x1 + 16, ya, ACHSE)
+    # oben: Texte nach Länge
+    lesen = [("eine_seite", T("1 Seite", "1 page")), ("artikel_10_seiten", T("10 Seiten", "10 pages")), ("bericht_50_seiten", T("50 Seiten", "50 pages")), ("buch_300_seiten", T("300 Seiten", "300 pages"))]
+    pts = [(X(med(n, "erste_anfrage_s")), ya) for n, _ in lesen]
+    for k, (n, name) in enumerate(lesen):
+        v = med(n, "erste_anfrage_s")
+        farbe = ACC if k == len(lesen) - 1 else STAHL
+        x = X(v)
+        s.line(x, ya - 8, x, 196, f'stroke="{farbe}" stroke-width="1.2"')
+        s.punkt(x, ya, farbe, r=5)
+        s.text(x, 166, dauer(v), 21, farbe if farbe == ACC else TITLE, "mono", "middle", 700)
+        s.text(x, 186, name, 11, farbe if farbe == ACC else INK, "sans", "middle", 600)
+    # unten: Gespräch und besondere Fälle
+    a = zwei["allein"]["A"]["warten_median_s"]
+    b = med("kurze_frage", "erste_anfrage_s")
+    g = sorted((zwei["gleichzeitig"]["A"]["warten_median_s"], zwei["gleichzeitig"]["B"]["warten_median_s"]))
+    def unten(xa, xb, tiefe, zahl, name, anker="middle", xt=None):
+        xm = (xa + xb) / 2
+        if xb - xa > 1:
+            s.roh(f'<rect x="{xa - 5:.1f}" y="{ya - 5}" width="{xb - xa + 10:.1f}" height="10" rx="5" fill="{PAPER}" stroke="{INK}" stroke-width="1.6"/>')
+        else:
+            s.punkt(xm, ya, INK, hohl=True, r=5)
+        s.line(xm, ya + 8, xm, tiefe + 262, f'stroke="{INK}" stroke-opacity="0.45" stroke-width="1.2"')
+        xt = xm if xt is None else xt
+        s.text(xt, tiefe + 284, zahl, 16, TITLE, "mono", anker, 700)
+        s.text(xt, tiefe + 300, name, 10.5, MUTED, "sans", anker)
+    unten(X(a), X(b), 0, f"{z(a, sp, 2)}–{z(b, sp, 1)} s", T("Fragen im laufenden Gespräch", "questions in a running conversation"), "start", X(a) - 5)
+    unten(X(g[0]), X(g[1]), 0, f"{z(g[0], sp, 0)}–{z(g[1], sp, 0)} s", T("zwei fragen zugleich", "two people ask at once"))
+    unten(X(kalt), X(kalt), 36, f"{z(kalt, sp, 0)} s", T("erste Frage nach 30 min Pause", "first question after a 30-minute break"))
+    h = fuss(s, 388, None,
+             T("Median aus bis zu drei Läufen, das Buch mit 300 Seiten ein Lauf · die Zeitachse ist logarithmisch: gleiche Abstände sind gleiche Vielfache · eine Folgefrage zum selben langen Text kommt wieder nach rund 0,3 s · nach 30 Minuten ohne Anfrage wird das Modell entladen",
+               "median of up to three runs, the 300-page book one run · the time axis is logarithmic: equal distances are equal multiples · a follow-up question on the same long text comes after about 0.3 s again · after 30 minutes without a request the model is unloaded"))
+    return "wartezeit", titel, T("Zeitstrahl der Wartezeit bis zum ersten Wort: Fragen im Gespräch unter einer halben Sekunde, eine Seite Text knapp drei Sekunden, zehn Seiten gut sechs, 50 Seiten rund eine halbe Minute, ein Buch von 300 Seiten gut drei Minuten; nach einer Pause 20 Sekunden, zu zweit acht bis elf.",
+                                 "Timeline of the wait for the first word: questions in a conversation under half a second, one page of text just under three seconds, ten pages a good six, 50 pages about half a minute, a 300-page book a good three minutes; after a break 20 seconds, two people at once eight to eleven."), s, h
+
+
 def aufbau(d, sp):
     """Schaubild der Anlage: wer mit wem spricht, und was das Haus verlässt."""
     en = sp == "en"
