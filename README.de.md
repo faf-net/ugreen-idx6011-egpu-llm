@@ -365,7 +365,6 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/langprompt.py          Einlesezeit eines frischen langen Prompts
   messen/auswertung045.py       Tabelle aus den Ergebnissen
   messen/tiefe.py               Schreib- und Einlesetempo über die Kontexttiefe (1K bis 248K)
-  messen/charts.py              die Charts in bilder/ (helles Workbench-Design)
   messen/qq_llamacpp.py         llama.cpp-Gegenstück zu Stratas quant_quality.py (Top-64 je Position, teacher-forced)
   messen/qq_vergleich.py        Top-1-Übereinstimmung, KL und Perplexität zweier Läufe
   messen/visiontest.py          Bildleser auf der CPU: Testbilder, VRAM/RAM, Vergleich mit dem 27B-Bildmodell
@@ -377,12 +376,10 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/dock-mitschnitt.sh     sekundengenauer Mitschnitt um ein erwartetes Dock-Ereignis (nur lesend, braucht root)
   messen/t0231.py               Strata 0.2.3.1 gegen 0.2.2: Paare, Bench, Nadeln, frische Engines, standard-v1, Docker-Image, ohne Tabellenvariable
   messen/t128.py                erster 128K-Prompt auf frischer Engine, 0.2.3.1 gegen 0.2.2 im Wechsel
-  messen/charts2.py             Diagramme zu Versionen, Docker-Image, Bildmodellen, Kontext und Speicher
   messen/t028.py                Strata 0.2.8 gegen 0.2.3.1: zuerst standard-v1, Bench, Nadeln bis 250K, Tool-Calls, Paare, frische Engines, Docker-Image
   messen/halluzination.py       Halluzinationsprobe: 5 Bereiche × 8 echte + 8 erfundene Gegenstände, ohne und mit Regeln (--regeln)
   messen/agent_de.py            Betriebsagent auf Deutsch: 9 Aufgaben je mehrfach, Urteilsaufgaben zum Nachlesen
-  messen/charts3.py             Diagramme des Nachtrags vom 14.11.2026
-  messen/diagramme.py           alle Diagramme in bilder/ in einem Stil (HTML/SVG-Quellen in bilder/html/, PNG über playwright); ersetzt charts*.py
+  messen/diagramme.py           alle Diagramme in bilder/ in einem Stil (HTML/SVG-Quellen in bilder/html/, PNG über playwright)
   messen/betrieb.py             Strom an der USV, Kaltstart und Schreiblast (strom, kaltstart, last)
   messen/dicht70.py             ein dichtes Modell, das nicht in den VRAM passt, llama.cpp Vulkan, nach Schichten auf der Karte
   messen/werksmodell.py         UGREENs eingebautes Modell: der eigene Server von UGOS auf der Arc-iGPU, nur CPU, die Karte im Dock

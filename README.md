@@ -362,7 +362,6 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/langprompt.py          read time of a fresh long prompt
   messen/auswertung045.py       results table
   messen/tiefe.py               decode/prefill vs context depth (1K to 248K)
-  messen/charts.py              the charts in bilder/ (light Workbench design)
   messen/qq_llamacpp.py         llama.cpp counterpart of Strata's quant_quality.py (teacher-forced top-64 per position)
   messen/qq_vergleich.py        top-1 agreement, KL and perplexity of two runs
   messen/visiontest.py          picture reader on the CPU: test pictures, VRAM/RAM, against the 27B vision model
@@ -374,12 +373,10 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/dock-mitschnitt.sh     second-by-second capture around an expected dock event (read-only, needs root)
   messen/t0231.py               Strata 0.2.3.1 against 0.2.2: pairs, bench, needles, fresh engines, standard-v1, Docker image, table variable off
   messen/t128.py                first 128K prompt on a fresh engine, 0.2.3.1 against 0.2.2, alternating
-  messen/charts2.py             charts for releases, Docker image, picture models, context and memory
   messen/t028.py                Strata 0.2.8 against 0.2.3.1: standard-v1 first, bench, needles to 250K, tool calls, pairs, fresh engines, Docker image
   messen/halluzination.py       hallucination probe: 5 areas × 8 real + 8 made-up items, without and with rules (--regeln)
   messen/agent_de.py            operations agent in German: 9 tasks, repeated, judgement tasks to be read by hand
-  messen/charts3.py             charts of the 14 Nov 2026 follow-up
-  messen/diagramme.py           all charts in bilder/ in one style (HTML/SVG sources in bilder/html/, PNG via playwright); replaces charts*.py
+  messen/diagramme.py           all charts in bilder/ in one style (HTML/SVG sources in bilder/html/, PNG via playwright)
   messen/betrieb.py             power at the UPS, cold start and write load (strom, kaltstart, last)
   messen/dicht70.py             a dense model that does not fit into VRAM, llama.cpp Vulkan, by layers on the card
   messen/werksmodell.py         UGREEN's built-in model: UGOS's own server on the Arc iGPU, CPU only, the card in the dock

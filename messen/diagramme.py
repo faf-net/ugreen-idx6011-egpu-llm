@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Alle Diagramme des Repos aus einer Hand: HTML mit eingebettetem SVG im hellen Workbench-Design.
 
-Ersetzt die matplotlib-Fassungen aus charts.py, charts2.py und charts3.py. Ein Rahmen für alle Bilder:
+Ein Rahmen für alle Bilder:
 Dachzeile (Mono, Versalien), Titel (Instrument Serif), je Feld eine Zeile "was und in welcher Einheit" und eine
 Lesehilfe, höchstens eine kursive Anmerkung, unten Legende und Quelle. Bernstein ist die Hauptreihe, Stahl die
 Vergleichsreihe; Flächen mit 18 % Deckkraft und voller Kante. Zustände (gut, Grenzfall, schlecht) tragen immer
