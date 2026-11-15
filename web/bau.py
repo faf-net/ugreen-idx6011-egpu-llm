@@ -189,8 +189,8 @@ def seite(sp):
     zu = lambda: A("</section>")
 
     kapitel(1, "anlage", T("Was hier läuft", "What runs here"),
-            T("Auf dem NAS mit der Karte im Dock laufen vier Dinge, für die man sonst einen Dienst aus der Cloud nimmt. Gerechnet wird im Haus.",
-              "On the NAS with the card in the dock run four things you would otherwise take from a cloud service. The computing happens at home."))
+            T("Auf dem NAS mit der Karte im Dock läuft, wofür man sonst einen Dienst aus der Cloud nimmt: Chat, Agent, Bilder und Programmieren, erreichbar auch über den Messenger. Gerechnet wird im Haus.",
+              "The NAS with the card in the dock runs what you would otherwise take from a cloud service: chat, agent, pictures and coding, also reachable through a messenger. The computing happens at home."))
     A(bild(D.aufbau, sp))
     karten = [
         (T("Chat im Browser", "Chat in the browser"), "Open WebUI",
@@ -201,6 +201,10 @@ def seite(sp):
          T("Ein Agent, den man im Browser oder über den Messenger erreicht, der eigene Werkzeuge bedient und Aufgaben nach Zeitplan erledigt, mit bis zu 256K Token Kontext. Vier Regeln im Systemprompt und ein kleiner Prüfer halten ihn vom Erfinden ab.",
            "An agent you reach in the browser or through a messenger, that uses its own tools and runs tasks on a schedule, with up to 256K tokens of context. Four rules in the system prompt and a small checker keep it from making things up."),
          T("Erfundenes erkannt: 17–60 % → <b>88–99 %</b>", "made-up things recognised: 17–60 % → <b>88–99 %</b>")),
+        ("Messenger", "Signal",
+         T("Dem Agenten vom Handy schreiben wie einem Kontakt, auch von unterwegs. Ich empfehle und bevorzuge Signal, weil die Nachrichten dort Ende-zu-Ende-verschlüsselt sind. Telegram und Discord habe ich ebenfalls erfolgreich getestet.",
+           "Write to the agent from your phone like to a contact, also when away from home. I recommend and prefer Signal, because messages there are end-to-end encrypted. I have also tested Telegram and Discord successfully."),
+         T("läuft über den Agenten · <b>Ende-zu-Ende-verschlüsselt</b> nur bei Signal", "runs through the agent · <b>end-to-end encrypted</b> only with Signal")),
         (T("Bilder", "Pictures"), "ComfyUI",
          T("„Mach ein Bild von …“ im Chat oder im Messenger: Die Weiche entlädt das Sprachmodell und lädt ein Bildmodell auf dieselbe Karte. Beides zugleich passt nicht in 24 GB.",
            "\"Make a picture of …\" in the chat or the messenger: the switch unloads the language model and loads a picture model onto the same card. Both at once do not fit into 24 GB."),
@@ -211,8 +215,8 @@ def seite(sp):
          T("teilt sich die Karte mit Chat und Agent: <b>eine Anfrage nach der anderen</b>", "shares the card with chat and agent: <b>one request at a time</b>")),
     ]
     A('<div class="anwendungen">' + "".join(f'<div class="anwendung"><span class="dach">{e(a)}</span><h3>{e(b)}</h3><p>{c}</p><div class="mess">{m}</div></div>' for a, b, c, m in karten) + "</div>")
-    P(T("Zwei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen (bei Signal Ende-zu-Ende-verschlüsselt). Die Suchanfragen gehen über ein VPN hinaus: Die Suchmaschinen sehen die Adresse des VPN-Anbieters, nicht den eigenen Anschluss. Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten. Von unterwegs ist die Anlage über einen eigenen Zugang mit Anmeldung erreichbar.",
-        "Two things leave the house: the search queries of the web search, and the messages that travel to the agent through the messenger service (end-to-end encrypted with Signal). The search queries go out through a VPN: the search engines see the VPN provider's address, not your own line. Everything else, including every uploaded document, stays on your own machines. From outside, the setup is reachable through an own gateway with login."))
+    P(T("Zwei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen (bei Signal Ende-zu-Ende-verschlüsselt; bei Telegram und Discord kann der Dienst mitlesen). Die Suchanfragen gehen über ein VPN hinaus: Die Suchmaschinen sehen die Adresse des VPN-Anbieters, nicht den eigenen Anschluss. Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten. Von unterwegs ist die Anlage über einen eigenen Zugang mit Anmeldung erreichbar.",
+        "Two things leave the house: the search queries of the web search, and the messages that travel to the agent through the messenger service (end-to-end encrypted with Signal; with Telegram and Discord the service can read along). The search queries go out through a VPN: the search engines see the VPN provider's address, not your own line. Everything else, including every uploaded document, stays on your own machines. From outside, the setup is reachable through an own gateway with login."))
     zu()
 
     kapitel(2, "nas", T("Das NAS bleibt ein NAS", "The NAS stays a NAS"),
