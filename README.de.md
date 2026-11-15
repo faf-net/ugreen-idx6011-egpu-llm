@@ -21,7 +21,7 @@ Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte 
 | Prompt einlesen | 1.100–1.250 Token/s ab 16K: 26 s für 32K Token, 3,6 min für 250K |
 | Kontext | 256K, die Nadel wurde bis 250K in 9 von 9 Fällen gefunden |
 | Speicher | rund 53 GiB der 64 GB RAM, die 24-GB-Karte ist voll |
-| Strom | 1,5 Wh je 1.000 geschriebene Token; NAS und Dock ziehen beim Schreiben 360 W |
+| Strom | 1,5 Wh je 1.000 geschriebene Token; NAS und Dock ziehen beim Schreiben 355 W, im Leerlauf 48 W |
 | Größtes Risiko | ein Dock-Abriss bei geladenem Modell startet das NAS neu (Kernel-Fehler, entschärft) |
 
 ## Was wo steht
@@ -108,16 +108,24 @@ Mit geladenem, ruhendem `faber` belegt die Engine 44,6 der 62,3 GiB RAM (die Exp
 
 ![Leistung je Phase, und das MoE-Modell gegen ein dichtes 70B](bilder/betrieb-de.png)
 
-**Strom.** Gemessen an der USV (über NUT gelesen, die ersten 45 s jeder Phase verworfen), daneben der Wert der Karte aus sysfs. An derselben USV hängen mein Netzwerk-Switch und die Geräte, die er per PoE versorgt. Die mittlere Spalte zieht deren 108 W ab: Der Leerlauf lag heute bei 168 W, mit NAS und Dock allein vom 12.09. bis 25.10. jeden Tag bei 59 bis 61 W, bevor der Switch dazukam.
+**Strom.** Gemessen an der USV, an der nur NAS und Dock hängen (über NUT gelesen, die ersten 45 s jeder Phase verworfen), daneben der Wert der Karte aus sysfs.
 
-| Phase | An der USV | NAS und Dock, Switch abgezogen | Karte allein |
+| Phase | NAS und Dock | Karte allein |
+|---|---:|---:|
+| Leerlauf, kein Modell geladen | 48 W | 9 W |
+| Modell geladen, ruhend | 48 W | 10 W |
+| Schreiben, 66,3 Token/s | 355 W | 205 W |
+| frische 82K-Prompts einlesen, 1.159 Token/s | 392 W | 254 W |
+
+Das sind **1,5 Wh je 1.000 geschriebene Token** für NAS und Dock (1,3 Wh über Leerlauf) und 0,09 Wh je 1.000 gelesene Token. Ein geladenes, ruhendes Modell kostet nichts Messbares gegenüber der leeren Karte.
+
+| Fassung des 125B-Modells | Schreiben T/s | NAS und Dock | je 1.000 geschriebene Token |
 |---|---:|---:|---:|
-| Leerlauf, kein Modell geladen | 168 W | 60 W | 11 W |
-| Modell geladen, ruhend | 171 W | 63 W | 12 W |
-| Schreiben, 67,2 Token/s | 468 W | 360 W | 206 W |
-| frische 82K-Prompts einlesen, 1.144 Token/s | 517 W | 409 W | 254 W |
+| IQ3_XXS (`faber`) | 66,3 | 355 W | 1,5 Wh |
+| IQ3_XXS, unzensiert (`liber`) | 62,9 | 338 W | 1,5 Wh |
+| IQ2_XS (`velox`) | 70,8 | 349 W | 1,4 Wh |
 
-Das sind **1,5 Wh je 1.000 geschriebene Token** für NAS und Dock (1,2 Wh über Leerlauf) und 0,10 Wh je 1.000 gelesene Token. Ein geladenes Modell kostet rund 3 W mehr als eine leere Karte. Der Abzug stimmt genau nur für die Leerlaufphase: Der Switch gibt rund 72 W per PoE ab, und diese Last schwankt. Die Werte ohne Switch sind deshalb auf etwa ±10 W zu lesen. Alle Energiewerte weiter unten gelten für NAS und Dock, der Switch ist abgezogen.
+Am Vormittag desselben Tages hing noch ein Netzwerk-Switch an der USV; diese erste Messung liegt mit ihrem Abzug in `messen/daten/2026-11-15-betrieb/mit-switch/`. Der gerechnete Wert von damals (1,5 Wh) deckt sich mit dem jetzt gemessenen.
 
 **Kaltstart.** Von der leeren Karte bis zum ersten Token: 18,6–19,6 s in fünf Läufen. Den Seitencache vor dem ersten Lauf zu leeren, machte keinen Unterschied (19,6 s).
 
@@ -127,14 +135,14 @@ Das sind **1,5 Wh je 1.000 geschriebene Token** für NAS und Dock (1,2 Wh über 
 
 **Ein dichtes 70B-Modell auf derselben Karte: 2,7 Token/s.** Llama 3.3 70B Instruct (Q4_K_M, 42,5 GB) mit llama.cpp Vulkan, so viele Schichten auf der Karte wie passen, der Rest auf der CPU, 8K Kontext:
 
-| Schichten auf der Karte | VRAM | Schreiben T/s | Einlesen T/s | NAS und Dock | je 1.000 geschriebene Token |
-|---|---:|---:|---:|---:|---:|
-| 42 von 81 | 22,1 GiB | 2,69 | 84 | 152 W | 15,7 Wh |
-| 40 von 81 | 21,1 GiB | 2,58 | 87 | 124 W | 13,3 Wh |
-| 38 von 81 | 20,0 GiB | 2,48 | 78 | 143 W | 16,1 Wh |
-| keine (nur CPU) | – | 1,44 | 45 | 112 W | 21,5 Wh |
+| Schichten auf der Karte | VRAM | Schreiben T/s | NAS und Dock | je 1.000 geschriebene Token |
+|---|---:|---:|---:|---:|
+| 42 von 81 | 22,1 GiB | 2,69 | 138 W | 14,3 Wh |
+| keine (nur CPU) | – | 1,44 | 101 W | 19,5 Wh |
 
-Das MoE-Modell schreibt 25-mal so schnell und braucht je Token rund ein Elftel der Energie. Ein dichtes Modell fasst für jedes Token alle Gewichte an, und die Hälfte davon liegt hier hinter der CPU.
+Mit 40 und 38 Schichten auf der Karte waren es 2,58 und 2,48 Token/s. Das MoE-Modell schreibt 25-mal so schnell und braucht je Token rund ein Zehntel der Energie. Ein dichtes Modell fasst für jedes Token alle Gewichte an, und die Hälfte davon liegt hier hinter der CPU.
+
+Zwei dichte Modelle, die ganz in den Grafikspeicher passen (Qwen3.8-27B und Gemma 4 31B, beide Q4), schreiben mit 37 Token/s bei 386 und 399 W: 2,9 und 3,0 Wh je 1.000 Token, das Doppelte des 125B-Modells.
 
 **UGREENs eigenes Modell, mit und ohne Dock.** Die KI-Konsole von UGOS lädt Qwen3.5-35B-A3B (Q4_K_M, eine GGUF-Datei mit 22,0 GB) und startet es von selbst auf der Arc-iGPU, mit einem eigenen llama.cpp (SYCL, 4 Fäden, 7 Plätze). Diesen laufenden Server habe ich über seinen Unix-Socket gemessen, danach dieselbe Datei nur auf der CPU und auf der XTX:
 
@@ -142,9 +150,12 @@ Das MoE-Modell schreibt 25-mal so schnell und braucht je Token rund ein Elftel d
 
 | Weg | Schreiben T/s | Einlesen T/s | NAS und Dock | je 1.000 geschriebene Token |
 |---|---:|---:|---:|---:|
-| ab Werk: UGOS-Server auf der Arc-iGPU | 10,3 | 559 | 78 W | 2,1 Wh |
-| nur CPU, llama.cpp, 6 Fäden | 15,2 | 75 | 110 W | 2,0 Wh |
-| RX 7900 XTX im Dock, llama.cpp Vulkan | 114 | 2.901 | 306 W | 0,7 Wh |
+| ab Werk: UGOS-Server auf der Arc-iGPU (SYCL) | 10,3 | 559 | 78 W * | 2,1 Wh * |
+| Arc-iGPU, llama.cpp Vulkan | 10,2 | 191 | 64 W | 1,7 Wh |
+| nur CPU, llama.cpp, 6 Fäden | 15,5 | 79 | 97 W | 1,7 Wh |
+| RX 7900 XTX im Dock, llama.cpp Vulkan | 114 | 2.977 | 288 W | 0,7 Wh |
+
+\* gerechnet: Diese Zeile ist am Vormittag mit dem Switch an derselben USV gemessen (185 W), 107,5 W sind abgezogen, auf etwa ±10 W genau. Nachmessen ging nicht, weil UGOS seine SYCL-Laufzeit zusammen mit dem Modell entfernt.
 
 Auf der Karte schreibt das eingebaute Modell 11-mal so schnell und liest fünfmal so schnell wie ab Werk, bei 0,7 statt 2,1 Wh je 1.000 Token. Die CPU allein schreibt schneller als der iGPU-Server, liest einen Prompt aber siebenmal langsamer. Zwei Grenzen: Beim CPU-Lauf lag die Kopie von UGOS geladen und untätig daneben, und UGOS hält sein Modell im Speicher (rund 27 GB), es passt also nicht neben das 125B-Modell; ich habe es nach dem Test wieder entfernt. Die zweite Laufzeit von UGOS (`llama-gpu`) ist ein CUDA-Build und startet mit einer AMD-Karte nicht.
 
