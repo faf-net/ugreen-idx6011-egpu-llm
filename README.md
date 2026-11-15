@@ -2,6 +2,10 @@
 
 **English** · [Deutsch](README.de.md)
 
+> [!TIP]
+> **The short, illustrated version of this report: [faf.net/local-ai](https://faf.net/local-ai/)**
+> One page with the setup, the charts and the key numbers. This README is the full version with every measurement and file.
+
 A field report with working files: how I run **Qwen3.8-Flash-Next (125B, Mixture of Experts)** at **63–68
 tokens/s with a 256k context** on a UGREEN iDX6011 Pro NAS, with a Radeon RX 7900 XTX in UGREEN's OCuLink eGPU
 dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
