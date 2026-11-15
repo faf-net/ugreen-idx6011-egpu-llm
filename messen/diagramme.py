@@ -848,6 +848,7 @@ def aufbau(d, sp):
     pfeil("M 432,380 H 510")                                                     # Hermes -> llama-swap
     pfeil("M 672,356 H 696 Q 704,356 704,348 V 184 Q 704,176 712,176 H 742", fokus=True)  # llama-swap -> Sprachmodell
     pfeil("M 672,380 H 742")                                                     # llama-swap -> ComfyUI
+    pfeil("M 72,160 H 60 Q 52,160 52,168 V 456 Q 52,464 60,464 H 70")                # Geräte -> OpenCode 2, links am Messenger-Dienst vorbei
     pfeil("M 200,464 H 584 Q 592,464 592,456 V 398")                             # OpenCode 2 -> llama-swap, unter dem Agenten hindurch
     knoten(72, 132, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
     knoten(72, 340, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
