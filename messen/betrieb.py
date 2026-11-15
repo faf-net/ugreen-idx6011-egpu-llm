@@ -37,16 +37,16 @@ class Messer(threading.Thread):
     """Liest alle 2 s USV- und Kartenleistung und merkt sie sich mit der gerade laufenden Phase."""
     def __init__(self):
         super().__init__(daemon=True)
-        self.phase, self.start, self.punkte, self.an = None, 0, [], True
+        self.phase, self.t0, self.punkte, self.an = None, 0, [], True
 
     def run(self):
         while self.an:
             if self.phase:
-                self.punkte.append({"phase": self.phase, "t": round(time.time() - self.start, 1), "usv_w": usv_watt(), "karte_w": karte_watt()})
+                self.punkte.append({"phase": self.phase, "t": round(time.time() - self.t0, 1), "usv_w": usv_watt(), "karte_w": karte_watt()})
             time.sleep(2)
 
     def beginne(self, phase):
-        self.phase, self.start = phase, time.time()
+        self.phase, self.t0 = phase, time.time()
 
     def werte(self, phase):
         ps = [p for p in self.punkte if p["phase"] == phase and p["t"] >= VORLAUF]

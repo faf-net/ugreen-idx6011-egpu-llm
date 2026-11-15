@@ -21,6 +21,7 @@ Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte 
 | Prompt einlesen | 1.100–1.250 Token/s ab 16K: 26 s für 32K Token, 3,6 min für 250K |
 | Kontext | 256K, die Nadel wurde bis 250K in 9 von 9 Fällen gefunden |
 | Speicher | rund 53 GiB der 64 GB RAM, die 24-GB-Karte ist voll |
+| Strom | 1,9 Wh je 1.000 geschriebene Token; 468 W beim Schreiben, an der USV gemessen |
 | Größtes Risiko | ein Dock-Abriss bei geladenem Modell startet das NAS neu (Kernel-Fehler, entschärft) |
 
 ## Was wo steht
@@ -49,11 +50,11 @@ Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte 
 rechnen nur wenige Experten. Strata hält die häufig gebrauchten Experten im VRAM und den Rest im RAM. Fehlende
 Experten rechnet die CPU, statt sie über die x4-Strecke zu kopieren. Möglich macht das der schnell angebundene
 LPDDR5X der iDX: Das Modell belegt rund 53 GiB der 64 GB. Ein dichtes 70B-Modell wäre auf derselben Hardware
-langsam (geschätzt 3–5 T/s), weil es pro Token alle Gewichte lesen muss.
+langsam (gemessen: 2,7 T/s, siehe unten), weil es pro Token alle Gewichte lesen muss.
 
 **Zwei GPUs, sauber getrennt:** Die Arc-iGPU (`renderD128`) erledigt die Medien, die XTX (`renderD129`) rechnet
 nur Sprachmodelle. Wer `/dev/dri` pauschal an einen Mediencontainer durchreicht, riskiert, dass er sich die
-Dock-Karte greift. Geräte je Container ausdrücklich zuordnen.
+Dock-Karte greift. Geräte je Container ausdrücklich zuordnen. UGOS (1.21.1) führt die Karte unter Systemsteuerung → Hardware & Energie → Dedizierte Grafikkarte; sie läuft dort im Modus „NAS“, nicht „VM-Passthrough (VFIO)“.
 
 ## Gemessen
 
@@ -102,6 +103,50 @@ Das Einlesen wächst fast linear mit dem Prompt: 5,5 s bei 4K, 26 s bei 32K, 1,8
 ![RAM und VRAM mit geladenem 125B-Modell](bilder/speicher-de.png)
 
 Mit geladenem, ruhendem `faber` belegt die Engine 44,6 der 62,3 GiB RAM (die Experten-Gewichte, die nicht auf die Karte passen, die K/V von 32K Token in 3,1 GiB festgepinntem RAM und den Gesprächs-Cache, wie er sich füllt), NAS-Dienste und Kernel 10,2 GiB, 7,5 GiB bleiben verfügbar. Auf der Karte nimmt der Experten-Cache 17,3 von 24 GiB (10.644 Plätze), der MTP-Entwurf 1 GiB, alles Übrige 5,3 GiB, 0,4 GiB bleiben frei. Mit 64 GB RAM ist das ungefähr die Grenze: Ein zweiter großer Dienst daneben verlangt einen kleineren Gesprächs-Cache.
+
+### Strom, Kaltstart, NAS-Betrieb, ein dichtes 70B und UGREENs eigenes Modell (15.11.2026)
+
+![Leistung je Phase, und das MoE-Modell gegen ein dichtes 70B](bilder/betrieb-de.png)
+
+**Strom.** Gemessen an der USV, an der NAS, Dock und mein Netzwerk-Switch hängen (über NUT gelesen, die ersten 45 s jeder Phase verworfen), daneben der Wert der Karte aus sysfs:
+
+| Phase | An der USV | Karte allein |
+|---|---:|---:|
+| Leerlauf, kein Modell geladen | 168 W | 11 W |
+| Modell geladen, ruhend | 171 W | 12 W |
+| Schreiben, 67,2 Token/s | 468 W | 206 W |
+| frische 82K-Prompts einlesen, 1.144 Token/s | 517 W | 254 W |
+
+Das sind **1,9 Wh je 1.000 geschriebene Token** (1,2 Wh über Leerlauf) und 0,12 Wh je 1.000 gelesene Token. Ein geladenes Modell kostet rund 3 W mehr als eine leere Karte. Im Leerlaufwert steckt der Switch: Im September, als nur NAS und Dock an derselben USV hingen, lag der Leerlauf bei rund 60 W. Vergleichbar sind deshalb die Werte über Leerlauf.
+
+**Kaltstart.** Von der leeren Karte bis zum ersten Token: 18,6–19,6 s in fünf Läufen. Den Seitencache vor dem ersten Lauf zu leeren, machte keinen Unterschied (19,6 s).
+
+**NAS-Betrieb, während das Modell schreibt.** Eine 17,7-GB-Datei kam per HTTP mit 589 MB/s vom NAS, während das Modell schrieb mit 593 MB/s; begrenzt hat beide Male der 5-Gbit/s-Anschluss des Arbeitsplatzes, nicht das NAS. Die Transkodierung eines 4K-HEVC-Clips nach 1080p-H.264 auf der eingebauten Arc-iGPU fiel von 290 auf 158–249 Bilder/s, immer noch das Fünf- bis Achtfache der Echtzeit. Das Schreibtempo blieb dabei bei 66 Token/s, innerhalb seiner üblichen Streuung. Nicht gemessen: SMB und ein Arbeitsplatz mit 10 Gbit/s.
+
+**Ein dichtes 70B-Modell auf derselben Karte: 2,7 Token/s.** Llama 3.3 70B Instruct (Q4_K_M, 42,5 GB) mit llama.cpp Vulkan, so viele Schichten auf der Karte wie passen, der Rest auf der CPU, 8K Kontext:
+
+| Schichten auf der Karte | VRAM | Schreiben T/s | Einlesen T/s | An der USV | je 1.000 geschriebene Token |
+|---|---:|---:|---:|---:|---:|
+| 42 von 81 | 22,1 GiB | 2,69 | 84 | 259 W | 26,8 Wh |
+| 40 von 81 | 21,1 GiB | 2,58 | 87 | 231 W | 24,9 Wh |
+| 38 von 81 | 20,0 GiB | 2,48 | 78 | 251 W | 28,1 Wh |
+| keine (nur CPU) | – | 1,44 | 45 | 219 W | 42,2 Wh |
+
+Das MoE-Modell schreibt 25-mal so schnell und braucht je Token ein Vierzehntel der Energie. Ein dichtes Modell fasst für jedes Token alle Gewichte an, und die Hälfte davon liegt hier hinter der CPU.
+
+**UGREENs eigenes Modell, mit und ohne Dock.** Die KI-Konsole von UGOS lädt Qwen3.5-35B-A3B (Q4_K_M, eine GGUF-Datei mit 22,0 GB) und startet es von selbst auf der Arc-iGPU, mit einem eigenen llama.cpp (SYCL, 4 Fäden, 7 Plätze). Diesen laufenden Server habe ich über seinen Unix-Socket gemessen, danach dieselbe Datei nur auf der CPU und auf der XTX:
+
+![UGREENs eingebautes Modell ab Werk, nur auf der CPU und auf der Karte im Dock](bilder/werksmodell-de.png)
+
+| Weg | Schreiben T/s | Einlesen T/s | An der USV | je 1.000 geschriebene Token |
+|---|---:|---:|---:|---:|
+| ab Werk: UGOS-Server auf der Arc-iGPU | 10,3 | 559 | 185 W | 5,0 Wh |
+| nur CPU, llama.cpp, 6 Fäden | 15,2 | 75 | 217 W | 4,0 Wh |
+| RX 7900 XTX im Dock, llama.cpp Vulkan | 114 | 2.901 | 413 W | 1,0 Wh |
+
+Auf der Karte schreibt das eingebaute Modell 11-mal so schnell und liest fünfmal so schnell wie ab Werk, bei einem Fünftel der Energie je Token. Die CPU allein schreibt schneller als der iGPU-Server, liest einen Prompt aber siebenmal langsamer. Zwei Grenzen: Beim CPU-Lauf lag die Kopie von UGOS geladen und untätig daneben, und UGOS hält sein Modell im Speicher (rund 27 GB), es passt also nicht neben das 125B-Modell; ich habe es nach dem Test wieder entfernt. Die zweite Laufzeit von UGOS (`llama-gpu`) ist ein CUDA-Build und startet mit einer AMD-Karte nicht.
+
+Skripte: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`. Rohdaten: `messen/daten/2026-11-15-betrieb/`.
 
 ### Kostet Strata Qualität? Strata gegen llama.cpp auf derselben Datei
 
@@ -338,6 +383,10 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/agent_de.py            Betriebsagent auf Deutsch: 9 Aufgaben je mehrfach, Urteilsaufgaben zum Nachlesen
   messen/charts3.py             Diagramme des Nachtrags vom 14.11.2026
   messen/diagramme.py           alle Diagramme in bilder/ in einem Stil (HTML/SVG-Quellen in bilder/html/, PNG über playwright); ersetzt charts*.py
+  messen/betrieb.py             Strom an der USV, Kaltstart und Schreiblast (strom, kaltstart, last)
+  messen/dicht70.py             ein dichtes Modell, das nicht in den VRAM passt, llama.cpp Vulkan, nach Schichten auf der Karte
+  messen/werksmodell.py         UGREENs eingebautes Modell: der eigene Server von UGOS auf der Arc-iGPU, nur CPU, die Karte im Dock
+  messen/transkodieren.sh       4K-HEVC nach 1080p-H.264 auf der Arc-iGPU (VAAPI), Bilder je Sekunde
 ```
 
 **Rohdaten**
@@ -356,6 +405,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/daten/2026-11-08-v0.2.12/  Rohdaten des Nachtrags zu 0.2.12 und des DFlash2-Tests, auch als Strata-Issue #5615 eingereicht (README darin)
   messen/daten/2026-11-09-v0.2.13/  Rohdaten des Nachtrags zu 0.2.13, samt Docker-Image mit und ohne gfx1100-Tabelle auch als Strata-Issue #5666 eingereicht (README darin)
   messen/daten/2026-11-14-erfinden/  Zählwerte: Probe je Modell und Bereich, Nachtvergleich, Urteil mit 10 Runden
+  messen/daten/2026-11-15-betrieb/  Strom, Kaltstart, NAS-Betrieb, dichtes 70B, UGREENs eingebautes Modell
 ```
 
 **Dokumentation und Diagramme**

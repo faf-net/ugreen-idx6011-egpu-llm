@@ -1,0 +1,56 @@
+{
+ "gemessen": "2026-11-15",
+ "modell": "faber (Flash-Next 125B IQ3_XXS, Strata 0.2.12)",
+ "download": {
+  "protokoll": "HTTP, python3 -m http.server auf dem NAS, curl auf einem Arbeitsplatz mit 5-Gbit/s-Anschluss",
+  "datei_gb": 17.66,
+  "ohne_modell": {
+   "mb_s": 588.6,
+   "sekunden": 30.0,
+   "seitencache": "vorher geleert"
+  },
+  "waehrend_schreiben": {
+   "mb_s": 593.2,
+   "sekunden": 29.8,
+   "seitencache": "nicht geleert, das geladene Modell lässt rund 6 GiB frei"
+  }
+ },
+ "transkodieren": {
+  "was": "4K-HEVC (60 s, 30 Bilder/s, 40 Mbit/s) -> 1080p-H.264, VAAPI auf der Arc-iGPU, messen/transkodieren.sh",
+  "ohne_modell_bilder_s": [
+   290,
+   290,
+   291
+  ],
+  "waehrend_schreiben_bilder_s": [
+   158,
+   249,
+   220
+  ]
+ },
+ "schreiben_tps": {
+  "allein": [
+   63.4,
+   66.1,
+   67.4,
+   67.0,
+   69.6,
+   67.0,
+   68.2,
+   68.5,
+   67.7,
+   68.0
+  ],
+  "lauf_mit_nebenlast": [
+   63.4,
+   66.1,
+   65.9,
+   66.3,
+   63.7,
+   67.9,
+   67.1,
+   67.4
+  ],
+  "hinweis": "Im Lauf mit Nebenlast liefen Download und Transkodierung während der Anfragen 2 bis 4; Anfrage 1 enthält das Laden."
+ }
+}

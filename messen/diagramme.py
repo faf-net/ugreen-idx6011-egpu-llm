@@ -704,7 +704,83 @@ def dflash2(d, sp):
                                      "Im festen 900-Token-Test schreibt DFlash2 10 bis 15 Prozent schneller als MTP, im echten Lauf mit 114 Aufgaben bleibt das Tempo je Token gleich, die Antworten werden 28 Prozent länger, die Gesamtzeit steigt um 16 Prozent."), s, h
 
 
-ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2)
+def betrieb(d, sp):
+    en = sp == "en"
+    o = os.path.join(d, "2026-11-15-betrieb")
+    ph = json.load(open(os.path.join(o, "strom-faber.json"), encoding="utf-8"))["phasen"]
+    stufen = [x for f in ("dicht70-gpu.json", "dicht70-cpu.json") for x in json.load(open(os.path.join(o, f), encoding="utf-8"))["stufen"] if "fehler" not in x]
+    bestes = max((x for x in stufen if x["ngl"] > 0), key=lambda x: x["schreiben_tps_median"])
+    cpu = next((x for x in stufen if x["ngl"] == 0), None)
+    s = Svg()
+    faktor = round(ph["schreiben"]["tps"] / bestes["schreiben_tps_median"])
+    titel = f"1.9 Wh per 1,000 written tokens, and a dense 70B is {faktor} times slower" if en else f"1,9 Wh je 1.000 geschriebene Token, und ein dichtes 70B ist {faktor}-mal langsamer"
+    kopf(s, "UGREEN iDX6011 Pro + RX 7900 XTX · measured at the UPS · 15 Nov 2026" if en else "UGREEN iDX6011 Pro + RX 7900 XTX · an der USV gemessen · 15.11.2026", titel)
+    feld(s, L, 104, "A · Power · watts" if en else "A · Leistung · Watt", "Flash-Next 125B (MoE) · NAS, dock and network switch at the UPS" if en else "Flash-Next 125B (MoE) · NAS, Dock und Netzwerk-Switch an der USV")
+    p = Hoch(s, L, 456, 144, 384, 600)
+    p.achse(100, sp)
+    for g, (schl, name, sub) in enumerate((("leer", "idle" if en else "Leerlauf", "no model" if en else "kein Modell"), ("geladen", "loaded" if en else "geladen", "idle" if en else "ruhend"),
+                                           ("schreiben", "writing" if en else "Schreiben", f"{z(ph['schreiben']['tps'], sp)} tok/s"), ("lesen", "reading" if en else "Einlesen", f"{z(ph['lesen']['tps'], sp)} tok/s"))):
+        gm = L + (g + 0.5) * 96
+        w, k = ph[schl]["usv_w"]["mittel"], ph[schl]["karte_w"]["mittel"]
+        p.balken(gm - 20, 36, w, STAHL, z(w, sp, 0))
+        p.balken(gm + 20, 36, k, ACC, z(k, sp, 0), True)
+        s.text(gm, 404, name, 12, INK, "sans", "middle", 600)
+        s.text(gm, 419, sub, 8.5, MUTED, "mono", "middle")
+    feld(s, 544, 104, "B · Decode · tokens/s" if en else "B · Schreiben · Token/s", "same card, same NAS · higher is faster" if en else "dieselbe Karte, dasselbe NAS · höher ist schneller")
+    p = Hoch(s, 544, R, 144, 384, 80)
+    p.achse(20, sp)
+    balken = [("MoE 125B", "Flash-Next IQ3_XXS", ph["schreiben"]["tps"], ph["schreiben"]["wh_je_1000_token_gesamt"], True),
+              ("dense 70B" if en else "dichtes 70B", f"{bestes['ngl']}/81 {'layers in VRAM' if en else 'Schichten im VRAM'}", bestes["schreiben_tps_median"], bestes.get("wh_je_1000_token_gesamt"), False)]
+    if cpu:
+        balken.append(("dense 70B" if en else "dichtes 70B", "CPU only" if en else "nur CPU", cpu["schreiben_tps_median"], cpu.get("wh_je_1000_token_gesamt"), False))
+    for g, (name, sub, v, wh, fokus) in enumerate(balken):
+        gm = 544 + (g + 0.5) * 384 / len(balken)
+        p.balken(gm, 56, v, ACC if fokus else STAHL, z(v, sp), fokus, fokus)
+        s.text(gm, 404, name, 12, ACC if fokus else INK, "sans", "middle", 600)
+        s.text(gm, 419, sub, 8.5, MUTED, "mono", "middle")
+        if wh:
+            s.text(gm, 433, f"{z(wh, sp, 1)} Wh / 1.000 Token" if not en else f"{z(wh, sp, 1)} Wh / 1,000 tokens", 8.5, ACC if fokus else MUTED, "mono", "middle", 600 if fokus else None)
+    s.text(R, 172, "Dense weights must all be read for every token." if en else "Dichte Gewichte werden für jedes Token alle gelesen.", 15, INK, "serif", "end", kursiv=True)
+    h = fuss(s, 458, (("balken", STAHL, "at the UPS (wall)" if en else "an der USV (Steckdose)"), ("balken", ACC, "card alone (sysfs)" if en else "Karte allein (sysfs)")),
+             "UPS values via NUT, refreshed every 30 s, the first 45 s of each phase discarded · the UPS also feeds a network switch · dense 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K context · messen/betrieb.py, messen/dicht70.py · data: messen/daten/2026-11-15-betrieb/" if en else
+             "USV-Werte über NUT, alle 30 s erneuert, die ersten 45 s jeder Phase verworfen · an der USV hängt auch ein Netzwerk-Switch · dichtes 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K Kontext · messen/betrieb.py, messen/dicht70.py · Daten: messen/daten/2026-11-15-betrieb/")
+    return "betrieb", titel, ("Power at the UPS and at the card for idle, model loaded, writing and reading, and decode speed of the MoE 125B model against a dense 70B model on the same card." if en else
+                              "Leistung an der USV und an der Karte für Leerlauf, geladenes Modell, Schreiben und Einlesen, dazu das Schreibtempo des MoE-125B-Modells gegen ein dichtes 70B-Modell auf derselben Karte."), s, h
+
+
+def werksmodell(d, sp):
+    en = sp == "en"
+    st = {x["stufe"]: x for x in json.load(open(os.path.join(d, "2026-11-15-betrieb", "werksmodell.json"), encoding="utf-8"))["stufen"]}
+    faktor = round(st["xtx-vulkan"]["schreiben_tps_median"] / st["ugreen-werk"]["schreiben_tps_median"])
+    s = Svg()
+    titel = f"UGREEN's built-in model writes {faktor} times faster on the card in the dock" if en else f"UGREENs eingebautes Modell schreibt auf der Karte im Dock {faktor}-mal so schnell"
+    kopf(s, "Qwen3.5-35B-A3B Q4_K_M · the file UGOS downloads itself · iDX6011 Pro · 15 Nov 2026" if en else "Qwen3.5-35B-A3B Q4_K_M · die Datei, die UGOS selbst lädt · iDX6011 Pro · 15.11.2026", titel)
+    reihen = (("ugreen-werk", "as shipped" if en else "ab Werk", "UGOS server, Arc iGPU" if en else "UGOS-Server, Arc-iGPU", STAHL),
+              ("cpu", "CPU only" if en else "nur CPU", "llama.cpp, 6 threads" if en else "llama.cpp, 6 Fäden", STAHL),
+              ("xtx-vulkan", "RX 7900 XTX", "llama.cpp Vulkan, dock" if en else "llama.cpp Vulkan, Dock", ACC))
+    felder = ((L, 456, lambda x: x["schreiben_tps_median"], 120, 20, "A · Decode · tokens/s" if en else "A · Schreiben · Token/s", "long answer · higher is faster" if en else "lange Antwort · höher ist schneller", True),
+              (544, R, lambda x: x["einlesen"]["tps"], 3000, 500, "B · Prompt reading · tokens/s" if en else "B · Prompt einlesen · Token/s", "fresh prompt of about 3,700 tokens · higher is faster" if en else "frischer Prompt mit rund 3.700 Token · höher ist schneller", False))
+    for x0, x1, wert, vmax, schritt, was, hilfe, strom in felder:
+        feld(s, x0, 104, was, hilfe)
+        p = Hoch(s, x0, x1, 144, 384, vmax)
+        p.achse(schritt, sp)
+        for g, (schl, name, sub, farbe) in enumerate(reihen):
+            gm = x0 + (g + 0.5) * (x1 - x0) / 3
+            v = wert(st[schl])
+            p.balken(gm, 56, v, farbe, z(v, sp), farbe == ACC, farbe == ACC)
+            s.text(gm, 404, name, 12, ACC if farbe == ACC else INK, "sans", "middle", 600)
+            s.text(gm, 419, sub, 8.5, MUTED, "mono", "middle")
+            if strom:
+                w, wh = st[schl]["usv_w"]["mittel"], st[schl]["wh_je_1000_token_gesamt"]
+                s.text(gm, 433, f"{z(w, sp, 0)} W · {z(wh, sp, 1)} Wh/1k", 8.5, ACC if farbe == ACC else MUTED, "mono", "middle", 600 if farbe == ACC else None)
+    s.text(L + 24, 172, "The CPU alone out-writes the iGPU." if en else "Die CPU schreibt schneller als die iGPU.", 15, INK, "serif", kursiv=True)
+    h = fuss(s, 458, None, "as shipped = the llama-server (SYCL) that UGOS starts by itself after the download, 4 threads, 7 slots, queried over its Unix socket · W at the UPS (it also feeds a network switch), Wh per 1,000 written tokens · messen/werksmodell.py · data: messen/daten/2026-11-15-betrieb/werksmodell.json" if en else
+             "ab Werk = der llama-server (SYCL), den UGOS nach dem Download selbst startet, 4 Fäden, 7 Plätze, über seinen Unix-Socket angesprochen · W an der USV (an ihr hängt auch ein Netzwerk-Switch), Wh je 1.000 geschriebene Token · messen/werksmodell.py · Daten: messen/daten/2026-11-15-betrieb/werksmodell.json")
+    return "werksmodell", titel, ("Decode and prompt reading speed of UGREEN's built-in Qwen 3.5 35B model on three paths: the UGOS server on the Arc iGPU, CPU only, and the RX 7900 XTX in the dock." if en else
+                                  "Schreib- und Einlesetempo von UGREENs eingebautem Qwen 3.5 35B auf drei Wegen: UGOS-Server auf der Arc-iGPU, nur CPU, und RX 7900 XTX im Dock."), s, h
+
+
+ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell)
 
 
 def main():

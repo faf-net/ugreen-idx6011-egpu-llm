@@ -20,6 +20,7 @@ only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark 
 | Reading a prompt | 1,100–1,250 tokens/s from 16K on: 26 s for 32K tokens, 3.6 min for 250K |
 | Context | 256K, the needle was found 9 of 9 times up to 250K |
 | Memory | about 53 GiB of the 64 GB RAM, the 24 GB card is full |
+| Power | 1.9 Wh per 1,000 written tokens; 468 W while writing, measured at the UPS |
 | Biggest risk | a dock dropout with a model loaded reboots the NAS (kernel bug, mitigated) |
 
 ## Where to find what
@@ -47,12 +48,12 @@ only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark 
 **Why a 125B model fits on a 24 GB card:** Flash-Next is a Mixture-of-Experts model; only a few experts run per
 token. Strata keeps the frequently used experts in VRAM and the rest in system RAM, and computes missing experts
 on the CPU instead of copying them over the x4 link. The iDX's fast LPDDR5X is what makes this work: the model
-uses about 53 GiB of the 64 GB. A dense 70B model on the same hardware would be slow (estimated 3–5 T/s), because
+uses about 53 GiB of the 64 GB. A dense 70B model on the same hardware is slow (measured: 2.7 T/s, see below), because
 it has to read all weights for every token.
 
 **Two GPUs, cleanly separated:** the Arc iGPU (`renderD128`) handles media, the XTX (`renderD129`) only runs
 language models. Passing `/dev/dri` wholesale to a media container lets it grab the dock card; assign devices per
-container.
+container. UGOS (1.21.1) lists the card under Control Panel → Hardware & Power → Dedicated graphics card; it runs in the mode "NAS" there, not "VM passthrough (VFIO)".
 
 ## Measured
 
@@ -101,6 +102,50 @@ Reading grows almost linearly with the prompt: 5.5 s at 4K, 26 s at 32K, 1.8 min
 ![RAM and VRAM with the 125B model loaded](bilder/speicher-en.png)
 
 With `faber` loaded and idle, the engine holds 44.6 GiB of the 62.3 GiB RAM (the expert weights that do not fit on the card, the K/V of 32K tokens in 3.1 GiB of pinned RAM, and the conversation cache as it fills), the NAS services and the kernel 10.2 GiB, and 7.5 GiB stay available. On the card the expert cache takes 17.3 GiB of 24 GiB (10,644 slots), the MTP draft 1 GiB, everything else 5.3 GiB, 0.4 GiB stay free. With 64 GB RAM this is about the limit: a second large service next to it needs the conversation cache made smaller.
+
+### Power, cold start, the NAS at work, a dense 70B and UGREEN's own model (15 Nov 2026)
+
+![Power per phase, and the MoE model against a dense 70B](bilder/betrieb-en.png)
+
+**Power.** Measured at the UPS that feeds the NAS, the dock and my network switch (read through NUT, the first 45 s of every phase discarded), next to the card's own reading from sysfs:
+
+| Phase | At the UPS | Card alone |
+|---|---:|---:|
+| idle, no model loaded | 168 W | 11 W |
+| model loaded, idle | 171 W | 12 W |
+| writing, 67.2 tokens/s | 468 W | 206 W |
+| reading fresh 82K prompts, 1,144 tokens/s | 517 W | 254 W |
+
+That is **1.9 Wh per 1,000 written tokens** (1.2 Wh above idle) and 0.12 Wh per 1,000 tokens read. A loaded model costs about 3 W more than an empty card. The idle figure includes the switch: in September, with only NAS and dock on the same UPS, idle was about 60 W, so the figures above idle are the ones to compare.
+
+**Cold start.** From an unloaded card to the first token: 18.6–19.6 s in five runs. Dropping the page cache before the first run made no difference (19.6 s).
+
+**The NAS at work while the model writes.** A 17.7 GB file downloaded from the NAS over HTTP at 589 MB/s without a model and 593 MB/s while the model was writing; both runs were limited by the client's 5 Gbit/s port, not by the NAS. Transcoding a 4K HEVC clip to 1080p H.264 on the built-in Arc iGPU dropped from 290 to 158–249 frames/s, still five to eight times real time. Writing stayed at 66 tokens/s during both, inside its normal spread. Not measured: SMB, and a 10 Gbit/s client.
+
+**A dense 70B model on the same card: 2.7 tokens/s.** Llama 3.3 70B Instruct (Q4_K_M, 42.5 GB) with llama.cpp Vulkan, as many layers on the card as fit, the rest on the CPU, 8K context:
+
+| Layers on the card | VRAM | Decode tok/s | Prompt tok/s | At the UPS | per 1,000 written tokens |
+|---|---:|---:|---:|---:|---:|
+| 42 of 81 | 22.1 GiB | 2.69 | 84 | 259 W | 26.8 Wh |
+| 40 of 81 | 21.1 GiB | 2.58 | 87 | 231 W | 24.9 Wh |
+| 38 of 81 | 20.0 GiB | 2.48 | 78 | 251 W | 28.1 Wh |
+| none (CPU only) | – | 1.44 | 45 | 219 W | 42.2 Wh |
+
+The MoE model writes 25 times faster and needs a fourteenth of the energy per token. Every token of a dense model touches all weights, and half of them sit behind the CPU here.
+
+**UGREEN's own model, with and without the dock.** UGOS's AI console downloads Qwen3.5-35B-A3B (Q4_K_M, one 22.0 GB GGUF) and starts it by itself on the Arc iGPU with its own llama.cpp build (SYCL, 4 threads, 7 slots). I measured that running server through its Unix socket, then the same file CPU-only and on the XTX:
+
+![UGREEN's built-in model as shipped, CPU only, and on the card in the dock](bilder/werksmodell-en.png)
+
+| Path | Decode tok/s | Prompt tok/s | At the UPS | per 1,000 written tokens |
+|---|---:|---:|---:|---:|
+| as shipped: UGOS server on the Arc iGPU | 10.3 | 559 | 185 W | 5.0 Wh |
+| CPU only, llama.cpp, 6 threads | 15.2 | 75 | 217 W | 4.0 Wh |
+| RX 7900 XTX in the dock, llama.cpp Vulkan | 114 | 2,901 | 413 W | 1.0 Wh |
+
+On the card the built-in model writes 11 times faster and reads five times faster than as shipped, at a fifth of the energy per token. The CPU alone out-writes the iGPU server but reads a prompt seven times more slowly. Two limits: the CPU run had UGOS's copy loaded and idle next to it, and UGOS keeps its model in memory (about 27 GB), so it does not fit next to the 125B model; I removed it after the test. UGOS's second runtime (`llama-gpu`) is a CUDA build and does not start with an AMD card.
+
+Scripts: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`. Raw data: `messen/daten/2026-11-15-betrieb/`.
 
 ### Does Strata cost quality? Strata vs llama.cpp on the same file
 
@@ -335,6 +380,10 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/agent_de.py            operations agent in German: 9 tasks, repeated, judgement tasks to be read by hand
   messen/charts3.py             charts of the 14 Nov 2026 follow-up
   messen/diagramme.py           all charts in bilder/ in one style (HTML/SVG sources in bilder/html/, PNG via playwright); replaces charts*.py
+  messen/betrieb.py             power at the UPS, cold start and write load (strom, kaltstart, last)
+  messen/dicht70.py             a dense model that does not fit into VRAM, llama.cpp Vulkan, by layers on the card
+  messen/werksmodell.py         UGREEN's built-in model: UGOS's own server on the Arc iGPU, CPU only, the card in the dock
+  messen/transkodieren.sh       4K HEVC to 1080p H.264 on the Arc iGPU (VAAPI), frames per second
 ```
 
 **Raw data**
@@ -353,6 +402,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/daten/2026-11-08-v0.2.12/  raw data of the 0.2.12 follow-up and the DFlash2 test, also sent as Strata issue #5615 (README inside)
   messen/daten/2026-11-09-v0.2.13/  raw data of the 0.2.13 follow-up, incl. the Docker image with and without the gfx1100 table also sent as Strata issue #5666 (README inside)
   messen/daten/2026-11-14-erfinden/  counts: probe per model and area, night comparison, judgement with 10 rounds
+  messen/daten/2026-11-15-betrieb/  power, cold start, NAS at work, dense 70B, UGREEN's built-in model
 ```
 
 **Documentation and charts**

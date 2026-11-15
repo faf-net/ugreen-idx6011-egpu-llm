@@ -1,0 +1,128 @@
+{
+ "gguf": "Qwen3.5-35B-A3B-GGUF.gguf",
+ "faeden": 6,
+ "kontext": 8192,
+ "beginn": "2026-11-15T13:11:24",
+ "stufen": [
+  {
+   "stufe": "ugreen-werk",
+   "ram_frei_vorher_gib": 23.2,
+   "laden_s": 0.0,
+   "vram_xtx_mib": 30,
+   "ram_frei_geladen_gib": 23.2,
+   "schreiben_tps": [
+    10.87,
+    9.86,
+    10.37,
+    10.19
+   ],
+   "schreiben_tps_median": 10.28,
+   "messpunkte": 38,
+   "usv_w": {
+    "mittel": 185.3,
+    "min": 181.0,
+    "max": 188.0
+   },
+   "karte_w": {
+    "mittel": 10.6,
+    "min": 9.0,
+    "max": 13.0
+   },
+   "einlesen": {
+    "prompt_token": 3732,
+    "tps": 559.3
+   },
+   "wh_je_1000_token_gesamt": 5.007
+  },
+  {
+   "stufe": "cpu",
+   "ram_frei_vorher_gib": 22.4,
+   "laden_s": 24.6,
+   "vram_xtx_mib": 30,
+   "ram_frei_geladen_gib": 15.7,
+   "schreiben_tps": [
+    15.36,
+    15.22,
+    15.12,
+    15.4,
+    14.87
+   ],
+   "schreiben_tps_median": 15.22,
+   "messpunkte": 29,
+   "usv_w": {
+    "mittel": 217.4,
+    "min": 215.0,
+    "max": 220.0
+   },
+   "karte_w": {
+    "mittel": 13.7,
+    "min": 13.0,
+    "max": 15.0
+   },
+   "einlesen": {
+    "prompt_token": 3721,
+    "tps": 75.0
+   },
+   "wh_je_1000_token_gesamt": 3.968
+  },
+  {
+   "stufe": "xtx-vulkan",
+   "ram_frei_vorher_gib": 27.0,
+   "laden_s": 9.0,
+   "vram_xtx_mib": 20818,
+   "ram_frei_geladen_gib": 26.7,
+   "schreiben_tps": [
+    115.03,
+    114.44,
+    114.24,
+    114.33,
+    114.36,
+    114.9,
+    114.26,
+    114.21,
+    114.37,
+    114.19,
+    115.2,
+    114.2,
+    113.81,
+    114.12,
+    114.48,
+    114.63,
+    114.81,
+    114.48,
+    114.39,
+    113.98,
+    114.71,
+    114.35,
+    114.42,
+    114.2,
+    114.38,
+    113.84,
+    114.22,
+    114.19,
+    114.77,
+    114.81,
+    114.27,
+    114.2,
+    114.08
+   ],
+   "schreiben_tps_median": 114.35,
+   "messpunkte": 23,
+   "usv_w": {
+    "mittel": 413.3,
+    "min": 413.0,
+    "max": 415.0
+   },
+   "karte_w": {
+    "mittel": 184.6,
+    "min": 178.0,
+    "max": 194.0
+   },
+   "einlesen": {
+    "prompt_token": 3600,
+    "tps": 2900.7
+   },
+   "wh_je_1000_token_gesamt": 1.004
+  }
+ ]
+}
