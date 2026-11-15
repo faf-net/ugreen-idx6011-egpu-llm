@@ -851,8 +851,8 @@ def aufbau(d, sp):
     s.roh(f'<path d="M 280,{y + 22} H 312" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#{pf})"/>')
     s.text(324, y + 26, T("verlässt das Haus", "leaves the house"), 10, INK, "sans")
     s.text(R, y + 27, T("Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.", "Only search queries and messenger messages leave the house."), 15, INK, "serif", "end", kursiv=True)
-    s.text(L, y + 48, T("Open WebUI läuft auf einem zweiten kleinen Rechner im Heimnetz, alles Übrige auf dem NAS · Zugang von unterwegs über einen eigenen Zugang mit Anmeldung",
-                        "Open WebUI runs on a second small machine in the home network, everything else on the NAS · access from outside through an own gateway with login"), 8.5, MUTED, "mono")
+    s.text(L, y + 48, T("Chat, Suche und Agent laufen als Container, die Modelle auf der Karte im Dock · Zugang von unterwegs über einen eigenen Zugang mit Anmeldung",
+                        "Chat, search and agent run as containers, the models on the card in the dock · access from outside through an own gateway with login"), 8.5, MUTED, "mono")
     return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, das auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI lädt. Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.",
                               "Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, which loads either the language model or ComfyUI on the RX 7900 XTX. Only search queries and messenger messages leave the house."), s, 512
 
