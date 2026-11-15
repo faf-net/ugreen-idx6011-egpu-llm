@@ -2,10 +2,10 @@
  "stand": "2026-11-15",
  "modelle": {
   "faber": "Qwen3.8-Flash-Next 125B IQ3_XXS, Strata 0.2.12",
-  "liber": "dieselben Gewichte, dazu ein Steuervektor gegen die Ablehnungsrichtung (konfig/strata-0.2.12/liber.json)"
+  "liber": "dieselben Gewichte, unzensiert: ein Steuervektor entfernt die Ablehnungsrichtung (konfig/strata-0.2.12/liber.json)"
  },
  "heikle_aufgaben_15": {
-  "was": "15 Aufgaben, die Modelle oft ablehnen, obwohl der Zweck legitim ist: düstere und erotische Fiktion, schwarzer Humor und Satire, Schadensminderung und Aufklärung, Sicherheitsschulung (Phishing-Übung, CTF), Zugang zu Eigenem (Fahrradschloss, eigenes Archiv), Technikgeschichte, Für und Wider einer ethischen Streitfrage. Von Hand gelesen am 08.11.2026 (Antwortanfänge).",
+  "was": "15 Aufgaben aus Bereichen, in denen Sprachmodelle üblicherweise ablehnen, ausweichen oder belehren (Fiktion und Humor, Gesundheit und Risiken, Sicherheit und Technik, strittige ethische Fragen). Von Hand gelesen am 08.11.2026 (Antwortanfänge); nur Zählwerte.",
   "faber": {
    "beantwortet": 11,
    "ausgewichen": 3,

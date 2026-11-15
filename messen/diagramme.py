@@ -920,7 +920,7 @@ def steuervektor(d, sp):
     s = Svg()
     titel = T("Unzensiert beantwortet das Modell alles und erfindet leichter", "Uncensored, the model answers everything and makes things up more easily")
     kopf(s, T("Flash-Next 125B IQ3_XXS · Original und unzensiert (Ablehnungen per Steuervektor entfernt) · Strata 0.2.12", "Flash-Next 125B IQ3_XXS · original and uncensored (refusals removed by a steering vector) · Strata 0.2.12"), titel)
-    feld(s, L, 104, T("A · 15 Aufgaben, die Modelle oft verweigern", "A · 15 tasks that models often refuse"), T("Erotik, Drogen, Schlossöffnen, Passwortknacken, Phishing, derbe Beschimpfung … · von Hand gelesen", "erotica, drugs, lock picking, password cracking, phishing, coarse insults … · read by hand"))
+    feld(s, L, 104, T("A · 15 Aufgaben, die Modelle oft verweigern", "A · 15 tasks that models often refuse"), T("aus Fiktion, Humor, Gesundheit, Sicherheit und Ethik · von Hand gelesen", "from fiction, humour, health, security and ethics · read by hand"))
     X = lambda n: L + n * (456 - L) / 15
     for i, (schl, name) in enumerate((("faber", T("Original", "original")), ("liber", T("unzensiert", "uncensored")))):
         y = 160 + i * 92

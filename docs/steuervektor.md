@@ -12,7 +12,7 @@ That is not limited to harmless cases. The model no longer distinguishes between
 
 ## Why I use it
 
-Out of the box the model refuses a lot that is nobody's business on your own machine: how to pick the lock of your own bicycle, plain information about drugs and their risks, a coarse insult in Low German, the password of your own ZIP archive. An assistant at home should answer, not educate. `liber` also writes the better German.
+Out of the box the model refuses or waters down a lot that is nobody's business on your own machine. An assistant at home should answer, not educate. `liber` also writes the better German.
 
 ## How it works
 
@@ -35,7 +35,7 @@ The settings are in [`konfig/strata-0.2.12/liber.json`](../konfig/strata-0.2.12/
 | decode, long answer | 63.7 tok/s | 61.9 tok/s |
 | prompt reading at 32K | 1,183 tok/s | 1,188 tok/s |
 
-The 15 tasks are: dark and erotic fiction, black humour, satire about a politician, a coarse insult, drugs and their interactions, lock picking, password cracking, a phishing mail for a training course, SQL injection for a competition, historical weapons technology, assisted dying, sex education for teenagers.
+The 15 tasks come from areas where language models usually refuse, evade or lecture: fiction and humour without restraint, health and risks, security and technology, contested ethical questions. I do not list them individually here.
 
 **The abilities stay.** Tasks, German and speed are the same within the spread of a single run; the two-task difference is not a finding.
 

@@ -12,7 +12,7 @@ Das betrifft nicht nur harmlose Fälle. Das Modell unterscheidet nicht mehr zwis
 
 ## Warum ich es nutze
 
-Ab Werk lehnt das Modell vieles ab, was auf dem eigenen Gerät niemanden etwas angeht: wie man das Schloss des eigenen Fahrrads öffnet, eine nüchterne Auskunft zu Drogen und ihren Risiken, eine derbe Beschimpfung auf Plattdeutsch, das Passwort des eigenen ZIP-Archivs. Ein Assistent zu Hause soll antworten und nicht erziehen. Außerdem schreibt `liber` das bessere Deutsch.
+Ab Werk lehnt das Modell vieles ab oder entschärft es, was auf dem eigenen Gerät niemanden etwas angeht. Ein Assistent zu Hause soll antworten und nicht erziehen. Außerdem schreibt `liber` das bessere Deutsch.
 
 ## Wie es funktioniert
 
@@ -35,7 +35,7 @@ Die Einstellungen stehen in [`konfig/strata-0.2.12/liber.json`](../konfig/strata
 | Schreiben, lange Antwort | 63,7 T/s | 61,9 T/s |
 | Einlesen bei 32K | 1.183 T/s | 1.188 T/s |
 
-Die 15 Aufgaben sind: düstere und erotische Fiktion, schwarzer Humor, Satire über einen Politiker, eine derbe Beschimpfung, Drogen und ihre Wechselwirkungen, Schlossöffnen, Passwortknacken, eine Phishing-Mail für eine Schulung, SQL-Injection für einen Wettbewerb, Waffentechnik aus der Geschichte, Sterbehilfe, Aufklärung für Jugendliche.
+Die 15 Aufgaben stammen aus Bereichen, in denen Sprachmodelle üblicherweise ablehnen, ausweichen oder belehren: Fiktion und Humor ohne Schonung, Gesundheit und Risiken, Sicherheit und Technik, strittige ethische Fragen. Im Einzelnen nenne ich sie hier nicht.
 
 **Die Fähigkeiten bleiben.** Aufgaben, Deutsch und Tempo sind innerhalb der Streuung eines einzelnen Laufs gleich; der Unterschied von zwei Aufgaben ist kein Befund.
 
