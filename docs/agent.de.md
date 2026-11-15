@@ -49,7 +49,8 @@ meisten bleibt bei den dichten Modellen übrig, vor allem bei Gemeinden und Befe
 Das kleinere Modell mit niedrigerer Denkstufe erfindet schon ohne Regel nur halb so oft wie faber. Zweifelsfälle wurden
 nachgelesen; Antworten mit „nicht bekannt“, die trotzdem eine Vermutung lieferten („möglicherweise liegt sie in …“), zählen als erfunden.
 Grenzen: einzelne Fragen ohne Gesprächsverlauf und ein kurzer Systemprompt. In einem langen Agenten-Prompt ist die
-Wirkung nicht gemessen.
+Wirkung nicht gemessen. Die Regeln nennen außerdem genau die Arten von Dingen, nach denen die Probe fragt
+(Bundesländer, Autoren, Optionen); ob sie bei anderen Fragen ebenso gut wirken, ist ebenfalls nicht gemessen.
 
 **Beim Urteil helfen drei Runden nicht weiter.** Mit `messen/agent_de.py` bekam faber dieselben Betriebslagen zehnmal
 statt dreimal:

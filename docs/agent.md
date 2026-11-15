@@ -47,7 +47,8 @@ as correctly as before** (117 to 120 of 120): the rules do not make them overcau
 mainly towns and command options. velox is the surprise: the smaller model with lower reasoning effort invents only half
 as often as faber even without rules. Doubtful verdicts were re-read; "I don't know" answers that still offered a
 guess ("it may be in …") count as made up. Limits: single questions without a conversation, and a short system prompt. The effect inside a
-long agent prompt is not measured.
+long agent prompt is not measured. The rules also name exactly the kinds of things the probe asks about (states, authors,
+options); whether they work as well on other questions is not measured either.
 
 **For judgement, three rounds are not enough.** With `messen/agent_de.py`, faber got the same operating situations ten
 times instead of three:
