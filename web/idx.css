@@ -72,6 +72,10 @@ footer p{max-width:none;margin-bottom:8px}
 .rahmen{background:var(--panel)}
 .schild{position:absolute;left:14px;top:-9px;background:var(--grund);padding:0 8px;font:500 11px/1.5 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.14em;color:var(--gedaempft)}
 .szene img{display:block;width:100%;height:auto;border-radius:5px}
+.szene figcaption{position:absolute;left:22px;bottom:14px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;pointer-events:none}
+.szene .name{font:italic 400 21px/1 "Instrument Serif",Georgia,serif;color:#e9e3d8}
+.szene .teile{font:500 10px/1.2 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.16em;text-transform:uppercase;color:#a49c90}
+@media (max-width:760px){.szene figcaption{position:static;padding:10px 14px 12px;border-top:1px solid #2b2827;gap:10px}.szene .name{font-size:19px}}
 .rahmen .plan{border:0;margin:0;background:transparent;padding:22px 20px 16px}
 .konsole-block{color:var(--schrift);line-height:1.6}
 .konsole-block .g{color:var(--gedaempft)}
