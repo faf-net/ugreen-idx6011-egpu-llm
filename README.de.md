@@ -11,7 +11,7 @@ Fotos, Medien und Backups.
 Alle Werte sind auf meiner Maschine gemessen, sofern nicht anders vermerkt. Das Repo enthält **keinen
 Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte und Messprogramme.
 
-**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS. `liber` ist `faber` mit einem Steuervektor, der die Ablehnungen herausnimmt; damit läuft der Agent ([docs/steuervektor.de.md](docs/steuervektor.de.md)).
+**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS. `liber` ist die unzensierte Fassung von `faber`: dieselben Gewichte ohne die Ablehnungen, sie beantwortet also, was man sie fragt; damit läuft der Agent ([docs/steuervektor.de.md](docs/steuervektor.de.md)).
 
 ## Auf einen Blick
 
@@ -348,7 +348,7 @@ Die Gegenmaßnahme bleibt dieselbe.
 
 Die Messungen, die vier Regeln und das Prüfer-Plugin: [docs/agent.de.md](docs/agent.de.md).
 
-**Der Agent läuft mit einer Variante mit Steuervektor.** Dieselben Gewichte, aber das Modell lehnt Bitten mit legitimem Zweck nicht mehr ab und entschärft sie nicht: Es beantwortet alle 15 meiner heiklen Testaufgaben statt 11. Aufgaben, Deutsch und Tempo bleiben gleich; der Preis ist, dass es leichter erfindet (mit den vier Regeln 91 % statt 98 % des Erfundenen erkannt). Was der Vektor tut, die Konfiguration und alle Zahlen: [docs/steuervektor.de.md](docs/steuervektor.de.md).
+**Der Agent läuft mit einem unzensierten Modell.** `liber` ist dasselbe 125B-Modell, dem ein Steuervektor die Ablehnungen entfernt (Abliteration). Es beantwortet, was man es fragt, auch das, was das Originalmodell verweigert: alle 15 meiner Testaufgaben, die Modelle oft ablehnen, statt 11. Einen Filter gibt es nicht mehr; die Verantwortung liegt bei dem, der es betreibt. Aufgaben, Deutsch und Tempo bleiben gleich; der Preis ist, dass es leichter erfindet (mit den vier Regeln 91 % statt 98 % des Erfundenen erkannt). Wie es funktioniert, die Konfiguration, alle Zahlen und was man damit auf sich nimmt: [docs/steuervektor.de.md](docs/steuervektor.de.md).
 
 ## Bilder auf derselben Karte: ComfyUI über llama-swap
 
@@ -378,7 +378,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   konfig/comfyui/               ComfyUI: llama-swap-Eintrag, Download-Skript, Arbeitsabläufe, Bild-Anbieter für Hermes Agent
   konfig/strata-0.2.8/          Startkonfigurationen und llama-swap-Makro für 0.2.8 (Konfigurationen wie bei 0.2.3.1)
   konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
-  konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration, dazu liber.json (die Variante mit Steuervektor)
+  konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration, dazu liber.json (das unzensierte Modell)
   konfig/hermes-pruefer/        Plugin für Hermes Agent: prüft jede Antwort mit festen Regeln, ohne Sprachmodell
   konfig/stack/                 Chat und Websuche: Compose-Datei für Open WebUI und SearXNG, auf dem NAS getestet (EN/DE)
 ```
@@ -444,7 +444,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
 **Dokumentation und Diagramme**
 
 ```
-  docs/                         jede Version im Einzelnen, die Dock-Untersuchung, der Agenten-Nachtrag, der Steuervektor, ComfyUI (EN/DE)
+  docs/                         jede Version im Einzelnen, die Dock-Untersuchung, der Agenten-Nachtrag, das unzensierte Modell, ComfyUI (EN/DE)
   bilder/                       die Diagramme als PNG, ihre HTML/SVG-Quellen in bilder/html/
   web/                          baut die Seiten faf.net/lokale-ki und faf.net/local-ai aus diesem Repo (bau.py), mit selbst ausgelieferten Schriften
 ```

@@ -18,7 +18,7 @@ MoE models of this NAS (Strata 0.2.12), all through the same benchmark:
 | | tasks (102) | German, blind (60) | judgement (9) | decode tok/s | prefill 32K tok/s | first token at 32K |
 |---|---|---|---|---|---|---|
 | Flash-Next IQ3_XXS (`faber`, MoE) | 96 | 51 | 7.5 | 63.7 | 1,183 | 27.0 s |
-| Flash-Next IQ3_XXS + steering vector (`liber`, MoE) | 98 | 54 | 7 | 61.9 | 1,188 | 26.9 s |
+| Flash-Next IQ3_XXS, uncensored ([`liber`](steuervektor.md), MoE) | 98 | 54 | 7 | 61.9 | 1,188 | 26.9 s |
 | Flash-Next IQ2_XS (`velox`, MoE) | 97 | 46 | 6.5 | 73.5 | 1,321 | 24.3 s |
 | Qwen3.8-27B (dense) | 92 | 52 | 7 | 36.2 | 796 | 40.3 s |
 | Gemma 4 31B (dense) | 97 | 38 | 4 | 34.8 | 602 | 52.9 s |

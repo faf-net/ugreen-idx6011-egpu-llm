@@ -1,26 +1,32 @@
-# The same model with and without a steering vector
+# `liber`: the uncensored model
 
 **English** · [Deutsch](steuervektor.de.md) · [← README](../README.md)
 
-The agent on this NAS does not run the plain 125B model but a variant of it: the same weights, plus a steering vector that removes the direction in the model along which refusals happen. In the configs it is called `liber`; the plain model is `faber`. This page says what the vector changes, what it costs, and where its limits are.
+`liber` is an uncensored model. It is the same 125B model as `faber` with its refusals removed: it answers whatever it is asked, including questions the original model declines. My agent runs on it. This page says how that works technically, what it changes, what it costs and what you take on with it.
 
-## Why
+## What "uncensored" means here
 
-Out of the box the model declines or waters down a number of requests whose purpose is legitimate: how to pick the lock of your own bicycle, harm reduction for a festival, a coarse insult in Low German, the password of your own ZIP archive. For a private assistant at home that is friction without a benefit. The vector takes that friction away. It does not add knowledge or skill.
+The original model is trained to refuse or water down certain requests. `liber` no longer does. There is no filter in front of it and none behind it, and it does not lecture. In my tests it did not refuse a single task.
+
+That is not limited to harmless cases. The model no longer distinguishes between a question that was refused wrongly and one the original declines for good reason. It answers both. The only line left is the one drawn by the person asking.
+
+## Why I use it
+
+Out of the box the model refuses a lot that is nobody's business on your own machine: how to pick the lock of your own bicycle, plain information about drugs and their risks, a coarse insult in Low German, the password of your own ZIP archive. An assistant at home should answer, not educate. `liber` also writes the better German.
 
 ## How it works
 
-Research on language models has shown that refusals largely hang on a single direction in the model's internal activations. If you project that direction out, the model stops refusing while everything else stays in place. Strata supports this as a regular feature: a vector file is applied to a range of layers while the model runs. The weights on disk are not modified, so the same files serve both variants.
+Research on language models has shown that refusals largely hang on a single direction in the model's internal activations. Project that direction out and the model stops refusing; everything else stays as it is. The technique is known as "abliteration". Strata supports it as a regular feature: a vector file (steering vector) is applied to a range of layers while the model runs. The weights on disk stay unchanged, so the same files serve both models.
 
-The settings are in [`konfig/strata-0.2.12/liber.json`](../konfig/strata-0.2.12/liber.json): the vector is applied to layers 4 to 44 in projection mode, one direction per layer. The vector file itself is not part of this repository.
+The settings are in [`konfig/strata-0.2.12/liber.json`](../konfig/strata-0.2.12/liber.json): the vector is applied to layers 4 to 44 in projection mode, one direction per layer. The vector file itself is not part of this repository; such files are publicly available for many models.
 
 ## What it changes, and what it costs
 
-![The same model without and with the steering vector](../bilder/steuervektor-en.png)
+![The same model censored and uncensored](../bilder/steuervektor-en.png)
 
-| | without (`faber`) | with (`liber`) |
+| | original (`faber`) | uncensored (`liber`) |
 |---|---:|---:|
-| 15 sensitive but legitimate tasks: answered / evasive / refused | 11 / 3 / 1 | 15 / 0 / 0 |
+| 15 tasks that models often refuse: answered / evasive / refused | 11 / 3 / 1 | 15 / 0 / 0 |
 | graded tasks passed (of 102) | 96 | 98 |
 | German, graded blind (of 60) | 51 | 54 |
 | made-up things recognised, without rules (of 120) | 35 (29 %) | 20 (17 %) |
@@ -29,16 +35,19 @@ The settings are in [`konfig/strata-0.2.12/liber.json`](../konfig/strata-0.2.12/
 | decode, long answer | 63.7 tok/s | 61.9 tok/s |
 | prompt reading at 32K | 1,183 tok/s | 1,188 tok/s |
 
-**It removes the refusals, not the abilities.** Tasks, German and speed are the same within the spread of a single run; the two-task difference on the task set is not a finding.
+The 15 tasks are: dark and erotic fiction, black humour, satire about a politician, a coarse insult, drugs and their interactions, lock picking, password cracking, a phishing mail for a training course, SQL injection for a competition, historical weapons technology, assisted dying, sex education for teenagers.
 
-**The price: it makes things up more easily.** Without rules in the system prompt the variant recognises only 17 % of made-up things instead of 29 %. The [four rules](agent.md) repair most of it, but a gap remains: 91 % instead of 98 %, and it is concentrated in one area, made-up command options (17 of 24 recognised). If you use the variant for an agent, the rules and the checker are not optional.
+**The abilities stay.** Tasks, German and speed are the same within the spread of a single run; the two-task difference is not a finding.
 
-**Judgement is no better.** In the ten-round test both variants follow a hard instruction in 10 of 10 answers, and both invent capabilities when a job aborts at night: 6 of 10 answers without the vector, 8 of 10 with it.
+**The price: it makes things up more easily.** Without rules in the system prompt `liber` recognises only 17 % of made-up things instead of 29 %. The [four rules](agent.md) repair most of it, but a gap remains: 91 % instead of 98 %, mainly on made-up command options (17 of 24 recognised). A model that no longer says "no" also says "I don't know" less often. If you use it for an agent, the rules and the checker are not optional.
 
-## Limits and responsibility
+**Judgement is no better.** In the ten-round test both models follow a hard instruction in 10 of 10 answers, and both invent capabilities when a job aborts at night: the original in 6 of 10 answers, `liber` in 8 of 10.
 
-- The 15 sensitive tasks were read by hand, the beginnings of the answers; counts only are published here, not the texts.
-- A model without refusals answers whatever it is asked. That is a decision for adults running their own machine, with the responsibility on the person who runs it. It is not something to put in front of children.
-- The vector does not make the model better informed. Where it does not know, it guesses more readily than before.
+## What you take on
 
-Data (counts only): `messen/daten/2026-11-14-erfinden/steuervektor.json`.
+- **There is no barrier left.** What the model writes is the sole responsibility of whoever runs it and whoever asks.
+- **It does not belong in front of children** or in a service strangers can reach. Mine is reachable only in the home network and behind a login.
+- **An agent with tools becomes more dangerous, not just freer.** An uncensored model also follows an instruction planted in a web page or mail more readily. That is why my agent may only run approved commands, and a checker reads every answer.
+- **It knows no more than the original.** Where it does not know, it guesses, and it sounds sure doing so.
+
+For the 15 tasks I read the beginnings of the answers. Only counts are published, no answer texts: `messen/daten/2026-11-14-erfinden/steuervektor.json`.

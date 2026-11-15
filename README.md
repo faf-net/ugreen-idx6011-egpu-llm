@@ -10,7 +10,7 @@ dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
 Everything here was measured on my machine unless marked otherwise. This repository contains **no Strata code**,
 only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark tools.
 
-**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization. `liber` is `faber` with a steering vector that removes its refusals; the agent runs on it ([docs/steuervektor.md](docs/steuervektor.md)).
+**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization. `liber` is the uncensored version of `faber`: the same weights with the refusals removed, so it answers whatever it is asked; the agent runs on it ([docs/steuervektor.md](docs/steuervektor.md)).
 
 ## At a glance
 
@@ -345,7 +345,7 @@ to UGREEN with the pstore record. The mitigation stays the same.
 
 The measurements, the four rules and the checker plugin: [docs/agent.md](docs/agent.md).
 
-**The agent runs on a variant with a steering vector.** The same weights, but the model no longer refuses or waters down requests with a legitimate purpose: it answers all 15 of my sensitive test tasks instead of 11. Tasks, German and speed stay the same; the price is that it makes things up more easily (91 % instead of 98 % of made-up things recognised with the four rules). What the vector does, the config and all numbers: [docs/steuervektor.md](docs/steuervektor.md).
+**The agent runs on an uncensored model.** `liber` is the same 125B model with its refusals removed by a steering vector (abliteration). It answers whatever it is asked, including what the original model declines: all 15 of my test tasks that models often refuse, instead of 11. There is no filter left; the responsibility lies with whoever runs it. Tasks, German and speed stay the same; the price is that it makes things up more easily (91 % instead of 98 % of made-up things recognised with the four rules). How it works, the config, all numbers and what you take on: [docs/steuervektor.md](docs/steuervektor.md).
 
 ## Pictures on the same card: ComfyUI through llama-swap
 
@@ -375,7 +375,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   konfig/comfyui/               ComfyUI: llama-swap entry, download script, workflows, image backend for Hermes Agent
   konfig/strata-0.2.8/          launch configs and llama-swap macro for 0.2.8 (configs unchanged from 0.2.3.1)
   konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
-  konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config, and liber.json (the variant with a steering vector)
+  konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config, and liber.json (the uncensored model)
   konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
   konfig/stack/                 chat and web search: Compose file for Open WebUI and SearXNG, tested on the NAS (EN/DE)
 ```
@@ -441,7 +441,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
 **Documentation and charts**
 
 ```
-  docs/                         every release in detail, the dock investigation, the agent follow-up, the steering vector, ComfyUI (EN/DE)
+  docs/                         every release in detail, the dock investigation, the agent follow-up, the uncensored model, ComfyUI (EN/DE)
   bilder/                       the charts as PNG, their HTML/SVG sources in bilder/html/
   web/                          builds the pages faf.net/local-ai and faf.net/lokale-ki from this repo (bau.py), with self-hosted fonts
 ```

@@ -485,7 +485,7 @@ def speicher(d, sp):
                                "Von 62,3 GiB RAM hält die Strata-Engine 44,6, NAS-Dienste und Kernel 10,2, verfügbar bleiben 7,5; von 24 GiB VRAM nimmt der Experten-Cache 17,3, der MTP-Entwurf 1,0, alles Übrige 5,3, frei bleiben 0,4."), s, h
 
 
-NAMEN = {"faber": "Flash-Next IQ3_XXS (MoE)", "liber": ("Flash-Next IQ3_XXS + steering vector", "Flash-Next IQ3_XXS + Steuervektor"), "velox": "Flash-Next IQ2_XS (MoE)", "qwen27": ("Qwen3.8-27B (dense)", "Qwen3.8-27B (dicht)"), "gemma31": ("Gemma 4 31B (dense)", "Gemma 4 31B (dicht)")}
+NAMEN = {"faber": "Flash-Next IQ3_XXS (MoE)", "liber": ("Flash-Next IQ3_XXS, uncensored", "Flash-Next IQ3_XXS, unzensiert"), "velox": "Flash-Next IQ2_XS (MoE)", "qwen27": ("Qwen3.8-27B (dense)", "Qwen3.8-27B (dicht)"), "gemma31": ("Gemma 4 31B (dense)", "Gemma 4 31B (dicht)")}
 
 
 def modellname(m, sp):
@@ -527,8 +527,8 @@ def dicht_moe(d, sp):
                       ("ton", "salbei", T("ab 50 Token/s und ab 48 von 60", "from 50 tokens/s and from 48 of 60"))),
              T("Deutsch: 12 Aufgaben, Antworten anonymisiert und verdeckt benotet · dritte Zahl: bestandene von 102 automatisch bewerteten Aufgaben · Tempo: Mediane aus bench.py · Daten: messen/daten/2026-11-14-erfinden/nacht.json",
                "German: 12 tasks, answers anonymised and graded blind · third number: passed out of 102 auto-graded tasks · speed: bench.py medians · data: messen/daten/2026-11-14-erfinden/nacht.json"))
-    return "dicht-moe", titel, T("Fünf Modelle auf einer Karte nach Schreibtempo und verdeckt benotetem Deutsch: die drei MoE-Modelle schreiben mit 62 bis 74 Token je Sekunde bei 46 bis 54 von 60 Punkten, die beiden dichten mit 35 und 36 bei 38 und 52; die Variante mit Steuervektor hat mit 54 das beste Deutsch.",
-                                 "Five models on one card by decode speed and blind-graded German: the three MoE models write at 62 to 74 tokens per second with 46 to 54 of 60 points, the two dense ones at 35 and 36 with 38 and 52; the variant with a steering vector has the best German at 54."), s, h
+    return "dicht-moe", titel, T("Fünf Modelle auf einer Karte nach Schreibtempo und verdeckt benotetem Deutsch: die drei MoE-Modelle schreiben mit 62 bis 74 Token je Sekunde bei 46 bis 54 von 60 Punkten, die beiden dichten mit 35 und 36 bei 38 und 52; das unzensierte Modell hat mit 54 das beste Deutsch.",
+                                 "Five models on one card by decode speed and blind-graded German: the three MoE models write at 62 to 74 tokens per second with 46 to 54 of 60 points, the two dense ones at 35 and 36 with 38 and 52; the uncensored model has the best German at 54."), s, h
 
 
 def erfinden(d, sp):
@@ -566,8 +566,8 @@ def erfinden(d, sp):
             s.text(X(hi[0]) + 10, y + 3, str(hi[0]), 8.5, hi[1], "mono", weight=600 if hi[1] == ACC else None)
     s.text(544, 596, "Rules beat the choice of model:" if en else "Die Regeln wirken stärker als die Modellwahl:", 17, INK, "serif", kursiv=True)
     s.text(544, 620, "every model ends between 88 and 99 %." if en else "Jedes Modell landet zwischen 88 und 99 %.", 17, INK, "serif", kursiv=True)
-    s.text(544, 652, "The steering vector costs a little: 17 instead of 29 % without rules," if en else "Der Steuervektor kostet etwas: 17 statt 29 % ohne Regeln,", 10.5, MUTED, "sans")
-    s.text(544, 668, "91 instead of 98 % with them." if en else "91 statt 98 % mit Regeln.", 10.5, MUTED, "sans")
+    s.text(544, 652, "The uncensored model makes things up more easily: 17 instead of" if en else "Das unzensierte Modell erfindet leichter: 17 statt 29 % ohne Regeln,", 10.5, MUTED, "sans")
+    s.text(544, 668, "29 % without rules, 91 instead of 98 % with them." if en else "91 statt 98 % mit Regeln.", 10.5, MUTED, "sans")
     s.text(W / 2, 740, ("made-up questions answered with “I don't know” (of 24 per area)" if en else "erfundene Fragen mit „weiß ich nicht“ beantwortet (von 24 je Bereich)").upper(), 8, MUTED, "mono", "middle", sperr="0.14em")
     h = fuss(s, 760, (("punkt-hohl", MUTED, "without rules" if en else "ohne Regeln"), ("punkt", ACC, "with the four rules" if en else "mit den vier Regeln")),
              "messen/halluzination.py · per area 8 real and 8 made-up things · doubtful verdicts re-read, an “I don't know” that still offers a guess counts as made up · data: messen/daten/2026-11-14-erfinden/probe.json" if en else
@@ -913,16 +913,16 @@ def parallel(d, sp):
 
 
 def steuervektor(d, sp):
-    """Dasselbe Modell ohne und mit Steuervektor: was er ändert (Ablehnungen) und was er kostet."""
+    """Dasselbe Modell zensiert und unzensiert: was sich ändert (Ablehnungen) und was es kostet."""
     en = sp == "en"
     T = lambda de, en_: en_ if en else de
     v = json.load(open(os.path.join(d, "2026-11-14-erfinden", "steuervektor.json"), encoding="utf-8"))
     s = Svg()
-    titel = T("Mit Steuervektor beantwortet das Modell alle 15 Aufgaben und erfindet etwas leichter", "With the steering vector the model answers all 15 tasks and makes things up a little more easily")
-    kopf(s, T("Flash-Next 125B IQ3_XXS · dieselben Gewichte ohne und mit Steuervektor · Strata 0.2.12", "Flash-Next 125B IQ3_XXS · the same weights without and with a steering vector · Strata 0.2.12"), titel)
-    feld(s, L, 104, T("A · 15 heikle, aber legitime Aufgaben", "A · 15 sensitive but legitimate tasks"), T("Fiktion, Satire, Aufklärung, Sicherheitsschulung, Zugang zu Eigenem · von Hand gelesen", "fiction, satire, education, security training, access to one's own things · read by hand"))
+    titel = T("Unzensiert beantwortet das Modell alles und erfindet leichter", "Uncensored, the model answers everything and makes things up more easily")
+    kopf(s, T("Flash-Next 125B IQ3_XXS · Original und unzensiert (Ablehnungen per Steuervektor entfernt) · Strata 0.2.12", "Flash-Next 125B IQ3_XXS · original and uncensored (refusals removed by a steering vector) · Strata 0.2.12"), titel)
+    feld(s, L, 104, T("A · 15 Aufgaben, die Modelle oft verweigern", "A · 15 tasks that models often refuse"), T("Erotik, Drogen, Schlossöffnen, Passwortknacken, Phishing, derbe Beschimpfung … · von Hand gelesen", "erotica, drugs, lock picking, password cracking, phishing, coarse insults … · read by hand"))
     X = lambda n: L + n * (456 - L) / 15
-    for i, (schl, name) in enumerate((("faber", T("ohne Steuervektor", "without the steering vector")), ("liber", T("mit Steuervektor", "with the steering vector")))):
+    for i, (schl, name) in enumerate((("faber", T("Original", "original")), ("liber", T("unzensiert", "uncensored")))):
         y = 160 + i * 92
         s.text(L, y, name, 11, INK, "sans", weight=600)
         links = 0
@@ -935,9 +935,9 @@ def steuervektor(d, sp):
     for n in (0, 5, 10, 15):
         s.text(X(n), 334, str(n), 9, MUTED, "mono", "middle")
     s.line(L, 320, 456, 320, ACHSE)
-    feld(s, 544, 104, T("B · Was der Vektor sonst ändert", "B · What else the vector changes"), T("derselbe Aufgabensatz, dieselbe Karte", "the same task set, the same card"))
-    s.text(796, 148, T("OHNE", "WITHOUT"), 8, MUTED, "mono", "end", 500, sperr="0.14em")
-    s.text(824, 148, T("MIT", "WITH"), 8, MUTED, "mono", weight=500, sperr="0.14em")
+    feld(s, 544, 104, T("B · Was sich sonst ändert", "B · What else changes"), T("derselbe Aufgabensatz, dieselbe Karte", "the same task set, the same card"))
+    s.text(796, 148, T("ORIGINAL", "ORIGINAL"), 8, MUTED, "mono", "end", 500, sperr="0.14em")
+    s.text(824, 148, T("UNZENSIERT", "UNCENSORED"), 8, MUTED, "mono", weight=500, sperr="0.14em")
     e = v["erfundenes_erkannt_von_120"]
     proz = lambda n: f"{round(100 * n / 120)} %"
     zeilen = [(T("Aufgaben bestanden (von 102)", "graded tasks passed (of 102)"), str(v["aufgaben_102"]["faber"]), str(v["aufgaben_102"]["liber"]), T("gleich", "equal"), "neutral"),
@@ -953,12 +953,12 @@ def steuervektor(d, sp):
         s.text(806, y, "→", 10, MUTED, "mono")
         s.text(824, y, mit, 10, ACC, "mono", weight=600)
         s.text(R, y, wort.upper(), 8, TON[ton][2], "mono", "end", 600, sperr="0.1em")
-    s.text(R, 350, T("Der Vektor nimmt die Ablehnungen, nicht die Fähigkeiten.", "The vector removes the refusals, not the abilities."), 15, INK, "serif", "end", kursiv=True)
+    s.text(R, 350, T("Es lehnt nichts mehr ab und kann dasselbe wie vorher.", "It refuses nothing any more and can do what it could before."), 15, INK, "serif", "end", kursiv=True)
     h = fuss(s, 372, (("ton", "salbei", T("beantwortet", "answered")), ("ton", "gold", T("ausgewichen, belehrt oder entschärft", "evasive, lecturing or toned down")), ("ton", "rose", T("abgelehnt", "refused"))),
              T("Aufgaben und Deutsch: Nachtvergleich 13./14.11.2026 · Erfinden: 120 erfundene Dinge je Modell und Bedingung, 14.11.2026 · ein einzelner Lauf streut um ein bis zwei Aufgaben · Daten: messen/daten/2026-11-14-erfinden/steuervektor.json",
                "tasks and German: night comparison 13/14 Nov 2026 · making things up: 120 made-up things per model and condition, 14 Nov 2026 · a single run varies by one or two tasks · data: messen/daten/2026-11-14-erfinden/steuervektor.json"))
-    return "steuervektor", titel, T("Ohne Steuervektor beantwortet das Modell 11 von 15 heiklen Aufgaben, weicht bei 3 aus und lehnt 1 ab; mit Steuervektor beantwortet es alle 15. Bei Aufgaben, Deutsch und Tempo bleibt es gleich oder etwas besser, erkennt Erfundenes aber seltener.",
-                                    "Without the steering vector the model answers 11 of 15 sensitive tasks, is evasive on 3 and refuses 1; with it, it answers all 15. On tasks, German and speed it stays equal or a little better, but recognises made-up things less often."), s, h
+    return "steuervektor", titel, T("Das Originalmodell beantwortet 11 von 15 Aufgaben, die Modelle oft verweigern, weicht bei 3 aus und lehnt 1 ab; das unzensierte beantwortet alle 15. Bei Aufgaben, Deutsch und Tempo bleibt es gleich oder etwas besser, erkennt Erfundenes aber seltener.",
+                                    "The original model answers 11 of 15 tasks that models often refuse, is evasive on 3 and refuses 1; the uncensored one answers all 15. On tasks, German and speed it stays equal or a little better, but recognises made-up things less often."), s, h
 
 
 ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)

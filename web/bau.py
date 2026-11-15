@@ -279,15 +279,17 @@ def seite(sp):
       + f' <a href="{doc("agent")}">{T("Alle Messungen im Einzelnen", "All measurements in detail")}</a> · <a href="{GH}/tree/main/konfig/hermes-pruefer">{T("das Prüfer-Plugin", "the checker plugin")}</a> · <a href="{GH}/blob/main/messen/halluzination.py">{T("das Skript der Probe", "the probe script")}</a>')
     zu()
 
-    kapitel(6, "vektor", T("Dasselbe Modell, ohne Ablehnungen", "The same model, without refusals"),
-            T("Mein Agent läuft nicht mit dem unveränderten Modell, sondern mit einer Variante: dieselben Gewichte, dazu ein Steuervektor, der die Richtung herausnimmt, entlang derer das Modell ablehnt. Ab Werk verweigert oder entschärft es Bitten, deren Zweck legitim ist, etwa wie man das Schloss des eigenen Fahrrads öffnet. Für einen Assistenten zu Hause ist das Reibung ohne Nutzen.",
-              "My agent does not run the plain model but a variant: the same weights, plus a steering vector that removes the direction along which the model refuses. Out of the box it declines or waters down requests with a legitimate purpose, such as how to pick the lock of your own bicycle. For an assistant at home that is friction without a benefit."))
+    kapitel(6, "vektor", T("Unzensiert: ein Modell, das nichts ablehnt", "Uncensored: a model that refuses nothing"),
+            T("Mein Agent läuft mit einem unzensierten Modell. Es ist dasselbe 125B-Modell, dem die Ablehnungen entfernt sind: Es beantwortet, was man es fragt, auch das, was das Originalmodell verweigert. Einen Filter gibt es nicht mehr, und es belehrt nicht. Technisch nimmt ein Steuervektor die Richtung aus dem Modell, entlang derer es ablehnt (Abliteration); die Gewichte bleiben dieselben.",
+              "My agent runs on an uncensored model. It is the same 125B model with its refusals removed: it answers whatever it is asked, including what the original model declines. There is no filter left, and it does not lecture. Technically a steering vector removes the direction along which the model refuses (abliteration); the weights stay the same."))
     A(bild(D.steuervektor, sp))
-    P(T("<b>Der Vektor nimmt die Ablehnungen, nicht die Fähigkeiten.</b> Von 15 heiklen, aber legitimen Aufgaben beantwortet das Modell mit Vektor alle, ohne ihn 11. Aufgaben, Deutsch und Tempo bleiben gleich. <b>Der Preis: Es erfindet leichter.</b> Ohne Regeln erkennt die Variante nur 17 % des Erfundenen statt 29 %; mit den vier Regeln von oben sind es 91 % statt 98 %. Wer sie für einen Agenten nimmt, kann auf Regeln und Prüfer nicht verzichten.",
-        "<b>The vector removes the refusals, not the abilities.</b> Of 15 sensitive but legitimate tasks the model answers all with the vector, 11 without it. Tasks, German and speed stay the same. <b>The price: it makes things up more easily.</b> Without rules the variant recognises only 17 % of made-up things instead of 29 %; with the four rules from above it is 91 % instead of 98 %. If you use it for an agent, the rules and the checker are not optional."))
-    P(T("Ein Modell ohne Ablehnungen beantwortet, was man es fragt. Das ist eine Entscheidung für Erwachsene am eigenen Gerät, und die Verantwortung liegt bei dem, der es betreibt. Vor Kinder gehört es nicht.",
-        "A model without refusals answers whatever it is asked. That is a decision for adults running their own machine, with the responsibility on the person who runs it. It is not something to put in front of children.")
-      + f' <a href="{doc("steuervektor")}">{T("Wie der Vektor wirkt, die Konfiguration und alle Zahlen", "How the vector works, the config and all numbers")}</a>')
+    P(T("<b>Warum:</b> Ab Werk verweigert das Modell vieles, was am eigenen Gerät niemanden etwas angeht, vom Schloss des eigenen Fahrrads bis zur nüchternen Auskunft über Drogen. Ein Assistent zu Hause soll antworten und nicht erziehen. Von 15 Aufgaben, die Modelle oft verweigern, beantwortet das unzensierte alle, das Original 11. Aufgaben, Deutsch und Tempo bleiben gleich.",
+        "<b>Why:</b> out of the box the model refuses a lot that is nobody's business on your own machine, from the lock of your own bicycle to plain information about drugs. An assistant at home should answer, not educate. Of 15 tasks that models often refuse, the uncensored one answers all, the original 11. Tasks, German and speed stay the same."))
+    P(T("<b>Der Preis: Es erfindet leichter.</b> Ein Modell, das nicht mehr „nein“ sagt, sagt auch seltener „weiß ich nicht“. Ohne Regeln erkennt es nur 17 % des Erfundenen statt 29 %; mit den vier Regeln von oben sind es 91 % statt 98 %. Wer es für einen Agenten nimmt, kann auf Regeln und Prüfer nicht verzichten.",
+        "<b>The price: it makes things up more easily.</b> A model that no longer says \"no\" also says \"I don't know\" less often. Without rules it recognises only 17 % of made-up things instead of 29 %; with the four rules from above it is 91 % instead of 98 %. If you use it for an agent, the rules and the checker are not optional."))
+    P(T("<b>Was man damit auf sich nimmt:</b> Das Modell unterscheidet nicht mehr zwischen einer Frage, die zu Unrecht abgelehnt wurde, und einer, die das Original aus gutem Grund verweigert. Es beantwortet beide. Die Grenze zieht nur noch der Mensch, der fragt, und die Verantwortung trägt, wer es betreibt. Es gehört nicht vor Kinder und nicht in einen Dienst, den Fremde erreichen.",
+        "<b>What you take on:</b> the model no longer distinguishes between a question that was refused wrongly and one the original declines for good reason. It answers both. The only line left is drawn by the person asking, and the responsibility lies with whoever runs it. It does not belong in front of children or in a service strangers can reach.")
+      + f' <a href="{doc("steuervektor")}">{T("Wie es funktioniert, die Konfiguration und alle Zahlen", "How it works, the config and all numbers")}</a>')
     zu()
 
     kapitel(7, "strom", T("Was kostet es an Strom?", "What does it cost in power?"))
@@ -355,7 +357,7 @@ def seite(sp):
     basis = ""
     ordner = ORDNER[sp]
     kanon = f"https://faf.net/{ordner}/"
-    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("vektor", T("Vektor", "Vector")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
+    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("vektor", T("Unzensiert", "Uncensored")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
            ("versionen", T("Versionen", "Releases")), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
 <html lang="{sp}">
