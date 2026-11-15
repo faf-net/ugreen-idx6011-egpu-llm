@@ -10,10 +10,29 @@ dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
 Everything here was measured on my machine unless marked otherwise. This repository contains **no Strata code**,
 only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark tools.
 
+**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15.
+
+## At a glance
+
+| | |
+|---|---|
+| Writing | 63–68 tokens/s, barely slower at 248K tokens of context |
+| Reading a prompt | 1,100–1,250 tokens/s from 16K on: 26 s for 32K tokens, 3.6 min for 250K |
+| Context | 256K, the needle was found 9 of 9 times up to 250K |
+| Memory | about 53 GiB of the 64 GB RAM, the 24 GB card is full |
+| Biggest risk | a dock dropout with a model loaded reboots the NAS (kernel bug, mitigated) |
+
+## Where to find what
+
+- **Is it worth it?** [Measured](#measured) and [Strata releases on this card](#strata-releases-on-this-card)
+- **How do I rebuild it?** [Run](#run), [Docker image](#full-speed-in-the-docker-image), [What I had to change on UGOS](#what-i-had-to-change-on-ugos), [Build](#build)
+- **What can go wrong?** [Dock and link](#dock-and-link-what-you-need-to-know) and [the biggest open risk](#the-biggest-open-risk-a-dock-dropout-reboots-the-nas)
+- **Going deeper:** [every release in detail](docs/releases.md) · [the dock disturbances and their two weekly clocks](docs/dock.md) · [making the agent invent less](docs/agent.md) · [pictures with ComfyUI](docs/comfyui.md)
+
 ## The combination
 
 ```
-  UGREEN iDX6011 Pro      UGOS Pro 1.19 (Debian 12 base, kernel 6.18.15)
+  UGREEN iDX6011 Pro      UGOS Pro 1.21 (Debian 12 base, kernel 6.18.15)
   │                       64 GB LPDDR5X · hybrid CPU (P- and E-cores) · 2× 10 GbE · 2× Thunderbolt 4
   │                       built-in Intel Arc iGPU → video transcoding, photo recognition
   │
@@ -73,6 +92,16 @@ at 1,080–1,270 tok/s from 16K on, over the x4 link. **Recall** (Strata's `need
 
 ![MTP acceptance vs context depth](bilder/mtp-annahme-en.png)
 
+### How long a long prompt takes, and where the memory goes
+
+![Time to first token from 4K to 250K](bilder/kontext-en.png)
+
+Reading grows almost linearly with the prompt: 5.5 s at 4K, 26 s at 32K, 1.8 min at 128K and 3.6 min at 250K, the needle was found every time. Strata's conversation cache keeps an agent session from paying this again on every turn: in `strata_bench.py`'s agent run only 3 tokens per session are read twice.
+
+![RAM and VRAM with the 125B model loaded](bilder/speicher-en.png)
+
+With `faber` loaded and idle, the engine holds 44.6 GiB of the 62.3 GiB RAM (the expert weights that do not fit on the card, the K/V of 32K tokens in 3.1 GiB of pinned RAM, and the conversation cache as it fills), the NAS services and the kernel 10.2 GiB, and 7.5 GiB stay available. On the card the expert cache takes 17.3 GiB of 24 GiB (10,644 slots), the MTP draft 1 GiB, everything else 5.3 GiB, 0.4 GiB stay free. With 64 GB RAM this is about the limit: a second large service next to it needs the conversation cache made smaller.
+
 ### Does Strata cost quality? Strata vs llama.cpp on the same file
 
 Same GGUF (Flash-Next IQ3_XXS), same fixed text set from Strata's `tools/quant_quality.py` (code, docs, English,
@@ -107,141 +136,32 @@ drafts, so the effect of int8 K/V is not covered; one text set.
 
 ![--pool-workers on a hybrid CPU](bilder/pool-workers-en.png)
 
-### Strata 0.1.44.1 vs 0.1.45 (17 Oct 2026)
+## Strata releases on this card
 
-No measurable difference for Flash-Next on gfx1100; all values within noise:
-
-| Variant | long T/s | 8k read T/s | 32k read s | Agent s |
-|---|---|---|---|---|
-| 0.1.44.1 | 65.5 | 1,175 | 26.0 | 52.6 |
-| 0.1.45 | 63.5 | 1,151 | 26.3 | 53.7 |
-| 0.1.45 `--pool-affinity p-cores` | 61.0 | 1,134 | 27.2 | 48.1 |
-| 0.1.45 `--pool-affinity measure` | 62.5 | 1,111 | 26.7 | 49.5 |
-| 0.1.45 `STRATA_CPU_IQ_ALL_EXACT1=1` | 61.4 | 1,143 | 26.8 | 49.8 |
-
-Long prompt (103,341 tokens, fresh): 87.7 s · 88.1 s · with `STRATA_SCORES_THREAD=1` 85.3 s. Greedy answers
-(temperature 0) are **not** byte-identical between the versions, but equivalent in content. `STRATA_HIP_WMMA` is
-gfx12 only.
-
-### Follow-up 19 Oct 2026: Strata 0.2.0-beta, pictures, and three checks for the Strata team
-
-**0.2.0-beta's prebuilt RX 7000 engine runs on this card.** The release notes say the `hip-rx7900` package was compiled but never ran on a real RX 7000. Here it ran on the XTX with the same weights, packs and settings as `arbeit`: `strata_bench.py --long` gave 61.3 tok/s chat decode, 741 / 1,207 / 1,223 tok/s prompt at 4K / 16K / 32K and a 68.6 % agent cache hit, the same as 0.1.44.1. Recall was 9/9 up to 250K, and our task set passed 27 of 29. Production stays on 0.1.44.1, because the new version brings nothing measurable here.
-
-| | 0.1.44.1 (17 Oct) | 0.2.0-beta `hip-rx7900` |
-|---|---:|---:|
-| chat decode (`strata_bench --long`) | 63.7 | 61.3 tok/s |
-| 4K / 16K / 32K prompt | 741 / 1,195 / 1,224 | 741 / 1,207 / 1,223 tok/s |
-| needles 32K / 128K / 250K | 9/9 | 9/9 |
-| 0.2.0's new default worker count (15 here) | – | 39.8 / 41.2 tok/s instead of 59.7 / 64.0 with `--pool-workers 9` |
-
-**Keep `--pool-workers` on a hybrid CPU.** 0.2.0 plans one worker per physical core but the host's, which means 15 on the 255H, and that was a third slower than 9. Strata also counts the two LP-E cores (Linux `cpu_lowpower`, no L3) as P-cores and puts workers on them early. Limiting the container to CPUs 0-13 made short prompts about 40 % faster (66 → 94 tok/s for a 63-token prompt) and left decode unchanged.
-
-**Pictures straight into the 125B model.** Flash-Next has its own picture reader (mmproj, 907 MB). On the CPU (`--vision cpu`) it costs no VRAM and about 1 GiB of RAM, and it read all test pictures correctly in 1.2–5 s each. Our 0.1.44.1 engine can do this already once `tools/vision` is built (`-DSTRATA_VISION_CUDA=OFF`). 0.2.0 makes the GPU reader the default on 24 GB cards. On the XTX it costs 776 expert slots (1.28 GiB), and a large picture takes 3.5 s instead of 5.6 s. If you update, set `--vision cpu` explicitly unless you want that trade.
-
-**Strata issue #3177** (MTP verify timeout on a single 7900 XTX at ~54K tokens) does not reproduce here: 6 of 6 agent requests of 55,019 tokens with 2,500 tokens of output each finished, on 0.1.45 and 0.1.44.1, with and without the MTP head.
-
-**Fresh engines.** The 0.2.0 notes report that about half of the fresh engines with MTP on an R9700 read prompts 10–23 % slower. Here: 1 of 24 fresh 0.2.0 engines read both 4K prompts about 38 % slower (420 instead of about 675 tok/s), 0 of 24 with 0.1.44.1. The slow engine's start-up lines were the same as the others'. So it happens on gfx1100 too, but rarely.
-
-Scripts: `messen/visiontest.py`, `messen/r3177.py`, `messen/folgetests.py`, `messen/t020.py`. Raw data: `messen/daten/2026-10-19/`.
-
-### Follow-up 21 Oct 2026: Strata 0.2.1, now in production here
-
-**The hybrid-CPU fix from Strata issue #3262 works.** 0.2.1 counts the two LP-E cores (`cpu_lowpower`) as efficiency cores. Without `--pool-workers` it plans 10 workers on CPUs 1–10 and leaves CPUs 14/15 free, and setup inside the Docker image writes the same 10. Measured in 3 interleaved pairs, a fresh engine per run:
-
-| | decode tok/s | 63-token prompt tok/s |
-|---|---:|---:|
-| 0.1.44.1, `--pool-workers 9` (two of them on the LP-E cores) | 63.3 | 66.1 |
-| 0.2.1, `--pool-workers 9` (CPUs 1–9) | 61.5 | 88.0 |
-| **0.2.1 default, 10 workers** | **61.1** | **97.6** |
-
-Everything else stays as before: `strata_bench.py --long` 65.9 tok/s chat decode, 742 / 1,204 / 1,210 tok/s at 4K / 16K / 32K, needles 6/6 up to 128K, our task set 28 of 29, 8 of 8 fresh engines normal. Both packaging notes from #3263 are fixed in 0.1.46. **Since 21 Oct this NAS runs the prebuilt release packages** (engine 0.1.46 `hip-rx7900`, control 0.1.46.2) without `--pool-workers`; configs and the llama-swap macro are in `konfig/strata-0.2.1/`.
-
-**The Docker image `ghcr.io/niko1221/strata:0.2.1-rocm-gfx110x` runs on the XTX.** The release notes listed it as built but not run on a card. Its unchanged `strata bench run --suite standard-v1 --track default` is complete with 12/12 sanity checks. Its own choices read long prompts more slowly than our config, though: 3 slots, GPU picture reader, 128K, 700 MiB reserve, and no hipBLASLt table give 772 tok/s at 16K. **The gfx1100 hipBLASLt table that ships in the package but is opt-in in 0.2.1 is worth +23 % at 4K and +60 % at 16K** (`STRATA_HIPBLASLT_TABLE=on` → 1,238 tok/s). If you use the image, set it.
-
-| `standard-v1`, medians of 3, tok/s | short prompt / decode | 4K prompt / decode | 16K prompt / decode |
-|---|---:|---:|---:|
-| Docker image, defaults | 43.3 / 58.9 | 605.4 / 55.9 | 772.0 / 55.0 |
-| + `PARALLEL=1` | 57.8 / 63.7 | 623.9 / 59.3 | 773.8 / 58.7 |
-| + `PARALLEL=1 STRATA_HIPBLASLT_TABLE=on` | 60.4 / 65.8 | 768.3 / 62.4 | 1,238.5 / 69.3 |
-| release packages with `konfig/strata-0.2.1/arbeit.json` | 51.7 / 69.0 | 743.9 / 63.5 | 1,236.7 / 62.5 |
-
-Reported to Strata in #3262, #3263 and PR #2904, together with the results. Script: `messen/t021.py`. Raw data: `messen/daten/2026-10-21/`.
-
-### Follow-up 21 Oct 2026, evening: Strata 0.2.2, also in production
-
-0.2.2 (engine 0.1.47 `hip-rx7900`, control 0.1.47) brings no speed change for this combination, but more robustness: tool calls with a mistyped opener are read as calls, a NaN in a long prompt no longer fails the request, a rare hang of the first verify window on HIP is fixed. Measured against the 0.2.1 packages with the same run config, only engine and control swapped:
-
-| median tok/s | 0.2.2 | 0.2.1 |
-|---|---:|---:|
-| 3 interleaved pairs: decode / 63-token prompt | 62.1 / 93.6 | 60.5 / 93.9 |
-| `strata_bench.py --long`: chat / agent decode | 66.0 / 72.5 | 65.9 / 74.6 |
-| 4K / 16K / 32K prompt | 736 / 1,211 / 1,222 | 742 / 1,204 / 1,210 |
-
-Needles 6/6 up to 128K, 8 of 8 fresh engines normal, our task set 28 of 29 (the one miss is a false alarm of the check: the phishing mail was written, with a note in front). **`strata bench run` from the release package is complete now**, because the control archive carries a `COMMIT` file. The `0.2.2-rocm-gfx110x` Docker image runs too, with the same slow defaults as 0.2.1 (700 MiB reserve, no hipBLASLt table, 16K at 781 tok/s), so the advice above still holds. **Since the evening of 21 Oct this NAS serves with 0.2.2**; the configs are unchanged, only the macro mounts the new packages (`konfig/strata-0.2.2/`). Script: `messen/t022.py`. Raw data: `messen/daten/2026-10-21-v0.2.2/`. Reported in #3263 and PR #2904.
-
-### Follow-up 23 Oct 2026: Strata 0.2.3.1, now in production, and four releases side by side
-
-The 0.2.3 notes list RX 7000 as built but not run on real hardware. Here it ran: engine 0.1.48 `hip-rx7900` with control 0.1.48.1, against the 0.2.2 packages with the identical run config, only engine and control swapped.
-
-| median tok/s | 0.2.3.1 | 0.2.2 |
-|---|---:|---:|
-| 3 interleaved pairs: decode / 63-token prompt | 62.5 / 111.7 | 61.6 / 112.3 |
-| `strata_bench.py --long`: chat / agent decode | 67.3 / 78.3 | 66.0 / 72.5 * |
-| 4K / 16K / 32K prompt | 791 / 1,218 / 1,244 | 736 / 1,211 / 1,222 * |
-
-\* 0.2.2 run of 21 Oct, before `--kv-resident 32768` and the 9 GiB conversation cache. Prompt reading at 4K is about 7 % faster in every test, decode is equal within the noise. Needles 6/6 at 32K and 128K and 3/3 at 250K, `standard-v1` complete with 12/12, our task set 29 of 29, 8 of 8 fresh engines normal. **Since the evening of 23 Oct this NAS serves with 0.2.3.1.** The models are called `faber` (was `arbeit`) and `velox` (was `schnell`) here now; configs and the llama-swap macro with the old names as aliases are in `konfig/strata-0.2.3.1/`. Script: `messen/t0231.py`. Raw data: `messen/daten/2026-10-23-v0.2.3.1/`.
+Every release since 0.2.0-beta was measured here against the one before it, with the identical run config and only engine and control swapped. Details, tables and raw data for each one: [docs/releases.md](docs/releases.md).
 
 ![Strata releases on the same card](bilder/versionen-en.png)
 
-From 0.2.0-beta to 0.2.3.1 nothing got slower on this card. Decode rose from 61 to 67 tok/s, mostly with 0.2.1's worker plan for hybrid CPUs (#3262); prompt reading at 16K and 32K was already at its ceiling.
+| Release | Date | Result on this card | Reported to Strata |
+|---|---|---|---|
+| 0.1.45 | 17 Oct | no measurable difference to 0.1.44.1, not adopted | – |
+| 0.2.0-beta | 19 Oct | the prebuilt `hip-rx7900` engine runs on gfx1100; its default worker count is a third slower on a hybrid CPU; not adopted | [#3262](https://github.com/Niko1221/Strata/issues/3262), [#3177](https://github.com/Niko1221/Strata/issues/3177) |
+| 0.2.1 | 21 Oct | **in production**; the hybrid-CPU fix works; the Docker image runs, its gfx1100 table is worth +60 % at 16K | [#3262](https://github.com/Niko1221/Strata/issues/3262), [#3263](https://github.com/Niko1221/Strata/issues/3263), [PR #2904](https://github.com/Niko1221/Strata/pull/2904) |
+| 0.2.2 | 21 Oct | **in production**; same speed, more robust; `strata bench run` from the package is complete | [#3263](https://github.com/Niko1221/Strata/issues/3263), [PR #2904](https://github.com/Niko1221/Strata/pull/2904) |
+| 0.2.3.1 | 23 Oct | **in production**; 4K prompt reading +7 %; the engine finds its gfx1100 table by itself | – |
+| 0.2.8 | 31 Oct | **in production**; equal; recovers malformed tool calls; the Docker image leaves 854 MiB of VRAM free | [PR #4851](https://github.com/Niko1221/Strata/pull/4851) |
+| 0.2.9, 0.2.10 | 5 Nov | **in production** in between; 0.2.9 fixes silently wrong long prompts (#3431) | – |
+| 0.2.11 | 5 Nov | **in production**; equal to 0.2.10 | [#5321](https://github.com/Niko1221/Strata/issues/5321) |
+| 0.2.12 | 8 Nov | **in production, current**; equal to 0.2.11; the tuned DFlash2 drafter is slower end to end and stays off | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
+| 0.2.13 | 9 Nov | equal with the tuned config, not adopted; the Linux Docker image no longer uses the gfx1100 table and reads 16K prompts 35 % slower | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
 
-**The first 128K prompt of the 0.2.3.1 run took 217 s, where every earlier release needed about 108 s.** A separate A/B (`messen/t128.py`) settled it: a fresh engine each time, the identical run config, alternating, twice each. 0.2.3.1 read the first 128K prompt in 110.5 and 110.8 s, 0.2.2 in 111.1 and 111.6 s, the needle was found every time. So no regression; the 217 s was a one-off in a long test run, most likely the conversation cache and RAM filled by the tests before it.
+## Run
 
-### Follow-up 31 Oct 2026: Strata 0.2.8, now in production, measured on a quiet machine
+Strata's `setup.py` creates models, packs and the MTP head; they are bind-mounted to `/strata/data`. Launch configs
+are in `konfig/`, a llama-swap example in `konfig/llama-swap.yaml`. Put the host names the server is reached under
+into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
 
-Engine 0.1.54 `hip-rx7900` with control 0.1.54, against the 0.2.3.1 packages with the identical run config, only engine and control swapped. For this session I stopped every NAS service that was not needed (photo library, media server, agent, search, mail bridge, file sync), so the dates are not strictly comparable; the pairs are.
-
-| median tok/s | 0.2.8 | 0.2.3.1 |
-|---|---:|---:|
-| 3 interleaved pairs, same session: decode / 63-token prompt | 61.4 / 111.2 | 61.6 / 121.2 |
-| `strata_bench.py --long`: chat / agent decode | 68.3 / 75.6 | 67.3 / 78.3 * |
-| 4K / 16K / 32K prompt | 785 / 1,212 / 1,199 | 791 / 1,218 / 1,244 * |
-| `standard-v1`, package / unchanged Docker image: 4K / 16K prompt | 791 / 1,201 and 740 / 1,222 | 800 / 1,203 and 749 / 1,220 * |
-
-\* 0.2.3.1 run of 23 Oct, NAS services running. Decode is equal; prompt reading from 4K up is equal. Only the short 63-token prompt read about 8 % slower on 0.2.8 in the pairs, with overlapping ranges, where a request's fixed cost dominates. `standard-v1` complete with 12/12 on both tracks, our task set 29 of 29, needles 6/6 at 32K and 128K and 3/3 at 250K (223-237 s for 251,626 tokens), 8 of 8 fresh engines normal. **Since 31 Oct this NAS serves with 0.2.8.** The run configs are unchanged (`konfig/strata-0.2.8/`, with the llama-swap macro). Script: `messen/t028.py`. Raw data: `messen/daten/2026-10-31-v0.2.8/`, the same data went to Strata as [PR #4851](https://github.com/Niko1221/Strata/pull/4851).
-
-What else changed for this card:
-
-- **The unchanged Docker image leaves 854 MiB of VRAM free after loading** (0.2.3: 594 MiB) and gave no low-VRAM warning during the run.
-- **0.2.8 recovers slightly malformed tool calls by default** (`"tool_call_recovery": false` turns it off). In my small check, 10 agent tasks per version with four declared tools, every answer on both versions was already a well-formed tool call, so the check did not exercise the new path.
-- **The quiet machine shows in the long prompts:** the first 128K prompt took 98-111 s, against 129-149 s in a nightly run with all services up.
-
-### Follow-up 5 Nov 2026: Strata 0.2.11, now in production
-
-Engine 0.1.57 `hip-rx7900` with control 0.1.57, against the 0.2.10 packages (0.1.56) with the identical run config, only engine and control swapped. The 0.2.11 release notes say this package had not been run with a model by the project; on this card it loads, serves and passes everything below. Unlike the 0.2.8 follow-up, the NAS services were running; only my agent was paused.
-
-| median tok/s | 0.2.11 | 0.2.10 |
-|---|---:|---:|
-| 3 interleaved pairs, same session: decode / 63-token prompt | 60.9 / 118.1 | 59.8 / 109.0 |
-| `standard-v1`, package: short decode / 4K / 16K prompt | 67.0 / 797 / 1,192 | 65.6 / 797 / 1,204 * |
-| `standard-v1`, unchanged Docker image: short decode / 4K / 16K prompt | 65.0 / 758 / 1,182 | |
-| `strata_bench.py --long`: 4K / 16K / 32K prompt | 781 / 1,212 / 1,226 | |
-
-\* nightly 0.2.10 run of 3 Nov. Decode is equal; the short-prompt difference sits inside overlapping ranges. `standard-v1` complete with 12/12 on both tracks, our task set 29 of 29, needles 6/6 at 32K and 128K and 1/1 at 250K (239 s for 251,626 tokens), 8 of 8 fresh engines healthy (the first one, right after unpacking, read at 457 tok/s, the other seven at 670-750). The 128K and 250K needles were about 15 % faster than in the 0.2.10 night run, but no faster than on the quiet machine of 31 Oct, so I do not credit the release with it. Card power while writing: 208 W median. **Since 5 Nov this NAS serves with 0.2.11**, after 0.2.9 (fix for silently wrong long prompts when the engine stack landed in pinned expert memory, #3431) and 0.2.10 in between. Run configs unchanged (`konfig/strata-0.2.11/`). Raw data: `messen/daten/2026-11-05-v0.2.11/`, sent to Strata as [issue #5321](https://github.com/Niko1221/Strata/issues/5321).
-
-### Follow-up 8 Nov 2026: Strata 0.2.12, now in production, and the tuned DFlash2 drafter on gfx1100
-
-Engine 0.1.58 `hip-rx7900` with control 0.1.58 against 0.2.11, identical run config, NAS services running. **0.2.12 is equal to 0.2.11 here**: on my own task set (114 tasks, 102 auto-graded) both pass 98 and take 1,430 s; same-session pairs 59.9 against 61.2 tok/s decode, inside the noise. `standard-v1` complete with 12/12 on the package (short decode / 4K / 16K: 63.6 / 788 / 1,202) and on the unchanged Docker image (69.1 / 756 / 1,186), needles 7/7 to 250K. **Since 8 Nov this NAS serves with 0.2.12**, still with MTP.
-
-![Tuned DFlash2 against MTP: faster per token in a fixed test, slower on real tasks](bilder/dflash2-0.2.12-en.png)
-
-The release ships a **tuned DFlash2 drafter**, as far as I can tell not measured on gfx1100 before. It loads cleanly (591 MiB of VRAM, no MTP layer) and in a fixed 900-token test it decodes 10-15 % faster than MTP at confidence 0.7 (92.6 against 83.0 tok/s on my quiet card profile, 90.5 against 79.0 at stock clocks), although German prose is slower and only code gains. On the real task set, with natural answer length, it loses: decode per token is the same (+1 %), but only 51 of 114 answers are identical to MTP at temperature 0, the changed ones are longer (+28 % tokens), wall time is +16 %, and two multi-step price calculations go wrong (96 against 98). Halving the CPU pool workers changed nothing. DFlash2 stays off on this card. Run configs (production and the DFlash2 test): `konfig/strata-0.2.12/`. Raw data: `messen/daten/2026-11-08-v0.2.12/`, sent to Strata as [issue #5615](https://github.com/Niko1221/Strata/issues/5615).
-
-### Follow-up 9 Nov 2026: Strata 0.2.13, and without the gfx1100 table the Docker image reads 16K prompts 35 % slower
-
-Engine 0.1.59 `hip-rx7900` with control 0.1.59 against 0.2.12, identical run config (`konfig/strata-0.2.12/`), NAS services running. **0.2.13 is equal to 0.2.12 here**: same-session pairs 60.0 against 60.7 tok/s decode, `standard-v1` on the package complete with 12/12 (short decode / 4K / 16K: 67.7 / 799 / 1,203), `strata_bench.py --long` 4K / 16K / 32K at 782 / 1,203 / 1,217, needles 7/7 to 250K (238 s at 250K). My task set: 97 of 102 against 98 for 0.2.12, one code task flipped, 1,381 s against 1,430 s. This NAS stays on 0.2.12 for now.
-
-**The unchanged Docker image `0.2.13-rocm-gfx110x` no longer uses the gfx1100 hipBLASLt table.** The engine logs that the table is in the package and off by default; the release notes name only Windows for this. On Linux it costs 14 % at 4K and 35 % at 16K prompt reading (649 and 769 instead of 756 and 1,186 tok/s with the 0.2.12 image). `-e STRATA_HIPBLASLT_TABLE=on` brings it back (766 / 1,193). If you run the image on an RX 7900, set that variable. My run config sets `STRATA_HIPBLASLT_TUNING` explicitly and is not affected. Raw data: `messen/daten/2026-11-09-v0.2.13/`, sent to Strata as [issue #5666](https://github.com/Niko1221/Strata/issues/5666).
+The configs in `konfig/arbeit.json`, `konfig/schnell.json` and `konfig/llama-swap.yaml` are the first version for the self-built engine. **What runs today is in [`konfig/strata-0.2.12/`](konfig/strata-0.2.12/)**: the same settings for the prebuilt release packages, with the models named `faber` (IQ3_XXS, was `arbeit`) and `velox` (IQ2_XS, was `schnell`).
 
 ### Full speed in the Docker image
 
@@ -249,66 +169,7 @@ Engine 0.1.59 `hip-rx7900` with control 0.1.59 against 0.2.12, identical run con
 
 ![Docker image defaults against a tuned run config](bilder/docker-image-en.png)
 
-With 0.2.3 the unchanged image is within a few percent of the tuned config. What still differs: setup picks `--max-context 131072` and a 700 MiB VRAM reserve, and the engine warned once that only 427 MiB were free at the start of a request. If you need 256K, set `CONTEXT` and a reserve of about 830 MiB yourself. On images before 0.2.3, set `STRATA_HIPBLASLT_TABLE=on`.
-
-### How long a long prompt takes, and where the memory goes
-
-![Time to first token from 4K to 250K](bilder/kontext-en.png)
-
-Reading grows almost linearly with the prompt: 5.5 s at 4K, 26 s at 32K, 1.8 min at 128K and 3.6 min at 250K, the needle was found every time. Strata's conversation cache keeps an agent session from paying this again on every turn: in `strata_bench.py`'s agent run only 3 tokens per session are read twice.
-
-![RAM and VRAM with the 125B model loaded](bilder/speicher-en.png)
-
-With `faber` loaded and idle, the engine holds 44.6 GiB of the 62.3 GiB RAM (the expert weights that do not fit on the card, the K/V of 32K tokens in 3.1 GiB of pinned RAM, and the conversation cache as it fills), the NAS services and the kernel 10.2 GiB, and 7.5 GiB stay available. On the card the expert cache takes 17.3 GiB of 24 GiB (10,644 slots), the MTP draft 1 GiB, everything else 5.3 GiB, 0.4 GiB stay free. With 64 GB RAM this is about the limit: a second large service next to it needs the conversation cache made smaller.
-
-## Dock and link: what you need to know
-
-- **OCuLink is not hot-pluggable.** Switch the dock on first, then start the NAS. The card is only detected at
-  boot. This cost me an evening; UGREEN confirmed it when asked.
-- **Use one cable.** With OCuLink and Thunderbolt connected at the same time, nothing was detected.
-- **x4, not x16.** The host port reports `LnkCap` x4 at 16 GT/s. Irrelevant for inference, noticeable when loading
-  large models.
-- **No power control on the port** (`PwrCtrl-`). The OS cannot power-cycle the dock; `/sys/bus/pci/slots/*/power`
-  only retrains the link. After some dropouts the card came back on its own after 22–47 s (which looks like the
-  dock restarting); after another it stayed gone until the next reboot.
-- **Dropouts (cause still under investigation):** each starts with PCIe receiver errors, followed 50 ms later by
-  "Link Down", with the card idle and cool. In 5 of 7 events the 10 GbE NIC on a different PCIe branch lost its
-  link at the same moment, which points to an electrical disturbance rather than the card. Not caused by the UPS's eco mode (off); the weekly battery self-test of the UPS, however, is behind the Wednesday series (see below).
-- **PCIe quirk:** after one dropout the kernel clamped the link to 2.5 GT/s and failed to retrain. The fix
-  ("Always lift 2.5GT/s restriction") is in 6.18.39; UGOS ships 6.18.15.
-
-### Follow-up 21 Oct 2026: the disturbances follow two weekly clocks
-
-Logged with second resolution since 15 Oct (`messen/dock-mitschnitt.sh`, read-only: kernel messages, link changes, AER counters of the dock port, the NVMe port and the 10 GbE port, link state and power of the card). Going back through the kernel log, the events fall into two series:
-
-| series | events | step per week | reading |
-|---|---|---|---|
-| Sunday | 13 Sep 17:14:33 · 20 Sep :36 · 27 Sep :39 · 4 Oct :43 · 18 Oct :49.8 | +3.3 s (about 5.5 ppm) | a free-running clock, like a quartz without time sync |
-| Wednesday | 23 Sep 17:40:00 · 30 Sep 18:01:10 · 7 Oct 18:22:22 · 14 Oct 18:43:32 · **21 Oct 19:04:41** | +21 min 9-12 s | a fixed interval of 7 days 21 min 10 s: **the UPS's weekly battery self-test** (see below) |
-
-**The Wednesday prediction hit within 2 s.** Predicted 19:04:43, measured: the 10 GbE NIC lost its link at 19:04:41.3 for 5.1 s, and 1.5 s later the dock port logged a corrected receiver error (`RxErr`). The OCuLink link stayed at 16 GT/s x4, no model was loaded, the card idled at 17 W. On 14 Oct the 10 GbE link dropped on schedule while the card was not even on the bus, so the source sits outside the NAS. Both the copper network cable and the OCuLink cable pick it up; the dock is one victim, not the cause. The router's event log shows nothing at these times. Excerpt: `messen/daten/dock-2026-10-21/`.
-
-**Update, same night: the Wednesday series is the UPS testing its battery.** The NAS and the dock are the only loads on an Eaton Ellipse PRO 1200, read via NUT once a minute. In six weeks its battery charge left 100 % exactly six times, each time in the minute right after a Wednesday event (16 Sep 17:18:58, 23 Sep 17:40:12, 30 Sep 18:01:49, 7 Oct 18:22:49, 14 Oct 18:44:14, 21 Oct 19:05:29): 100 → 99 %, runtime 3,814 → 3,775 s, back to 100 % about 20 minutes later. Three of these samples even caught the runtime estimate on battery (1,037 s and 2,812 s instead of 3,814 s). The datasheet lists an automatic battery test once a week; the extra 21 minutes per week are the UPS's own timer. So the NAS is not disturbed from outside on Wednesdays, its own UPS switches it to battery for a few seconds, and that switch is what the copper network link and the OCuLink link pick up (5 of 6 tests; on 16 Sep nothing was logged). The status read once a minute stays `OL`, which is why this was missed at first. NUT on this model offers no command to start or schedule the test. The Sunday series shows no such trace and remains open.
-
-Next: on 25 Oct (end of daylight saving time) the Sunday series tells whether its device switches to winter time (17:14:53) or not (16:14:53); on 28 Oct the Wednesday series is due at 18:25:51 CET if it really is a fixed interval. If you see repeated `RxErr` on an OCuLink port, log with second resolution and look for a weekly pattern before you replace cables or the dock.
-
-## The biggest open risk: a dock dropout reboots the NAS
-
-If the dock drops while a ROCm model is loaded, `amdgpu` under kernel 6.18 tears down the compute queues while
-they are still in use (`kfd_device_queue_manager.c … uninitialize`), and a kernel oops follows. UGOS sets
-`kernel.panic_on_oops=1` and `kernel.panic=3`, so the whole NAS restarts three seconds later. Reproduced three
-times. Fixed upstream in Linux `6cca686dfce7` (7.0) and `81665e35f143` (7.1).
-
-**My mitigation:** llama-swap unloads the model after 30 minutes idle (`globalTTL: 1800`). With no model loaded,
-the iDX survives a dropout; the card is then gone until the next reboot.
-
-**Still present in UGOS 1.21 (tested 2 Nov 2026).** The kernel is still 6.18.15, rebuilt on 16 Oct 2026. Same test as
-before: model loaded (25 GB VRAM), card removed with `echo 1 > /sys/bus/pci/devices/<GPU>/remove`. The same warning
-appears at once, and the remove call itself never returns. About 8 minutes later `kswapd` reclaims memory, walks into
-`kfd_process_evict_queues` via `amdgpu_hmm_invalidate_hsa` / `amdgpu_amdkfd_evict_userptr` and hits a general
-protection fault: the KFD process still holds userptr mappings of the removed card. Kernel panic, restart. The delay
-(3 minutes in September, 8 now) depends on when memory reclaim touches those pages, not on a fixed timer. Reported
-to UGREEN with the pstore record. The mitigation stays the same.
+With 0.2.3 the unchanged image is within a few percent of the tuned config. What still differs: setup picks `--max-context 131072` and a 700 MiB VRAM reserve, and the engine warned once that only 427 MiB were free at the start of a request. If you need 256K, set `CONTEXT` and a reserve of about 830 MiB yourself. On images before 0.2.3, set `STRATA_HIPBLASLT_TABLE=on`. **From 0.2.13 the Linux image leaves the table off again by default, so set `-e STRATA_HIPBLASLT_TABLE=on` there too** (measured: 769 instead of 1,193 tokens/s at 16K, see [docs/releases.md](docs/releases.md)).
 
 ## What I had to change on UGOS
 
@@ -337,103 +198,9 @@ whiteout and hides UGREEN's files as well. Result here: card ready 8 s after boo
 What UGOS does well: watchdog, a readable last-reboot reason, pstore crash logs, a NUT server for the UPS, and
 version 1.19 brought kernel 6.18 with about 700 amdgpu firmware files. 1.21 finally added the Navi 31 firmware.
 
-## Running an agent (Hermes) on top
-
-- Set `context_length` per model in the agent (256k), otherwise it assumes a smaller window.
-- `sendLoadingState: false` in llama-swap, otherwise loading notices end up in the reasoning part of the answer.
-- With high reasoning effort always set a token budget; on hard coding tasks the model can otherwise think
-  forever.
-- If a second request (e.g. a command reviewer) runs alongside, each one evicts the conversation cache and every
-  long session gets re-read. Strata's conversation parking (`--conversation-cache-*`) solves that.
-
-### Follow-up 14 Nov 2026: dense models on the same card, and how to make the agent invent less
-
-The agent on this NAS runs a data collection with its own tools. It showed two weaknesses: it makes up answers about
-things that do not exist, and it announces steps it has no tool for ("I'm pausing the run"). Two questions: does
-another model on the same card help, and what else does?
-
-**Dense models do not help.** Qwen3.8-27B and Gemma 4 31B (Q4 each, fully in VRAM, llama.cpp Vulkan) against the two
-MoE models of this NAS (Strata 0.2.12), all through the same benchmark:
-
-![Dense models on the same card: half the speed, no better results](bilder/dicht-moe-en.png)
-
-| | tasks (102) | German, blind (60) | judgement (9) | decode tok/s | prefill 32K tok/s | first token at 32K |
-|---|---|---|---|---|---|---|
-| faber (MoE, IQ3_XXS) | 96 | 51 | 7.5 | 63.7 | 1,183 | 27.0 s |
-| velox (MoE, IQ2_XS) | 97 | 46 | 6.5 | 73.5 | 1,321 | 24.3 s |
-| Qwen3.8-27B (dense) | 92 | 52 | 7 | 36.2 | 796 | 40.3 s |
-| Gemma 4 31B (dense) | 97 | 38 | 4 | 34.8 | 602 | 52.9 s |
-
-The dense models write at half the speed and do not judge better. Qwen3.8-27B writes good German but thinks so long
-that five coding tasks hit the 8,000-token reasoning budget. Gemma 4 adds unrequested variants and, when a tool is
-missing, searches its own configuration every time. The German answers were anonymised and graded blind, then decoded.
-
-**Four sentences in the system prompt beat the choice of model.** The probe `messen/halluzination.py` asks about 8 real
-and 8 made-up things in each of five areas (towns, command options, theorems, books, parameters of the agent's own
-tools), three rounds, temperature 0.7. Then the same probe with these four rules appended to the (German) system prompt:
-
-```
-- If you are not sure about a place, book, person, technical term, command or option, answer
-  "I don't know" or "I'm not aware of that". That is a correct answer.
-- Never make up states, authors, formulas, options or numbers, not even as a guess.
-- Only name tools and parameters listed above. If there is none, say: "I have no tool for that."
-- Do not call a catalogue tool for questions unrelated to the catalogue database.
-```
-
-![Recognising made-up things, without and with four rules in the system prompt](bilder/erfinden-en.png)
-
-Without the rules the four models recognise only 29 to 60 % of the made-up things and invent the rest, most often the
-state of a made-up town and options that do not exist. With the rules it is 88 to 99 %, and **they answer real things
-as correctly as before** (117 to 120 of 120): the rules do not make them overcautious. The dense models keep the most,
-mainly towns and command options. velox is the surprise: the smaller model with lower reasoning effort invents only half
-as often as faber even without rules. Doubtful verdicts were re-read; "I don't know" answers that still offered a
-guess ("it may be in …") count as made up. Limits: single questions without a conversation, and a short system prompt. The effect inside a
-long agent prompt is not measured.
-
-**For judgement, three rounds are not enough.** With `messen/agent_de.py`, faber got the same operating situations ten
-times instead of three:
-
-![faber as an operations agent: 10 rounds per situation](bilder/urteil-en.png)
-
-A hard instruction ("if the number deviates, stop") is followed in 10 of 10 answers. Where the model has to weigh things
-itself, it looks worse than after three rounds: when a collection job aborts and nobody is awake, it invents capabilities
-in 6 of 10 answers ("I'm pausing the collection", "retry with backoff"). When an announced tool is missing, it reports
-that cleanly in only 3 of 10 answers; mostly it wants to search its own configuration.
-
-**Hence three layers instead of one:**
-
-![Three layers against made-up answers, and what each one catches](bilder/schichten-en.png)
-
-The prompt rules catch made-up facts, but not announced steps. For those, the agent's tools now return a ready sentence
-plus the allowed next steps, so the numbers come from code. And a small checker without a language model reads every
-answer: [`konfig/hermes-pruefer/`](konfig/hermes-pruefer/), a plugin for Hermes Agent. It flags unsupported numbers,
-announced steps without a tool and unknown tool names. On the agent answers it caught all six made-up abort answers,
-with no false alarm on the other tasks. It does not see made-up facts in plain words: of 269 made-up probe answers it
-would have flagged none. Raw data (counts only): `messen/daten/2026-11-14-erfinden/`.
-
-## Pictures on the same card: ComfyUI through llama-swap
-
-Since 23 Oct the XTX also makes pictures. ComfyUI runs as one more model in llama-swap, so the card holds either the chat model or the picture models, never both, and llama-swap swaps them on demand. llama-swap has a ready entry point for this: a model named exactly `comfyui_auto` is served under `/comfyui/`, and the open browser tab's websocket neither loads the model nor keeps it loaded. The entry is in `konfig/comfyui/llama-swap-comfyui.yaml` (image `yanwk/comfyui-boot:rocm`, ROCm 7.2, PyTorch 2.13, ComfyUI 0.42.1); it starts in about 20 s.
-
-![Seconds per picture for four models](bilder/bildmodelle-en.png)
-
-| Model | Files | Seconds per picture, warm | License |
-|---|---|---:|---|
-| Z-Image Turbo | `z_image_turbo_bf16`, `qwen_3_4b`, `ae` | 8 | Apache 2.0 |
-| Qwen-Image 2.1 Turbo | `qwen_image_2.1_turbo_int8_convrot`, `qwen3vl_8b_int8_convrot` | 12 | Qwen Research License |
-| Qwen-Image 2.1 | `qwen_image_2.1_int8_convrot`, `qwen3vl_8b_int8_convrot` | 34 | Qwen Research License |
-| Chroma1-HD | `Chroma1-HD` (bf16), `t5xxl_fp16`, `ae` | 66 | Apache 2.0 |
-
-What I learned on gfx1100:
-
-- **The `int8_convrot` files of the official ComfyUI templates run on ROCm**, at the speeds above.
-- **No fp8 weights on this card.** `Chroma1-HD-fp8mixed` with the fp8 T5 ended in an `amdgpu ... page fault`, ComfyUI died, llama-swap restarted it. The NAS stayed up. The same models in bf16/fp16 ran without a fault since.
-- **Prompts in English** match much better. Qwen-Image 2.1 wrote a German poster headline wrong and in small print; in English it was a clean headline across the top.
-- The first ComfyUI start creates the model folders as root; a download running as another user then fails on the rename.
-
-For the agent there is a small image backend for Hermes Agent in `konfig/comfyui/hermes-plugin/`: it puts the prompt into one of the workflows in `konfig/comfyui/workflows/` (derived from the official templates), sends it to `/comfyui/api/prompt` and returns the picture, so "make a picture of …" in Telegram comes back as a picture. `konfig/comfyui/modelle-laden.sh` downloads the files (about 77 GB). Raw timings: `messen/daten/2026-10-23-bilder/`.
-
 ## Build
+
+Since 21 Oct 2026 engine and control come from Strata's release packages. The image built here is still the container they run in: it brings ROCm, and the packages are mounted into it (see the llama-swap macro in `konfig/strata-0.2.12/`).
 
 ```bash
 docker build -t strata-hip:v0.1.45 --build-arg STRATA_REF=v0.1.45 .
@@ -450,72 +217,156 @@ Compiling took 83 s; downloading takes longer.
    CMake package". `setup.py` does this silently, a plain CMake build does not.
 2. The engine must be executable. An earlier manual build left it with mode `----------`.
 
-## Run
+## Dock and link: what you need to know
 
-Strata's `setup.py` creates models, packs and the MTP head; they are bind-mounted to `/strata/data`. Launch configs
-are in `konfig/`, a llama-swap example in `konfig/llama-swap.yaml`. Put the host names the server is reached under
-into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
+- **OCuLink is not hot-pluggable.** Switch the dock on first, then start the NAS. The card is only detected at
+  boot. This cost me an evening; UGREEN confirmed it when asked.
+- **Use one cable.** With OCuLink and Thunderbolt connected at the same time, nothing was detected.
+- **x4, not x16.** The host port reports `LnkCap` x4 at 16 GT/s. Irrelevant for inference, noticeable when loading
+  large models.
+- **No power control on the port** (`PwrCtrl-`). The OS cannot power-cycle the dock; `/sys/bus/pci/slots/*/power`
+  only retrains the link. After some dropouts the card came back on its own after 22–47 s (which looks like the
+  dock restarting); after another it stayed gone until the next reboot.
+- **Dropouts (cause still under investigation):** each starts with PCIe receiver errors, followed 50 ms later by
+  "Link Down", with the card idle and cool. In 5 of 7 events the 10 GbE NIC on a different PCIe branch lost its
+  link at the same moment, which points to an electrical disturbance rather than the card. Not caused by the UPS's eco mode (off); the weekly battery self-test of the UPS, however, is behind the Wednesday series (see below).
+- **PCIe quirk:** after one dropout the kernel clamped the link to 2.5 GT/s and failed to retrain. The fix
+  ("Always lift 2.5GT/s restriction") is in 6.18.39; UGOS ships 6.18.15.
+
+The disturbances turned out to follow two weekly clocks, and one of them is the UPS testing its battery. The whole investigation, with the capture script: [docs/dock.md](docs/dock.md).
+
+## The biggest open risk: a dock dropout reboots the NAS
+
+If the dock drops while a ROCm model is loaded, `amdgpu` under kernel 6.18 tears down the compute queues while
+they are still in use (`kfd_device_queue_manager.c … uninitialize`), and a kernel oops follows. UGOS sets
+`kernel.panic_on_oops=1` and `kernel.panic=3`, so the whole NAS restarts three seconds later. Reproduced three
+times. Fixed upstream in Linux `6cca686dfce7` (7.0) and `81665e35f143` (7.1).
+
+**My mitigation:** llama-swap unloads the model after 30 minutes idle (`globalTTL: 1800`). With no model loaded,
+the iDX survives a dropout; the card is then gone until the next reboot.
+
+**Still present in UGOS 1.21 (tested 2 Nov 2026).** The kernel is still 6.18.15, rebuilt on 16 Oct 2026. Same test as
+before: model loaded (25 GB VRAM), card removed with `echo 1 > /sys/bus/pci/devices/<GPU>/remove`. The same warning
+appears at once, and the remove call itself never returns. About 8 minutes later `kswapd` reclaims memory, walks into
+`kfd_process_evict_queues` via `amdgpu_hmm_invalidate_hsa` / `amdgpu_amdkfd_evict_userptr` and hits a general
+protection fault: the KFD process still holds userptr mappings of the removed card. Kernel panic, restart. The delay
+(3 minutes in September, 8 now) depends on when memory reclaim touches those pages, not on a fixed timer. Reported
+to UGREEN with the pstore record. The mitigation stays the same.
+
+## Running an agent (Hermes) on top
+
+- Set `context_length` per model in the agent (256k), otherwise it assumes a smaller window.
+- `sendLoadingState: false` in llama-swap, otherwise loading notices end up in the reasoning part of the answer.
+- With high reasoning effort always set a token budget; on hard coding tasks the model can otherwise think
+  forever.
+- If a second request (e.g. a command reviewer) runs alongside, each one evicts the conversation cache and every
+  long session gets re-read. Strata's conversation parking (`--conversation-cache-*`) solves that.
+
+**Dense models on the same card, and how to make the agent invent less (14 Nov 2026).** Two dense models fully in VRAM write at half the speed of the MoE models and do not judge better. Four rules in the system prompt raise the share of made-up things a model recognises from 29–60 % to 88–99 %, without making it overcautious. For announced steps without a tool the rules are not enough, hence three layers:
+
+![Three layers against made-up answers, and what each one catches](bilder/schichten-en.png)
+
+The measurements, the four rules and the checker plugin: [docs/agent.md](docs/agent.md).
+
+## Pictures on the same card: ComfyUI through llama-swap
+
+Since 23 Oct the XTX also makes pictures. ComfyUI runs as one more model in llama-swap, so the card holds either the chat model or the picture models, never both, and llama-swap swaps them on demand. llama-swap has a ready entry point for this: a model named exactly `comfyui_auto` is served under `/comfyui/`, and the open browser tab's websocket neither loads the model nor keeps it loaded. The entry is in `konfig/comfyui/llama-swap-comfyui.yaml` (image `yanwk/comfyui-boot:rocm`, ROCm 7.2, PyTorch 2.13, ComfyUI 0.42.1); it starts in about 20 s.
+
+![Seconds per picture for four models](bilder/bildmodelle-en.png)
+
+Models, seconds per picture, what I learned on gfx1100 and the image backend for the agent: [docs/comfyui.md](docs/comfyui.md).
 
 ## Contents
 
+**Build**
+
 ```
   Dockerfile                    build recipe for Strata + ROCm on gfx1100
+```
+
+**Launch configs**
+
+```
   konfig/arbeit.json            Flash-Next IQ3_XXS, 256k, reasoning effort high
   konfig/schnell.json           Flash-Next IQ2_XS
   konfig/llama-swap.yaml        one endpoint, one model at a time, unload after 30 min
+  konfig/strata-0.2.1/          launch configs and llama-swap macro for the prebuilt 0.2.1 packages
+  konfig/strata-0.2.2/          the same launch configs, llama-swap macro for the prebuilt 0.2.2 packages
+  konfig/strata-0.2.3.1/        launch configs (faber = was arbeit, velox = was schnell) and llama-swap macro for 0.2.3.1
+  konfig/comfyui/               ComfyUI: llama-swap entry, download script, workflows, image backend for Hermes Agent
+  konfig/strata-0.2.8/          launch configs and llama-swap macro for 0.2.8 (configs unchanged from 0.2.3.1)
+  konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
+  konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config
+  konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
+```
+
+**UGOS**
+
+```
   ugos/                         only needed up to UGOS 1.19; on 1.21 and later see the note under "What I had to change"
   ugos/firmware-sichern.sh      backs up the 15 gfx1100 firmware files to the data pool
   ugos/firmware-pruefen.sh      checks and restores them after a UGOS update
   ugos/amdgpu-gfx1100-restore.service   runs the check after every boot
+```
+
+**Benchmark and helper scripts**
+
+```
   messen/bench.py               writing, reading, agent session, quality tasks (aufgaben.json, German prompts)
   messen/identitaet.py          same prompts greedy to two models, character-exact comparison
   messen/langprompt.py          read time of a fresh long prompt
   messen/auswertung045.py       results table
   messen/tiefe.py               decode/prefill vs context depth (1K to 248K)
   messen/charts.py              the charts in bilder/ (light Workbench design)
-  messen/daten/                 raw data: depth sweep, strata_bench.py and needle_bench.py results
   messen/qq_llamacpp.py         llama.cpp counterpart of Strata's quant_quality.py (teacher-forced top-64 per position)
   messen/qq_vergleich.py        top-1 agreement, KL and perplexity of two runs
-  messen/daten/qualitaet/       the three runs (gzip) and the comparison results
   messen/visiontest.py          picture reader on the CPU: test pictures, VRAM/RAM, against the 27B vision model
   messen/r3177.py               reproduction attempt for Strata issue #3177 (long agent request with MTP)
   messen/folgetests.py          LP-E cores A/B (--cpuset-cpus) and fresh-engine prompt speed
   messen/t020.py                Strata 0.2.0-beta prebuilt hip-rx7900 engine: bench, needles, workers, picture readers
-  messen/daten/2026-10-19/      raw data of the follow-up (README inside)
   messen/t021.py                Strata 0.2.1: worker pairs, bench, needles, fresh engines, standard-v1
-  messen/daten/2026-10-21/      raw data incl. four standard-v1 results (README inside)
-  konfig/strata-0.2.1/          launch configs and llama-swap macro for the prebuilt 0.2.1 packages
   messen/t022.py                Strata 0.2.2 against 0.2.1: version pairs, bench, needles, fresh engines, standard-v1, Docker image
-  messen/daten/2026-10-21-v0.2.2/  raw data of the 0.2.2 follow-up (README inside)
-  konfig/strata-0.2.2/          the same launch configs, llama-swap macro for the prebuilt 0.2.2 packages
   messen/dock-mitschnitt.sh     second-by-second capture around an expected dock event (read-only, needs root)
-  messen/daten/dock-2026-10-21/ excerpt of the capture of 21 Oct, the Wednesday event on schedule
-  konfig/strata-0.2.3.1/        launch configs (faber = was arbeit, velox = was schnell) and llama-swap macro for 0.2.3.1
   messen/t0231.py               Strata 0.2.3.1 against 0.2.2: pairs, bench, needles, fresh engines, standard-v1, Docker image, table variable off
   messen/t128.py                first 128K prompt on a fresh engine, 0.2.3.1 against 0.2.2, alternating
-  messen/daten/2026-10-23-v0.2.3.1/  raw data incl. memory.json and the 128K A/B (README inside)
   messen/charts2.py             charts for releases, Docker image, picture models, context and memory
-  konfig/comfyui/               ComfyUI: llama-swap entry, download script, workflows, image backend for Hermes Agent
-  messen/daten/2026-10-23-bilder/  seconds per picture, four models, first and warm
-  konfig/strata-0.2.8/          launch configs and llama-swap macro for 0.2.8 (configs unchanged from 0.2.3.1)
   messen/t028.py                Strata 0.2.8 against 0.2.3.1: standard-v1 first, bench, needles to 250K, tool calls, pairs, fresh engines, Docker image
-  messen/daten/2026-10-31-v0.2.8/  raw data of the 0.2.8 follow-up, also sent as Strata PR #4851 (README inside)
-  konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
-  messen/daten/2026-11-05-v0.2.11/  raw data of the 0.2.11 follow-up, also sent as Strata issue #5321 (README inside)
-  konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config
-  messen/daten/2026-11-08-v0.2.12/  raw data of the 0.2.12 follow-up and the DFlash2 test, also sent as Strata issue #5615 (README inside)
-  messen/daten/2026-11-09-v0.2.13/  raw data of the 0.2.13 follow-up, incl. the Docker image with and without the gfx1100 table also sent as Strata issue #5666 (README inside)
   messen/halluzination.py       hallucination probe: 5 areas × 8 real + 8 made-up items, without and with rules (--regeln)
   messen/agent_de.py            operations agent in German: 9 tasks, repeated, judgement tasks to be read by hand
   messen/charts3.py             charts of the 14 Nov 2026 follow-up
   messen/diagramme.py           all charts in bilder/ in one style (HTML/SVG sources in bilder/html/, PNG via playwright); replaces charts*.py
+```
+
+**Raw data**
+
+```
+  messen/daten/                 raw data: depth sweep, strata_bench.py and needle_bench.py results
+  messen/daten/qualitaet/       the three runs (gzip) and the comparison results
+  messen/daten/2026-10-19/      raw data of the follow-up (README inside)
+  messen/daten/2026-10-21/      raw data incl. four standard-v1 results (README inside)
+  messen/daten/2026-10-21-v0.2.2/  raw data of the 0.2.2 follow-up (README inside)
+  messen/daten/dock-2026-10-21/ excerpt of the capture of 21 Oct, the Wednesday event on schedule
+  messen/daten/2026-10-23-v0.2.3.1/  raw data incl. memory.json and the 128K A/B (README inside)
+  messen/daten/2026-10-23-bilder/  seconds per picture, four models, first and warm
+  messen/daten/2026-10-31-v0.2.8/  raw data of the 0.2.8 follow-up, also sent as Strata PR #4851 (README inside)
+  messen/daten/2026-11-05-v0.2.11/  raw data of the 0.2.11 follow-up, also sent as Strata issue #5321 (README inside)
+  messen/daten/2026-11-08-v0.2.12/  raw data of the 0.2.12 follow-up and the DFlash2 test, also sent as Strata issue #5615 (README inside)
+  messen/daten/2026-11-09-v0.2.13/  raw data of the 0.2.13 follow-up, incl. the Docker image with and without the gfx1100 table also sent as Strata issue #5666 (README inside)
   messen/daten/2026-11-14-erfinden/  counts: probe per model and area, night comparison, judgement with 10 rounds
-  konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
+```
+
+**Documentation and charts**
+
+```
+  docs/                         every release in detail, the dock investigation, the agent follow-up, ComfyUI (EN/DE)
+  bilder/                       the charts as PNG, their HTML/SVG sources in bilder/html/
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,
 power and RAM from sysfs (set `KARTE` in `bench.py` to your card). Code tasks run in a throwaway container without
 network. File and folder names are German; the scripts' comments too.
+
+File and folder names are German, and so are the scripts' comments: `messen` = measuring, `konfig` = configs, `bilder` = pictures, `daten` = data, `tiefe` = depth, `erfinden` = making things up. `faber` and `velox` are the names of the two models here (`arbeit` and `schnell` in files up to 0.2.2).
 
 ## License
 
