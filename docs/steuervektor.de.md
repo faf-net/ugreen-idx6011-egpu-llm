@@ -2,7 +2,7 @@
 
 [English](steuervektor.md) · **Deutsch** · [← README](../README.de.md)
 
-`liber` ist ein unzensiertes Modell. Es ist dasselbe 125B-Modell wie `faber`, aber ihm sind die Ablehnungen entfernt: Es beantwortet, was man es fragt, auch Fragen, die das Originalmodell verweigert. Mein Agent läuft damit. Diese Seite sagt, wie das technisch geht, was es ändert, was es kostet und was man damit auf sich nimmt.
+`liber` ist ein unzensiertes Modell. Es ist dasselbe 125B-Modell wie `faber`, aber ihm sind die Ablehnungen entfernt: Es beantwortet, was man es fragt, auch Fragen, die das Originalmodell verweigert. Chat und Agent können jedes der Modelle nutzen; `liber` ist eines davon und wird wie die anderen je Gespräch oder in der Einstellung des Agenten gewählt. Diese Seite sagt, wie das technisch geht, was es ändert, was es kostet und was man damit auf sich nimmt.
 
 ## Was „unzensiert“ hier heißt
 
@@ -47,7 +47,7 @@ Die 15 Aufgaben stammen aus Bereichen, in denen Sprachmodelle üblicherweise abl
 
 - **Es gibt keine Schranke mehr.** Was das Modell schreibt, verantwortet allein, wer es betreibt und wer es fragt.
 - **Es gehört nicht vor Kinder** und nicht in einen Dienst, den Fremde erreichen. Bei mir ist es nur im Heimnetz und hinter einer Anmeldung erreichbar.
-- **Ein Agent mit Werkzeugen wird dadurch gefährlicher, nicht nur freier.** Ein unzensiertes Modell führt auch eine untergeschobene Anweisung aus einer Webseite oder Mail bereitwilliger aus. Deshalb darf mein Agent nur freigegebene Befehle ausführen, und ein Prüfer liest jede Antwort.
+- **Ein Agent mit Werkzeugen wird dadurch gefährlicher, nicht nur freier.** Ein unzensiertes Modell führt auch eine untergeschobene Anweisung aus einer Webseite oder Mail bereitwilliger aus. Deshalb darf der Agent bei mir nur freigegebene Befehle ausführen, und ein Prüfer liest jede Antwort.
 - **Es weiß nicht mehr als das Original.** Wo es etwas nicht weiß, rät es, und es klingt dabei sicher.
 
 Gelesen habe ich bei den 15 Aufgaben die Antwortanfänge. Veröffentlicht sind nur Zählwerte, keine Antworttexte: `messen/daten/2026-11-14-erfinden/steuervektor.json`.

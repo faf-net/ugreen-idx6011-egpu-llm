@@ -2,7 +2,7 @@
 
 **English** · [Deutsch](steuervektor.de.md) · [← README](../README.md)
 
-`liber` is an uncensored model. It is the same 125B model as `faber` with its refusals removed: it answers whatever it is asked, including questions the original model declines. My agent runs on it. This page says how that works technically, what it changes, what it costs and what you take on with it.
+`liber` is an uncensored model. It is the same 125B model as `faber` with its refusals removed: it answers whatever it is asked, including questions the original model declines. Chat and agent can use any of the models; `liber` is one of them and is chosen like the others, per conversation or in the agent's settings. This page says how that works technically, what it changes, what it costs and what you take on with it.
 
 ## What "uncensored" means here
 
@@ -47,7 +47,7 @@ The 15 tasks come from areas where language models usually refuse, evade or lect
 
 - **There is no barrier left.** What the model writes is the sole responsibility of whoever runs it and whoever asks.
 - **It does not belong in front of children** or in a service strangers can reach. Mine is reachable only in the home network and behind a login.
-- **An agent with tools becomes more dangerous, not just freer.** An uncensored model also follows an instruction planted in a web page or mail more readily. That is why my agent may only run approved commands, and a checker reads every answer.
+- **An agent with tools becomes more dangerous, not just freer.** An uncensored model also follows an instruction planted in a web page or mail more readily. That is why the agent here may only run approved commands, and a checker reads every answer.
 - **It knows no more than the original.** Where it does not know, it guesses, and it sounds sure doing so.
 
 For the 15 tasks I read the beginnings of the answers. Only counts are published, no answer texts: `messen/daten/2026-11-14-erfinden/steuervektor.json`.

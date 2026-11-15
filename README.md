@@ -10,7 +10,7 @@ dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
 Everything here was measured on my machine unless marked otherwise. This repository contains **no Strata code**,
 only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark tools.
 
-**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization. `liber` is the uncensored version of `faber`: the same weights with the refusals removed, so it answers whatever it is asked; the agent runs on it ([docs/steuervektor.md](docs/steuervektor.md)).
+**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization. `liber` is the uncensored version of `faber`: the same weights with the refusals removed, so it answers whatever it is asked ([docs/steuervektor.md](docs/steuervektor.md)). Chat and agent can use any of the three.
 
 ## At a glance
 
@@ -345,7 +345,7 @@ to UGREEN with the pstore record. The mitigation stays the same.
 
 The measurements, the four rules and the checker plugin: [docs/agent.md](docs/agent.md).
 
-**The agent runs on an uncensored model.** `liber` is the same 125B model with its refusals removed by a steering vector (abliteration). It answers whatever it is asked, including what the original model declines: all 15 of my test tasks that models often refuse, instead of 11. There is no filter left; the responsibility lies with whoever runs it. Tasks, German and speed stay the same; the price is that it makes things up more easily (91 % instead of 98 % of made-up things recognised with the four rules). How it works, the config, all numbers and what you take on: [docs/steuervektor.md](docs/steuervektor.md).
+**The agent can use any of the models, including an uncensored one.** Which model it takes is a setting. `liber` is the same 125B model with its refusals removed by a steering vector (abliteration). It answers whatever it is asked, including what the original model declines: all 15 of my test tasks that models often refuse, instead of 11. There is no filter left; the responsibility lies with whoever runs it. Tasks, German and speed stay the same; the price is that it makes things up more easily (91 % instead of 98 % of made-up things recognised with the four rules). How it works, the config, all numbers and what you take on: [docs/steuervektor.md](docs/steuervektor.md).
 
 ## Pictures on the same card: ComfyUI through llama-swap
 

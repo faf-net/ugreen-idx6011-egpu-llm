@@ -11,7 +11,7 @@ Fotos, Medien und Backups.
 Alle Werte sind auf meiner Maschine gemessen, sofern nicht anders vermerkt. Das Repo enthält **keinen
 Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte und Messprogramme.
 
-**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS. `liber` ist die unzensierte Fassung von `faber`: dieselben Gewichte ohne die Ablehnungen, sie beantwortet also, was man sie fragt; damit läuft der Agent ([docs/steuervektor.de.md](docs/steuervektor.de.md)).
+**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS. `liber` ist die unzensierte Fassung von `faber`: dieselben Gewichte ohne die Ablehnungen, sie beantwortet also, was man sie fragt ([docs/steuervektor.de.md](docs/steuervektor.de.md)). Chat und Agent können jedes der drei nutzen.
 
 ## Auf einen Blick
 
@@ -348,7 +348,7 @@ Die Gegenmaßnahme bleibt dieselbe.
 
 Die Messungen, die vier Regeln und das Prüfer-Plugin: [docs/agent.de.md](docs/agent.de.md).
 
-**Der Agent läuft mit einem unzensierten Modell.** `liber` ist dasselbe 125B-Modell, dem ein Steuervektor die Ablehnungen entfernt (Abliteration). Es beantwortet, was man es fragt, auch das, was das Originalmodell verweigert: alle 15 meiner Testaufgaben, die Modelle oft ablehnen, statt 11. Einen Filter gibt es nicht mehr; die Verantwortung liegt bei dem, der es betreibt. Aufgaben, Deutsch und Tempo bleiben gleich; der Preis ist, dass es leichter erfindet (mit den vier Regeln 91 % statt 98 % des Erfundenen erkannt). Wie es funktioniert, die Konfiguration, alle Zahlen und was man damit auf sich nimmt: [docs/steuervektor.de.md](docs/steuervektor.de.md).
+**Der Agent kann jedes der Modelle nutzen, auch ein unzensiertes.** Welches Modell er nimmt, ist eine Einstellung. `liber` ist dasselbe 125B-Modell, dem ein Steuervektor die Ablehnungen entfernt (Abliteration). Es beantwortet, was man es fragt, auch das, was das Originalmodell verweigert: alle 15 meiner Testaufgaben, die Modelle oft ablehnen, statt 11. Einen Filter gibt es nicht mehr; die Verantwortung liegt bei dem, der es betreibt. Aufgaben, Deutsch und Tempo bleiben gleich; der Preis ist, dass es leichter erfindet (mit den vier Regeln 91 % statt 98 % des Erfundenen erkannt). Wie es funktioniert, die Konfiguration, alle Zahlen und was man damit auf sich nimmt: [docs/steuervektor.de.md](docs/steuervektor.de.md).
 
 ## Bilder auf derselben Karte: ComfyUI über llama-swap
 
