@@ -79,7 +79,11 @@ function Anlage(canvas, s) {
   C.textBaseline = 'alphabetic';
   C.font = '500 ' + Math.round(11 * k) + 'px "JetBrains Mono", Consolas, monospace';
   function marke(text, x, y, farbe) { C.fillStyle = farbe; C.fillText(text, Math.round(x * m), Math.round(y * m)); }
-  marke('iDX6011 PRO · 64 GB', NX, NY - 12, '#a49c90'); marke('OCULINK · PCIE 4.0 X4', 262, 216, '#cc9166'); marke('RX 7900 XTX · 24 GB', 408, 50, '#a49c90');
+  marke('iDX6011 PRO · 64 GB LPDDR5X', NX, NY - 12, '#a49c90'); marke('RX 7900 XTX · 24 GB GDDR6', 408, 50, '#a49c90');
+  C.textAlign = 'center'; marke('OCULINK · PCIE 4.0 X4', (K[0][0] + K[3][0]) / 2, 144, '#cc9166');   // mittig über dem Kabel
+  C.font = '500 ' + Math.round(8 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'end';
+  marke('faf.net', 630, 170, '#8b8377');                                                              // dezent rechts unten im Dock
+  C.textAlign = 'start';
   C.font = '700 ' + Math.round(12 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'center';
   for (var z = 0; z < 6; z++) marke('0' + (z + 1), TX + z * TA + TB / 2, NY + 40, '#0d0c0b');
   C.font = '700 ' + Math.round(8 * k) + 'px "JetBrains Mono", Consolas, monospace';
