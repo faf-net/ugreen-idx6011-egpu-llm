@@ -197,11 +197,24 @@ def seite(sp):
          T("<b>8–66 s</b> je Bild · Wechsel vom Sprachmodell 21–27 s", "<b>8–66 s</b> per picture · swapping from the language model 21–27 s")),
     ]
     A('<div class="anwendungen">' + "".join(f'<div class="anwendung"><span class="dach">{e(a)}</span><h3>{e(b)}</h3><p>{c}</p><div class="mess">{m}</div></div>' for a, b, c, m in karten) + "</div>")
-    P(T("Zwei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen. Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten. Von unterwegs ist die Anlage über einen eigenen Zugang mit Anmeldung erreichbar.",
-        "Two things leave the house: the search queries of the web search, and the messages that travel to the agent through the messenger service. Everything else, including every uploaded document, stays on your own machines. From outside, the setup is reachable through an own gateway with login."))
+    P(T("Zwei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen (bei Signal Ende-zu-Ende-verschlüsselt). Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten. Von unterwegs ist die Anlage über einen eigenen Zugang mit Anmeldung erreichbar.",
+        "Two things leave the house: the search queries of the web search, and the messages that travel to the agent through the messenger service (end-to-end encrypted with Signal). Everything else, including every uploaded document, stays on your own machines. From outside, the setup is reachable through an own gateway with login."))
     zu()
 
-    kapitel(2, "dock", T("Lohnt sich die Karte im Dock?", "Is the card in the dock worth it?"),
+    kapitel(2, "nas", T("Das NAS bleibt ein NAS", "The NAS stays a NAS"),
+            T("Auch bei geladenem Modell läuft alles weiter, wofür die iDX gekauft wurde: Fotos, Video und Dateifreigaben. Die Karte im Dock nimmt ihnen nichts weg, weil sie eine eigene Grafikeinheit haben.",
+              "Even with the model loaded, everything the iDX was bought for keeps running: photos, video and file shares. The card in the dock takes nothing away from them, because they have a graphics unit of their own."))
+    A(bild(D.parallel, sp))
+    P(T("Die iDX macht weiter, wofür sie gekauft wurde, mit den Diensten, die UGOS mitbringt: <b>Fotos</b> für die Fotosammlung, <b>Video</b> für die Mediathek, <b>Dateifreigaben</b> über SMB und die Überwachung der USV. Auch Docker kommt aus UGOS; darin laufen Chat, Suche und Agent. Die eingebaute Arc-iGPU bleibt für Transkodierung und Bilderkennung frei, die Karte im Dock rechnet nur Sprach- und Bildmodelle.",
+        "The iDX keeps doing what it was bought for, with the services UGOS brings along: <b>Photos</b> for the photo library, <b>Video</b> for the media library, <b>file shares</b> over SMB and UPS monitoring. Docker comes from UGOS too; chat, search and agent run in it. The built-in Arc iGPU stays free for transcoding and photo recognition, the card in the dock only runs language and picture models."))
+    P(T(f"Während das Modell schrieb, kam eine 17,7-GB-Datei mit {z(neben['download']['waehrend_schreiben']['mb_s'], sp, 0)} MB/s vom NAS ({z(neben['download']['ohne_modell']['mb_s'], sp, 0)} MB/s ohne Modell; begrenzt hat beide Male der 5-Gbit/s-Anschluss des Arbeitsplatzes). Die Transkodierung von 4K nach 1080p auf der Arc-iGPU fiel von {tr['ohne_modell_bilder_s'][0]} auf {min(tr['waehrend_schreiben_bilder_s'])}–{max(tr['waehrend_schreiben_bilder_s'])} Bilder je Sekunde, das Fünf- bis Achtfache der Echtzeit. Das Schreibtempo des Modells blieb unverändert. Nicht gemessen: SMB und ein Arbeitsplatz mit 10 Gbit/s.",
+        f"While the model was writing, a 17.7 GB file came off the NAS at {z(neben['download']['waehrend_schreiben']['mb_s'], sp, 0)} MB/s ({z(neben['download']['ohne_modell']['mb_s'], sp, 0)} MB/s without a model; both times the client's 5 Gbit/s port was the limit). Transcoding 4K to 1080p on the Arc iGPU dropped from {tr['ohne_modell_bilder_s'][0]} to {min(tr['waehrend_schreiben_bilder_s'])}–{max(tr['waehrend_schreiben_bilder_s'])} frames per second, five to eight times real time. The model's decode speed did not change. Not measured: SMB, and a 10 Gbit/s client."))
+    A(bild(D.speicher, sp))
+    P(T("Der Preis ist Arbeitsspeicher: Mit geladenem 125B-Modell bleiben von 62 GiB rund 7,5 GiB verfügbar. Ein zweiter großer Dienst daneben passt nicht.",
+        "The price is memory: with the 125B model loaded, about 7.5 GiB of the 62 GiB stay available. A second large service does not fit next to it."))
+    zu()
+
+    kapitel(3, "dock", T("Lohnt sich die Karte im Dock?", "Is the card in the dock worth it?"),
             T("UGREEN liefert die iDX mit einer KI-Konsole aus, die ein eigenes Modell auf die eingebaute Arc-iGPU lädt. Dieselbe Datei, drei Wege:",
               "UGREEN ships the iDX with an AI console that loads its own model onto the built-in Arc iGPU. The same file, three paths:"))
     A(bild(D.werksmodell, sp)); A(t_werk)
@@ -221,7 +234,7 @@ def seite(sp):
             "The small model writes almost twice as fast but thinks much longer: 2.6 times as many tokens for the same tasks, and in nine tasks the reasoning budget was used up before an answer came. In return it leaves the RAM of the NAS free. If you mainly want a NAS and chat now and then, the small model on the card serves you well; for an agent and long texts the big one pays off."))
     zu()
 
-    kapitel(3, "modell", T("Ein 125B-Modell auf 24 GB", "A 125B model on 24 GB"),
+    kapitel(4, "modell", T("Ein 125B-Modell auf 24 GB", "A 125B model on 24 GB"),
             T("Qwen3.8-Flash-Next ist ein Mixture-of-Experts-Modell: Je Token rechnen nur wenige Experten. Strata hält die häufig gebrauchten im VRAM und den Rest im schnellen RAM der iDX.",
               "Qwen3.8-Flash-Next is a Mixture-of-Experts model: only a few experts run per token. Strata keeps the frequently used ones in VRAM and the rest in the iDX's fast RAM."))
     A(f'<div class="rahmen"><span class="schild">{T("VERDRAHTUNG", "WIRING")}</span><pre class="plan">{verdrahtung(sp)}</pre></div>')
@@ -233,13 +246,13 @@ def seite(sp):
         f"For comparison, a dense 70B model (Llama 3.3, Q4) on the same card: <b>{z(gpu['schreiben_tps_median'], sp, 1)} tokens per second</b>, because every token reads all weights and half of them sit behind the CPU."))
     zu()
 
-    kapitel(4, "strom", T("Was kostet es an Strom?", "What does it cost in power?"))
+    kapitel(5, "strom", T("Was kostet es an Strom?", "What does it cost in power?"))
     A(terminal_strom(strom, sp))
     P(T(f"Das sind <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh je 1.000 geschriebene Token</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh über Leerlauf). Ein geladenes Modell kostet rund 3 W mehr als eine leere Karte. Im Leerlaufwert steckt mein Netzwerk-Switch, der an derselben USV hängt; mit NAS und Dock allein waren es im September rund 60 W. Vergleichbar sind deshalb die Werte über Leerlauf.",
         f"That is <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh per 1,000 written tokens</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh above idle). A loaded model costs about 3 W more than an empty card. The idle figure includes my network switch, which hangs on the same UPS; with NAS and dock alone it was about 60 W in September. The figures above idle are the ones to compare."))
     zu()
 
-    kapitel(5, "warten", T("Wie lange warte ich?", "How long do I wait?"))
+    kapitel(6, "warten", T("Wie lange warte ich?", "How long do I wait?"))
     A(bild(D.kontext, sp))
     P(T(f"Das Einlesen wächst fast linear mit der Länge: 5,5 s bei 4K, 26 s bei 32K, 3,6 min bei 250K Token. Der Gesprächs-Cache erspart einer laufenden Sitzung, das in jeder Runde neu zu zahlen. Nach 30 Minuten Leerlauf wird das Modell entladen; der Kaltstart bis zum ersten Wort dauert dann <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>.",
         f"Reading grows almost linearly with length: 5.5 s at 4K, 26 s at 32K, 3.6 min at 250K tokens. The conversation cache keeps a running session from paying this again on every turn. After 30 minutes idle the model is unloaded; the cold start to the first word then takes <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>."))
@@ -252,16 +265,6 @@ def seite(sp):
         if "wechsel" in zwei:
             P(T(f"Fragen zwei Personen abwechselnd zwei <em>verschiedene</em> Modelle, lädt die Karte jedes Mal um: im Mittel {z(zwei['wechsel']['warten_median_s'], sp, 0)} s bis zum ersten Wort. Für gemeinsame Nutzung also ein Modell für alle.",
                 f"If two people alternate between two <em>different</em> models, the card reloads every time: {z(zwei['wechsel']['warten_median_s'], sp, 0)} s on average to the first word. For shared use, pick one model for everyone."))
-    zu()
-
-    kapitel(6, "nas", T("Bleibt das NAS ein NAS?", "Does the NAS stay a NAS?"))
-    P(T("Die iDX macht weiter, wofür sie gekauft wurde, mit den Diensten, die UGOS mitbringt: <b>Fotos</b> für die Fotosammlung, <b>Video</b> für die Mediathek, <b>Dateifreigaben</b> über SMB und die Überwachung der USV. Auch Docker kommt aus UGOS; darin laufen Chat, Suche und Agent. Die eingebaute Arc-iGPU bleibt für Transkodierung und Bilderkennung frei, die Karte im Dock rechnet nur Sprach- und Bildmodelle.",
-        "The iDX keeps doing what it was bought for, with the services UGOS brings along: <b>Photos</b> for the photo library, <b>Video</b> for the media library, <b>file shares</b> over SMB and UPS monitoring. Docker comes from UGOS too; chat, search and agent run in it. The built-in Arc iGPU stays free for transcoding and photo recognition, the card in the dock only runs language and picture models."))
-    P(T(f"Während das Modell schrieb, kam eine 17,7-GB-Datei mit {z(neben['download']['waehrend_schreiben']['mb_s'], sp, 0)} MB/s vom NAS ({z(neben['download']['ohne_modell']['mb_s'], sp, 0)} MB/s ohne Modell; begrenzt hat beide Male der 5-Gbit/s-Anschluss des Arbeitsplatzes). Die Transkodierung von 4K nach 1080p auf der Arc-iGPU fiel von {tr['ohne_modell_bilder_s'][0]} auf {min(tr['waehrend_schreiben_bilder_s'])}–{max(tr['waehrend_schreiben_bilder_s'])} Bilder je Sekunde, das Fünf- bis Achtfache der Echtzeit. Das Schreibtempo des Modells blieb unverändert. Nicht gemessen: SMB und ein Arbeitsplatz mit 10 Gbit/s.",
-        f"While the model was writing, a 17.7 GB file came off the NAS at {z(neben['download']['waehrend_schreiben']['mb_s'], sp, 0)} MB/s ({z(neben['download']['ohne_modell']['mb_s'], sp, 0)} MB/s without a model; both times the client's 5 Gbit/s port was the limit). Transcoding 4K to 1080p on the Arc iGPU dropped from {tr['ohne_modell_bilder_s'][0]} to {min(tr['waehrend_schreiben_bilder_s'])}–{max(tr['waehrend_schreiben_bilder_s'])} frames per second, five to eight times real time. The model's decode speed did not change. Not measured: SMB, and a 10 Gbit/s client."))
-    A(bild(D.speicher, sp))
-    P(T("Der Preis ist Arbeitsspeicher: Mit geladenem 125B-Modell bleiben von 62 GiB rund 7,5 GiB verfügbar. Ein zweiter großer Dienst daneben passt nicht.",
-        "The price is memory: with the 125B model loaded, about 7.5 GiB of the 62 GiB stay available. A second large service does not fit next to it."))
     zu()
 
     kapitel(7, "risiko", T("Was kann schiefgehen?", "What can go wrong?"))
@@ -323,7 +326,7 @@ def seite(sp):
                "UGREEN iDX6011 Pro with a Radeon RX 7900 XTX in the OCuLink dock: measurements of speed, power, waiting time and risks of a local 125B model. Scripts and raw data on GitHub.")
     basis = "../" if en else ""
     kanon = "https://faf.net/idx/" + ("en/" if en else "")
-    nav = [("anlage", T("Aufbau", "Setup")), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")), ("nas", "NAS"),
+    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
            ("risiko", T("Risiko", "Risk")), ("versionen", T("Versionen", "Releases")), ("agent", "Agent"), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
 <html lang="{sp}">
@@ -359,6 +362,7 @@ def seite(sp):
   <figure class="szene"><span class="schild">{T("DIE ANLAGE · NAS, KABEL, DOCK MIT KARTE", "THE SETUP · NAS, CABLE, DOCK WITH CARD")}</span><img src="{basis}bilder/anlage.png" srcset="{basis}bilder/anlage.png 1x, {basis}bilder/anlage@2x.png 2x" width="1032" height="336" alt="{T("Textgrafik: links das NAS mit sechs Einschüben, rechts das Dock mit der Grafikkarte und drei Lüftern, dazwischen das leuchtende OCuLink-Kabel.", "Text graphic: the NAS with six drive bays on the left, the dock with the graphics card and three fans on the right, the glowing OCuLink cable between them.")}"></figure>
   <div class="kacheln">{kacheln}</div>
   <p class="status"><span class="konsole">[ {T("GEMESSEN", "MEASURED")} ]</span> {T("Stand 15.11.2026 · Strata 0.2.12 · UGOS Pro 1.21.1 · Schätzungen sind als solche bezeichnet", "as of 15 Nov 2026 · Strata 0.2.12 · UGOS Pro 1.21.1 · estimates are marked as such")}</p>
+  <p class="status"><span class="konsole">[ {T("PARALLEL", "IN PARALLEL")} ]</span> {T("Fotos, Video, Dateifreigaben und USV-Überwachung von UGOS laufen weiter, auch bei geladenem Modell", "photos, video, file shares and UPS monitoring of UGOS keep running, even with the model loaded")}</p>
 </section>
 {rumpf}
 </main>

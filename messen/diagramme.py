@@ -820,7 +820,7 @@ def aufbau(d, sp):
     pfeil("M 672,356 H 696 Q 704,356 704,348 V 184 Q 704,176 712,176 H 742", fokus=True)  # llama-swap -> Sprachmodell
     pfeil("M 672,380 H 742")                                                     # llama-swap -> ComfyUI
     knoten(72, 132, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
-    knoten(72, 340, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Telegram", "e.g. Telegram"), "extern", w=128)
+    knoten(72, 340, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
     knoten(272, 132, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
     knoten(512, 132, T("Suche", "Search"), "SearXNG", T("Suchanfragen gehen ins Netz", "search queries go out"), "extern")
     knoten(272, 340, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
@@ -840,7 +840,51 @@ def aufbau(d, sp):
                               "Laptop and phone talk to Open WebUI in the home network and to Hermes Agent through a messenger service; both ask llama-swap, which loads either the language model or ComfyUI on the RX 7900 XTX. Only search queries and messenger messages leave the house."), s, 512
 
 
-ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau)
+def parallel(d, sp):
+    """Wer rechnet was: drei Bahnen (Karte im Dock, eingebaute iGPU, CPU und RAM) mit dem, was gleichzeitig läuft."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    n = json.load(open(os.path.join(d, "2026-11-15-betrieb", "nebenlast.json"), encoding="utf-8"))
+    st = json.load(open(os.path.join(d, "2026-11-15-betrieb", "strom-faber.json"), encoding="utf-8"))["phasen"]["schreiben"]
+    tr, dl = n["transkodieren"], n["download"]
+    s = Svg()
+    titel = T("Das NAS arbeitet weiter, während das Modell schreibt", "The NAS keeps working while the model writes")
+    kopf(s, T("UGREEN iDX6011 Pro · alles gleichzeitig · Modell geladen und unter Last", "UGREEN iDX6011 Pro · everything at once · model loaded and under load"), titel)
+    GUT, OFFEN = TON["salbei"][2], TON["gold"][2]
+    bahnen = [
+        (T("Karte im Dock", "Card in the dock"), "RX 7900 XTX · 24 GB", ACC, [
+            (T("Sprachmodell", "Language model"), f"{z(st['tps'], sp)} {T('Token/s', 'tokens/s')}", T("gemessen", "measured"), GUT, True),
+            (T("Bildmodelle", "Picture models"), T("8–66 s je Bild, im Wechsel", "8–66 s per picture, in turn"), T("gemessen", "measured"), GUT, False)]),
+        (T("Eingebaute iGPU", "Built-in iGPU"), "Intel Arc", STAHL, [
+            (T("Video: Transkodierung", "Video: transcoding"), f"{min(tr['waehrend_schreiben_bilder_s'])}–{max(tr['waehrend_schreiben_bilder_s'])} {T('Bilder/s', 'frames/s')} ({T('ohne Last', 'idle')} {tr['ohne_modell_bilder_s'][0]})", T("gemessen", "measured"), GUT, False),
+            (T("Fotos: Bilderkennung", "Photos: recognition"), T("Dienst von UGOS, läuft weiter", "UGOS service, keeps running"), T("läuft · nicht gemessen", "runs · not measured"), OFFEN, False)]),
+        (T("Prozessor und RAM", "Processor and RAM"), "Core Ultra 7 · 64 GB", INK, [
+            (T("Dateifreigaben", "File shares"), f"{z(dl['waehrend_schreiben']['mb_s'], sp, 0)} MB/s ({T('ohne Last', 'idle')} {z(dl['ohne_modell']['mb_s'], sp, 0)})", T("gemessen · per HTTP", "measured · over HTTP"), GUT, False),
+            (T("Chat und Websuche", "Chat and web search"), T("Docker · 689 + 139 MiB RAM", "Docker · 689 + 139 MiB RAM"), T("gemessen", "measured"), GUT, False),
+            (T("USV-Überwachung", "UPS monitoring"), T("Dienst von UGOS, läuft weiter", "UGOS service, keeps running"), T("läuft · nicht gemessen", "runs · not measured"), OFFEN, False)]),
+    ]
+    y = 100
+    for name, sub, farbe, kaesten in bahnen:
+        s.roh(f'<rect x="{L}" y="{y}" width="{R - L}" height="88" rx="8" fill="{INK}" fill-opacity="0.025" stroke="{INK}" stroke-opacity="0.14" stroke-width="0.8"/>')
+        s.roh(f'<rect x="{L}" y="{y}" width="4" height="88" fill="{farbe}"/>')
+        s.text(L + 20, y + 40, name, 13, INK, "sans", weight=700)
+        s.text(L + 20, y + 57, sub, 9, MUTED, "mono")
+        breite = (R - 256 - 16 - 12 * (len(kaesten) - 1)) / len(kaesten)
+        for i, (titel_, wert, status, sfarbe, fokus) in enumerate(kaesten):
+            x = 256 + i * (breite + 12)
+            s.roh(f'<rect x="{x:.1f}" y="{y + 12}" width="{breite:.1f}" height="64" rx="6" fill="{PAPER}"/>')
+            s.roh(f'<rect x="{x:.1f}" y="{y + 12}" width="{breite:.1f}" height="64" rx="6" fill="{ACC if fokus else INK}" fill-opacity="{0.14 if fokus else 0.04}" stroke="{ACC if fokus else INK}" stroke-opacity="{1 if fokus else 0.45}" stroke-width="{1.6 if fokus else 1}"/>')
+            s.text(x + 12, y + 32, titel_, 12, INK, "sans", weight=600)
+            s.text(x + 12, y + 48, wert, 8.5, MUTED, "mono")
+            s.text(x + 12, y + 64, status.upper(), 7.5, sfarbe, "mono", weight=600, sperr="0.12em")
+        y += 100
+    h = fuss(s, y + 12, None, T("gemessen am 15.11.2026, während das 125B-Modell durchgehend schrieb · Transkodierung 4K-HEVC nach 1080p-H.264 mit VAAPI · Datei 17,7 GB an einen Arbeitsplatz mit 5 Gbit/s, der die Grenze war · Daten: messen/daten/2026-11-15-betrieb/nebenlast.json",
+                                    "measured on 15 Nov 2026 while the 125B model was writing continuously · transcoding 4K HEVC to 1080p H.264 with VAAPI · 17.7 GB file to a client with 5 Gbit/s, which was the limit · data: messen/daten/2026-11-15-betrieb/nebenlast.json"))
+    return "parallel", titel, T("Drei Bahnen: Auf der Karte im Dock laufen Sprach- und Bildmodelle, auf der eingebauten iGPU Transkodierung und Bilderkennung, auf Prozessor und RAM Dateifreigaben, Chat, Websuche und USV-Überwachung, alles gleichzeitig.",
+                                "Three lanes: language and picture models run on the card in the dock, transcoding and photo recognition on the built-in iGPU, file shares, chat, web search and UPS monitoring on processor and RAM, all at the same time."), s, h
+
+
+ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel)
 
 
 def main():

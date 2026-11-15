@@ -120,6 +120,8 @@ That is **1.9 Wh per 1,000 written tokens** (1.2 Wh above idle) and 0.12 Wh per 
 
 **Cold start.** From an unloaded card to the first token: 18.6–19.6 s in five runs. Dropping the page cache before the first run made no difference (19.6 s).
 
+![The NAS keeps working while the model writes](bilder/parallel-en.png)
+
 **The NAS at work while the model writes.** A 17.7 GB file downloaded from the NAS over HTTP at 589 MB/s without a model and 593 MB/s while the model was writing; both runs were limited by the client's 5 Gbit/s port, not by the NAS. Transcoding a 4K HEVC clip to 1080p H.264 on the built-in Arc iGPU dropped from 290 to 158–249 frames/s, still five to eight times real time. Writing stayed at 66 tokens/s during both, inside its normal spread. Not measured: SMB, and a 10 Gbit/s client.
 
 **A dense 70B model on the same card: 2.7 tokens/s.** Llama 3.3 70B Instruct (Q4_K_M, 42.5 GB) with llama.cpp Vulkan, as many layers on the card as fit, the rest on the CPU, 8K context:

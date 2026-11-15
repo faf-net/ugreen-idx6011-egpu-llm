@@ -121,6 +121,8 @@ Das sind **1,9 Wh je 1.000 geschriebene Token** (1,2 Wh über Leerlauf) und 0,12
 
 **Kaltstart.** Von der leeren Karte bis zum ersten Token: 18,6–19,6 s in fünf Läufen. Den Seitencache vor dem ersten Lauf zu leeren, machte keinen Unterschied (19,6 s).
 
+![Das NAS arbeitet weiter, während das Modell schreibt](bilder/parallel-de.png)
+
 **NAS-Betrieb, während das Modell schreibt.** Eine 17,7-GB-Datei kam per HTTP mit 589 MB/s vom NAS, während das Modell schrieb mit 593 MB/s; begrenzt hat beide Male der 5-Gbit/s-Anschluss des Arbeitsplatzes, nicht das NAS. Die Transkodierung eines 4K-HEVC-Clips nach 1080p-H.264 auf der eingebauten Arc-iGPU fiel von 290 auf 158–249 Bilder/s, immer noch das Fünf- bis Achtfache der Echtzeit. Das Schreibtempo blieb dabei bei 66 Token/s, innerhalb seiner üblichen Streuung. Nicht gemessen: SMB und ein Arbeitsplatz mit 10 Gbit/s.
 
 **Ein dichtes 70B-Modell auf derselben Karte: 2,7 Token/s.** Llama 3.3 70B Instruct (Q4_K_M, 42,5 GB) mit llama.cpp Vulkan, so viele Schichten auf der Karte wie passen, der Rest auf der CPU, 8K Kontext:

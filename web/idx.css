@@ -83,3 +83,7 @@ footer p{max-width:none;margin-bottom:8px}
 .nr::after{content:"";flex:1;border-top:1px dashed var(--linie)}
 section{border-top:0;margin-top:24px}
 .eof{font:500 11px/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.18em;color:var(--schwach);margin-top:24px}
+.kopf{position:sticky;top:0;z-index:10;background:var(--grund)}
+section{scroll-margin-top:72px}
+@media (max-width:760px){.kopf{gap:6px 16px;padding-top:12px;padding-bottom:10px}.kopf nav{flex:1 1 100%;order:3;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none}.kopf nav::-webkit-scrollbar{display:none}.sprache{margin-left:auto}section{scroll-margin-top:96px}}
+@media print{.kopf{position:static}}
