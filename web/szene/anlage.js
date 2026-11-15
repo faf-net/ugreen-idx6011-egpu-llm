@@ -23,7 +23,7 @@ function Anlage(canvas, s) {
   S.fillStyle = verlauf(NX, NY, NX, NY + NH, [[0, '#a49c90'], [.06, '#6f6961'], [.62, '#4f4a46'], [1, '#3a3634']]); S.fillRect(NX, NY, NW, NH);  // Gehäuse
   kasten(NX, NY, 3, NH, '#a49c90', '#6f6961', true); kasten(NX + NW - 3, NY, 3, NH, '#a49c90', '#4f4a46', true);                              // helle Kanten
   kasten(NX + 10, NY + 9, NW - 20, 82, '#151413', '#0d0c0b', true);                         // schwarze Blende
-  var TX = NX + 30, TB = 26, TA = 31;                                                      // Einschübe
+  var TB = 20, TA = 25, TX = NX + NW - 42 - (5 * TA + TB);   // Einschübe ein Viertel schmaler, rechts an die Anzeige gerückt wie am Gerät                                                      // Einschübe
   kasten(TX - 6, NY + 13, 6 * TA + 6, 74, '#0d0c0b', '#151413', true);
   for (var e = 0; e < 6; e++) {
     var x = TX + e * TA;
