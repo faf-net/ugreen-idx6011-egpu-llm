@@ -443,7 +443,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
 ```
   docs/                         every release in detail, the dock investigation, the agent follow-up, the steering vector, ComfyUI (EN/DE)
   bilder/                       the charts as PNG, their HTML/SVG sources in bilder/html/
-  web/                          builds the page faf.net/idx from this repo (bau.py), with self-hosted fonts
+  web/                          builds the pages faf.net/local-ai and faf.net/lokale-ki from this repo (bau.py), with self-hosted fonts
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,

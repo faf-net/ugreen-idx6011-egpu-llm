@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Baut die Webseite faf.net/idx aus diesem Repo: eine Seite je Sprache, statisch, ohne JavaScript, ohne Fremdserver.
+"""Baut die Webseite faf.net/lokale-ki (Deutsch) und faf.net/local-ai (Englisch) aus diesem Repo: eine Seite je Sprache, statisch, ohne JavaScript, ohne Fremdserver.
 
 Die Diagramme kommen aus messen/diagramme.py (dieselben Funktionen wie für die PNG im README), eingebettet als SVG
 und über CSS-Variablen an das helle oder dunkle Thema gebunden. Kennzahlen und Tabellen der Messung vom 15.11.2026
 kommen aus messen/daten/, der Verdrahtungsplan aus dem README. Der Fließtext steht hier im Skript.
 
-  python web/bau.py            schreibt web/dist/idx/ (index.html = Deutsch, en/index.html = Englisch, fonts/)
+  python web/bau.py            schreibt web/dist/lokale-ki/ (Deutsch) und web/dist/local-ai/ (Englisch), je mit index.html, idx.css, fonts/, bilder/
 
 Farben: web/workbench-farben.json (aus dem Design System Workbench). Schriften: web/fonts/ (OFL, selbst ausgeliefert).
 """
@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.join(REPO, "messen"))
 import diagramme as D  # noqa: E402
 
 GH = "https://github.com/faf-net/ugreen-idx6011-egpu-llm"
+ORDNER = {"de": "lokale-ki", "en": "local-ai"}
 FARBEN = json.load(open(os.path.join(HIER, "workbench-farben.json"), encoding="utf-8"))["farben"]
 HEX2TOK = {}
 for name, w in FARBEN.items():
@@ -351,8 +352,9 @@ def seite(sp):
     titel = T("Lokale KI auf dem NAS", "Local AI on a NAS")
     beschr = T("UGREEN iDX6011 Pro mit Radeon RX 7900 XTX im OCuLink-Dock: Messwerte zu Tempo, Strom, Wartezeit und Risiken eines lokalen 125B-Modells. Skripte und Rohdaten auf GitHub.",
                "UGREEN iDX6011 Pro with a Radeon RX 7900 XTX in the OCuLink dock: measurements of speed, power, waiting time and risks of a local 125B model. Scripts and raw data on GitHub.")
-    basis = "../" if en else ""
-    kanon = "https://faf.net/idx/" + ("en/" if en else "")
+    basis = ""
+    ordner = ORDNER[sp]
+    kanon = f"https://faf.net/{ordner}/"
     nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("vektor", T("Vektor", "Vector")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
            ("versionen", T("Versionen", "Releases")), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
@@ -360,26 +362,26 @@ def seite(sp):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{e(titel)} · faf.net/idx</title>
+<title>{e(titel)} · faf.net/{ordner}</title>
 <meta name="description" content="{e(beschr)}">
 <link rel="canonical" href="{kanon}">
-<link rel="alternate" hreflang="de" href="https://faf.net/idx/">
-<link rel="alternate" hreflang="en" href="https://faf.net/idx/en/">
-<link rel="alternate" hreflang="x-default" href="https://faf.net/idx/">
+<link rel="alternate" hreflang="de" href="https://faf.net/lokale-ki/">
+<link rel="alternate" hreflang="en" href="https://faf.net/local-ai/">
+<link rel="alternate" hreflang="x-default" href="https://faf.net/local-ai/">
 <meta property="og:title" content="{e(titel)}">
 <meta property="og:description" content="{e(beschr)}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="{kanon}">
-<meta property="og:image" content="https://faf.net/idx/og-{sp}.png">
+<meta property="og:image" content="{kanon}og-{sp}.png">
 <meta name="color-scheme" content="dark light">
 <link rel="preload" href="{basis}fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{basis}idx.css">
 </head>
 <body>
 <header class="kopf">
-  <a class="marke" href="{'../' if en else './'}"><span class="pfad">faf.net/idx</span><span class="cursor" aria-hidden="true">▌</span></a>
+  <a class="marke" href="./"><span class="pfad">faf.net/{ordner}</span><span class="cursor" aria-hidden="true">▌</span></a>
   <nav aria-label="{T('Abschnitte', 'Sections')}">{"".join(f'<a href="#{a}">{e(t)}</a>' for a, t in nav)}</nav>
-  <div class="sprache">{'<a href="../" hreflang="de" lang="de">Deutsch</a> · <b>English</b>' if en else '<b>Deutsch</b> · <a href="en/" hreflang="en" lang="en">English</a>'}</div>
+  <div class="sprache">{'<a href="../lokale-ki/" hreflang="de" lang="de">Deutsch</a> · <b>English</b>' if en else '<b>Deutsch</b> · <a href="../local-ai/" hreflang="en" lang="en">English</a>'}</div>
 </header>
 <main>
 <section class="auftakt">
@@ -418,17 +420,19 @@ def css():
 
 
 def main():
-    ziel = os.path.join(HIER, "dist", "idx")
-    shutil.rmtree(os.path.join(HIER, "dist"), ignore_errors=True)
-    os.makedirs(os.path.join(ziel, "en"))
-    shutil.copytree(os.path.join(HIER, "fonts"), os.path.join(ziel, "fonts"))
-    shutil.copytree(os.path.join(HIER, "bilder"), os.path.join(ziel, "bilder"))
-    for sp, pfad in (("de", "index.html"), ("en", os.path.join("en", "index.html"))):
-        open(os.path.join(ziel, pfad), "w", encoding="utf-8", newline="\n").write(seite(sp))
+    dist = os.path.join(HIER, "dist")
+    shutil.rmtree(dist, ignore_errors=True)
+    for sp, ordner in ORDNER.items():
+        ziel = os.path.join(dist, ordner)
+        os.makedirs(ziel)
+        shutil.copytree(os.path.join(HIER, "fonts"), os.path.join(ziel, "fonts"))
+        shutil.copytree(os.path.join(HIER, "bilder"), os.path.join(ziel, "bilder"))
+        open(os.path.join(ziel, "index.html"), "w", encoding="utf-8", newline="\n").write(seite(sp))
         shutil.copy(os.path.join(REPO, "bilder", f"werksmodell-{sp}.png"), os.path.join(ziel, f"og-{sp}.png"))
-    open(os.path.join(ziel, "idx.css"), "w", encoding="utf-8", newline="\n").write(css())
+        open(os.path.join(ziel, "idx.css"), "w", encoding="utf-8", newline="\n").write(css())
+    ziel = dist
     groesse = sum(os.path.getsize(os.path.join(w, f)) for w, _, fs in os.walk(ziel) for f in fs)
-    print(f"web/dist/idx: {sum(len(fs) for _, _, fs in os.walk(ziel))} Dateien, {groesse // 1024} KiB")
+    print(f"web/dist (lokale-ki, local-ai): {sum(len(fs) for _, _, fs in os.walk(ziel))} Dateien, {groesse // 1024} KiB")
 
 
 if __name__ == "__main__":

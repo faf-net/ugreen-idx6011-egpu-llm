@@ -446,7 +446,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
 ```
   docs/                         jede Version im Einzelnen, die Dock-Untersuchung, der Agenten-Nachtrag, der Steuervektor, ComfyUI (EN/DE)
   bilder/                       die Diagramme als PNG, ihre HTML/SVG-Quellen in bilder/html/
-  web/                          baut die Seite faf.net/idx aus diesem Repo (bau.py), mit selbst ausgelieferten Schriften
+  web/                          baut die Seiten faf.net/lokale-ki und faf.net/local-ai aus diesem Repo (bau.py), mit selbst ausgelieferten Schriften
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen
