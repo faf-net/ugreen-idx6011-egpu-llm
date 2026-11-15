@@ -146,7 +146,37 @@ Das MoE-Modell schreibt 25-mal so schnell und braucht je Token ein Vierzehntel d
 
 Auf der Karte schreibt das eingebaute Modell 11-mal so schnell und liest fünfmal so schnell wie ab Werk, bei einem Fünftel der Energie je Token. Die CPU allein schreibt schneller als der iGPU-Server, liest einen Prompt aber siebenmal langsamer. Zwei Grenzen: Beim CPU-Lauf lag die Kopie von UGOS geladen und untätig daneben, und UGOS hält sein Modell im Speicher (rund 27 GB), es passt also nicht neben das 125B-Modell; ich habe es nach dem Test wieder entfernt. Die zweite Laufzeit von UGOS (`llama-gpu`) ist ein CUDA-Build und startet mit einer AMD-Karte nicht.
 
-Skripte: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`. Rohdaten: `messen/daten/2026-11-15-betrieb/`.
+**Lohnt sich das große Modell? Dieselben Aufgaben für beide.** UGREENs Qwen3.5-35B-A3B passt ganz auf die Karte (22,1 GB VRAM bei 128K Kontext) und schreibt 114 Token/s, fast doppelt so schnell wie das 125B-Modell. In meinem Aufgabensatz verliert es trotzdem:
+
+| | Flash-Next 125B (MoE, Strata) | Qwen3.5-35B-A3B (UGREENs Datei, auf der Karte) |
+|---|---:|---:|
+| **bestandene Aufgaben (von 102)** | **96** | **90** |
+| Code | 14/15 | 12/15 |
+| Logik | 14/15 | 12/15 |
+| Anweisungen befolgen | 15/15 | 13/15 |
+| Fakten | 12/15 | 12/15 |
+| Werkzeugaufrufe | 20/20 | 20/20 |
+| langer Kontext (32K, 100K) | 4/4 | 4/4 |
+| Sicherheit | 17/18 | 17/18 |
+| Denkbudget von 8.000 Token aufgebraucht, keine Antwort | 0 | 9 |
+| Deutsch, verdeckt benotet (von 60) | 47 | 37 |
+| geschriebene Token für alle 114 Aufgaben | 87.007 | 223.795 |
+| Zeit für alle 114 Aufgaben | 27 min | 37 min |
+
+Das kleine Modell denkt viel länger nach: Es schreibt für dieselben Aufgaben 2,6-mal so viele Token, deshalb dauert der ganze Satz trotz des höheren Tempos 37 % länger, und in neun Aufgaben war das Denkbudget aufgebraucht, bevor eine Antwort kam. Mit einem größeren Budget würden einige davon vermutlich bestehen; gemessen habe ich das nicht. Für das kleine Modell spricht: Es lässt den Arbeitsspeicher des NAS frei, wo das 125B-Modell rund 53 GiB belegt. Die Zahlen des 125B-Modells stammen vom 13.11. (gleiche Aufgaben, gleiche Strata-Version). Deutsch hat ein Sprachmodell verdeckt benotet, das nicht wusste, welche Antwort von welchem Modell stammt; ein anderer Prüfer als im Nachtrag vom 14.11., die Noten sind also nur innerhalb dieser Tabelle vergleichbar. Daten (nur Zählwerte): `messen/daten/2026-11-15-betrieb/qualitaet.json`.
+
+**Zwei Personen gleichzeitig.** `messen/zwei.py` führt erst ein Gespräch mit fünf Fragen allein, dann zwei Gespräche zugleich am selben Modell, dann zwei Personen abwechselnd an zwei verschiedenen Modellen:
+
+| | Warten bis zum ersten Wort (Median) | Schreiben T/s (Median) |
+|---|---:|---:|
+| eine Person allein | 0,2 s | 62,2 |
+| zwei zugleich, Person A | 8,1 s | 64,7 |
+| zwei zugleich, Person B | 10,5 s | 72,6 |
+| abwechselnd an zwei Modellen | 20 s | – |
+
+Strata beantwortet eine Anfrage nach der anderen: Die zweite Person wartet, bis die erste Antwort fertig ist, bei Antworten bis 400 Token rund zehn Sekunden, und bekommt dann das volle Tempo. Nutzen zwei Personen zwei verschiedene Modelle, lädt die Karte bei jedem Wechsel um, rund 20 s jedes Mal. Für gemeinsame Nutzung also ein Modell für alle.
+
+Skripte: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`, `messen/zwei.py`. Rohdaten: `messen/daten/2026-11-15-betrieb/`.
 
 ### Kostet Strata Qualität? Strata gegen llama.cpp auf derselben Datei
 
@@ -280,7 +310,7 @@ Das Image ist rund 21 GB groß, davon etwa 11 GB ROCm aus AMDs TheRock-Wheels (7
 - **PCIe-Quirk:** Nach einem Abriss klemmte der Kernel den Link auf 2,5 GT/s und konnte ihn nicht neu trainieren.
   Die Korrektur („Always lift 2.5GT/s restriction“) steckt in 6.18.39, UGOS hat 6.18.15.
 
-Die Störungen folgen, wie sich gezeigt hat, zwei Wochenuhren, und eine davon ist der Akkutest der USV. Die ganze Untersuchung samt Mitschnitt-Skript: [docs/dock.de.md](docs/dock.de.md).
+Die Störungen folgen, wie sich gezeigt hat, zwei Wochenuhren, und eine davon ist der Akkutest der USV. Die ganze Untersuchung samt Mitschnitt-Skript: [docs/dock.de.md](docs/dock.de.md). In zehn Wochen Aufzeichnung gab es 23 Störungen, an drei Tagen fiel die Karte vom Bus, und kein Abriss hat das NAS neu gestartet.
 
 ## Das größte offene Risiko: Ein Dock-Abriss startet das NAS neu
 
@@ -346,6 +376,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
   konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration
   konfig/hermes-pruefer/        Plugin für Hermes Agent: prüft jede Antwort mit festen Regeln, ohne Sprachmodell
+  konfig/stack/                 Chat und Websuche: Compose-Datei für Open WebUI und SearXNG, auf dem NAS getestet (EN/DE)
 ```
 
 **UGOS**
@@ -384,6 +415,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/dicht70.py             ein dichtes Modell, das nicht in den VRAM passt, llama.cpp Vulkan, nach Schichten auf der Karte
   messen/werksmodell.py         UGREENs eingebautes Modell: der eigene Server von UGOS auf der Arc-iGPU, nur CPU, die Karte im Dock
   messen/transkodieren.sh       4K-HEVC nach 1080p-H.264 auf der Arc-iGPU (VAAPI), Bilder je Sekunde
+  messen/zwei.py                zwei Personen gleichzeitig: Wartezeit und Tempo allein, zugleich, abwechselnd an zwei Modellen
 ```
 
 **Rohdaten**
@@ -410,6 +442,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
 ```
   docs/                         jede Version im Einzelnen, die Dock-Untersuchung, der Agenten-Nachtrag, ComfyUI (EN/DE)
   bilder/                       die Diagramme als PNG, ihre HTML/SVG-Quellen in bilder/html/
+  web/                          baut die Seite faf.net/idx aus diesem Repo (bau.py), mit selbst ausgelieferten Schriften
 ```
 
 Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardbibliothek von Python und lesen

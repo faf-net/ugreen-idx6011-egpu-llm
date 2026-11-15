@@ -1,0 +1,49 @@
+# Chat und Websuche für das NAS: Open WebUI und SearXNG, beide nur im Heimnetz.
+# Die Sprachmodelle kommen von llama-swap (siehe konfig/strata-0.2.12/). Aufruf:
+#   cp .env.beispiel .env   # Werte eintragen
+#   docker compose up -d
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.13.3
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "${ADRESSE}:${PORT:-3000}:8080"          # nur an der Adresse des NAS im Heimnetz
+    volumes:
+      - ./daten:/app/backend/data
+    environment:
+      - OPENAI_API_BASE_URL=${LLAMA_SWAP_URL}/v1
+      - OPENAI_API_KEY=${LLAMA_SWAP_KEY:-keiner}
+      - ENABLE_OLLAMA_API=false
+      - WEBUI_NAME=${NAME:-NAS Chat}
+      - DEFAULT_LOCALE=${SPRACHE:-de-DE}
+      - ENABLE_SIGNUP=false                       # das erste Konto wird Verwalter, weitere legt er an
+      - DEFAULT_USER_ROLE=pending
+      - ENABLE_COMMUNITY_SHARING=false
+      - ENABLE_VERSION_UPDATE_CHECK=false
+      - SCARF_NO_ANALYTICS=true
+      - DO_NOT_TRACK=true
+      - ANONYMIZED_TELEMETRY=false
+      # Neben dem 125B-Modell ist der Arbeitsspeicher knapp: Open WebUI rechnet nichts selbst.
+      # Dokumente gehen ganz in den Kontext des Modells (256K reichen dafür).
+      - RAG_EMBEDDING_MODEL_AUTO_UPDATE=false
+      - RAG_RERANKING_MODEL_AUTO_UPDATE=false
+      - WHISPER_MODEL_AUTO_UPDATE=false
+      - BYPASS_EMBEDDING_AND_RETRIEVAL=true
+      - ENABLE_WEB_SEARCH=true
+      - WEB_SEARCH_ENGINE=searxng
+      - SEARXNG_QUERY_URL=http://searxng:8080/search?q=<query>
+      - BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL=true
+      - WEB_SEARCH_RESULT_COUNT=5
+      - TZ=${ZEITZONE:-Europe/Berlin}
+    depends_on: [searxng]
+
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    restart: unless-stopped
+    environment:
+      - SEARXNG_SECRET=${SEARXNG_SECRET}
+    volumes:
+      - ./searxng/settings.yml:/etc/searxng/settings.yml:ro
+    # kein Port nach außen: nur Open WebUI fragt hier an

@@ -18,3 +18,17 @@ Logged with second resolution since 15 Oct (`messen/dock-mitschnitt.sh`, read-on
 **Update, same night: the Wednesday series is the UPS testing its battery.** The NAS and the dock are the only loads on an Eaton Ellipse PRO 1200, read via NUT once a minute. In six weeks its battery charge left 100 % exactly six times, each time in the minute right after a Wednesday event (16 Sep 17:18:58, 23 Sep 17:40:12, 30 Sep 18:01:49, 7 Oct 18:22:49, 14 Oct 18:44:14, 21 Oct 19:05:29): 100 → 99 %, runtime 3,814 → 3,775 s, back to 100 % about 20 minutes later. Three of these samples even caught the runtime estimate on battery (1,037 s and 2,812 s instead of 3,814 s). The datasheet lists an automatic battery test once a week; the extra 21 minutes per week are the UPS's own timer. So the NAS is not disturbed from outside on Wednesdays, its own UPS switches it to battery for a few seconds, and that switch is what the copper network link and the OCuLink link pick up (5 of 6 tests; on 16 Sep nothing was logged). The status read once a minute stays `OL`, which is why this was missed at first. NUT on this model offers no command to start or schedule the test. The Sunday series shows no such trace and remains open.
 
 Next: on 25 Oct (end of daylight saving time) the Sunday series tells whether its device switches to winter time (17:14:53) or not (16:14:53); on 28 Oct the Wednesday series is due at 18:25:51 CET if it really is a fixed interval. If you see repeated `RxErr` on an OCuLink port, log with second resolution and look for a weekly pattern before you replace cables or the dock.
+
+## How often it really happens (9 Sep to 15 Nov 2026)
+
+From the kernel messages of the dock port over 67 days, counting events more than ten minutes apart as separate:
+
+| Cause | Disturbances | Card dropped off the bus |
+|---|---:|---:|
+| Sunday series, same time every week, cause open | 7 | 0 |
+| Wednesday series, the UPS's weekly battery test | 5 | 0 |
+| caused by me: UPS plug pulled, devices plugged in or switched on the same UPS | 7 | 1 |
+| no known cause | 4 | 3 |
+| **total** | **23** | **4, on 3 days** |
+
+Most disturbances are one corrected receiver error and nothing else. The card dropped off the bus on three days: twice it was back electrically after about 20 s, on 8 Oct it stayed unusable until the next reboot. **In these ten weeks no dropout rebooted the NAS**; every recorded kernel crash came from my own tests, in which I removed the card in software with a model loaded. What I take from it: nothing that switches belongs on the UPS that feeds the NAS and the dock. The attribution "caused by me" comes from my notes of those days, not from the log. Data: `messen/daten/dock-2026-11-15/vorfaelle.json`.

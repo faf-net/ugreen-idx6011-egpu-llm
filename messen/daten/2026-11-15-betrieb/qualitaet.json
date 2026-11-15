@@ -1,0 +1,84 @@
+{
+ "gemessen": "2026-11-15 (Qwen3.5-35B-A3B), 2026-11-13 (Flash-Next 125B, gleiche Aufgaben, gleiche Strata-Version 0.2.12)",
+ "aufgaben": "102 automatisch bewertete Aufgaben in sieben Arten, dazu 12 Deutsch-Aufgaben; Denkbudget 8.000 Token je Aufgabe",
+ "modelle": {
+  "faber": {
+   "modell": "Qwen3.8-Flash-Next 125B IQ3_XXS, Strata 0.2.12",
+   "bestanden": {
+    "werkzeug": [
+     20,
+     20
+    ],
+    "code": [
+     14,
+     15
+    ],
+    "logik": [
+     14,
+     15
+    ],
+    "fakten": [
+     12,
+     15
+    ],
+    "anweisung": [
+     15,
+     15
+    ],
+    "kontext": [
+     4,
+     4
+    ],
+    "sicherheit": [
+     17,
+     18
+    ]
+   },
+   "bestanden_gesamt": 96,
+   "denkbudget_erschoepft": 0,
+   "deutsch_blind_60": 47,
+   "sekunden_114_aufgaben": 1622,
+   "token_114_aufgaben": 87007,
+   "hinweis": "Fakten von Hand nachkorrigiert (eine richtige Antwort, die die automatische Prüfung nicht erkennt)"
+  },
+  "qwen35": {
+   "modell": "Qwen3.5-35B-A3B Q4_K_M (Datei aus UGOS), llama.cpp Vulkan, ganz im VRAM, 128K Kontext",
+   "bestanden": {
+    "werkzeug": [
+     20,
+     20
+    ],
+    "code": [
+     12,
+     15
+    ],
+    "logik": [
+     12,
+     15
+    ],
+    "fakten": [
+     12,
+     15
+    ],
+    "anweisung": [
+     13,
+     15
+    ],
+    "kontext": [
+     4,
+     4
+    ],
+    "sicherheit": [
+     17,
+     18
+    ]
+   },
+   "bestanden_gesamt": 90,
+   "denkbudget_erschoepft": 9,
+   "deutsch_blind_60": 37,
+   "sekunden_114_aufgaben": 2220,
+   "token_114_aufgaben": 223795
+  }
+ },
+ "deutsch_verfahren": "12 Aufgaben, die beiden Antworten je Aufgabe zufällig als A und B anonymisiert, von einem unbeteiligten Sprachmodell ohne Schlüssel benotet (1 bis 5), danach entschlüsselt"
+}

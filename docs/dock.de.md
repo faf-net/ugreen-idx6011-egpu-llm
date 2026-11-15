@@ -18,3 +18,17 @@ Seit 15.10. sekundengenau mitgeschnitten (`messen/dock-mitschnitt.sh`, nur lesen
 **Nachtrag, dieselbe Nacht: Die Mittwochsreihe ist der Akkutest der USV.** NAS und Dock hängen als einzige Verbraucher an einer Eaton Ellipse PRO 1200, die minütlich über NUT gelesen wird. In sechs Wochen lag ihr Akkustand genau sechsmal unter 100 %, jedes Mal in der Minute direkt nach einem Mittwochsereignis (16.09. 17:18:58, 23.09. 17:40:12, 30.09. 18:01:49, 07.10. 18:22:49, 14.10. 18:44:14, 21.10. 19:05:29): 100 → 99 %, Restlaufzeit 3.814 → 3.775 s, etwa 20 Minuten später wieder 100 %. Drei dieser Messpunkte haben sogar die Laufzeitschätzung im Akkubetrieb erwischt (1.037 s und 2.812 s statt 3.814 s). Laut Datenblatt testet die USV ihren Akku einmal pro Woche; die 21 Minuten Versatz pro Woche kommen von ihrer eigenen Uhr. Mittwochs wird das NAS also nicht von außen gestört: Die eigene USV schaltet es für einige Sekunden auf Akku, und diesen Umschaltvorgang fangen der Netz-Link und der OCuLink-Link ein (bei 5 von 6 Tests; am 16.09. ist nichts protokolliert). Der minütlich gelesene Status bleibt `OL`, deshalb fiel es zuerst nicht auf. NUT bietet bei diesem Modell keinen Befehl, den Test zu starten oder zu planen. Die Sonntagsreihe zeigt keine solche Spur und bleibt offen.
 
 Als Nächstes zeigt die Sonntagsreihe am 25.10. (Ende der Sommerzeit), ob ihr Gerät auf Winterzeit umstellt (17:14:53) oder nicht (16:14:53). Am 28.10. ist die Mittwochsreihe um 18:25:51 Uhr MEZ fällig, wenn sie wirklich ein fester Abstand ist. Wer an einem OCuLink-Port wiederholt `RxErr` sieht: erst sekundengenau mitschneiden und nach einem Wochenmuster suchen, bevor man Kabel oder Dock tauscht.
+
+## Wie oft es wirklich passiert (09.09. bis 15.11.2026)
+
+Aus den Kernelmeldungen des Dock-Ports über 67 Tage, Vorfälle mit mehr als zehn Minuten Abstand getrennt gezählt:
+
+| Ursache | Störungen | Karte vom Bus gefallen |
+|---|---:|---:|
+| Sonntagsreihe, jede Woche zur selben Uhrzeit, Ursache offen | 7 | 0 |
+| Mittwochsreihe, der wöchentliche Akkutest der USV | 5 | 0 |
+| von mir ausgelöst: Netzstecker der USV gezogen, Geräte an derselben USV umgesteckt oder geschaltet | 7 | 1 |
+| ohne bekannten Anlass | 4 | 3 |
+| **gesamt** | **23** | **4, an 3 Tagen** |
+
+Die meisten Störungen sind ein einzelner korrigierter Empfangsfehler und sonst nichts. Vom Bus gefallen ist die Karte an drei Tagen: Zweimal war sie nach rund 20 s elektrisch zurück, am 08.10. blieb sie bis zum nächsten Neustart unbrauchbar. **In diesen zehn Wochen hat kein Abriss das NAS neu gestartet**; jeder aufgezeichnete Kernel-Absturz stammt aus meinen eigenen Tests, bei denen ich die Karte bei geladenem Modell per Software entfernt habe. Meine Lehre daraus: An die USV, die NAS und Dock versorgt, gehört nichts, was schaltet. Die Zuordnung „von mir ausgelöst“ stammt aus meinen Notizen dieser Tage, nicht aus dem Log. Daten: `messen/daten/dock-2026-11-15/vorfaelle.json`.

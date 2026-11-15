@@ -780,7 +780,67 @@ def werksmodell(d, sp):
                                   "Schreib- und Einlesetempo von UGREENs eingebautem Qwen 3.5 35B auf drei Wegen: UGOS-Server auf der Arc-iGPU, nur CPU, und RX 7900 XTX im Dock."), s, h
 
 
-ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell)
+def aufbau(d, sp):
+    """Schaubild der Anlage: wer mit wem spricht, und was das Haus verlässt."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    s = Svg()
+    titel = T("Chat, Agent und Bilder auf einer Karte, und fast nichts verlässt das Haus", "Chat, agent and pictures on one card, and almost nothing leaves the house")
+    kopf(s, T("UGREEN iDX6011 Pro · eGPU-Dock · RX 7900 XTX · der Aufbau", "UGREEN iDX6011 Pro · eGPU dock · RX 7900 XTX · the setup"), titel)
+    pf = f"pf-{sp}"
+    s.roh(f'<defs><marker id="{pf}" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7 z" fill="{MUTED}"/></marker>'
+          f'<marker id="{pf}-a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7 z" fill="{ACC}"/></marker></defs>')
+
+    def zone(x, y, w, h, name, bw):
+        s.roh(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{INK}" fill-opacity="0.025" stroke="{INK}" stroke-opacity="0.16" stroke-width="0.8" stroke-dasharray="5,4"/>')
+        s.roh(f'<rect x="{x + 12}" y="{y - 6}" width="{bw}" height="12" fill="{PAPER}"/>')
+        s.text(x + 18, y + 3, name.upper(), 8, MUTED, "mono", weight=500, sperr="0.14em")
+
+    def pfeil(dpfad, gestrichelt=False, fokus=False):
+        farbe = ACC if fokus else MUTED
+        s.roh(f'<path d="{dpfad}" fill="none" stroke="{farbe}" stroke-width="{1.6 if fokus else 1.2}"' + (' stroke-dasharray="5,4"' if gestrichelt else "") + f' marker-end="url(#{pf}{"-a" if fokus else ""})"/>')
+
+    def knoten(x, y, marke, name, sub, art="normal", w=160, h=56):
+        farbe = {"fokus": ACC, "extern": STAHL}.get(art, INK)
+        s.roh(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="{PAPER}"/>')
+        s.roh(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="{farbe}" fill-opacity="{0.14 if art == "fokus" else 0.04}" stroke="{farbe}" stroke-width="{1.6 if art == "fokus" else 1}"' + (' stroke-dasharray="5,4"' if art == "extern" else "") + "/>")
+        s.text(x + 12, y + 16, marke.upper(), 7.5, farbe if art != "normal" else MUTED, "mono", weight=500, sperr="0.14em")
+        s.text(x + 12, y + 33, name, 12, INK, "sans", weight=600)
+        s.text(x + 12, y + 47, sub, 8.5, MUTED, "mono")
+
+    zone(240, 104, 688, 316, T("im Heimnetz", "in the home network"), 96 if not en else 150)
+    zone(728, 124, 184, 280, T("RX 7900 XTX im Dock", "RX 7900 XTX in the dock"), 152 if not en else 176)
+    # Pfeile zuerst, dann die Knoten
+    pfeil("M 200,160 H 270")                                                     # Geräte -> Open WebUI
+    pfeil("M 136,188 V 338", gestrichelt=True)                                   # Geräte -> Messenger-Dienst
+    pfeil("M 200,368 H 270", gestrichelt=True)                                   # Messenger-Dienst -> Hermes
+    pfeil("M 432,148 H 510", gestrichelt=True)                                   # Open WebUI -> SearXNG
+    pfeil("M 432,172 H 464 Q 472,172 472,180 V 348 Q 472,356 480,356 H 510")     # Open WebUI -> llama-swap
+    pfeil("M 432,380 H 510")                                                     # Hermes -> llama-swap
+    pfeil("M 672,356 H 696 Q 704,356 704,348 V 184 Q 704,176 712,176 H 742", fokus=True)  # llama-swap -> Sprachmodell
+    pfeil("M 672,380 H 742")                                                     # llama-swap -> ComfyUI
+    knoten(72, 132, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
+    knoten(72, 340, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Telegram", "e.g. Telegram"), "extern", w=128)
+    knoten(272, 132, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
+    knoten(512, 132, T("Suche", "Search"), "SearXNG", T("Suchanfragen gehen ins Netz", "search queries go out"), "extern")
+    knoten(272, 340, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
+    knoten(512, 340, T("Weiche", "Switch"), "llama-swap", T("ein Modell zur Zeit", "one model at a time"))
+    knoten(744, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 67 Token/s · 256K", "Strata · 67 tokens/s · 256K"), "fokus", w=152)
+    knoten(744, 340, T("Bilder", "Pictures"), "ComfyUI", T("8–66 s je Bild", "8–66 s per picture"), w=152)
+    y = 448
+    s.line(40, y, W - 40, y, 'stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"')
+    s.roh(f'<path d="M 72,{y + 22} H 104" fill="none" stroke="{MUTED}" stroke-width="1.2" marker-end="url(#{pf})"/>')
+    s.text(116, y + 26, T("bleibt im Heimnetz", "stays in the home network"), 10, INK, "sans")
+    s.roh(f'<path d="M 280,{y + 22} H 312" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#{pf})"/>')
+    s.text(324, y + 26, T("verlässt das Haus", "leaves the house"), 10, INK, "sans")
+    s.text(R, y + 27, T("Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.", "Only search queries and messenger messages leave the house."), 15, INK, "serif", "end", kursiv=True)
+    s.text(L, y + 48, T("Open WebUI läuft auf einem zweiten kleinen Rechner im Heimnetz, alles Übrige auf dem NAS · Zugang von unterwegs über einen eigenen Zugang mit Anmeldung",
+                        "Open WebUI runs on a second small machine in the home network, everything else on the NAS · access from outside through an own gateway with login"), 8.5, MUTED, "mono")
+    return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und über einen Messenger-Dienst mit Hermes Agent; beide fragen llama-swap, das auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI lädt. Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.",
+                              "Laptop and phone talk to Open WebUI in the home network and to Hermes Agent through a messenger service; both ask llama-swap, which loads either the language model or ComfyUI on the RX 7900 XTX. Only search queries and messenger messages leave the house."), s, 512
+
+
+ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau)
 
 
 def main():

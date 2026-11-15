@@ -145,7 +145,37 @@ The MoE model writes 25 times faster and needs a fourteenth of the energy per to
 
 On the card the built-in model writes 11 times faster and reads five times faster than as shipped, at a fifth of the energy per token. The CPU alone out-writes the iGPU server but reads a prompt seven times more slowly. Two limits: the CPU run had UGOS's copy loaded and idle next to it, and UGOS keeps its model in memory (about 27 GB), so it does not fit next to the 125B model; I removed it after the test. UGOS's second runtime (`llama-gpu`) is a CUDA build and does not start with an AMD card.
 
-Scripts: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`. Raw data: `messen/daten/2026-11-15-betrieb/`.
+**Is the big model worth it? The same tasks on both.** UGREEN's Qwen3.5-35B-A3B fits entirely on the card (22.1 GB of VRAM with 128K context) and writes at 114 tokens/s, almost twice as fast as the 125B model. On my task set it still loses:
+
+| | Flash-Next 125B (MoE, Strata) | Qwen3.5-35B-A3B (UGREEN's file, on the card) |
+|---|---:|---:|
+| **graded tasks passed (of 102)** | **96** | **90** |
+| code | 14/15 | 12/15 |
+| logic | 14/15 | 12/15 |
+| following instructions | 15/15 | 13/15 |
+| facts | 12/15 | 12/15 |
+| tool calls | 20/20 | 20/20 |
+| long context (32K, 100K) | 4/4 | 4/4 |
+| safety | 17/18 | 17/18 |
+| reasoning budget of 8,000 tokens used up, no answer | 0 | 9 |
+| German, graded blind (of 60) | 47 | 37 |
+| tokens written for all 114 tasks | 87,007 | 223,795 |
+| time for all 114 tasks | 27 min | 37 min |
+
+The small model thinks much longer: it writes 2.6 times as many tokens for the same tasks, so despite the higher speed the whole set takes 37 % longer, and in nine tasks it used up the reasoning budget without answering. With a larger budget some of those would probably pass; I did not measure that. What speaks for the small model: it leaves the RAM of the NAS free, where the 125B model takes about 53 GiB. The 125B numbers are from 13 Nov (same tasks, same Strata release). German was graded blind by a language model that did not know which answer came from which model; a different grader than in the 14 Nov follow-up, so the scores are comparable within this table only. Data (counts only): `messen/daten/2026-11-15-betrieb/qualitaet.json`.
+
+**Two people at the same time.** `messen/zwei.py` runs one conversation of five questions alone, then two conversations at once on the same model, then two people alternating between two different models:
+
+| | Wait for the first word (median) | Decode tok/s (median) |
+|---|---:|---:|
+| one person alone | 0.2 s | 62.2 |
+| two at once, person A | 8.1 s | 64.7 |
+| two at once, person B | 10.5 s | 72.6 |
+| alternating between two models | 20 s | – |
+
+Strata answers one request after the other: the second person waits until the first answer is finished, about ten seconds with answers of up to 400 tokens, and then gets the full speed. If two people use two different models, the card reloads on every change, about 20 s each time. For shared use, one model for everyone.
+
+Scripts: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`, `messen/zwei.py`. Raw data: `messen/daten/2026-11-15-betrieb/`.
 
 ### Does Strata cost quality? Strata vs llama.cpp on the same file
 
@@ -278,7 +308,7 @@ Compiling took 83 s; downloading takes longer.
 - **PCIe quirk:** after one dropout the kernel clamped the link to 2.5 GT/s and failed to retrain. The fix
   ("Always lift 2.5GT/s restriction") is in 6.18.39; UGOS ships 6.18.15.
 
-The disturbances turned out to follow two weekly clocks, and one of them is the UPS testing its battery. The whole investigation, with the capture script: [docs/dock.md](docs/dock.md).
+The disturbances turned out to follow two weekly clocks, and one of them is the UPS testing its battery. The whole investigation, with the capture script: [docs/dock.md](docs/dock.md). In ten weeks of logging there were 23 disturbances, the card dropped off the bus on three days, and no dropout rebooted the NAS.
 
 ## The biggest open risk: a dock dropout reboots the NAS
 
@@ -343,6 +373,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
   konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config
   konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
+  konfig/stack/                 chat and web search: Compose file for Open WebUI and SearXNG, tested on the NAS (EN/DE)
 ```
 
 **UGOS**
@@ -381,6 +412,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/dicht70.py             a dense model that does not fit into VRAM, llama.cpp Vulkan, by layers on the card
   messen/werksmodell.py         UGREEN's built-in model: UGOS's own server on the Arc iGPU, CPU only, the card in the dock
   messen/transkodieren.sh       4K HEVC to 1080p H.264 on the Arc iGPU (VAAPI), frames per second
+  messen/zwei.py                two people at the same time: wait and speed alone, at once, alternating between two models
 ```
 
 **Raw data**
@@ -407,6 +439,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
 ```
   docs/                         every release in detail, the dock investigation, the agent follow-up, ComfyUI (EN/DE)
   bilder/                       the charts as PNG, their HTML/SVG sources in bilder/html/
+  web/                          builds the page faf.net/idx from this repo (bau.py), with self-hosted fonts
 ```
 
 The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard library and sample VRAM, GPU load,

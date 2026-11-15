@@ -1,0 +1,441 @@
+{
+ "quelle": "Design System Workbench, tokens.json (Farben, beide Themen)",
+ "farben": {
+  "grund": {
+   "dark": "#1a1918",
+   "light": "#efeae1"
+  },
+  "panel": {
+   "dark": "#232120",
+   "light": "#f7f3ec"
+  },
+  "panel-2": {
+   "dark": "#2b2827",
+   "light": "#ece6db"
+  },
+  "linie": {
+   "dark": "#3a3634",
+   "light": "#d3cabb"
+  },
+  "rille": {
+   "dark": "#151413",
+   "light": "#e2dbcf"
+  },
+  "schrift": {
+   "dark": "#e9e3d8",
+   "light": "#2a2724"
+  },
+  "gedaempft": {
+   "dark": "#a49c90",
+   "light": "#6a6258"
+  },
+  "schwach": {
+   "dark": "#6f6961",
+   "light": "#8b8377"
+  },
+  "fett": {
+   "dark": "#f5f1eb",
+   "light": "#171512"
+  },
+  "bernstein": {
+   "dark": "#cc9166",
+   "light": "#975b34"
+  },
+  "salbei": {
+   "dark": "#93a373",
+   "light": "#5e7040"
+  },
+  "stahl": {
+   "dark": "#7d97ab",
+   "light": "#456579"
+  },
+  "gold": {
+   "dark": "#c7a854",
+   "light": "#7e6820"
+  },
+  "rose": {
+   "dark": "#c07f73",
+   "light": "#9c4d40"
+  },
+  "malve": {
+   "dark": "#b1899b",
+   "light": "#8c5c72"
+  },
+  "petrol": {
+   "dark": "#7fa79f",
+   "light": "#4e716a"
+  },
+  "on-bernstein": {
+   "dark": "#1a1918",
+   "light": "#f7f3ec"
+  },
+  "fokus": {
+   "dark": "{stahl}",
+   "light": "{stahl}"
+  },
+  "rand-bedien": {
+   "dark": "#787269",
+   "light": "#817a6f"
+  },
+  "feld": {
+   "dark": "{rille}",
+   "light": "{panel}"
+  },
+  "knopf-hover": {
+   "dark": "{status-bernstein}",
+   "light": "{status-bernstein}"
+  },
+  "marker-bernstein": {
+   "dark": "#47372c",
+   "light": "#d9c6b6"
+  },
+  "marker-salbei": {
+   "dark": "#383c2f",
+   "light": "#cbccb9"
+  },
+  "marker-gold": {
+   "dark": "#453d27",
+   "light": "#d3cab1"
+  },
+  "marker-rose": {
+   "dark": "#44322f",
+   "light": "#dac3b9"
+  },
+  "marker-stahl": {
+   "dark": "#33383d",
+   "light": "#c5c9c7"
+  },
+  "dezent-bernstein": {
+   "dark": "#3e3128",
+   "light": "#ddcdbe"
+  },
+  "dezent-salbei": {
+   "dark": "#32352a",
+   "light": "#d2d2c1"
+  },
+  "dezent-gold": {
+   "dark": "#3d3624",
+   "light": "#d8d0ba"
+  },
+  "dezent-rose": {
+   "dark": "#3b2d2a",
+   "light": "#decbc1"
+  },
+  "dezent-stahl": {
+   "dark": "#2e3235",
+   "light": "#cdcfcc"
+  },
+  "band-bernstein": {
+   "dark": "#554132",
+   "light": "#d2bba8"
+  },
+  "band-salbei": {
+   "dark": "#424736",
+   "light": "#bfc2ac"
+  },
+  "band-gold": {
+   "dark": "#53482c",
+   "light": "#cabfa1"
+  },
+  "band-rose": {
+   "dark": "#513b36",
+   "light": "#d4b6ac"
+  },
+  "band-stahl": {
+   "dark": "#3b4349",
+   "light": "#b7bebf"
+  },
+  "marker-petrol": {
+   "dark": "#2d3d3a",
+   "light": "#c7ccc3"
+  },
+  "marker-malve": {
+   "dark": "#403539",
+   "light": "#d6c7c5"
+  },
+  "band-petrol": {
+   "dark": "#3b4845",
+   "light": "#bac2ba"
+  },
+  "band-malve": {
+   "dark": "#4c3e43",
+   "light": "#cebbbc"
+  },
+  "dezent-petrol": {
+   "dark": "#2e3533",
+   "light": "#cfd2c9"
+  },
+  "dezent-malve": {
+   "dark": "#382f32",
+   "light": "#dbcecb"
+  },
+  "pille-salbei": {
+   "dark": "#3e4233",
+   "light": "#c3c5b1"
+  },
+  "pille-bernstein": {
+   "dark": "#4f3d2f",
+   "light": "#d5bfad"
+  },
+  "pille-gold": {
+   "dark": "#4e442a",
+   "light": "#cdc3a7"
+  },
+  "pille-rose": {
+   "dark": "#4c3833",
+   "light": "#d6bbb1"
+  },
+  "pille-stahl": {
+   "dark": "#383f44",
+   "light": "#bcc2c2"
+  },
+  "status-salbei": {
+   "dark": "#adbb8e",
+   "light": "#485530"
+  },
+  "status-gold": {
+   "dark": "#ddc274",
+   "light": "#5f4e18"
+  },
+  "status-rose": {
+   "dark": "#d69a8d",
+   "light": "#7a3c32"
+  },
+  "status-bernstein": {
+   "dark": "#e0a87f",
+   "light": "#734528"
+  },
+  "status-stahl": {
+   "dark": "#9ab2c4",
+   "light": "#385262"
+  },
+  "schein-rose": {
+   "dark": "#c07f734d",
+   "light": "#9c4d4000"
+  },
+  "schein-bernstein": {
+   "dark": "#cc91664d",
+   "light": "#975b3400"
+  },
+  "schein-wort-rose": {
+   "dark": "#e8b1a5",
+   "light": "#7a3c32"
+  },
+  "schein-wort-bernstein": {
+   "dark": "#f0bf9a",
+   "light": "#734528"
+  },
+  "schimmer-schrift": {
+   "dark": "#c0b8ab",
+   "light": "#a49c90"
+  },
+  "schimmer-bernstein": {
+   "dark": "#e0a87f",
+   "light": "#cc9166"
+  },
+  "schimmer-gold": {
+   "dark": "#dcc37a",
+   "light": "#c7a854"
+  },
+  "schimmer-stahl": {
+   "dark": "#9db3c4",
+   "light": "#7d97ab"
+  },
+  "ansi-hell-rose": {
+   "dark": "#d69a8d",
+   "light": "#d69a8d"
+  },
+  "ansi-hell-salbei": {
+   "dark": "#adbb8e",
+   "light": "#adbb8e"
+  },
+  "ansi-hell-gold": {
+   "dark": "#ddc274",
+   "light": "#ddc274"
+  },
+  "ansi-hell-stahl": {
+   "dark": "#9ab2c4",
+   "light": "#9ab2c4"
+  },
+  "ansi-hell-malve": {
+   "dark": "#c9a3b4",
+   "light": "#c9a3b4"
+  },
+  "ansi-hell-petrol": {
+   "dark": "#9bc0b8",
+   "light": "#9bc0b8"
+  },
+  "diagramm-reihe": {
+   "dark": "{stahl}",
+   "light": "{stahl}"
+  },
+  "diagramm-hervorhebung": {
+   "dark": "{bernstein}",
+   "light": "{bernstein}"
+  },
+  "diagramm-1": {
+   "dark": "{bernstein}",
+   "light": "{bernstein}"
+  },
+  "diagramm-2": {
+   "dark": "{stahl}",
+   "light": "{stahl}"
+  },
+  "diagramm-3": {
+   "dark": "{petrol}",
+   "light": "{petrol}"
+  },
+  "diagramm-4": {
+   "dark": "{gold}",
+   "light": "{gold}"
+  },
+  "textgrafik-grund-1": {
+   "dark": "#0d0c0b",
+   "light": "#0d0c0b"
+  },
+  "textgrafik-grund-2": {
+   "dark": "#151413",
+   "light": "#151413"
+  },
+  "textgrafik-grund-3": {
+   "dark": "#1a1918",
+   "light": "#1a1918"
+  },
+  "textgrafik-grund-4": {
+   "dark": "#232120",
+   "light": "#232120"
+  },
+  "textgrafik-grund-5": {
+   "dark": "#2b2827",
+   "light": "#2b2827"
+  },
+  "textgrafik-grund-6": {
+   "dark": "#3a3634",
+   "light": "#3a3634"
+  },
+  "textgrafik-grund-7": {
+   "dark": "#4f4a46",
+   "light": "#4f4a46"
+  },
+  "textgrafik-grund-8": {
+   "dark": "#6f6961",
+   "light": "#6f6961"
+  },
+  "textgrafik-grund-9": {
+   "dark": "#a49c90",
+   "light": "#a49c90"
+  },
+  "textgrafik-grund-10": {
+   "dark": "#e9e3d8",
+   "light": "#e9e3d8"
+  },
+  "textgrafik-grund-11": {
+   "dark": "#f5f1eb",
+   "light": "#f5f1eb"
+  },
+  "textgrafik-bernstein-1": {
+   "dark": "#3e2a1c",
+   "light": "#3e2a1c"
+  },
+  "textgrafik-bernstein-2": {
+   "dark": "#6b4a30",
+   "light": "#6b4a30"
+  },
+  "textgrafik-bernstein-3": {
+   "dark": "#9a6b45",
+   "light": "#9a6b45"
+  },
+  "textgrafik-bernstein-4": {
+   "dark": "#cc9166",
+   "light": "#cc9166"
+  },
+  "textgrafik-bernstein-5": {
+   "dark": "#e3b48e",
+   "light": "#e3b48e"
+  },
+  "textgrafik-bernstein-6": {
+   "dark": "#f3d6bb",
+   "light": "#f3d6bb"
+  },
+  "textgrafik-salbei-1": {
+   "dark": "#2a3020",
+   "light": "#2a3020"
+  },
+  "textgrafik-salbei-2": {
+   "dark": "#4a5638",
+   "light": "#4a5638"
+  },
+  "textgrafik-salbei-3": {
+   "dark": "#6e7d52",
+   "light": "#6e7d52"
+  },
+  "textgrafik-salbei-4": {
+   "dark": "#93a373",
+   "light": "#93a373"
+  },
+  "textgrafik-salbei-5": {
+   "dark": "#bccaa0",
+   "light": "#bccaa0"
+  },
+  "textgrafik-stahl-1": {
+   "dark": "#1f2a33",
+   "light": "#1f2a33"
+  },
+  "textgrafik-stahl-2": {
+   "dark": "#3a4c5a",
+   "light": "#3a4c5a"
+  },
+  "textgrafik-stahl-3": {
+   "dark": "#5a7385",
+   "light": "#5a7385"
+  },
+  "textgrafik-stahl-4": {
+   "dark": "#7d97ab",
+   "light": "#7d97ab"
+  },
+  "textgrafik-stahl-5": {
+   "dark": "#a9bfcf",
+   "light": "#a9bfcf"
+  },
+  "textgrafik-gold-1": {
+   "dark": "#3a3016",
+   "light": "#3a3016"
+  },
+  "textgrafik-gold-2": {
+   "dark": "#6a5a26",
+   "light": "#6a5a26"
+  },
+  "textgrafik-gold-3": {
+   "dark": "#9a843c",
+   "light": "#9a843c"
+  },
+  "textgrafik-gold-4": {
+   "dark": "#c7a854",
+   "light": "#c7a854"
+  },
+  "textgrafik-gold-5": {
+   "dark": "#e4cd85",
+   "light": "#e4cd85"
+  },
+  "textgrafik-rose-1": {
+   "dark": "#3a1f1b",
+   "light": "#3a1f1b"
+  },
+  "textgrafik-rose-2": {
+   "dark": "#6a3a33",
+   "light": "#6a3a33"
+  },
+  "textgrafik-rose-3": {
+   "dark": "#9a5b50",
+   "light": "#9a5b50"
+  },
+  "textgrafik-rose-4": {
+   "dark": "#c07f73",
+   "light": "#c07f73"
+  },
+  "textgrafik-rose-5": {
+   "dark": "#deaca2",
+   "light": "#deaca2"
+  }
+ }
+}

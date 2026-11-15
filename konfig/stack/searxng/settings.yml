@@ -1,0 +1,10 @@
+# SearXNG für Open WebUI: Standardwerte, dazu die JSON-Ausgabe, die Open WebUI braucht.
+use_default_settings: true
+server:
+  limiter: false
+  image_proxy: false
+search:
+  safe_search: 0
+  formats: [html, json]
+ui:
+  default_locale: de

@@ -1,0 +1,85 @@
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--grund);color:var(--schrift);font:16px/1.65 "Atkinson Hyperlegible Next","Segoe UI",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--bernstein);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--fett)}
+a:focus-visible{outline:2px solid var(--fokus);outline-offset:2px;border-radius:3px}
+b,strong{color:var(--fett);font-weight:700}
+main,.kopf,footer{max-width:1080px;margin:0 auto;padding:0 24px}
+.kopf{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;padding-top:20px;padding-bottom:16px;border-bottom:1px solid var(--linie);font:13px/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace}
+.marke{color:var(--fett);text-decoration:none;font-weight:700}
+.marke .cursor{color:var(--bernstein);margin-left:2px;animation:blink 1.2s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.marke .cursor{animation:none}html{scroll-behavior:auto}}
+.kopf nav{display:flex;flex-wrap:wrap;gap:4px 16px;flex:1}
+.kopf nav a{color:var(--gedaempft);text-decoration:none}
+.kopf nav a:hover{color:var(--bernstein)}
+.sprache{color:var(--gedaempft)}
+.auftakt{padding:64px 0 16px}
+.dach,.nr{font:500 11px/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--gedaempft)}
+h1{font:400 clamp(40px,6.4vw,72px)/1.04 "Instrument Serif",Georgia,serif;letter-spacing:-.02em;color:var(--fett);margin:12px 0 24px;max-width:22ch}
+h2{font:400 clamp(28px,3.6vw,40px)/1.12 "Instrument Serif",Georgia,serif;letter-spacing:-.015em;color:var(--fett);margin:4px 0 16px}
+h3{font:600 19px/1.3 "Atkinson Hyperlegible Next",sans-serif;color:var(--fett);margin:0 0 4px}
+p{max-width:72ch;margin:0 0 16px}
+.vorspann{font-size:19px;line-height:1.55;max-width:66ch;color:var(--schrift)}
+section{padding:56px 0 8px;border-top:1px solid var(--linie);margin-top:40px}
+section.auftakt{border-top:0;margin-top:0}
+.nr{color:var(--bernstein)}
+.kacheln{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:12px;margin:32px 0}
+.kachel{background:var(--panel);border:1px solid var(--linie);border-radius:6px;padding:16px}
+.kachel .wert{font:700 34px/1.1 "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--fett);letter-spacing:-.02em}
+.kachel.haupt .wert{color:var(--bernstein)}
+.kachel .was{font-weight:600;color:var(--fett);margin-top:8px;line-height:1.3}
+.kachel .neben{font-size:13px;color:var(--gedaempft);line-height:1.4;margin-top:4px}
+.plan{font:13px/1.55 "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--gedaempft);background:var(--panel);border:1px solid var(--linie);border-radius:6px;padding:16px 20px;overflow-x:auto;margin:0 0 16px}
+.plan b{color:var(--bernstein);font-weight:700}
+.status{font:13px/1.5 "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--gedaempft)}
+.konsole{color:var(--status-salbei);font-weight:700;white-space:nowrap}
+.anwendungen{display:grid;grid-template-columns:repeat(auto-fit,minmax(264px,1fr));gap:12px;margin:8px 0 24px}
+.anwendung{background:var(--panel);border:1px solid var(--linie);border-radius:6px;padding:20px}
+.anwendung p{font-size:15px;line-height:1.55;margin:8px 0 0}
+.anwendung .dach{display:block;margin-bottom:8px}
+.anwendung .mess{font:13px/1.5 "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--gedaempft);border-top:1px solid var(--linie);margin-top:12px;padding-top:12px}
+.anwendung .mess b{color:var(--bernstein)}
+.bild{margin:24px 0}
+.rollen{overflow-x:auto;max-width:100%}
+.bild svg{display:block;width:100%;min-width:720px;height:auto}
+table{border-collapse:collapse;width:100%;margin:8px 0 24px;font-size:15px}
+th{font:500 11px/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gedaempft);text-align:left;padding:8px 12px;border-bottom:1px solid var(--schwach);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--linie);vertical-align:top}
+td.zahl,th:not(:first-child){text-align:right}
+td.zahl{font:14px/1.6 "JetBrains Mono",ui-monospace,Consolas,monospace;white-space:nowrap}
+.band{background:var(--dezent-rose);border-radius:6px;padding:16px 20px;max-width:none;color:var(--schrift)}
+.pille{display:inline-block;font:700 12px/1 "Atkinson Hyperlegible Next",sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:5px 8px 5px 9px;border-radius:0 3px 3px 0;margin-right:8px;vertical-align:2px}
+.pille.rose{background:var(--pille-rose);color:var(--status-rose);border-left:3px solid var(--rose)}
+.pille.gold{background:var(--pille-gold);color:var(--status-gold);border-left:3px solid var(--gold)}
+.wege{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(264px,1fr));gap:12px;margin:8px 0 24px}
+.wege li{background:var(--panel);border:1px solid var(--linie);border-radius:6px;padding:16px}
+.wege a{font-weight:600;display:block}
+.wege span{font-size:14px;color:var(--gedaempft)}
+footer{margin-top:64px;padding-top:24px;padding-bottom:48px;border-top:1px solid var(--linie);font-size:13px;color:var(--gedaempft)}
+footer p{max-width:none;margin-bottom:8px}
+@media (max-width:640px){.auftakt{padding-top:40px}section{padding-top:40px}.vorspann{font-size:17px}}
+@media print{.kopf nav,.cursor{display:none}.band,.pille{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.schritte{list-style:none;counter-reset:schritt;display:grid;grid-template-columns:repeat(auto-fit,minmax(296px,1fr));gap:12px;margin:8px 0 24px}
+.schritte li{counter-increment:schritt;background:var(--panel);border:1px solid var(--linie);border-radius:6px;padding:20px;position:relative}
+.schritte li::before{content:counter(schritt);font:700 34px/1 "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--bernstein);display:block;margin-bottom:12px}
+.schritte p{font-size:15px;line-height:1.55;margin:8px 0 12px}
+.schritte a{font-size:14px}
+
+.szene,.rahmen{position:relative;border:1px solid var(--linie);border-radius:6px;margin:32px 0 24px;background:#0d0c0b}
+.rahmen{background:var(--panel)}
+.schild{position:absolute;left:14px;top:-9px;background:var(--grund);padding:0 8px;font:500 11px/1.5 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.14em;color:var(--gedaempft)}
+.szene img{display:block;width:100%;height:auto;border-radius:5px}
+.rahmen .plan{border:0;margin:0;background:transparent;padding:22px 20px 16px}
+.konsole-block{color:var(--schrift);line-height:1.6}
+.konsole-block .g{color:var(--gedaempft)}
+.konsole-block .a{color:var(--bernstein)}
+.konsole-block .s{color:var(--stahl)}
+.konsole-block .r{color:var(--schwach)}
+.konsole-block .x{color:var(--rose);font-weight:700}
+.konsole-block b{color:var(--fett)}
+.nr{display:flex;align-items:center;gap:12px}
+.nr::after{content:"";flex:1;border-top:1px dashed var(--linie)}
+section{border-top:0;margin-top:24px}
+.eof{font:500 11px/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.18em;color:var(--schwach);margin-top:24px}

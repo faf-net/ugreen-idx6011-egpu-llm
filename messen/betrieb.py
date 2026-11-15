@@ -58,11 +58,11 @@ class Messer(threading.Thread):
         return aus
 
 
-def anfrage(model, text, max_tokens, timeout=1800):
-    body = {"model": model, "messages": [{"role": "user", "content": text}], "max_tokens": max_tokens, "temperature": 0.7,
+def anfrage(model, text, max_tokens, timeout=1800, nachrichten=None):
+    body = {"model": model, "messages": nachrichten or [{"role": "user", "content": text}], "max_tokens": max_tokens, "temperature": 0.7,
             "stream": True, "stream_options": {"include_usage": True}, "reasoning_effort": "none"}
     req = urllib.request.Request(URL + "/v1/chat/completions", json.dumps(body).encode(), {"Content-Type": "application/json"})
-    t0, t_erst, usage = time.time(), None, {}
+    t0, t_erst, usage, teile = time.time(), None, {}, []
     with urllib.request.urlopen(req, timeout=timeout) as r:
         for zeile in r:
             zeile = zeile.decode("utf-8", "replace").strip()
@@ -74,10 +74,11 @@ def anfrage(model, text, max_tokens, timeout=1800):
                 d = c.get("delta") or {}
                 if t_erst is None and (d.get("content") or d.get("reasoning_content") or d.get("reasoning")):
                     t_erst = time.time()
+                teile.append(d.get("content") or "")
     t1 = time.time()
     t_erst = t_erst or t1
     return {"erste_antwort_s": round(t_erst - t0, 2), "gesamt_s": round(t1 - t0, 2), "prompt_token": usage.get("prompt_tokens"),
-            "neu_token": usage.get("completion_tokens"), "schreib_s": round(t1 - t_erst, 2)}
+            "neu_token": usage.get("completion_tokens"), "schreib_s": round(t1 - t_erst, 2), "text": "".join(teile)}
 
 
 def geladen():
