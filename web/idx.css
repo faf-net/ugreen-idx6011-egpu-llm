@@ -94,3 +94,5 @@ p{max-width:78ch}
 .band{max-width:none}
 footer p{max-width:none}
 @media (max-width:640px){body{font-size:16px}.vorspann{font-size:17px}}
+/* Probe 15.11.2026: Fließtext über die volle Breite (Franks Wunsch, einmal ansehen). Rückweg: diese Zeile löschen. */
+p,.vorspann{max-width:none}

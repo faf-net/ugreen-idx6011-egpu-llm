@@ -267,30 +267,21 @@ def seite(sp):
                 f"If two people alternate between two <em>different</em> models, the card reloads every time: {z(zwei['wechsel']['warten_median_s'], sp, 0)} s on average to the first word. For shared use, pick one model for everyone."))
     zu()
 
-    kapitel(7, "risiko", T("Was kann schiefgehen?", "What can go wrong?"))
-    A(f'<p class="band"><span class="pille rose">{T("Risiko", "Risk")}</span> {T("Fällt die Karte bei geladenem Modell vom Bus, stürzt der Kernel von UGOS ab und das NAS startet neu. Der Fehler ist in Linux 7.0 behoben, UGOS liefert 6.18. Mein Gegenmittel: Das Modell wird nach 30 Minuten Leerlauf entladen.", "If the card drops off the bus with a model loaded, the UGOS kernel crashes and the NAS restarts. The bug is fixed in Linux 7.0, UGOS ships 6.18. My mitigation: the model is unloaded after 30 minutes idle.")}</p>')
-    A(kalender(dock, sp))
-    A(t_dock)
-    P(T("Die meisten Störungen sind ein einzelner korrigierter Empfangsfehler und sonst nichts. In zehn Wochen fiel die Karte an drei Tagen vom Bus, und <b>kein Abriss hat das NAS neu gestartet</b>; alle aufgezeichneten Abstürze stammen aus meinen eigenen Tests. OCuLink ist nicht hot-plug-fähig: erst das Dock einschalten, dann das NAS.",
-        "Most disturbances are a single corrected receiver error and nothing else. In ten weeks the card dropped off the bus on three days, and <b>no dropout rebooted the NAS</b>; every recorded crash came from my own tests. OCuLink is not hot-pluggable: switch the dock on first, then the NAS."))
-    P(f'<a href="{doc("dock")}">{T("Die ganze Untersuchung: zwei Wochenuhren, eine davon der Akkutest der USV", "The whole investigation: two weekly clocks, one of them the UPS battery test")}</a>')
-    zu()
-
-    kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
+    kapitel(7, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
     A(bild(D.versionen, sp))
     P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Nichts wurde langsamer.",
         "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Nothing got slower.")
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
-    kapitel(9, "agent", T("Ein Agent obendrauf", "An agent on top"))
+    kapitel(8, "agent", T("Ein Agent obendrauf", "An agent on top"))
     A(bild(D.erfinden, sp))
     P(T("Vier Regeln im Systemprompt heben den Anteil des Erfundenen, den ein Modell erkennt, von 29–60 % auf 88–99 %, ohne es übervorsichtig zu machen. Für angekündigte Schritte ohne Werkzeug reichen sie nicht; dafür prüft ein kleines Plugin ohne Sprachmodell jede Antwort.",
         "Four rules in the system prompt raise the share of made-up things a model recognises from 29–60 % to 88–99 %, without making it overcautious. They are not enough for announced steps without a tool; for those a small plugin without a language model checks every answer.")
       + f' <a href="{doc("agent")}">{T("Messungen, Regeln und Plugin", "Measurements, rules and plugin")}</a>')
     zu()
 
-    kapitel(10, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
+    kapitel(9, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
             T("Der Grundaufbau braucht nur das NAS, das Dock und die Karte und läuft ganz im Heimnetz. Wer nur den Chat will, hört nach Schritt 3 auf.",
               "The basic setup needs only the NAS, the dock and the card, and runs entirely in the home network. If you only want the chat, stop after step 3."))
     anker = (lambda de_, en_: f"{GH}{'#' + en_ if en else '/blob/main/README.de.md#' + de_}")
@@ -299,8 +290,8 @@ def seite(sp):
         (T("Karte einrichten", "Set up the card"), T("UGOS Pro ab 1.21 bringt die Firmware für die Karte mit. In der Systemsteuerung unter „Dedizierte Grafikkarte“ den Modus „NAS“ lassen. Erst das Dock einschalten, dann das NAS: OCuLink wird nur beim Start erkannt.",
                                                     "UGOS Pro from 1.21 ships the firmware for the card. In the control panel under \"Dedicated graphics card\" leave the mode at \"NAS\". Switch the dock on first, then the NAS: OCuLink is only detected at boot."),
          anker("was-ich-an-ugos-ändern-musste", "what-i-had-to-change-on-ugos"), T("Stolpersteine unter UGOS", "Pitfalls on UGOS")),
-        (T("Modellserver starten", "Start the model server"), T("Strata lädt das 125B-Modell, llama-swap stellt es als eine Adresse im Heimnetz bereit und entlädt es nach 30 Minuten Leerlauf. Das Entladen ist kein Stromsparen, sondern der Schutz gegen das Dock-Risiko.",
-                                                        "Strata loads the 125B model, llama-swap offers it under one address in the home network and unloads it after 30 minutes idle. Unloading is not about saving power, it is the protection against the dock risk."),
+        (T("Modellserver starten", "Start the model server"), T("Strata lädt das 125B-Modell, llama-swap stellt es als eine Adresse im Heimnetz bereit und entlädt es nach 30 Minuten Leerlauf. Das Entladen ist kein Stromsparen, sondern ein Schutz: Fällt die Karte bei geladenem Modell vom Bus, startet das NAS wegen eines Kernel-Fehlers neu.",
+                                                        "Strata loads the 125B model, llama-swap offers it under one address in the home network and unloads it after 30 minutes idle. Unloading is not about saving power, it is a protection: if the card drops off the bus with a model loaded, a kernel bug restarts the NAS."),
          anker("starten", "run"), T("Laufkonfigurationen", "Launch configs")),
         (T("Chat dazu", "Add the chat"), T("Open WebUI im Container, mit einem Konto je Person. Es spricht die Adresse von llama-swap an, mehr ist nicht einzustellen.",
                                            "Open WebUI in a container, with one account per person. It talks to llama-swap's address, nothing else needs setting."),
@@ -327,7 +318,7 @@ def seite(sp):
     basis = "../" if en else ""
     kanon = "https://faf.net/idx/" + ("en/" if en else "")
     nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
-           ("risiko", T("Risiko", "Risk")), ("versionen", T("Versionen", "Releases")), ("agent", "Agent"), ("nachbauen", T("Nachbauen", "Rebuild"))]
+           ("versionen", T("Versionen", "Releases")), ("agent", "Agent"), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
 <html lang="{sp}">
 <head>
