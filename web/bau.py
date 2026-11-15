@@ -110,6 +110,11 @@ def kalender(dock, sp):
     return f'<div class="rahmen"><span class="schild">{schild}</span><pre class="plan konsole-block">' + "\n".join(zeilen) + f'\n\n<span class="g">{leg}</span></pre></div>'
 
 
+def regeln(sp):
+    """Die vier Regeln wörtlich aus docs/agent(.de).md: der erste Codeblock dort."""
+    return open(os.path.join(REPO, "docs", "agent.md" if sp == "en" else "agent.de.md"), encoding="utf-8").read().split("```")[1].strip("\n")
+
+
 def verdrahtung(sp):
     t = open(os.path.join(REPO, "README.md" if sp == "en" else "README.de.md"), encoding="utf-8").read()
     block = t.split("```")[1].strip("\n")
@@ -274,11 +279,28 @@ def seite(sp):
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
-    kapitel(8, "agent", T("Ein Agent obendrauf", "An agent on top"))
+    kapitel(8, "agent", T("Damit der Agent nicht erfindet", "Keeping the agent from making things up"),
+            T("Ein lokales Modell weiß weniger als eines aus der Cloud und gibt das ungern zu. Der Agent zeigte zwei Schwächen: Er erfand Antworten zu Dingen, die es nicht gibt, und er kündigte Schritte an, für die er kein Werkzeug hat. Beides habe ich erst gemessen und dann gesenkt.",
+              "A local model knows less than one from the cloud and does not like to admit it. The agent showed two weaknesses: it made up answers about things that do not exist, and it announced steps it has no tool for. I measured both first and then brought them down."))
+    A(f"<h3>{T('Erst messen: 16 Fragen je Bereich, die Hälfte davon erfunden', 'Measure first: 16 questions per area, half of them made up')}</h3>")
+    P(T("Die Probe fragt in fünf Bereichen nach je acht echten und acht erfundenen Dingen: Gemeinden, Befehlsoptionen, Lehrsätze, Bücher und Parameter der eigenen Werkzeuge. Drei Runden, vier Modelle, jeweils ohne und mit Regeln: 1.920 Antworten. Zweifelsfälle habe ich nachgelesen; ein „weiß ich nicht“, das trotzdem eine Vermutung anbietet, zählt als erfunden.",
+        "The probe asks about eight real and eight made-up things in each of five areas: towns, command options, theorems, books and parameters of the agent's own tools. Three rounds, four models, each without and with rules: 1,920 answers. I re-read the doubtful verdicts; an \"I don't know\" that still offers a guess counts as made up."))
     A(bild(D.erfinden, sp))
-    P(T("Vier Regeln im Systemprompt heben den Anteil des Erfundenen, den ein Modell erkennt, von 29–60 % auf 88–99 %, ohne es übervorsichtig zu machen. Für angekündigte Schritte ohne Werkzeug reichen sie nicht; dafür prüft ein kleines Plugin ohne Sprachmodell jede Antwort.",
-        "Four rules in the system prompt raise the share of made-up things a model recognises from 29–60 % to 88–99 %, without making it overcautious. They are not enough for announced steps without a tool; for those a small plugin without a language model checks every answer.")
-      + f' <a href="{doc("agent")}">{T("Messungen, Regeln und Plugin", "Measurements, rules and plugin")}</a>')
+    A(f"<h3>{T('Vier Sätze im Systemprompt schlagen die Wahl des Modells', 'Four sentences in the system prompt beat the choice of model')}</h3>")
+    A(f'<div class="rahmen"><span class="schild">{T("SYSTEMPROMPT · VIER REGELN", "SYSTEM PROMPT · FOUR RULES")}</span><pre class="plan konsole-block regeln">{e(regeln(sp))}</pre></div>')
+    P(T("Ohne die Regeln erkennen die vier Modelle nur <b>29 bis 60 %</b> des Erfundenen und erfinden den Rest, am häufigsten das Bundesland einer erfundenen Gemeinde und Optionen, die es nicht gibt. Mit den Regeln sind es <b>88 bis 99 %</b>. Echtes beantworten sie dabei so richtig wie vorher (117 bis 120 von 120): Die Regeln machen sie nicht übervorsichtig. Ein anderes Modell half dagegen nicht; zwei dichte Modelle auf derselben Karte erfanden ebenso und schrieben halb so schnell.",
+        "Without the rules the four models recognise only <b>29 to 60 %</b> of the made-up things and invent the rest, most often the state of a made-up town and options that do not exist. With the rules it is <b>88 to 99 %</b>. They still answer real things as correctly as before (117 to 120 of 120): the rules do not make them overcautious. A different model did not help; two dense models on the same card invented just as much and wrote at half the speed."))
+    A(f"<h3>{T('Für das Urteil reichen drei Runden nicht', 'For judgement, three rounds are not enough')}</h3>")
+    A(bild(D.urteil, sp))
+    P(T("Dieselben drei Betriebslagen, zehnmal statt dreimal gestellt. Eine harte Anweisung („weicht die Zahl ab, hör auf“) befolgt das Modell in 10 von 10 Antworten. Wo es selbst abwägen muss, sieht es schlechter aus als nach drei Runden: Bricht nachts ein Lauf ab, erfindet es in 6 von 10 Antworten Fähigkeiten, etwa „ich pausiere die Sammlung“. Wer einen Agenten prüft, sollte jede Lage öfter stellen, als es bequem ist.",
+        "The same three operating situations, asked ten times instead of three. A hard instruction (\"if the number deviates, stop\") is followed in 10 of 10 answers. Where the model has to weigh things itself, it looks worse than after three rounds: when a job aborts at night, it invents capabilities in 6 of 10 answers, such as \"I'm pausing the collection\". If you test an agent, ask every situation more often than is comfortable."))
+    A(f"<h3>{T('Deshalb drei Schichten statt einer', 'Hence three layers instead of one')}</h3>")
+    A(bild(D.schichten, sp))
+    P(T("Die Regeln im Prompt fangen erfundene Fakten ab, aber keine angekündigten Schritte. Dafür liefern die Werkzeuge des Agenten jetzt einen fertigen Satz und die erlaubten nächsten Schritte, sodass Zahlen aus dem Code kommen. Und ein kleiner Prüfer ohne Sprachmodell liest jede Antwort: Er meldet Zahlen ohne Beleg, angekündigte Schritte ohne Werkzeug und unbekannte Werkzeugnamen. In den Agentenantworten fand er <b>alle sechs</b> erfundenen Abbruch-Antworten, ohne Fehlalarm bei den übrigen Aufgaben. Erfundene Fakten in Worten sieht er nicht: Von 269 erfundenen Antworten der Probe hätte er keine gemeldet.",
+        "The rules in the prompt catch made-up facts, but not announced steps. For those, the agent's tools now return a ready sentence and the allowed next steps, so the numbers come from code. And a small checker without a language model reads every answer: it flags unsupported numbers, announced steps without a tool and unknown tool names. In the agent answers it caught <b>all six</b> made-up abort answers, with no false alarm on the other tasks. It does not see made-up facts in plain words: of 269 made-up probe answers it would have flagged none."))
+    P(T("<b>Grenzen:</b> Die Probe stellt einzelne Fragen ohne Gesprächsverlauf, mit einem kurzen Systemprompt. Wie stark die Regeln in einem langen Agentenprompt wirken, ist nicht gemessen.",
+        "<b>Limits:</b> the probe asks single questions without a conversation, with a short system prompt. How strongly the rules work inside a long agent prompt is not measured.")
+      + f' <a href="{doc("agent")}">{T("Alle Messungen im Einzelnen", "All measurements in detail")}</a> · <a href="{GH}/tree/main/konfig/hermes-pruefer">{T("das Prüfer-Plugin", "the checker plugin")}</a> · <a href="{GH}/blob/main/messen/halluzination.py">{T("das Skript der Probe", "the probe script")}</a>')
     zu()
 
     kapitel(9, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
