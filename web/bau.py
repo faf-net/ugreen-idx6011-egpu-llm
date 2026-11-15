@@ -189,8 +189,8 @@ def seite(sp):
     zu = lambda: A("</section>")
 
     kapitel(1, "anlage", T("Was hier läuft", "What runs here"),
-            T("Auf dem NAS mit der Karte im Dock läuft, wofür man sonst einen Dienst aus der Cloud nimmt: Chat, Agent, Bilder und Programmieren, erreichbar auch über den Messenger. Gerechnet wird im Haus.",
-              "The NAS with the card in the dock runs what you would otherwise take from a cloud service: chat, agent, pictures and coding, also reachable through a messenger. The computing happens at home."))
+            T("Auf dem NAS mit der Karte im Dock läuft, wofür man sonst einen Dienst aus der Cloud nimmt: Chat, Agent, Bilder und Programmieren, erreichbar auch über den Messenger und aus eigenen Programmen. Gerechnet wird im Haus.",
+              "The NAS with the card in the dock runs what you would otherwise take from a cloud service: chat, agent, pictures and coding, also reachable through a messenger and from your own programs. The computing happens at home."))
     A(bild(D.aufbau, sp))
     karten = [
         (T("Chat im Browser", "Chat in the browser"), "Open WebUI",
@@ -213,6 +213,10 @@ def seite(sp):
          T("Ein Programmier-Agent im Terminal, der Dateien liest, ändert und Befehle ausführt. Er spricht dieselbe Adresse an wie der Chat, das Modell wählt man in der Sitzung. Der Code bleibt dabei im Haus.",
            "A coding agent in the terminal that reads and changes files and runs commands. It talks to the same address as the chat, and you pick the model in the session. The code stays at home."),
          T("teilt sich die Karte mit Chat und Agent: <b>eine Anfrage nach der anderen</b>", "shares the card with chat and agent: <b>one request at a time</b>")),
+        (T("Eigene Programme", "Your own programs"), T("API im OpenAI-Format", "API in the OpenAI format"),
+         T("Jedes Programm, das einen Cloud-Dienst im OpenAI-Format ansprechen kann, lässt sich auf die Adresse im Heimnetz umstellen: Skripte, Editor-Erweiterungen, Automationen. Ein Konto bei einem Anbieter ist nicht nötig.",
+           "Any program that can talk to a cloud service in the OpenAI format can be pointed at the address in the home network instead: scripts, editor extensions, automations. No account with a provider is needed."),
+         T(f"<b>{z(s['tps'], sp, 0)} Token/s</b> · eine Adresse, das Modell wählt der Aufruf", f"<b>{z(s['tps'], sp, 0)} tokens/s</b> · one address, the call picks the model")),
     ]
     A('<div class="anwendungen">' + "".join(f'<div class="anwendung"><span class="dach">{e(a)}</span><h3>{e(b)}</h3><p>{c}</p><div class="mess">{m}</div></div>' for a, b, c, m in karten) + "</div>")
     P(T("Zwei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen (bei Signal Ende-zu-Ende-verschlüsselt; bei Telegram und Discord kann der Dienst mitlesen). Die Suchanfragen gehen über ein VPN hinaus: Die Suchmaschinen sehen die Adresse des VPN-Anbieters, nicht den eigenen Anschluss. Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten. Von unterwegs ist die Anlage über einen eigenen Zugang mit Anmeldung erreichbar.",
