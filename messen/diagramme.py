@@ -814,7 +814,8 @@ def aufbau(d, sp):
     pfeil("M 200,160 H 270")                                                     # Geräte -> Open WebUI
     pfeil("M 136,188 V 338", gestrichelt=True)                                   # Geräte -> Messenger-Dienst
     pfeil("M 200,368 H 270", gestrichelt=True)                                   # Messenger-Dienst -> Hermes
-    pfeil("M 432,148 H 510", gestrichelt=True)                                   # Open WebUI -> SearXNG
+    pfeil("M 432,148 H 510")                                                     # Open WebUI -> SearXNG (die Anfrage bleibt im Heimnetz, SearXNG fragt nach außen)
+    pfeil("M 400,340 V 236 Q 400,228 408,228 H 464 a 8,8 0 0,1 16,0 H 552 Q 560,228 560,220 V 190")  # Hermes -> SearXNG, mit Brücke über die Linie Open WebUI -> llama-swap
     pfeil("M 432,172 H 464 Q 472,172 472,180 V 348 Q 472,356 480,356 H 510")     # Open WebUI -> llama-swap
     pfeil("M 432,380 H 510")                                                     # Hermes -> llama-swap
     pfeil("M 672,356 H 696 Q 704,356 704,348 V 184 Q 704,176 712,176 H 742", fokus=True)  # llama-swap -> Sprachmodell
