@@ -813,6 +813,7 @@ def aufbau(d, sp):
     # Pfeile zuerst, dann die Knoten
     pfeil("M 200,160 H 270")                                                     # Geräte -> Open WebUI
     pfeil("M 136,188 V 338", gestrichelt=True)                                   # Geräte -> Messenger-Dienst
+    pfeil("M 200,176 H 212 Q 220,176 220,184 V 348 Q 220,356 228,356 H 270")     # Geräte -> Hermes direkt (Browser, im Heimnetz)
     pfeil("M 200,368 H 270", gestrichelt=True)                                   # Messenger-Dienst -> Hermes
     pfeil("M 432,148 H 510")                                                     # Open WebUI -> SearXNG (die Anfrage bleibt im Heimnetz, SearXNG fragt nach außen)
     pfeil("M 400,340 V 236 Q 400,228 408,228 H 464 a 8,8 0 0,1 16,0 H 552 Q 560,228 560,220 V 190")  # Hermes -> SearXNG, mit Brücke über die Linie Open WebUI -> llama-swap
@@ -837,8 +838,8 @@ def aufbau(d, sp):
     s.text(R, y + 27, T("Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.", "Only search queries and messenger messages leave the house."), 15, INK, "serif", "end", kursiv=True)
     s.text(L, y + 48, T("Open WebUI läuft auf einem zweiten kleinen Rechner im Heimnetz, alles Übrige auf dem NAS · Zugang von unterwegs über einen eigenen Zugang mit Anmeldung",
                         "Open WebUI runs on a second small machine in the home network, everything else on the NAS · access from outside through an own gateway with login"), 8.5, MUTED, "mono")
-    return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und über einen Messenger-Dienst mit Hermes Agent; beide fragen llama-swap, das auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI lädt. Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.",
-                              "Laptop and phone talk to Open WebUI in the home network and to Hermes Agent through a messenger service; both ask llama-swap, which loads either the language model or ComfyUI on the RX 7900 XTX. Only search queries and messenger messages leave the house."), s, 512
+    return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, das auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI lädt. Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.",
+                              "Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, which loads either the language model or ComfyUI on the RX 7900 XTX. Only search queries and messenger messages leave the house."), s, 512
 
 
 def parallel(d, sp):
