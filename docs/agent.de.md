@@ -13,7 +13,7 @@ pausiere den Lauf“). Zwei Fragen: Hilft ein anderes Modell auf derselben Karte
 **Dichte Modelle helfen nicht.** Qwen3.8-27B und Gemma 4 31B (je Q4, ganz im VRAM, llama.cpp Vulkan) gegen die beiden
 MoE-Modelle dieses NAS (Strata 0.2.12), alle durch dasselbe Messprogramm:
 
-![Fünf Modelle auf einer Karte: Schreibtempo gegen Deutsch](../bilder/dicht-moe-de.png)
+![Sechs Modelle auf einer Karte: Schreibtempo gegen Deutsch](../bilder/dicht-moe-de.png)
 
 | | Aufgaben (102) | Deutsch, blind (60) | Urteil (9) | Schreiben t/s | Einlesen 32K t/s | erstes Token bei 32K |
 |---|---|---|---|---|---|---|

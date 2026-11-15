@@ -485,7 +485,7 @@ def speicher(d, sp):
                                "Von 62,3 GiB RAM hält die Strata-Engine 44,6, NAS-Dienste und Kernel 10,2, verfügbar bleiben 7,5; von 24 GiB VRAM nimmt der Experten-Cache 17,3, der MTP-Entwurf 1,0, alles Übrige 5,3, frei bleiben 0,4."), s, h
 
 
-NAMEN = {"faber": "Flash-Next IQ3_XXS (MoE)", "liber": ("Flash-Next IQ3_XXS, uncensored", "Flash-Next IQ3_XXS, unzensiert"), "velox": "Flash-Next IQ2_XS (MoE)", "qwen27": ("Qwen3.8-27B (dense)", "Qwen3.8-27B (dicht)"), "gemma31": ("Gemma 4 31B (dense)", "Gemma 4 31B (dicht)")}
+NAMEN = {"faber": "Flash-Next IQ3_XXS (MoE)", "liber": ("Flash-Next IQ3_XXS, uncensored", "Flash-Next IQ3_XXS, unzensiert"), "velox": "Flash-Next IQ2_XS (MoE)", "qwen27": ("Qwen3.8-27B (dense)", "Qwen3.8-27B (dicht)"), "gemma31": ("Gemma 4 31B (dense)", "Gemma 4 31B (dicht)"), "qwen35": ("Qwen3.5-35B-A3B (UGREEN stock model)", "Qwen3.5-35B-A3B (UGREEN-Werksmodell)")}
 
 
 def modellname(m, sp):
@@ -494,41 +494,44 @@ def modellname(m, sp):
 
 
 def dicht_moe(d, sp):
-    """Fünf Modelle auf einer Karte: Schreibtempo gegen verdeckt benotetes Deutsch."""
+    """Sechs Modelle auf einer Karte: Schreibtempo gegen verdeckt benotetes Deutsch."""
     en = sp == "en"
     T = lambda de, en_: en_ if en else de
-    daten = json.load(open(os.path.join(d, "2026-11-14-erfinden/nacht.json"), encoding="utf-8"))["modelle"]
+    daten = dict(json.load(open(os.path.join(d, "2026-11-14-erfinden/nacht.json"), encoding="utf-8"))["modelle"])
+    q = json.load(open(os.path.join(d, "2026-11-15-betrieb", "qualitaet.json"), encoding="utf-8"))["modelle"]
+    werk = {x["stufe"]: x for x in json.load(open(os.path.join(d, "2026-11-15-betrieb", "werksmodell.json"), encoding="utf-8"))["stufen"]}
+    daten["qwen35"] = {"schreiben_leise": werk["xtx-vulkan"]["schreiben_tps_median"], "deutsch_60": q["qwen35"]["deutsch_blind_60"], "punkte": {"gesamt": q["qwen35"]["bestanden_gesamt"]}}
     s = Svg()
-    titel = T("Fast doppelt so schnell wie die dichten Modelle, im Deutschen nicht schlechter", "Almost twice as fast as the dense models, and no worse at German")
-    kopf(s, T("RX 7900 XTX · fünf Modelle · Nachtlauf 13./14.11.2026", "RX 7900 XTX · five models · night run 13/14 Nov 2026"), titel)
+    titel = T("Schnell und gutes Deutsch zugleich: nur die 125B-Modelle", "Fast and good German at once: only the 125B models")
+    kopf(s, T("RX 7900 XTX · sechs Modelle · 13. bis 15.11.2026", "RX 7900 XTX · six models · 13 to 15 Nov 2026"), titel)
     feld(s, L, 104, T("Deutsch (verdeckt benotet, von 60) gegen Schreibtempo", "German (graded blind, of 60) against decode speed"),
          T("weiter rechts ist schneller, weiter oben ist besser · die Deutschachse beginnt bei 30", "further right is faster, further up is better · the German axis starts at 30"))
     p = Hoch(s, L, R, 144, 384, 60, 30)
-    X = lambda v: L + (v - 20) / 70 * (R - L)
+    X = lambda v: L + (v - 20) / 100 * (R - L)
     s.rect(X(50), p.Y(60), R - X(50), p.Y(48) - p.Y(60), TON["salbei"][0], deck=0.45)
     s.text(R - 10, p.Y(60) + 16, T("SCHNELL UND GUTES DEUTSCH", "FAST AND GOOD GERMAN"), 8, TON["salbei"][2], "mono", "end", 600, sperr="0.14em")
     p.achse(5, sp)
-    for v in range(30, 91, 10):
+    for v in range(40, 121, 20):
         s.line(X(v), 144, X(v), 384)
         s.text(X(v), 400, str(v), 9, MUTED, "mono", "middle")
     s.text(X(20), 400, "20", 9, MUTED, "mono", "middle")
-    s.text((L + R) / 2, 420, T("Schreiben, lange Antwort (Token/s, Kartenprofil leise)", "decode, long answer (tokens/s, quiet card profile)").upper(), 8, MUTED, "mono", "middle", sperr="0.14em")
+    s.text((L + R) / 2, 420, T("Schreiben, lange Antwort (Token/s)", "decode, long answer (tokens/s)").upper(), 8, MUTED, "mono", "middle", sperr="0.14em")
     for m, w in daten.items():
         moe = m in ("faber", "velox", "liber")
         x, y = X(w["schreiben_leise"]), p.Y(w["deutsch_60"])
         s.punkt(x, y, ACC if moe else STAHL, not moe, r=7 if m == "liber" else 6)
-        links = m == "liber"
+        links = m == "qwen35"
         tx, anker = (x - 14, "end") if links else (x + 14, None)
-        ty = y - 10 if m in ("liber", "qwen27") else y + 4
-        s.text(tx, ty, modellname(m, sp), 11, ACC if moe else INK, "sans", anker, 600)
+        ty = y - 16 if m == "liber" else y - 10 if m == "qwen27" else y + 4
+        s.text(tx, ty, modellname(m, sp) + (" *" if m == "qwen35" else ""), 11, ACC if moe else INK, "sans", anker, 600)
         s.text(tx, ty + 13, f"{z(w['schreiben_leise'], sp)} tok/s · {w['deutsch_60']}/60 · {w['punkte']['gesamt']}/102", 9, MUTED, "mono", anker)
-    h = fuss(s, 444, (("punkt", ACC, T("MoE, Experten auf VRAM und RAM verteilt (Strata 0.2.12)", "MoE, experts split between VRAM and RAM (Strata 0.2.12)")),
-                      ("punkt-hohl", STAHL, T("dicht, Q4, ganz im VRAM (llama.cpp Vulkan)", "dense, Q4, fully in VRAM (llama.cpp Vulkan)")),
+    h = fuss(s, 444, (("punkt", ACC, T("Flash-Next 125B, auf VRAM und RAM verteilt (Strata)", "Flash-Next 125B, split between VRAM and RAM (Strata)")),
+                      ("punkt-hohl", STAHL, T("kleinere Modelle, ganz im VRAM (llama.cpp)", "smaller models, fully in VRAM (llama.cpp)")),
                       ("ton", "salbei", T("ab 50 Token/s und ab 48 von 60", "from 50 tokens/s and from 48 of 60"))),
-             T("Deutsch: 12 Aufgaben, Antworten anonymisiert und verdeckt benotet · dritte Zahl: bestandene von 102 automatisch bewerteten Aufgaben · Tempo: Mediane aus bench.py · Daten: messen/daten/2026-11-14-erfinden/nacht.json",
-               "German: 12 tasks, answers anonymised and graded blind · third number: passed out of 102 auto-graded tasks · speed: bench.py medians · data: messen/daten/2026-11-14-erfinden/nacht.json"))
-    return "dicht-moe", titel, T("Fünf Modelle auf einer Karte nach Schreibtempo und verdeckt benotetem Deutsch: die drei MoE-Modelle schreiben mit 62 bis 74 Token je Sekunde bei 46 bis 54 von 60 Punkten, die beiden dichten mit 35 und 36 bei 38 und 52; das unzensierte Modell hat mit 54 das beste Deutsch.",
-                                 "Five models on one card by decode speed and blind-graded German: the three MoE models write at 62 to 74 tokens per second with 46 to 54 of 60 points, the two dense ones at 35 and 36 with 38 and 52; the uncensored model has the best German at 54."), s, h
+             T("Deutsch: 12 Aufgaben, Antworten anonymisiert und verdeckt benotet · dritte Zahl: bestandene von 102 automatisch bewerteten Aufgaben · * UGREENs Werksmodell: eigene Benotungsrunde am 15.11., in der Flash-Next IQ3_XXS 47 statt 51 Punkte erhielt; sein Wert liegt auf der Skala der übrigen also eher etwas höher · Daten: messen/daten/2026-11-14-erfinden/nacht.json, 2026-11-15-betrieb/qualitaet.json",
+               "German: 12 tasks, answers anonymised and graded blind · third number: passed out of 102 auto-graded tasks · * UGREEN's stock model: separate grading round on 15 Nov in which Flash-Next IQ3_XXS got 47 instead of 51 points, so on the others' scale its value is probably a little higher · data: messen/daten/2026-11-14-erfinden/nacht.json, 2026-11-15-betrieb/qualitaet.json"))
+    return "dicht-moe", titel, T("Sechs Modelle auf einer Karte nach Schreibtempo und verdeckt benotetem Deutsch: die drei 125B-Modelle schreiben mit 62 bis 74 Token je Sekunde bei 46 bis 54 von 60 Punkten, zwei dichte Modelle mit 35 und 36 bei 38 und 52, UGREENs Qwen 3.5 mit 114 bei 37.",
+                                 "Six models on one card by decode speed and blind-graded German: the three 125B models write at 62 to 74 tokens per second with 46 to 54 of 60 points, two dense models at 35 and 36 with 38 and 52, UGREEN's Qwen 3.5 at 114 with 37."), s, h
 
 
 def erfinden(d, sp):

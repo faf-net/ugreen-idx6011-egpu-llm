@@ -253,6 +253,10 @@ def seite(sp):
     A(bild(D.betrieb, sp))
     P(T(f"Zum Vergleich ein dichtes 70B-Modell (Llama 3.3, Q4) auf derselben Karte: <b>{z(gpu['schreiben_tps_median'], sp, 1)} Token je Sekunde</b>, weil für jedes Token alle Gewichte gelesen werden und die Hälfte davon hinter der CPU liegt.",
         f"For comparison, a dense 70B model (Llama 3.3, Q4) on the same card: <b>{z(gpu['schreiben_tps_median'], sp, 1)} tokens per second</b>, because every token reads all weights and half of them sit behind the CPU."))
+    A(f"<h3>{T('Sechs Modelle auf derselben Karte', 'Six models on the same card')}</h3>")
+    A(bild(D.dicht_moe, sp))
+    P(T("Auf der Karte laufen auch kleinere Modelle, die ganz in den Grafikspeicher passen. Zwei dichte Modelle schreiben halb so schnell wie das 125B-Modell und bestehen nicht mehr Aufgaben. UGREENs mitgeliefertes Qwen 3.5 schreibt am schnellsten, hat aber das schwächste Deutsch und besteht die wenigsten Aufgaben. Schnell und gut im Deutschen zugleich sind nur die Fassungen des 125B-Modells; die unzensierte liegt im Deutschen vorn.",
+        "Smaller models that fit entirely into video memory run on the card as well. Two dense models write at half the speed of the 125B model and do not pass more tasks. UGREEN's bundled Qwen 3.5 writes fastest but has the weakest German and passes the fewest tasks. Only the versions of the 125B model are both fast and good at German; the uncensored one leads in German."))
     zu()
 
     kapitel(5, "agent", T("Damit der Agent nicht erfindet", "Keeping the agent from making things up"),

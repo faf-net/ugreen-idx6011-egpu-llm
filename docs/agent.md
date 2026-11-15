@@ -13,7 +13,7 @@ another model on the same card help, and what else does?
 **Dense models do not help.** Qwen3.8-27B and Gemma 4 31B (Q4 each, fully in VRAM, llama.cpp Vulkan) against the two
 MoE models of this NAS (Strata 0.2.12), all through the same benchmark:
 
-![Five models on one card: decode speed against German](../bilder/dicht-moe-en.png)
+![Six models on one card: decode speed against German](../bilder/dicht-moe-en.png)
 
 | | tasks (102) | German, blind (60) | judgement (9) | decode tok/s | prefill 32K tok/s | first token at 32K |
 |---|---|---|---|---|---|---|
