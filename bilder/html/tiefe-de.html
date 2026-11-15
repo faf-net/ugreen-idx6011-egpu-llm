@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Das Tempo fällt von 1K bis 248K Token Kontext kaum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #efeae1; color: #2a2724; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 16px; }
+    .frame { max-width: 1100px; width: 100%; min-width: 0; }
+    .scroll { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 960px; display: block; font-variant-numeric: tabular-nums; }
+    @media print { .scroll { overflow: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame"><div class="scroll">
+    <svg viewBox="0 0 960 508" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tiefe-de-title tiefe-de-desc">
+      <title id="tiefe-de-title">Das Tempo fällt von 1K bis 248K Token Kontext kaum</title>
+      <desc id="tiefe-de-desc">Schreib- und Einlesetempo mit und ohne MTP-Kopf in sechs Kontexttiefen von 1K bis 248K Token.</desc>
+      <rect width="960" height="508" fill="#efeae1"/>
+      <text x="72.0" y="36.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.16em">STRATA 0.1.44.1 · FLASH-NEXT 125B IQ3_XXS · RX 7900 XTX ÜBER OCULINK X4</text>
+      <text x="72.0" y="68.0" fill="#171512" font-size="25" font-family="'Instrument Serif', Georgia, serif">Das Tempo fällt von 1K bis 248K Token Kontext kaum</text>
+      <text x="72.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">A · SCHREIBEN · TOKEN/S</text>
+      <text x="72.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">256 neue Token nach frischem Prompt · höher ist schneller</text>
+      <text x="64.0" y="387.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">0</text>
+      <line x1="72.0" y1="324.0" x2="456.0" y2="324.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="327.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">20</text>
+      <line x1="72.0" y1="264.0" x2="456.0" y2="264.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="267.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">40</text>
+      <line x1="72.0" y1="204.0" x2="456.0" y2="204.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="207.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">60</text>
+      <line x1="72.0" y1="144.0" x2="456.0" y2="144.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="147.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">80</text>
+      <line x1="72.0" y1="144.0" x2="72.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="72.0" y1="384.0" x2="456.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="88.0" y1="384.0" x2="88.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="88.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">1K</text>
+      <line x1="161.0" y1="384.0" x2="161.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="161.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">4K</text>
+      <line x1="234.0" y1="384.0" x2="234.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="234.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">16K</text>
+      <line x1="307.0" y1="384.0" x2="307.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="307.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">64K</text>
+      <line x1="343.5" y1="384.0" x2="343.5" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="343.5" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">128K</text>
+      <line x1="380.0" y1="384.0" x2="380.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="380.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">256K</text>
+      <text x="226.0" y="420.0" fill="#6a6258" font-size="8" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" letter-spacing="0.14em">KONTEXTTIEFE (TOKEN)</text>
+      <polyline points="86.4,198.0 160.7,202.2 233.6,195.0 306.6,200.7 343.1,201.0 377.1,215.7" fill="none" stroke="#975b34" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="86.4" cy="198.0" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="160.7" cy="202.2" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="233.6" cy="195.0" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="306.6" cy="200.7" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="343.1" cy="201.0" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="377.1" cy="215.7" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <polyline points="86.4,237.3 160.7,233.4 233.6,232.5 306.6,236.1 343.1,242.4 377.1,249.3" fill="none" stroke="#456579" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="86.4" cy="237.3" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="160.7" cy="233.4" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="233.6" cy="232.5" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="306.6" cy="236.1" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="343.1" cy="242.4" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="377.1" cy="249.3" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <text x="389.1" y="214.7" fill="#975b34" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">mit MTP</text>
+      <text x="389.1" y="225.7" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace">56,1</text>
+      <text x="389.1" y="248.3" fill="#456579" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">ohne MTP</text>
+      <text x="389.1" y="259.3" fill="#456579" font-size="9" font-family="'JetBrains Mono', Consolas, monospace">44,9</text>
+      <text x="96.0" y="219.0" fill="#2a2724" font-size="15" font-family="'Instrument Serif', Georgia, serif" font-style="italic">MTP bringt 21–29 % in jeder Tiefe.</text>
+      <text x="544.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">B · EINLESEN · TOKEN/S</text>
+      <text x="544.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">Einlesen des frischen Prompts · höher ist schneller</text>
+      <text x="536.0" y="387.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">0</text>
+      <line x1="544.0" y1="349.7" x2="928.0" y2="349.7" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="536.0" y="352.7" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">200</text>
+      <line x1="544.0" y1="315.4" x2="928.0" y2="315.4" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="536.0" y="318.4" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">400</text>
+      <line x1="544.0" y1="281.1" x2="928.0" y2="281.1" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="536.0" y="284.1" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">600</text>
+      <line x1="544.0" y1="246.9" x2="928.0" y2="246.9" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="536.0" y="249.9" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">800</text>
+      <line x1="544.0" y1="212.6" x2="928.0" y2="212.6" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="536.0" y="215.6" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">1.000</text>
+      <line x1="544.0" y1="178.3" x2="928.0" y2="178.3" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="536.0" y="181.3" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">1.200</text>
+      <line x1="544.0" y1="144.0" x2="928.0" y2="144.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="536.0" y="147.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">1.400</text>
+      <line x1="544.0" y1="144.0" x2="544.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="544.0" y1="384.0" x2="928.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="560.0" y1="384.0" x2="560.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="560.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">1K</text>
+      <line x1="633.0" y1="384.0" x2="633.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="633.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">4K</text>
+      <line x1="706.0" y1="384.0" x2="706.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="706.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">16K</text>
+      <line x1="779.0" y1="384.0" x2="779.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="779.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">64K</text>
+      <line x1="815.5" y1="384.0" x2="815.5" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="815.5" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">128K</text>
+      <line x1="852.0" y1="384.0" x2="852.0" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="852.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">256K</text>
+      <text x="698.0" y="420.0" fill="#6a6258" font-size="8" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" letter-spacing="0.14em">KONTEXTTIEFE (TOKEN)</text>
+      <polyline points="558.4,321.9 632.7,256.4 705.6,184.5 778.6,180.8 815.1,182.6 849.1,199.0" fill="none" stroke="#975b34" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="558.4" cy="321.9" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="632.7" cy="256.4" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="705.6" cy="184.5" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="778.6" cy="180.8" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="815.1" cy="182.6" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <circle cx="849.1" cy="199.0" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <polyline points="558.4,317.0 632.7,249.9 705.6,169.1 778.6,167.2 815.1,174.8 849.1,192.5" fill="none" stroke="#456579" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="558.4" cy="317.0" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="632.7" cy="249.9" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="705.6" cy="169.1" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="778.6" cy="167.2" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="815.1" cy="174.8" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <circle cx="849.1" cy="192.5" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <text x="861.1" y="181.7" fill="#456579" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">ohne MTP</text>
+      <text x="861.1" y="192.7" fill="#456579" font-size="9" font-family="'JetBrains Mono', Consolas, monospace">1.117</text>
+      <text x="861.1" y="207.7" fill="#975b34" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">mit MTP</text>
+      <text x="861.1" y="218.7" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace">1.079</text>
+      <text x="928.0" y="294.9" fill="#2a2724" font-size="15" font-family="'Instrument Serif', Georgia, serif" text-anchor="end" font-style="italic">Ab 16K bleibt das Einlesen über 1.000 Token/s.</text>
+      <line x1="40.0" y1="444.0" x2="920.0" y2="444.0" stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"/>
+      <text x="72.0" y="470.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">UGREEN iDX6011 Pro, 64 GB · je Lauf ein frischer Prompt, dann 256 neue Token · Zeiten der Engine, Median aus 2–3 Läufen · messen/tiefe.py</text>
+      <text x="72.0" y="484.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Daten: messen/daten/tiefe-20261017.jsonl</text>
+    </svg>
+  </div></div>
+</body>
+</html>

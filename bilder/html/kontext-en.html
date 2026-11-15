@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waiting for the first word as the prompt grows</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #efeae1; color: #2a2724; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 16px; }
+    .frame { max-width: 1100px; width: 100%; min-width: 0; }
+    .scroll { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 960px; display: block; font-variant-numeric: tabular-nums; }
+    @media print { .scroll { overflow: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame"><div class="scroll">
+    <svg viewBox="0 0 960 508" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="kontext-en-title kontext-en-desc">
+      <title id="kontext-en-title">Waiting for the first word as the prompt grows</title>
+      <desc id="kontext-en-desc">Time to first token for fresh prompts: 5.5 seconds at 4K, 26 seconds at 32K, 1.8 minutes at 128K and 3.6 minutes at 250K tokens.</desc>
+      <rect width="960" height="508" fill="#efeae1"/>
+      <text x="72.0" y="36.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.16em">FLASH-NEXT 125B IQ3_XXS · RX 7900 XTX · FRESH PROMPTS, NOTHING REUSED</text>
+      <text x="72.0" y="68.0" fill="#171512" font-size="25" font-family="'Instrument Serif', Georgia, serif">Waiting for the first word as the prompt grows</text>
+      <text x="72.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">TIME TO FIRST TOKEN · SECONDS</text>
+      <text x="72.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">lower is faster · the needle was found every time</text>
+      <text x="64.0" y="387.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">0</text>
+      <line x1="72.0" y1="336.0" x2="928.0" y2="336.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="339.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">50</text>
+      <line x1="72.0" y1="288.0" x2="928.0" y2="288.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="291.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">100</text>
+      <line x1="72.0" y1="240.0" x2="928.0" y2="240.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="243.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">150</text>
+      <line x1="72.0" y1="192.0" x2="928.0" y2="192.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="195.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">200</text>
+      <line x1="72.0" y1="144.0" x2="928.0" y2="144.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="147.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">250</text>
+      <line x1="72.0" y1="144.0" x2="72.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="72.0" y1="384.0" x2="928.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <polyline points="92.5,378.7 129.8,371.2 179.8,358.8 469.2,279.9 863.3,175.6" fill="none" stroke="#975b34" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <line x1="92.5" y1="384.0" x2="92.5" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="92.5" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">4K</text>
+      <circle cx="92.5" cy="378.7" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <text x="92.5" y="368.7" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">5.5 s</text>
+      <line x1="129.8" y1="384.0" x2="129.8" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="129.8" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">16K</text>
+      <circle cx="129.8" cy="371.2" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <text x="129.8" y="361.2" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">13.3 s</text>
+      <line x1="179.8" y1="384.0" x2="179.8" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="179.8" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <circle cx="179.8" cy="358.8" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <text x="179.8" y="348.8" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">26.3 s</text>
+      <line x1="469.2" y1="384.0" x2="469.2" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="469.2" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">128K</text>
+      <circle cx="469.2" cy="279.9" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <text x="469.2" y="269.9" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">1.8 min</text>
+      <line x1="863.3" y1="384.0" x2="863.3" y2="388.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="863.3" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">250K</text>
+      <circle cx="863.3" cy="175.6" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <text x="863.3" y="165.6" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">3.6 min</text>
+      <text x="500.0" y="420.0" fill="#6a6258" font-size="8" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" letter-spacing="0.14em">PROMPT LENGTH (TOKENS)</text>
+      <text x="515.8" y="345.6" fill="#2a2724" font-size="15" font-family="'Instrument Serif', Georgia, serif" font-style="italic">Almost linear: about 0.85 s per 1,000 tokens.</text>
+      <line x1="40.0" y1="444.0" x2="920.0" y2="444.0" stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"/>
+      <text x="72.0" y="470.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">4K–32K: strata_bench.py (Strata 0.2.2) · 128K and 250K: needle_bench.py (0.2.2, 0.1.44.1)</text>
+      <text x="72.0" y="484.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">the conversation cache keeps an agent session from paying this again on every turn</text>
+    </svg>
+  </div></div>
+</body>
+</html>

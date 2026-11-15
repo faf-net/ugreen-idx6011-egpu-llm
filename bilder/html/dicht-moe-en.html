@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dense models on the same card: half the speed, no better results</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #efeae1; color: #2a2724; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 16px; }
+    .frame { max-width: 1100px; width: 100%; min-width: 0; }
+    .scroll { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 960px; display: block; font-variant-numeric: tabular-nums; }
+    @media print { .scroll { overflow: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame"><div class="scroll">
+    <svg viewBox="0 0 960 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dicht-moe-en-title dicht-moe-en-desc">
+      <title id="dicht-moe-en-title">Dense models on the same card: half the speed, no better res</title>
+      <desc id="dicht-moe-en-desc">Four models on one card: the two MoE models write at 64 and 74 tokens per second and pass 96 and 97 of 102 tasks, the two dense models write at 35 and 36 and pass 97 and 92.</desc>
+      <rect width="960" height="528" fill="#efeae1"/>
+      <text x="72.0" y="36.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.16em">RX 7900 XTX · ALL DENSE WEIGHTS IN VRAM · NIGHT RUN 13/14 NOV 2026</text>
+      <text x="72.0" y="68.0" fill="#171512" font-size="25" font-family="'Instrument Serif', Georgia, serif">Dense models on the same card: half the speed, no better results</text>
+      <text x="72.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">GRADED TASKS PASSED (OF 102) AGAINST DECODE SPEED</text>
+      <text x="72.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">further right is faster, further up is better · the task axis starts at 88</text>
+      <text x="64.0" y="387.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">88</text>
+      <line x1="72.0" y1="344.0" x2="928.0" y2="344.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="347.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">90</text>
+      <line x1="72.0" y1="304.0" x2="928.0" y2="304.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="307.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">92</text>
+      <line x1="72.0" y1="264.0" x2="928.0" y2="264.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="267.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">94</text>
+      <line x1="72.0" y1="224.0" x2="928.0" y2="224.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="227.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">96</text>
+      <line x1="72.0" y1="184.0" x2="928.0" y2="184.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="187.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">98</text>
+      <line x1="72.0" y1="144.0" x2="928.0" y2="144.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="147.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">100</text>
+      <line x1="72.0" y1="144.0" x2="72.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="72.0" y1="384.0" x2="928.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="194.3" y1="144.0" x2="194.3" y2="384.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="194.3" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">30</text>
+      <line x1="316.6" y1="144.0" x2="316.6" y2="384.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="316.6" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">40</text>
+      <line x1="438.9" y1="144.0" x2="438.9" y2="384.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="438.9" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">50</text>
+      <line x1="561.1" y1="144.0" x2="561.1" y2="384.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="561.1" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">60</text>
+      <line x1="683.4" y1="144.0" x2="683.4" y2="384.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="683.4" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">70</text>
+      <line x1="805.7" y1="144.0" x2="805.7" y2="384.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="805.7" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">80</text>
+      <line x1="928.0" y1="144.0" x2="928.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="928.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">90</text>
+      <text x="72.0" y="400.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">20</text>
+      <text x="500.0" y="420.0" fill="#6a6258" font-size="8" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" letter-spacing="0.14em">DECODE, LONG ANSWER (TOKENS/S, QUIET CARD PROFILE)</text>
+      <circle cx="606.4" cy="224.0" r="6" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <text x="620.4" y="226.0" fill="#975b34" font-size="11" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">faber (MoE)</text>
+      <text x="620.4" y="239.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace">63.7 tok/s · 96/102</text>
+      <circle cx="726.2" cy="204.0" r="6" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <text x="740.2" y="190.0" fill="#975b34" font-size="11" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">velox (MoE)</text>
+      <text x="740.2" y="203.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace">73.5 tok/s · 97/102</text>
+      <circle cx="270.1" cy="304.0" r="6" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <text x="284.1" y="306.0" fill="#2a2724" font-size="11" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">Qwen3.8-27B (dense)</text>
+      <text x="284.1" y="319.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace">36.2 tok/s · 92/102</text>
+      <circle cx="253.0" cy="204.0" r="6" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <text x="267.0" y="190.0" fill="#2a2724" font-size="11" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">Gemma 4 31B (dense)</text>
+      <text x="267.0" y="203.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace">34.8 tok/s · 97/102</text>
+      <line x1="40.0" y1="444.0" x2="920.0" y2="444.0" stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"/>
+      <circle cx="80.0" cy="466.0" r="4" fill="#975b34" stroke="#975b34" stroke-width="1.6"/>
+      <text x="96.0" y="470.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">MoE, experts split between VRAM and RAM (Strata 0.2.12)</text>
+      <circle cx="434.5" cy="466.0" r="4" fill="#efeae1" stroke="#456579" stroke-width="1.6"/>
+      <text x="450.5" y="470.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">dense, Q4 (llama.cpp Vulkan)</text>
+      <text x="72.0" y="492.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">102 auto-graded tasks, bench.py medians · German and judgement scores are in the table below the chart</text>
+      <text x="72.0" y="506.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">data: messen/daten/2026-11-14-erfinden/nacht.json</text>
+    </svg>
+  </div></div>
+</body>
+</html>

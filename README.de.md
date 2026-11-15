@@ -234,7 +234,7 @@ Engine 0.1.57 `hip-rx7900` mit Control 0.1.57, gegen die Pakete von 0.2.10 (0.1.
 
 Engine 0.1.58 `hip-rx7900` mit Control 0.1.58 gegen 0.2.11, gleiche Laufkonfiguration, NAS-Dienste an. **0.2.12 ist hier gleich gut wie 0.2.11**: Auf meinem eigenen Aufgabensatz (114 Aufgaben, 102 automatisch bewertet) bestehen beide 98 und brauchen 1.430 s; Paare in derselben Sitzung 59,9 gegen 61,2 Token/s beim Schreiben, im Rauschen. `standard-v1` vollständig mit 12/12 im Paket (kurz schreiben / 4K / 16K: 63,6 / 788 / 1.202) und im unveränderten Docker-Image (69,1 / 756 / 1.186), Nadeln 7/7 bis 250K. **Seit 08.11. läuft dieses NAS mit 0.2.12**, weiter mit MTP.
 
-![Getunter DFlash2 gegen MTP: im festen Test schneller je Token, bei echten Aufgaben langsamer](bilder/dflash2-0.2.12.png)
+![Getunter DFlash2 gegen MTP: im festen Test schneller je Token, bei echten Aufgaben langsamer](bilder/dflash2-0.2.12-de.png)
 
 Das Release bringt einen **getunten DFlash2-Drafter** mit, meines Wissens auf gfx1100 bisher nicht gemessen. Er lädt sauber (591 MiB VRAM, keine MTP-Schicht) und schreibt im festen Test mit 900 Token bei Konfidenz 0,7 um 10–15 % schneller als MTP (92,6 gegen 83,0 Token/s im leisen Kartenprofil, 90,5 gegen 79,0 bei Werkstakt), wobei deutsche Prosa langsamer wird und nur Code gewinnt. Auf dem echten Aufgabensatz mit natürlicher Antwortlänge verliert er: Je Token gleich schnell (+1 %), aber nur 51 von 114 Antworten gleichen bei Temperatur 0 denen mit MTP, die geänderten werden länger (+28 % Token), die Gesamtzeit steigt um 16 %, und zwei mehrstufige Preisrechnungen gehen schief (96 gegen 98). Halb so viele CPU-Pool-Worker ändern nichts. DFlash2 bleibt auf dieser Karte aus. Startkonfigurationen (Betrieb und DFlash2-Test): `konfig/strata-0.2.12/`. Rohdaten: `messen/daten/2026-11-08-v0.2.12/`, an Strata als [Issue #5615](https://github.com/Niko1221/Strata/issues/5615).
 
@@ -514,6 +514,7 @@ Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Hos
   messen/halluzination.py       Halluzinationsprobe: 5 Bereiche × 8 echte + 8 erfundene Gegenstände, ohne und mit Regeln (--regeln)
   messen/agent_de.py            Betriebsagent auf Deutsch: 9 Aufgaben je mehrfach, Urteilsaufgaben zum Nachlesen
   messen/charts3.py             Diagramme des Nachtrags vom 14.11.2026
+  messen/diagramme.py           alle Diagramme in bilder/ in einem Stil (HTML/SVG-Quellen in bilder/html/, PNG über playwright); ersetzt charts*.py
   messen/daten/2026-11-14-erfinden/  Zählwerte: Probe je Modell und Bereich, Nachtvergleich, Urteil mit 10 Runden
   konfig/hermes-pruefer/        Plugin für Hermes Agent: prüft jede Antwort mit festen Regeln, ohne Sprachmodell
 ```

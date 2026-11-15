@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auf der Hybrid-CPU schlagen neun Pool-Worker die Automatik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #efeae1; color: #2a2724; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 16px; }
+    .frame { max-width: 1100px; width: 100%; min-width: 0; }
+    .scroll { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 960px; display: block; font-variant-numeric: tabular-nums; }
+    @media print { .scroll { overflow: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame"><div class="scroll">
+    <svg viewBox="0 0 960 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pool-workers-de-title pool-workers-de-desc">
+      <title id="pool-workers-de-title">Auf der Hybrid-CPU schlagen neun Pool-Worker die Automatik</title>
+      <desc id="pool-workers-de-desc">Schreibtempo mit automatischer Worker-Zahl und mit 5, 9 und 13 Pool-Workern; 9 ist mit 76,8 Token je Sekunde am schnellsten, die Automatik erreicht 56,1.</desc>
+      <rect width="960" height="512" fill="#efeae1"/>
+      <text x="72.0" y="36.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.16em">STRATA 0.1.44.1 · FLASH-NEXT 125B IQ2_XS · 6 P- + 8 E- + 2 LP-E-KERNE</text>
+      <text x="72.0" y="68.0" fill="#171512" font-size="25" font-family="'Instrument Serif', Georgia, serif">Auf der Hybrid-CPU schlagen neun Pool-Worker die Automatik</text>
+      <text x="72.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">SCHREIBEN, LANGE ANTWORT · TOKEN/S</text>
+      <text x="72.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">höher ist schneller</text>
+      <text x="64.0" y="387.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">0</text>
+      <line x1="72.0" y1="336.0" x2="928.0" y2="336.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="339.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">20</text>
+      <line x1="72.0" y1="288.0" x2="928.0" y2="288.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="291.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">40</text>
+      <line x1="72.0" y1="240.0" x2="928.0" y2="240.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="243.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">60</text>
+      <line x1="72.0" y1="192.0" x2="928.0" y2="192.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="195.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">80</text>
+      <line x1="72.0" y1="144.0" x2="928.0" y2="144.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="147.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">100</text>
+      <line x1="72.0" y1="144.0" x2="72.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="72.0" y1="384.0" x2="928.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <rect x="143.0" y="249.4" width="72.0" height="134.6" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1"/>
+      <text x="179.0" y="242.4" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">56,1</text>
+      <text x="179.0" y="404.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">Automatik</text>
+      <rect x="357.0" y="200.2" width="72.0" height="183.8" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1"/>
+      <text x="393.0" y="193.2" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">76,6</text>
+      <text x="393.0" y="404.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">5</text>
+      <rect x="571.0" y="199.7" width="72.0" height="184.3" fill="#975b34" fill-opacity="0.18" stroke="#975b34" stroke-width="2"/>
+      <text x="607.0" y="192.7" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">76,8</text>
+      <text x="607.0" y="404.0" fill="#975b34" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">9</text>
+      <rect x="785.0" y="206.4" width="72.0" height="177.6" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1"/>
+      <text x="821.0" y="199.4" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">74,0</text>
+      <text x="821.0" y="404.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">13</text>
+      <text x="500.0" y="424.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">--pool-workers</text>
+      <text x="96.0" y="172.0" fill="#2a2724" font-size="15" font-family="'Instrument Serif', Georgia, serif" font-style="italic">Bis 0.2.0 kostete die Automatik 27 %.</text>
+      <line x1="40.0" y1="448.0" x2="920.0" y2="448.0" stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"/>
+      <text x="72.0" y="474.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Median aus 3 Läufen, gemessen am 14.10.2026</text>
+      <text x="72.0" y="488.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">ab Strata 0.2.1 plant die Voreinstellung 10 Worker und hält sie von den LP-E-Kernen fern: --pool-workers weglassen</text>
+    </svg>
+  </div></div>
+</body>
+</html>
