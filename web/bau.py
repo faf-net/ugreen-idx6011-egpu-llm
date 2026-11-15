@@ -66,7 +66,7 @@ def terminal_strom(strom, sp):
     en = sp == "en"
     namen = {"leer": ("Leerlauf", "idle"), "geladen": ("geladen", "loaded"), "schreiben": ("Schreiben", "writing"), "lesen": ("Einlesen", "reading")}
     kopf = f'{"PHASE":<11}{("TOTAL" if en else "GESAMT"):>7}  {("CARD" if en else "KARTE"):>7}   {"0 W":<24}600 W   {"SPEED" if en else "TEMPO"}'
-    zeilen = ['<span class="g">$ python3 messen/betrieb.py strom --model faber</span>', f'<span class="g">{kopf}</span>']
+    zeilen = ['<span class="g">$ python3 messen/betrieb.py strom</span>', f'<span class="g">{kopf}</span>']
     for ph in ("leer", "geladen", "schreiben", "lesen"):
         w, k = strom[ph]["usv_w"]["mittel"], strom[ph]["karte_w"]["mittel"]
         n, nk = round(w / 600 * 28), round(k / 600 * 28)

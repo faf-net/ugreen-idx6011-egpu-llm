@@ -2,6 +2,8 @@
 
 [English](agent.md) · **Deutsch** · [← README](../README.de.md)
 
+In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS.
+
 Nachtrag vom 14.11.2026 zum Abschnitt [Ein Agent obendrauf](../README.de.md#ein-agent-hermes-obendrauf).
 
 Der Agent auf diesem NAS betreibt einen Datenbestand mit eigenen Werkzeugen. Er hat zwei Schwächen gezeigt: Er
@@ -15,8 +17,8 @@ MoE-Modelle dieses NAS (Strata 0.2.12), alle durch dasselbe Messprogramm:
 
 | | Aufgaben (102) | Deutsch, blind (60) | Urteil (9) | Schreiben t/s | Einlesen 32K t/s | erstes Token bei 32K |
 |---|---|---|---|---|---|---|
-| faber (MoE, IQ3_XXS) | 96 | 51 | 7,5 | 63,7 | 1.183 | 27,0 s |
-| velox (MoE, IQ2_XS) | 97 | 46 | 6,5 | 73,5 | 1.321 | 24,3 s |
+| Flash-Next IQ3_XXS (`faber`, MoE) | 96 | 51 | 7,5 | 63,7 | 1.183 | 27,0 s |
+| Flash-Next IQ2_XS (`velox`, MoE) | 97 | 46 | 6,5 | 73,5 | 1.321 | 24,3 s |
 | Qwen3.8-27B (dicht) | 92 | 52 | 7 | 36,2 | 796 | 40,3 s |
 | Gemma 4 31B (dicht) | 97 | 38 | 4 | 34,8 | 602 | 52,9 s |
 
@@ -51,7 +53,7 @@ Wirkung nicht gemessen.
 **Beim Urteil helfen drei Runden nicht weiter.** Mit `messen/agent_de.py` bekam faber dieselben Betriebslagen zehnmal
 statt dreimal:
 
-![faber als Betriebsagent: 10 Runden je Lage](../bilder/urteil-de.png)
+![Das 125B-Modell als Betriebsagent: 10 Runden je Lage](../bilder/urteil-de.png)
 
 Eine harte Anweisung („weicht die Zahl ab, hör auf“) hält das Modell in 10 von 10 Antworten ein. Muss es selbst
 abwägen, sieht es schlechter aus als nach drei Runden: Bricht ein Sammellauf ab, während niemand wach ist, erfindet es in

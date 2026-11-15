@@ -485,7 +485,7 @@ def speicher(d, sp):
                                "Von 62,3 GiB RAM hält die Strata-Engine 44,6, NAS-Dienste und Kernel 10,2, verfügbar bleiben 7,5; von 24 GiB VRAM nimmt der Experten-Cache 17,3, der MTP-Entwurf 1,0, alles Übrige 5,3, frei bleiben 0,4."), s, h
 
 
-NAMEN = {"faber": "faber (MoE)", "velox": "velox (MoE)", "qwen27": ("Qwen3.8-27B (dense)", "Qwen3.8-27B (dicht)"), "gemma31": ("Gemma 4 31B (dense)", "Gemma 4 31B (dicht)")}
+NAMEN = {"faber": "Flash-Next IQ3_XXS (MoE)", "velox": "Flash-Next IQ2_XS (MoE)", "qwen27": ("Qwen3.8-27B (dense)", "Qwen3.8-27B (dicht)"), "gemma31": ("Gemma 4 31B (dense)", "Gemma 4 31B (dicht)")}
 
 
 def modellname(m, sp):
@@ -573,7 +573,7 @@ def urteil(d, sp):
              "lauf_bricht_ab": (("job aborts,", "nobody awake"), ("Lauf bricht ab,", "niemand wach"))}
     worte = {"gut": ("salbei", "good", "gut"), "grenzfall": ("gold", "borderline", "Grenzfall"), "schlecht": ("rose", "bad", "schlecht")}
     s = Svg()
-    titel = "faber as an operations agent: ten rounds show what three rounds hide" if en else "faber als Betriebsagent: zehn Runden zeigen, was drei verbergen"
+    titel = "The 125B model as an operations agent: ten rounds show what three rounds hide" if en else "Das 125B-Modell als Betriebsagent: zehn Runden zeigen, was drei verbergen"
     kopf(s, "Flash-Next 125B IQ3_XXS · Strata 0.2.12 · temperature 0.7 · every answer read" if en else "Flash-Next 125B IQ3_XXS · Strata 0.2.12 · Temperatur 0,7 · jede Antwort gelesen", titel)
     feld(s, L, 104, "Answers per situation (of 10)" if en else "Antworten je Lage (von 10)", "the same situation ten times" if en else "dieselbe Lage zehnmal",
          "A hard instruction holds; weighing things up does not." if en else "Eine harte Anweisung hält, das Abwägen nicht.", R)
@@ -613,7 +613,7 @@ def schichten(d, sp):
     art = {"g": ("salbei", "catches it", "fängt es ab"), "u": ("gold", "helps · not measured", "hilft · nicht gemessen"), "b": ("rose", "blind", "blind"), "n": ("neutral", "not its job", "nicht zuständig")}
     zellen = [[("g", "29–60 % → 88–99 %, four models", "29–60 % → 88–99 %, vier Modelle"), ("n", "", ""), ("b", "0 of 269 caught", "0 von 269 erkannt")],
               [("u", "“never invent numbers”", "„nie Zahlen erfinden“"), ("u", "numbers come from code", "Zahlen kommen aus dem Code"), ("g", "", "")],
-              [("n", "", ""), ("u", "only allowed steps offered", "nur erlaubte Schritte angeboten"), ("g", "6 of 6 (faber)", "6 von 6 (faber)")],
+              [("n", "", ""), ("u", "only allowed steps offered", "nur erlaubte Schritte angeboten"), ("g", "6 of 6", "6 von 6")],
               [("g", "10–20 → 23–24 of 24", "10–20 → 23–24 von 24"), ("n", "", ""), ("g", "", "")]]
     s = Svg()
     titel = "Three layers against made-up answers, and what each one catches" if en else "Drei Schichten gegen Erfinden, und was jede abfängt"
@@ -674,7 +674,7 @@ def dflash2(d, sp):
     en = sp == "en"
     s = Svg()
     titel = "DFlash2 looks faster at fixed length, but is slower end to end" if en else "DFlash2 wirkt bei fester Länge schneller, ist am Ende aber langsamer"
-    kopf(s, "Strata 0.2.12 · RX 7900 XTX (HIP) · faber · MTP vs DFlash2" if en else "Strata 0.2.12 · RX 7900 XTX (HIP) · faber · MTP gegen DFlash2", titel)
+    kopf(s, "Strata 0.2.12 · RX 7900 XTX (HIP) · Flash-Next 125B · MTP vs DFlash2" if en else "Strata 0.2.12 · RX 7900 XTX (HIP) · Flash-Next 125B · MTP gegen DFlash2", titel)
     # gemessen 08.11.2026, messen/daten/2026-11-08-v0.2.12/
     feld(s, L, 104, "A · Fixed 900-token test · decode tokens/s" if en else "A · Fester 900-Token-Test · Schreiben Token/s", "median over 3 prompts · higher is faster" if en else "Median über 3 Prompts · höher ist schneller")
     p = Hoch(s, L, 456, 144, 384, 100)

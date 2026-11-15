@@ -11,7 +11,7 @@ Fotos, Medien und Backups.
 Alle Werte sind auf meiner Maschine gemessen, sofern nicht anders vermerkt. Das Repo enthält **keinen
 Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte und Messprogramme.
 
-**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15.
+**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS.
 
 ## Auf einen Blick
 

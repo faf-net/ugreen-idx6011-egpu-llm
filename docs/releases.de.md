@@ -2,6 +2,8 @@
 
 [English](releases.md) · **Deutsch** · [← README](../README.de.md)
 
+In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS.
+
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
 ## Nachtrag 09.11.2026: Strata 0.2.13, und ohne gfx1100-Tabelle liest das Docker-Image 16K-Prompts 35 % langsamer

@@ -10,7 +10,7 @@ dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
 Everything here was measured on my machine unless marked otherwise. This repository contains **no Strata code**,
 only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark tools.
 
-**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15.
+**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization.
 
 ## At a glance
 
@@ -101,7 +101,7 @@ Reading grows almost linearly with the prompt: 5.5 s at 4K, 26 s at 32K, 1.8 min
 
 ![RAM and VRAM with the 125B model loaded](bilder/speicher-en.png)
 
-With `faber` loaded and idle, the engine holds 44.6 GiB of the 62.3 GiB RAM (the expert weights that do not fit on the card, the K/V of 32K tokens in 3.1 GiB of pinned RAM, and the conversation cache as it fills), the NAS services and the kernel 10.2 GiB, and 7.5 GiB stay available. On the card the expert cache takes 17.3 GiB of 24 GiB (10,644 slots), the MTP draft 1 GiB, everything else 5.3 GiB, 0.4 GiB stay free. With 64 GB RAM this is about the limit: a second large service next to it needs the conversation cache made smaller.
+With the 125B model (`faber`) loaded and idle, the engine holds 44.6 GiB of the 62.3 GiB RAM (the expert weights that do not fit on the card, the K/V of 32K tokens in 3.1 GiB of pinned RAM, and the conversation cache as it fills), the NAS services and the kernel 10.2 GiB, and 7.5 GiB stay available. On the card the expert cache takes 17.3 GiB of 24 GiB (10,644 slots), the MTP draft 1 GiB, everything else 5.3 GiB, 0.4 GiB stay free. With 64 GB RAM this is about the limit: a second large service next to it needs the conversation cache made smaller.
 
 ### Power, cold start, the NAS at work, a dense 70B and UGREEN's own model (15 Nov 2026)
 
