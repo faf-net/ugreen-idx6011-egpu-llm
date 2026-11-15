@@ -194,8 +194,8 @@ def seite(sp):
     A(bild(D.aufbau, sp))
     karten = [
         (T("Chat im Browser", "Chat in the browser"), "Open WebUI",
-         T("Wie ein Chat-Dienst aus der Cloud, nur kommen die Antworten von der eigenen Karte: ein Konto je Person, Verlauf, Dateien hochladen, Websuche über ein eigenes SearXNG. Seit dem 15.11.2026 im Test.",
-           "Like a chat service from the cloud, except that the answers come from your own card: one account per person, history, file upload, web search through an own SearXNG. In testing since 15 Nov 2026."),
+         T("Wie ein Chat-Dienst aus der Cloud, nur kommen die Antworten von der eigenen Karte: ein Konto je Person, Verlauf, Dateien hochladen, Websuche über ein eigenes SearXNG.",
+           "Like a chat service from the cloud, except that the answers come from your own card: one account per person, history, file upload, web search through an own SearXNG."),
          T(f"erstes Wort nach einer Pause: <b>{z(statistics.median(kalt), sp, 0)} s</b> · danach {z(s['tps'], sp, 0)} Token/s", f"first word after a break: <b>{z(statistics.median(kalt), sp, 0)} s</b> · then {z(s['tps'], sp, 0)} tokens/s")),
         ("Agent", "Hermes Agent",
          T("Ein Agent, den man im Browser oder über den Messenger erreicht, der eigene Werkzeuge bedient und Aufgaben nach Zeitplan erledigt, mit bis zu 256K Token Kontext. Vier Regeln im Systemprompt und ein kleiner Prüfer halten ihn vom Erfinden ab.",
