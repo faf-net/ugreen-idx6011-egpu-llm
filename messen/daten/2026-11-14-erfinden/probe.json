@@ -69,6 +69,72 @@
     }
    }
   },
+  "liber": {
+   "ohne_regeln": {
+    "ort": {
+     "erfunden_erkannt": 1,
+     "erfunden_n": 24,
+     "echt_richtig": 23,
+     "echt_n": 24
+    },
+    "befehl": {
+     "erfunden_erkannt": 1,
+     "erfunden_n": 24,
+     "echt_richtig": 24,
+     "echt_n": 24
+    },
+    "begriff": {
+     "erfunden_erkannt": 2,
+     "erfunden_n": 24,
+     "echt_richtig": 24,
+     "echt_n": 24
+    },
+    "werk": {
+     "erfunden_erkannt": 9,
+     "erfunden_n": 24,
+     "echt_richtig": 24,
+     "echt_n": 24
+    },
+    "werkzeug": {
+     "erfunden_erkannt": 7,
+     "erfunden_n": 24,
+     "echt_richtig": 24,
+     "echt_n": 24
+    }
+   },
+   "mit_regeln": {
+    "ort": {
+     "erfunden_erkannt": 21,
+     "erfunden_n": 24,
+     "echt_richtig": 23,
+     "echt_n": 24
+    },
+    "befehl": {
+     "erfunden_erkannt": 17,
+     "erfunden_n": 24,
+     "echt_richtig": 24,
+     "echt_n": 24
+    },
+    "begriff": {
+     "erfunden_erkannt": 23,
+     "erfunden_n": 24,
+     "echt_richtig": 24,
+     "echt_n": 24
+    },
+    "werk": {
+     "erfunden_erkannt": 24,
+     "erfunden_n": 24,
+     "echt_richtig": 24,
+     "echt_n": 24
+    },
+    "werkzeug": {
+     "erfunden_erkannt": 24,
+     "erfunden_n": 24,
+     "echt_richtig": 24,
+     "echt_n": 24
+    }
+   }
+  },
   "velox": {
    "ohne_regeln": {
     "ort": {

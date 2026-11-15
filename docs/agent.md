@@ -13,11 +13,12 @@ another model on the same card help, and what else does?
 **Dense models do not help.** Qwen3.8-27B and Gemma 4 31B (Q4 each, fully in VRAM, llama.cpp Vulkan) against the two
 MoE models of this NAS (Strata 0.2.12), all through the same benchmark:
 
-![Dense models on the same card: half the speed, no better results](../bilder/dicht-moe-en.png)
+![Five models on one card: decode speed against German](../bilder/dicht-moe-en.png)
 
 | | tasks (102) | German, blind (60) | judgement (9) | decode tok/s | prefill 32K tok/s | first token at 32K |
 |---|---|---|---|---|---|---|
 | Flash-Next IQ3_XXS (`faber`, MoE) | 96 | 51 | 7.5 | 63.7 | 1,183 | 27.0 s |
+| Flash-Next IQ3_XXS + steering vector (`liber`, MoE) | 98 | 54 | 7 | 61.9 | 1,188 | 26.9 s |
 | Flash-Next IQ2_XS (`velox`, MoE) | 97 | 46 | 6.5 | 73.5 | 1,321 | 24.3 s |
 | Qwen3.8-27B (dense) | 92 | 52 | 7 | 36.2 | 796 | 40.3 s |
 | Gemma 4 31B (dense) | 97 | 38 | 4 | 34.8 | 602 | 52.9 s |
@@ -40,7 +41,7 @@ tools), three rounds, temperature 0.7. Then the same probe with these four rules
 
 ![Recognising made-up things, without and with four rules in the system prompt](../bilder/erfinden-en.png)
 
-Without the rules the four models recognise only 29 to 60 % of the made-up things and invent the rest, most often the
+Without the rules the five models recognise only 17 to 60 % of the made-up things and invent the rest, most often the
 state of a made-up town and options that do not exist. With the rules it is 88 to 99 %, and **they answer real things
 as correctly as before** (117 to 120 of 120): the rules do not make them overcautious. The dense models keep the most,
 mainly towns and command options. velox is the surprise: the smaller model with lower reasoning effort invents only half

@@ -339,7 +339,7 @@ to UGREEN with the pstore record. The mitigation stays the same.
 - If a second request (e.g. a command reviewer) runs alongside, each one evicts the conversation cache and every
   long session gets re-read. Strata's conversation parking (`--conversation-cache-*`) solves that.
 
-**Dense models on the same card, and how to make the agent invent less (14 Nov 2026).** Two dense models fully in VRAM write at half the speed of the MoE models and do not judge better. Four rules in the system prompt raise the share of made-up things a model recognises from 29–60 % to 88–99 %, without making it overcautious. For announced steps without a tool the rules are not enough, hence three layers:
+**Dense models on the same card, and how to make the agent invent less (14 Nov 2026).** Two dense models fully in VRAM write at half the speed of the MoE models and do not judge better. Four rules in the system prompt raise the share of made-up things a model recognises from 17–60 % to 88–99 %, without making it overcautious. For announced steps without a tool the rules are not enough, hence three layers:
 
 ![Three layers against made-up answers, and what each one catches](bilder/schichten-en.png)
 

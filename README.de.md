@@ -342,7 +342,7 @@ Die Gegenmaßnahme bleibt dieselbe.
   jede lange Sitzung wird danach neu eingelesen. Der Gesprächsparkplatz von Strata (`--conversation-cache-*`) löst
   das.
 
-**Dichte Modelle auf derselben Karte, und wie der Agent weniger erfindet (14.11.2026).** Zwei dichte Modelle, ganz im VRAM, schreiben halb so schnell wie die MoE-Modelle und urteilen nicht besser. Vier Regeln im Systemprompt heben den Anteil des Erfundenen, den ein Modell erkennt, von 29–60 % auf 88–99 %, ohne es übervorsichtig zu machen. Für angekündigte Schritte ohne Werkzeug reichen die Regeln nicht, deshalb drei Schichten:
+**Dichte Modelle auf derselben Karte, und wie der Agent weniger erfindet (14.11.2026).** Zwei dichte Modelle, ganz im VRAM, schreiben halb so schnell wie die MoE-Modelle und urteilen nicht besser. Vier Regeln im Systemprompt heben den Anteil des Erfundenen, den ein Modell erkennt, von 17–60 % auf 88–99 %, ohne es übervorsichtig zu machen. Für angekündigte Schritte ohne Werkzeug reichen die Regeln nicht, deshalb drei Schichten:
 
 ![Drei Schichten gegen Erfinden, und was jede abfängt](bilder/schichten-de.png)
 

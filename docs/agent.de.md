@@ -13,11 +13,12 @@ pausiere den Lauf“). Zwei Fragen: Hilft ein anderes Modell auf derselben Karte
 **Dichte Modelle helfen nicht.** Qwen3.8-27B und Gemma 4 31B (je Q4, ganz im VRAM, llama.cpp Vulkan) gegen die beiden
 MoE-Modelle dieses NAS (Strata 0.2.12), alle durch dasselbe Messprogramm:
 
-![Dichte Modelle auf derselben Karte: halb so schnell, nicht besser](../bilder/dicht-moe-de.png)
+![Fünf Modelle auf einer Karte: Schreibtempo gegen Deutsch](../bilder/dicht-moe-de.png)
 
 | | Aufgaben (102) | Deutsch, blind (60) | Urteil (9) | Schreiben t/s | Einlesen 32K t/s | erstes Token bei 32K |
 |---|---|---|---|---|---|---|
 | Flash-Next IQ3_XXS (`faber`, MoE) | 96 | 51 | 7,5 | 63,7 | 1.183 | 27,0 s |
+| Flash-Next IQ3_XXS + Steuervektor (`liber`, MoE) | 98 | 54 | 7 | 61,9 | 1.188 | 26,9 s |
 | Flash-Next IQ2_XS (`velox`, MoE) | 97 | 46 | 6,5 | 73,5 | 1.321 | 24,3 s |
 | Qwen3.8-27B (dicht) | 92 | 52 | 7 | 36,2 | 796 | 40,3 s |
 | Gemma 4 31B (dicht) | 97 | 38 | 4 | 34,8 | 602 | 52,9 s |
@@ -41,7 +42,7 @@ eigenen Werkzeuge), drei Runden, Temperatur 0,7. Dann dieselbe Probe mit diesem 
 
 ![Erfundenes erkennen, ohne und mit vier Regeln im Systemprompt](../bilder/erfinden-de.png)
 
-Ohne Regeln erkennen die vier Modelle nur 29 bis 60 % der erfundenen Dinge und erfinden den Rest, am häufigsten
+Ohne Regeln erkennen die fünf Modelle nur 17 bis 60 % der erfundenen Dinge und erfinden den Rest, am häufigsten
 Bundesländer erfundener Gemeinden und Optionen, die es nicht gibt. Mit den Regeln sind es 88 bis 99 %, und **Echtes
 beantworten sie genauso richtig wie vorher** (117 bis 120 von 120): Die Regel macht sie nicht übervorsichtig. Am
 meisten bleibt bei den dichten Modellen übrig, vor allem bei Gemeinden und Befehlsoptionen. Überraschend ist velox:
