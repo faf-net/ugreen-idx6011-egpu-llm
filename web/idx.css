@@ -101,3 +101,43 @@ p,.vorspann{max-width:none}
 h3{margin:32px 0 12px}
 .anwendung h3,.schritte h3{margin:0 0 4px}
 .regeln{white-space:pre-wrap}
+
+/* Vergleich zweier Modelle: Zahl und Balken je Zelle */
+table.vergleich{margin:12px 0 24px}
+table.vergleich thead th{padding-bottom:12px;text-align:left;white-space:normal}
+table.vergleich thead th:not(:first-child){text-align:left;width:31%}
+table.vergleich .schluessel{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:-1px;background:var(--stahl)}
+table.vergleich .v0 .schluessel{background:var(--bernstein)}
+table.vergleich tbody th{font:inherit;font-weight:400;text-align:left;text-transform:none;letter-spacing:0;color:var(--schrift);padding:12px;border-bottom:1px solid var(--linie);white-space:normal;vertical-align:middle}
+table.vergleich tbody th small{display:block;font:11px/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.08em;color:var(--gedaempft);margin-top:2px}
+table.vergleich td{padding:12px;vertical-align:middle}
+table.vergleich .messwert{display:block;font:14px/1.3 "JetBrains Mono",ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;color:var(--gedaempft)}
+table.vergleich .messwert b{font-size:17px;font-weight:600;color:var(--fett)}
+table.vergleich .messwert small{font-size:12px}
+table.vergleich .spur{display:block;height:6px;margin-top:6px;border-radius:3px;background:var(--rille);overflow:hidden}
+table.vergleich .spur i{display:block;height:100%;border-radius:3px;background:var(--stahl)}
+table.vergleich .v0 .spur i{background:var(--bernstein)}
+table.vergleich tr.gesamt th{font-weight:700;color:var(--fett)}
+table.vergleich tr.gesamt .messwert b{font-size:24px}
+table.vergleich tr.gesamt .spur{height:8px}
+table.vergleich tr.teil th{padding-left:28px;color:var(--gedaempft)}
+table.vergleich tr.teil th,table.vergleich tr.teil td{padding-top:8px;padding-bottom:8px;border-bottom-color:transparent}
+table.vergleich tr.teil .messwert b{font-size:14px}
+table.vergleich tr.teil .spur{height:4px}
+table.vergleich tr.teil+tr:not(.teil) th,table.vergleich tr.teil+tr:not(.teil) td{border-top:1px solid var(--linie)}
+@media (max-width:640px){table.vergleich thead th:not(:first-child){width:30%}table.vergleich tbody th,table.vergleich td{padding:10px 8px}table.vergleich tr.teil th{padding-left:16px}}
+/* Wartezeiten als Zeitleiste */
+.warte{list-style:none;margin:12px 0 8px;padding:0}
+.warte li{display:grid;grid-template-columns:minmax(0,22rem) minmax(0,1fr) 5.5rem;gap:16px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--linie)}
+.warte li.gruppe{display:block;font:500 11px/1.4 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gedaempft);padding:20px 12px 8px;border-bottom:1px solid var(--schwach)}
+.warte li.achse{border-bottom:0;padding-top:0;padding-bottom:0;height:16px}
+.warte .bahn{position:relative;height:16px}
+.warte .zeitmarke{position:absolute;top:0;transform:translateX(-50%);font:10px/16px "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--gedaempft);white-space:nowrap}
+.warte .strich{position:absolute;top:-9px;bottom:-9px;width:1px;background:var(--linie)}
+.warte .zug{position:absolute;left:0;top:7px;height:2px;border-radius:1px;background:var(--linie)}
+.warte .punkt{position:absolute;top:3px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:var(--stahl);box-shadow:0 0 0 3px var(--grund)}
+.warte .spanne{position:absolute;top:3px;height:10px;min-width:10px;margin-left:-5px;border-radius:5px;background:var(--stahl);box-shadow:0 0 0 3px var(--grund)}
+.warte .dauer{font:14px/1.3 "JetBrains Mono",ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;color:var(--gedaempft);text-align:right;white-space:nowrap}
+.warte .dauer b{font-size:16px;font-weight:600;color:var(--fett)}
+p.unter{font:12px/1.5 "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--gedaempft);margin:12px 0 24px}
+@media (max-width:700px){.warte li{grid-template-columns:minmax(0,1fr) 5.5rem;gap:4px 12px}.warte .fall{grid-column:1}.warte .dauer{grid-column:2;grid-row:1}.warte .bahn{grid-column:1 / -1;grid-row:2}.warte li.achse{display:block}.warte li.achse>span:not(.bahn){display:none}.warte li.achse .bahn{display:block}.warte .strich{top:-2px;bottom:-2px}}
