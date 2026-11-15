@@ -189,8 +189,8 @@ def seite(sp):
     zu = lambda: A("</section>")
 
     kapitel(1, "anlage", T("Was hier läuft", "What runs here"),
-            T("Auf dem NAS mit der Karte im Dock laufen drei Dinge, für die man sonst einen Dienst aus der Cloud nimmt. Gerechnet wird im Haus.",
-              "On the NAS with the card in the dock run three things you would otherwise take from a cloud service. The computing happens at home."))
+            T("Auf dem NAS mit der Karte im Dock laufen vier Dinge, für die man sonst einen Dienst aus der Cloud nimmt. Gerechnet wird im Haus.",
+              "On the NAS with the card in the dock run four things you would otherwise take from a cloud service. The computing happens at home."))
     A(bild(D.aufbau, sp))
     karten = [
         (T("Chat im Browser", "Chat in the browser"), "Open WebUI",
@@ -205,6 +205,10 @@ def seite(sp):
          T("„Mach ein Bild von …“ im Chat oder im Messenger: Die Weiche entlädt das Sprachmodell und lädt ein Bildmodell auf dieselbe Karte. Beides zugleich passt nicht in 24 GB.",
            "\"Make a picture of …\" in the chat or the messenger: the switch unloads the language model and loads a picture model onto the same card. Both at once do not fit into 24 GB."),
          T("<b>8–66 s</b> je Bild · Wechsel vom Sprachmodell 21–27 s", "<b>8–66 s</b> per picture · swapping from the language model 21–27 s")),
+        (T("Programmieren im Terminal", "Coding in the terminal"), "OpenCode",
+         T("Ein Programmier-Agent im Terminal, der Dateien liest, ändert und Befehle ausführt. Er spricht dieselbe Adresse an wie der Chat, das Modell wählt man in der Sitzung. Der Code bleibt dabei im Haus.",
+           "A coding agent in the terminal that reads and changes files and runs commands. It talks to the same address as the chat, and you pick the model in the session. The code stays at home."),
+         T("teilt sich die Karte mit Chat und Agent: <b>eine Anfrage nach der anderen</b>", "shares the card with chat and agent: <b>one request at a time</b>")),
     ]
     A('<div class="anwendungen">' + "".join(f'<div class="anwendung"><span class="dach">{e(a)}</span><h3>{e(b)}</h3><p>{c}</p><div class="mess">{m}</div></div>' for a, b, c, m in karten) + "</div>")
     P(T("Zwei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen (bei Signal Ende-zu-Ende-verschlüsselt). Die Suchanfragen gehen über ein VPN hinaus: Die Suchmaschinen sehen die Adresse des VPN-Anbieters, nicht den eigenen Anschluss. Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten. Von unterwegs ist die Anlage über einen eigenen Zugang mit Anmeldung erreichbar.",
@@ -333,7 +337,7 @@ def seite(sp):
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
-    kapitel(9, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
+    kapitel(9, "nachbauen", T("Nachbauen in sechs Schritten", "Rebuild it in six steps"),
             T("Der Grundaufbau braucht nur das NAS, das Dock und die Karte und läuft ganz im Heimnetz. Wer nur den Chat will, hört nach Schritt 3 auf.",
               "The basic setup needs only the NAS, the dock and the card, and runs entirely in the home network. If you only want the chat, stop after step 3."))
     anker = (lambda de_, en_: f"{GH}{'#' + en_ if en else '/blob/main/README.de.md#' + de_}")
@@ -354,6 +358,9 @@ def seite(sp):
         (T("Agent dazu", "Add the agent"), T("Hermes Agent mit dem lokalen Modell: Kontext auf 256K stellen, ein Token-Budget für das Nachdenken setzen und die vier Regeln gegen das Erfinden in den Systemprompt nehmen.",
                                              "Hermes Agent with the local model: set the context to 256K, give the reasoning a token budget and put the four rules against making things up into the system prompt."),
          doc("agent"), T("Regeln und Prüfer", "Rules and checker")),
+        (T("OpenCode dazu", "Add OpenCode"), T("OpenCode auf dem eigenen Rechner, mit llama-swap als Anbieter im OpenAI-Format. Für die Sitzungstitel dasselbe Modell eintragen wie für die Arbeit, sonst lädt die Weiche für jeden Titel um.",
+                                               "OpenCode on your own computer, with llama-swap as a provider in the OpenAI format. Set the same model for session titles as for the work, otherwise the switch reloads for every title."),
+         f"{GH}/tree/main/konfig/opencode", T("Beispielkonfiguration", "Example config")),
     ]
     A('<ol class="schritte">' + "".join(f'<li><h3>{e(t_)}</h3><p>{b_}</p><a href="{u}">{e(l_)}</a></li>' for t_, b_, u, l_ in schritte) + "</ol>")
     P(T("<b>Der Engpass ist der Arbeitsspeicher.</b> Mit geladenem 125B-Modell bleiben auf 64 GB rund 7 GiB frei; das reicht für Chat, Suche und Agent, aber nicht für einen zweiten großen Dienst. Wer mehr Luft braucht, nimmt ein Modell, das ganz auf die Karte passt.",

@@ -393,6 +393,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config, and liber.json (the uncensored model)
   konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
   konfig/stack/                 chat and web search: Compose file for Open WebUI and SearXNG, tested on the NAS (EN/DE)
+  konfig/opencode/              OpenCode 2 in the terminal with the local models: example config and what I learned (EN/DE)
 ```
 
 **UGOS**

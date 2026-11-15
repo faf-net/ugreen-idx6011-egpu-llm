@@ -35,7 +35,8 @@ section.auftakt{border-top:0;margin-top:0}
 .plan b{color:var(--bernstein);font-weight:700}
 .status{font:13px/1.5 "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--gedaempft)}
 .konsole{color:var(--status-salbei);font-weight:700;white-space:nowrap}
-.anwendungen{display:grid;grid-template-columns:repeat(auto-fit,minmax(264px,1fr));gap:12px;margin:8px 0 24px}
+.anwendungen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:8px 0 24px}
+@media (max-width:640px){.anwendungen{grid-template-columns:1fr}}
 .anwendung{background:var(--panel);border:1px solid var(--linie);border-radius:6px;padding:20px}
 .anwendung p{font-size:15px;line-height:1.55;margin:8px 0 0}
 .anwendung .dach{display:block;margin-bottom:8px}
