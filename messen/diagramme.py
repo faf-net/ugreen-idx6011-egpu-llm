@@ -704,18 +704,32 @@ def dflash2(d, sp):
                                      "Im festen 900-Token-Test schreibt DFlash2 10 bis 15 Prozent schneller als MTP, im echten Lauf mit 114 Aufgaben bleibt das Tempo je Token gleich, die Antworten werden 28 Prozent länger, die Gesamtzeit steigt um 16 Prozent."), s, h
 
 
+def ohne_switch(d, eintraege):
+    """Zieht von den USV-Werten ab, was Switch und PoE-Geräte an derselben USV ziehen (switch.json), und rechnet die Wh neu."""
+    ab = json.load(open(os.path.join(d, "2026-11-15-betrieb", "switch.json"), encoding="utf-8"))["abzug_w"]
+    for e in eintraege:
+        if isinstance(e.get("usv_w"), dict):
+            e["usv_w"] = dict(e["usv_w"], mittel=round(e["usv_w"]["mittel"] - ab, 1))
+            tps = e.get("tps") or e.get("schreiben_tps_median")
+            if tps:
+                e["wh_je_1000_token_gesamt"] = round(e["usv_w"]["mittel"] / tps / 3.6, 3)
+    return ab
+
+
 def betrieb(d, sp):
     en = sp == "en"
     o = os.path.join(d, "2026-11-15-betrieb")
     ph = json.load(open(os.path.join(o, "strom-faber.json"), encoding="utf-8"))["phasen"]
     stufen = [x for f in ("dicht70-gpu.json", "dicht70-cpu.json") for x in json.load(open(os.path.join(o, f), encoding="utf-8"))["stufen"] if "fehler" not in x]
+    ab = ohne_switch(d, list(ph.values()) + stufen)
     bestes = max((x for x in stufen if x["ngl"] > 0), key=lambda x: x["schreiben_tps_median"])
     cpu = next((x for x in stufen if x["ngl"] == 0), None)
     s = Svg()
     faktor = round(ph["schreiben"]["tps"] / bestes["schreiben_tps_median"])
-    titel = f"1.9 Wh per 1,000 written tokens, and a dense 70B is {faktor} times slower" if en else f"1,9 Wh je 1.000 geschriebene Token, und ein dichtes 70B ist {faktor}-mal langsamer"
+    whs = z(ph["schreiben"]["wh_je_1000_token_gesamt"], sp)
+    titel = f"{whs} Wh per 1,000 written tokens, and a dense 70B is {faktor} times slower" if en else f"{whs} Wh je 1.000 geschriebene Token, und ein dichtes 70B ist {faktor}-mal langsamer"
     kopf(s, "UGREEN iDX6011 Pro + RX 7900 XTX · measured at the UPS · 15 Nov 2026" if en else "UGREEN iDX6011 Pro + RX 7900 XTX · an der USV gemessen · 15.11.2026", titel)
-    feld(s, L, 104, "A · Power · watts" if en else "A · Leistung · Watt", "Flash-Next 125B (MoE) · NAS, dock and network switch at the UPS" if en else "Flash-Next 125B (MoE) · NAS, Dock und Netzwerk-Switch an der USV")
+    feld(s, L, 104, "A · Power · watts" if en else "A · Leistung · Watt", "Flash-Next 125B (MoE) · NAS and dock, without the network switch" if en else "Flash-Next 125B (MoE) · NAS und Dock, ohne den Netzwerk-Switch")
     p = Hoch(s, L, 456, 144, 384, 600)
     p.achse(100, sp)
     for g, (schl, name, sub) in enumerate((("leer", "idle" if en else "Leerlauf", "no model" if en else "kein Modell"), ("geladen", "loaded" if en else "geladen", "idle" if en else "ruhend"),
@@ -741,9 +755,9 @@ def betrieb(d, sp):
         if wh:
             s.text(gm, 433, f"{z(wh, sp, 1)} Wh / 1.000 Token" if not en else f"{z(wh, sp, 1)} Wh / 1,000 tokens", 8.5, ACC if fokus else MUTED, "mono", "middle", 600 if fokus else None)
     s.text(R, 172, "Dense weights must all be read for every token." if en else "Dichte Gewichte werden für jedes Token alle gelesen.", 15, INK, "serif", "end", kursiv=True)
-    h = fuss(s, 458, (("balken", STAHL, "at the UPS (wall)" if en else "an der USV (Steckdose)"), ("balken", ACC, "card alone (sysfs)" if en else "Karte allein (sysfs)")),
-             "UPS values via NUT, refreshed every 30 s, the first 45 s of each phase discarded · the UPS also feeds a network switch · dense 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K context · messen/betrieb.py, messen/dicht70.py · data: messen/daten/2026-11-15-betrieb/" if en else
-             "USV-Werte über NUT, alle 30 s erneuert, die ersten 45 s jeder Phase verworfen · an der USV hängt auch ein Netzwerk-Switch · dichtes 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K Kontext · messen/betrieb.py, messen/dicht70.py · Daten: messen/daten/2026-11-15-betrieb/")
+    h = fuss(s, 458, (("balken", STAHL, "NAS and dock at the wall" if en else "NAS und Dock an der Steckdose"), ("balken", ACC, "card alone (sysfs)" if en else "Karte allein (sysfs)")),
+             f"UPS values via NUT, the first 45 s of each phase discarded · minus {z(ab, sp, 0)} W for the network switch and its PoE devices on the same UPS (calculated, ±10 W) · dense 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K context · messen/betrieb.py, messen/dicht70.py · data: messen/daten/2026-11-15-betrieb/" if en else
+             f"USV-Werte über NUT, die ersten 45 s jeder Phase verworfen · abzüglich {z(ab, sp, 0)} W für den Netzwerk-Switch und seine PoE-Geräte an derselben USV (gerechnet, ±10 W) · dichtes 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K Kontext · messen/betrieb.py, messen/dicht70.py · Daten: messen/daten/2026-11-15-betrieb/")
     return "betrieb", titel, ("Power at the UPS and at the card for idle, model loaded, writing and reading, and decode speed of the MoE 125B model against a dense 70B model on the same card." if en else
                               "Leistung an der USV und an der Karte für Leerlauf, geladenes Modell, Schreiben und Einlesen, dazu das Schreibtempo des MoE-125B-Modells gegen ein dichtes 70B-Modell auf derselben Karte."), s, h
 
@@ -751,6 +765,7 @@ def betrieb(d, sp):
 def werksmodell(d, sp):
     en = sp == "en"
     st = {x["stufe"]: x for x in json.load(open(os.path.join(d, "2026-11-15-betrieb", "werksmodell.json"), encoding="utf-8"))["stufen"]}
+    ab = ohne_switch(d, list(st.values()))
     faktor = round(st["xtx-vulkan"]["schreiben_tps_median"] / st["ugreen-werk"]["schreiben_tps_median"])
     s = Svg()
     titel = f"UGREEN's built-in model writes {faktor} times faster on the card in the dock" if en else f"UGREENs eingebautes Modell schreibt auf der Karte im Dock {faktor}-mal so schnell"
@@ -774,8 +789,8 @@ def werksmodell(d, sp):
                 w, wh = st[schl]["usv_w"]["mittel"], st[schl]["wh_je_1000_token_gesamt"]
                 s.text(gm, 433, f"{z(w, sp, 0)} W · {z(wh, sp, 1)} Wh/1k", 8.5, ACC if farbe == ACC else MUTED, "mono", "middle", 600 if farbe == ACC else None)
     s.text(L + 24, 172, "The CPU alone out-writes the iGPU." if en else "Die CPU schreibt schneller als die iGPU.", 15, INK, "serif", kursiv=True)
-    h = fuss(s, 458, None, "as shipped = the llama-server (SYCL) that UGOS starts by itself after the download, 4 threads, 7 slots, queried over its Unix socket · W at the UPS (it also feeds a network switch), Wh per 1,000 written tokens · messen/werksmodell.py · data: messen/daten/2026-11-15-betrieb/werksmodell.json" if en else
-             "ab Werk = der llama-server (SYCL), den UGOS nach dem Download selbst startet, 4 Fäden, 7 Plätze, über seinen Unix-Socket angesprochen · W an der USV (an ihr hängt auch ein Netzwerk-Switch), Wh je 1.000 geschriebene Token · messen/werksmodell.py · Daten: messen/daten/2026-11-15-betrieb/werksmodell.json")
+    h = fuss(s, 458, None, "as shipped = the llama-server (SYCL) that UGOS starts by itself after the download, 4 threads, 7 slots, queried over its Unix socket · W for NAS and dock: UPS reading minus the network switch on the same UPS (calculated, ±10 W), Wh per 1,000 written tokens · messen/werksmodell.py · data: messen/daten/2026-11-15-betrieb/werksmodell.json" if en else
+             "ab Werk = der llama-server (SYCL), den UGOS nach dem Download selbst startet, 4 Fäden, 7 Plätze, über seinen Unix-Socket angesprochen · W für NAS und Dock: USV-Wert abzüglich des Netzwerk-Switches an derselben USV (gerechnet, ±10 W), Wh je 1.000 geschriebene Token · messen/werksmodell.py · Daten: messen/daten/2026-11-15-betrieb/werksmodell.json")
     return "werksmodell", titel, ("Decode and prompt reading speed of UGREEN's built-in Qwen 3.5 35B model on three paths: the UGOS server on the Arc iGPU, CPU only, and the RX 7900 XTX in the dock." if en else
                                   "Schreib- und Einlesetempo von UGREENs eingebautem Qwen 3.5 35B auf drei Wegen: UGOS-Server auf der Arc-iGPU, nur CPU, und RX 7900 XTX im Dock."), s, h
 

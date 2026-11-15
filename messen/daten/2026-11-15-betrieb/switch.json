@@ -1,0 +1,8 @@
+{
+ "abzug_w": 107.5,
+ "leerlauf_heute_mit_switch_w": 167.5,
+ "leerlauf_nas_und_dock_w": 60.0,
+ "herleitung": "An derselben USV hängen seit dem 26.10.2026 auch ein Netzwerk-Switch und die Geräte, die er per PoE versorgt. Der Leerlauf von NAS und Dock allein lag vom 12.09. bis 25.10.2026 im Tagesmedian bei 59 bis 61 W (Rekorder, ein Wert je Minute), seit dem 26.10. bei 170 bis 186 W. Abzug = Leerlauf während der Messung am 15.11. minus 60 W.",
+ "poe_abgabe_des_switches_w": 71.5,
+ "unsicherheit": "Der Abzug gilt genau nur für die Leerlaufphase der Strommessung. Die PoE-Last des Switches schwankt, deshalb sind die Werte ohne Switch auf etwa ±10 W zu lesen."
+}

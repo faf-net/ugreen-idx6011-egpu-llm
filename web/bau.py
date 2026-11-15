@@ -65,7 +65,7 @@ def terminal_strom(strom, sp):
     """Die Strommessung als Konsolenblock, mit Balken aus Blockzeichen. Zusammenfassung der JSON-Datei, kein Mitschnitt."""
     en = sp == "en"
     namen = {"leer": ("Leerlauf", "idle"), "geladen": ("geladen", "loaded"), "schreiben": ("Schreiben", "writing"), "lesen": ("Einlesen", "reading")}
-    kopf = f'{"PHASE":<11}{("UPS" if en else "USV"):>7}  {("CARD" if en else "KARTE"):>7}   {"0 W":<24}600 W   {"SPEED" if en else "TEMPO"}'
+    kopf = f'{"PHASE":<11}{("TOTAL" if en else "GESAMT"):>7}  {("CARD" if en else "KARTE"):>7}   {"0 W":<24}600 W   {"SPEED" if en else "TEMPO"}'
     zeilen = ['<span class="g">$ python3 messen/betrieb.py strom --model faber</span>', f'<span class="g">{kopf}</span>']
     for ph in ("leer", "geladen", "schreiben", "lesen"):
         w, k = strom[ph]["usv_w"]["mittel"], strom[ph]["karte_w"]["mittel"]
@@ -77,8 +77,8 @@ def terminal_strom(strom, sp):
     s = strom["schreiben"]
     zeilen.append(f'<b>→ {z(s["wh_je_1000_token_gesamt"], sp)} Wh {"per 1,000 written tokens" if en else "je 1.000 geschriebene Token"}</b> '
                   f'<span class="g">({z(s["wh_je_1000_token_ueber_leerlauf"], sp)} Wh {"above idle" if en else "über Leerlauf"})</span>')
-    legende = ('<span class="a">█</span> card alone  <span class="s">█</span> rest of the setup at the UPS' if en else '<span class="a">█</span> Karte allein  <span class="s">█</span> übrige Anlage an der USV')
-    schild = "STROM-FABER.JSON · SUMMARY" if en else "STROM-FABER.JSON · ZUSAMMENFASSUNG"
+    legende = ('<span class="a">█</span> card alone  <span class="s">█</span> NAS and dock without the card' if en else '<span class="a">█</span> Karte allein  <span class="s">█</span> NAS und Dock ohne die Karte')
+    schild = "NAS AND DOCK · WITHOUT THE NETWORK SWITCH" if en else "NAS UND DOCK · OHNE DEN NETZWERK-SWITCH"
     return f'<div class="rahmen"><span class="schild">{schild}</span><pre class="plan konsole-block">' + "\n".join(zeilen) + f'\n<span class="g">{legende}</span></pre></div>'
 
 
@@ -140,6 +140,9 @@ def seite(sp):
     neben = L("2026-11-15-betrieb", "nebenlast.json")
     dock = L("dock-2026-11-15", "vorfaelle.json")
     gpu = max(L("2026-11-15-betrieb", "dicht70-gpu.json")["stufen"], key=lambda s: s["schreiben_tps_median"])
+    ab = D.ohne_switch(DATEN, list(strom.values()) + list(werk.values()) + [gpu])   # Switch an derselben USV abziehen
+    for ph_ in ("schreiben", "lesen"):
+        strom[ph_]["wh_je_1000_token_ueber_leerlauf"] = round((strom[ph_]["usv_w"]["mittel"] - strom["leer"]["usv_w"]["mittel"]) / strom[ph_]["tps"] / 3.6, 3)
     pfad = lambda n: os.path.join(DATEN, "2026-11-15-betrieb", n)
     zwei = L("2026-11-15-betrieb", "zwei.json")["phasen"] if os.path.exists(pfad("zwei.json")) else None
     qual = L("2026-11-15-betrieb", "qualitaet.json") if os.path.exists(pfad("qualitaet.json")) else None
@@ -151,14 +154,14 @@ def seite(sp):
     zahlen = [
         (z(s["tps"], sp, 0), T("Token je Sekunde", "tokens per second"), T("Schreiben, 125B-Modell", "writing, 125B model"), True),
         ("256K", T("Token Kontext", "tokens of context"), T("Nadel bis 250K in 9 von 9 Fällen gefunden", "needle found 9 of 9 times up to 250K"), False),
-        (z(s["wh_je_1000_token_gesamt"], sp), T("Wh je 1.000 Token", "Wh per 1,000 tokens"), T("an der USV gemessen", "measured at the UPS"), False),
+        (z(s["wh_je_1000_token_gesamt"], sp), T("Wh je 1.000 Token", "Wh per 1,000 tokens"), T("NAS und Dock, ohne Switch", "NAS and dock, without the switch"), False),
         (z(statistics.median(kalt), sp, 0) + " s", T("Kaltstart", "cold start"), T("leere Karte bis erstes Wort", "empty card to first word"), False),
         (f"{faktor}×", T("schneller als ab Werk", "faster than as shipped"), T("UGREENs eigenes Modell auf der Karte", "UGREEN's own model on the card"), False),
     ]
     kacheln = "".join(f'<div class="kachel{" haupt" if h else ""}"><div class="wert">{w}</div><div class="was">{e(a)}</div><div class="neben">{e(b)}</div></div>' for w, a, b, h in zahlen)
 
     wz = lambda k, name: [e(name), z(werk[k]["schreiben_tps_median"], sp), z(werk[k]["einlesen"]["tps"], sp, 0), z(werk[k]["usv_w"]["mittel"], sp, 0) + " W", z(werk[k]["wh_je_1000_token_gesamt"], sp) + " Wh"]
-    t_werk = tabelle([T("Weg", "Path"), T("Schreiben T/s", "Decode tok/s"), T("Einlesen T/s", "Prompt tok/s"), T("An der USV", "At the UPS"), T("je 1.000 Token", "per 1,000 tokens")],
+    t_werk = tabelle([T("Weg", "Path"), T("Schreiben T/s", "Decode tok/s"), T("Einlesen T/s", "Prompt tok/s"), T("NAS und Dock", "NAS and dock"), T("je 1.000 Token", "per 1,000 tokens")],
                      [wz("ugreen-werk", T("ab Werk: UGOS-Server auf der Arc-iGPU", "as shipped: UGOS server on the Arc iGPU")), wz("cpu", T("nur CPU, llama.cpp", "CPU only, llama.cpp")),
                       wz("xtx-vulkan", T("RX 7900 XTX im Dock, llama.cpp Vulkan", "RX 7900 XTX in the dock, llama.cpp Vulkan"))])
     w = lambda ph, f="usv_w": z(strom[ph][f]["mittel"], sp, 0) + " W"
@@ -223,8 +226,8 @@ def seite(sp):
             T("UGREEN liefert die iDX mit einer KI-Konsole aus, die ein eigenes Modell auf die eingebaute Arc-iGPU lädt. Dieselbe Datei, drei Wege:",
               "UGREEN ships the iDX with an AI console that loads its own model onto the built-in Arc iGPU. The same file, three paths:"))
     A(bild(D.werksmodell, sp)); A(t_werk)
-    P(T(f"Auf der Karte schreibt das eingebaute Modell <b>{faktor}-mal so schnell</b> wie ab Werk und braucht je Token ein Fünftel der Energie. Die CPU allein schreibt schneller als der iGPU-Server, liest einen Prompt aber gut siebenmal langsamer. „Ab Werk“ ist der Server, den UGOS nach dem Download selbst startet; ich habe ihn über seinen Unix-Socket gemessen. Die zweite Laufzeit der KI-Konsole ist ein CUDA-Build und startet mit einer AMD-Karte nicht.",
-        f"On the card the built-in model writes <b>{faktor} times faster</b> than as shipped and needs a fifth of the energy per token. The CPU alone out-writes the iGPU server but reads a prompt about seven times more slowly. \"As shipped\" is the server UGOS starts by itself after the download; I measured it through its Unix socket. The AI console's second runtime is a CUDA build and does not start with an AMD card."))
+    P(T(f"Auf der Karte schreibt das eingebaute Modell <b>{faktor}-mal so schnell</b> wie ab Werk und braucht je 1.000 Token {z(werk['xtx-vulkan']['wh_je_1000_token_gesamt'], sp)} statt {z(werk['ugreen-werk']['wh_je_1000_token_gesamt'], sp)} Wh. Die CPU allein schreibt schneller als der iGPU-Server, liest einen Prompt aber gut siebenmal langsamer. „Ab Werk“ ist der Server, den UGOS nach dem Download selbst startet; ich habe ihn über seinen Unix-Socket gemessen. Die zweite Laufzeit der KI-Konsole ist ein CUDA-Build und startet mit einer AMD-Karte nicht.",
+        f"On the card the built-in model writes <b>{faktor} times faster</b> than as shipped and needs {z(werk['xtx-vulkan']['wh_je_1000_token_gesamt'], sp)} instead of {z(werk['ugreen-werk']['wh_je_1000_token_gesamt'], sp)} Wh per 1,000 tokens. The CPU alone out-writes the iGPU server but reads a prompt about seven times more slowly. \"As shipped\" is the server UGOS starts by itself after the download; I measured it through its Unix socket. The AI console's second runtime is a CUDA build and does not start with an AMD card."))
     if qual:
         F, Q = qual["modelle"]["faber"], qual["modelle"]["qwen35"]
         zl = lambda k, name: [name, f"{F['bestanden'][k][0]}/{F['bestanden'][k][1]}", f"{Q['bestanden'][k][0]}/{Q['bestanden'][k][1]}"]
@@ -251,35 +254,7 @@ def seite(sp):
         f"For comparison, a dense 70B model (Llama 3.3, Q4) on the same card: <b>{z(gpu['schreiben_tps_median'], sp, 1)} tokens per second</b>, because every token reads all weights and half of them sit behind the CPU."))
     zu()
 
-    kapitel(5, "strom", T("Was kostet es an Strom?", "What does it cost in power?"))
-    A(terminal_strom(strom, sp))
-    P(T(f"Das sind <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh je 1.000 geschriebene Token</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh über Leerlauf). Ein geladenes Modell kostet rund 3 W mehr als eine leere Karte. Im Leerlaufwert steckt mein Netzwerk-Switch, der an derselben USV hängt; mit NAS und Dock allein waren es im September rund 60 W. Vergleichbar sind deshalb die Werte über Leerlauf.",
-        f"That is <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh per 1,000 written tokens</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh above idle). A loaded model costs about 3 W more than an empty card. The idle figure includes my network switch, which hangs on the same UPS; with NAS and dock alone it was about 60 W in September. The figures above idle are the ones to compare."))
-    zu()
-
-    kapitel(6, "warten", T("Wie lange warte ich?", "How long do I wait?"))
-    A(bild(D.kontext, sp))
-    P(T(f"Das Einlesen wächst fast linear mit der Länge: 5,5 s bei 4K, 26 s bei 32K, 3,6 min bei 250K Token. Der Gesprächs-Cache erspart einer laufenden Sitzung, das in jeder Runde neu zu zahlen. Nach 30 Minuten Leerlauf wird das Modell entladen; der Kaltstart bis zum ersten Wort dauert dann <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>.",
-        f"Reading grows almost linearly with length: 5.5 s at 4K, 26 s at 32K, 3.6 min at 250K tokens. The conversation cache keeps a running session from paying this again on every turn. After 30 minutes idle the model is unloaded; the cold start to the first word then takes <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>."))
-    if zwei:
-        a, g = zwei["allein"]["A"], zwei["gleichzeitig"]
-        A(tabelle([T("Zwei Personen am selben Modell", "Two people on the same model"), T("Warten bis zum ersten Wort", "Wait for the first word"), T("Schreibtempo", "Decode speed")],
-                  [[T("eine Person allein", "one person alone"), f"{z(a['warten_median_s'], sp)} s", f"{z(a['tps_median'], sp)} T/s"],
-                   [T("zwei gleichzeitig, Person A", "two at once, person A"), f"{z(g['A']['warten_median_s'], sp)} s", f"{z(g['A']['tps_median'], sp)} T/s"],
-                   [T("zwei gleichzeitig, Person B", "two at once, person B"), f"{z(g['B']['warten_median_s'], sp)} s", f"{z(g['B']['tps_median'], sp)} T/s"]]))
-        if "wechsel" in zwei:
-            P(T(f"Fragen zwei Personen abwechselnd zwei <em>verschiedene</em> Modelle, lädt die Karte jedes Mal um: im Mittel {z(zwei['wechsel']['warten_median_s'], sp, 0)} s bis zum ersten Wort. Für gemeinsame Nutzung also ein Modell für alle.",
-                f"If two people alternate between two <em>different</em> models, the card reloads every time: {z(zwei['wechsel']['warten_median_s'], sp, 0)} s on average to the first word. For shared use, pick one model for everyone."))
-    zu()
-
-    kapitel(7, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
-    A(bild(D.versionen, sp))
-    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Nichts wurde langsamer.",
-        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Nothing got slower.")
-      + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
-    zu()
-
-    kapitel(8, "agent", T("Damit der Agent nicht erfindet", "Keeping the agent from making things up"),
+    kapitel(5, "agent", T("Damit der Agent nicht erfindet", "Keeping the agent from making things up"),
             T("Ein lokales Modell weiß weniger als eines aus der Cloud und gibt das ungern zu. Der Agent zeigte zwei Schwächen: Er erfand Antworten zu Dingen, die es nicht gibt, und er kündigte Schritte an, für die er kein Werkzeug hat. Beides habe ich erst gemessen und dann gesenkt.",
               "A local model knows less than one from the cloud and does not like to admit it. The agent showed two weaknesses: it made up answers about things that do not exist, and it announced steps it has no tool for. I measured both first and then brought them down."))
     A(f"<h3>{T('Erst messen: 16 Fragen je Bereich, die Hälfte davon erfunden', 'Measure first: 16 questions per area, half of them made up')}</h3>")
@@ -301,6 +276,34 @@ def seite(sp):
     P(T("<b>Grenzen:</b> Die Probe stellt einzelne Fragen ohne Gesprächsverlauf, mit einem kurzen Systemprompt. Wie stark die Regeln in einem langen Agentenprompt wirken, ist nicht gemessen.",
         "<b>Limits:</b> the probe asks single questions without a conversation, with a short system prompt. How strongly the rules work inside a long agent prompt is not measured.")
       + f' <a href="{doc("agent")}">{T("Alle Messungen im Einzelnen", "All measurements in detail")}</a> · <a href="{GH}/tree/main/konfig/hermes-pruefer">{T("das Prüfer-Plugin", "the checker plugin")}</a> · <a href="{GH}/blob/main/messen/halluzination.py">{T("das Skript der Probe", "the probe script")}</a>')
+    zu()
+
+    kapitel(6, "strom", T("Was kostet es an Strom?", "What does it cost in power?"))
+    A(terminal_strom(strom, sp))
+    P(T(f"Das sind <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh je 1.000 geschriebene Token</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh über Leerlauf). Ein geladenes Modell kostet rund 3 W mehr als eine leere Karte. Gemessen ist an der USV. An ihr hängen bei mir auch der Netzwerk-Switch und die Geräte, die er versorgt; ihre {z(ab, sp, 0)} W sind hier abgezogen (Leerlauf heute {z(strom['leer']['usv_w']['mittel'] + ab, sp, 0)} W, mit NAS und Dock allein 60 W). Die Werte ohne Switch sind deshalb gerechnet und auf etwa ±10 W genau.",
+        f"That is <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh per 1,000 written tokens</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh above idle). A loaded model costs about 3 W more than an empty card. The measurement is taken at the UPS. In my setup the network switch and the devices it feeds hang on it too; their {z(ab, sp, 0)} W are deducted here (idle today {z(strom['leer']['usv_w']['mittel'] + ab, sp, 0)} W, with NAS and dock alone 60 W). The figures without the switch are therefore calculated and accurate to about ±10 W."))
+    zu()
+
+    kapitel(7, "warten", T("Wie lange warte ich?", "How long do I wait?"))
+    A(bild(D.kontext, sp))
+    P(T(f"Das Einlesen wächst fast linear mit der Länge: 5,5 s bei 4K, 26 s bei 32K, 3,6 min bei 250K Token. Der Gesprächs-Cache erspart einer laufenden Sitzung, das in jeder Runde neu zu zahlen. Nach 30 Minuten Leerlauf wird das Modell entladen; der Kaltstart bis zum ersten Wort dauert dann <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>.",
+        f"Reading grows almost linearly with length: 5.5 s at 4K, 26 s at 32K, 3.6 min at 250K tokens. The conversation cache keeps a running session from paying this again on every turn. After 30 minutes idle the model is unloaded; the cold start to the first word then takes <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>."))
+    if zwei:
+        a, g = zwei["allein"]["A"], zwei["gleichzeitig"]
+        A(tabelle([T("Zwei Personen am selben Modell", "Two people on the same model"), T("Warten bis zum ersten Wort", "Wait for the first word"), T("Schreibtempo", "Decode speed")],
+                  [[T("eine Person allein", "one person alone"), f"{z(a['warten_median_s'], sp)} s", f"{z(a['tps_median'], sp)} T/s"],
+                   [T("zwei gleichzeitig, Person A", "two at once, person A"), f"{z(g['A']['warten_median_s'], sp)} s", f"{z(g['A']['tps_median'], sp)} T/s"],
+                   [T("zwei gleichzeitig, Person B", "two at once, person B"), f"{z(g['B']['warten_median_s'], sp)} s", f"{z(g['B']['tps_median'], sp)} T/s"]]))
+        if "wechsel" in zwei:
+            P(T(f"Fragen zwei Personen abwechselnd zwei <em>verschiedene</em> Modelle, lädt die Karte jedes Mal um: im Mittel {z(zwei['wechsel']['warten_median_s'], sp, 0)} s bis zum ersten Wort. Für gemeinsame Nutzung also ein Modell für alle.",
+                f"If two people alternate between two <em>different</em> models, the card reloads every time: {z(zwei['wechsel']['warten_median_s'], sp, 0)} s on average to the first word. For shared use, pick one model for everyone."))
+    zu()
+
+    kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
+    A(bild(D.versionen, sp))
+    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Nichts wurde langsamer.",
+        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Nothing got slower.")
+      + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
     kapitel(9, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
@@ -339,8 +342,8 @@ def seite(sp):
                "UGREEN iDX6011 Pro with a Radeon RX 7900 XTX in the OCuLink dock: measurements of speed, power, waiting time and risks of a local 125B model. Scripts and raw data on GitHub.")
     basis = "../" if en else ""
     kanon = "https://faf.net/idx/" + ("en/" if en else "")
-    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
-           ("versionen", T("Versionen", "Releases")), ("agent", "Agent"), ("nachbauen", T("Nachbauen", "Rebuild"))]
+    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
+           ("versionen", T("Versionen", "Releases")), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
 <html lang="{sp}">
 <head>

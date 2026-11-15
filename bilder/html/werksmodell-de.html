@@ -43,17 +43,17 @@
       <text x="136.0" y="356.4" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">10,3</text>
       <text x="136.0" y="404.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">ab Werk</text>
       <text x="136.0" y="419.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">UGOS-Server, Arc-iGPU</text>
-      <text x="136.0" y="433.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">185 W · 5,0 Wh/1k</text>
+      <text x="136.0" y="433.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">78 W · 2,1 Wh/1k</text>
       <rect x="236.0" y="353.6" width="56.0" height="30.4" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1"/>
       <text x="264.0" y="346.6" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">15,2</text>
       <text x="264.0" y="404.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">nur CPU</text>
       <text x="264.0" y="419.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">llama.cpp, 6 Fäden</text>
-      <text x="264.0" y="433.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">217 W · 4,0 Wh/1k</text>
+      <text x="264.0" y="433.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">110 W · 2,0 Wh/1k</text>
       <rect x="364.0" y="155.3" width="56.0" height="228.7" fill="#975b34" fill-opacity="0.18" stroke="#975b34" stroke-width="2"/>
       <text x="392.0" y="148.3" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">114</text>
       <text x="392.0" y="404.0" fill="#975b34" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">RX 7900 XTX</text>
       <text x="392.0" y="419.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">llama.cpp Vulkan, Dock</text>
-      <text x="392.0" y="433.0" fill="#975b34" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">413 W · 1,0 Wh/1k</text>
+      <text x="392.0" y="433.0" fill="#975b34" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">306 W · 0,7 Wh/1k</text>
       <text x="544.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">B · PROMPT EINLESEN · TOKEN/S</text>
       <text x="544.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">frischer Prompt mit rund 3.700 Token · höher ist schneller</text>
       <text x="536.0" y="387.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">0</text>
@@ -86,8 +86,8 @@
       <text x="96.0" y="172.0" fill="#2a2724" font-size="15" font-family="'Instrument Serif', Georgia, serif" font-style="italic">Die CPU schreibt schneller als die iGPU.</text>
       <line x1="40.0" y1="458.0" x2="920.0" y2="458.0" stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"/>
       <text x="72.0" y="484.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">ab Werk = der llama-server (SYCL), den UGOS nach dem Download selbst startet, 4 Fäden, 7 Plätze, über seinen Unix-Socket angesprochen</text>
-      <text x="72.0" y="498.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">W an der USV (an ihr hängt auch ein Netzwerk-Switch), Wh je 1.000 geschriebene Token · messen/werksmodell.py</text>
-      <text x="72.0" y="512.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Daten: messen/daten/2026-11-15-betrieb/werksmodell.json</text>
+      <text x="72.0" y="498.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">W für NAS und Dock: USV-Wert abzüglich des Netzwerk-Switches an derselben USV (gerechnet, ±10 W), Wh je 1.000 geschriebene Token</text>
+      <text x="72.0" y="512.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">messen/werksmodell.py · Daten: messen/daten/2026-11-15-betrieb/werksmodell.json</text>
     </svg>
   </div></div>
 </body>
