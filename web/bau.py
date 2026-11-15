@@ -380,6 +380,7 @@ def seite(sp):
 <title>{e(titel)} · faf.net/{ordner}</title>
 <meta name="description" content="{e(beschr)}">
 <link rel="canonical" href="{kanon}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="alternate" hreflang="de" href="https://faf.net/lokale-ki/">
 <link rel="alternate" hreflang="en" href="https://faf.net/local-ai/">
 <link rel="alternate" hreflang="x-default" href="https://faf.net/local-ai/">
