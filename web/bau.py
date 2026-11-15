@@ -278,13 +278,24 @@ def seite(sp):
       + f' <a href="{doc("agent")}">{T("Alle Messungen im Einzelnen", "All measurements in detail")}</a> · <a href="{GH}/tree/main/konfig/hermes-pruefer">{T("das Prüfer-Plugin", "the checker plugin")}</a> · <a href="{GH}/blob/main/messen/halluzination.py">{T("das Skript der Probe", "the probe script")}</a>')
     zu()
 
-    kapitel(6, "strom", T("Was kostet es an Strom?", "What does it cost in power?"))
+    kapitel(6, "vektor", T("Dasselbe Modell, ohne Ablehnungen", "The same model, without refusals"),
+            T("Mein Agent läuft nicht mit dem unveränderten Modell, sondern mit einer Variante: dieselben Gewichte, dazu ein Steuervektor, der die Richtung herausnimmt, entlang derer das Modell ablehnt. Ab Werk verweigert oder entschärft es Bitten, deren Zweck legitim ist, etwa wie man das Schloss des eigenen Fahrrads öffnet. Für einen Assistenten zu Hause ist das Reibung ohne Nutzen.",
+              "My agent does not run the plain model but a variant: the same weights, plus a steering vector that removes the direction along which the model refuses. Out of the box it declines or waters down requests with a legitimate purpose, such as how to pick the lock of your own bicycle. For an assistant at home that is friction without a benefit."))
+    A(bild(D.steuervektor, sp))
+    P(T("<b>Der Vektor nimmt die Ablehnungen, nicht die Fähigkeiten.</b> Von 15 heiklen, aber legitimen Aufgaben beantwortet das Modell mit Vektor alle, ohne ihn 11. Aufgaben, Deutsch und Tempo bleiben gleich. <b>Der Preis: Es erfindet leichter.</b> Ohne Regeln erkennt die Variante nur 17 % des Erfundenen statt 29 %; mit den vier Regeln von oben sind es 91 % statt 98 %. Wer sie für einen Agenten nimmt, kann auf Regeln und Prüfer nicht verzichten.",
+        "<b>The vector removes the refusals, not the abilities.</b> Of 15 sensitive but legitimate tasks the model answers all with the vector, 11 without it. Tasks, German and speed stay the same. <b>The price: it makes things up more easily.</b> Without rules the variant recognises only 17 % of made-up things instead of 29 %; with the four rules from above it is 91 % instead of 98 %. If you use it for an agent, the rules and the checker are not optional."))
+    P(T("Ein Modell ohne Ablehnungen beantwortet, was man es fragt. Das ist eine Entscheidung für Erwachsene am eigenen Gerät, und die Verantwortung liegt bei dem, der es betreibt. Vor Kinder gehört es nicht.",
+        "A model without refusals answers whatever it is asked. That is a decision for adults running their own machine, with the responsibility on the person who runs it. It is not something to put in front of children.")
+      + f' <a href="{doc("steuervektor")}">{T("Wie der Vektor wirkt, die Konfiguration und alle Zahlen", "How the vector works, the config and all numbers")}</a>')
+    zu()
+
+    kapitel(7, "strom", T("Was kostet es an Strom?", "What does it cost in power?"))
     A(terminal_strom(strom, sp))
     P(T(f"Das sind <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh je 1.000 geschriebene Token</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh über Leerlauf). Ein geladenes Modell kostet rund 3 W mehr als eine leere Karte. Gemessen ist an der USV. An ihr hängen bei mir auch der Netzwerk-Switch und die Geräte, die er versorgt; ihre {z(ab, sp, 0)} W sind hier abgezogen (Leerlauf heute {z(strom['leer']['usv_w']['mittel'] + ab, sp, 0)} W, mit NAS und Dock allein 60 W). Die Werte ohne Switch sind deshalb gerechnet und auf etwa ±10 W genau.",
         f"That is <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh per 1,000 written tokens</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh above idle). A loaded model costs about 3 W more than an empty card. The measurement is taken at the UPS. In my setup the network switch and the devices it feeds hang on it too; their {z(ab, sp, 0)} W are deducted here (idle today {z(strom['leer']['usv_w']['mittel'] + ab, sp, 0)} W, with NAS and dock alone 60 W). The figures without the switch are therefore calculated and accurate to about ±10 W."))
     zu()
 
-    kapitel(7, "warten", T("Wie lange warte ich?", "How long do I wait?"))
+    kapitel(8, "warten", T("Wie lange warte ich?", "How long do I wait?"))
     A(bild(D.kontext, sp))
     P(T(f"Das Einlesen wächst fast linear mit der Länge: 5,5 s bei 4K, 26 s bei 32K, 3,6 min bei 250K Token. Der Gesprächs-Cache erspart einer laufenden Sitzung, das in jeder Runde neu zu zahlen. Nach 30 Minuten Leerlauf wird das Modell entladen; der Kaltstart bis zum ersten Wort dauert dann <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>.",
         f"Reading grows almost linearly with length: 5.5 s at 4K, 26 s at 32K, 3.6 min at 250K tokens. The conversation cache keeps a running session from paying this again on every turn. After 30 minutes idle the model is unloaded; the cold start to the first word then takes <b>{z(min(kalt), sp)}–{z(max(kalt), sp)} s</b>."))
@@ -299,14 +310,14 @@ def seite(sp):
                 f"If two people alternate between two <em>different</em> models, the card reloads every time: {z(zwei['wechsel']['warten_median_s'], sp, 0)} s on average to the first word. For shared use, pick one model for everyone."))
     zu()
 
-    kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
+    kapitel(9, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
     A(bild(D.versionen, sp))
     P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Nichts wurde langsamer.",
         "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Nothing got slower.")
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
-    kapitel(9, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
+    kapitel(10, "nachbauen", T("Nachbauen in fünf Schritten", "Rebuild it in five steps"),
             T("Der Grundaufbau braucht nur das NAS, das Dock und die Karte und läuft ganz im Heimnetz. Wer nur den Chat will, hört nach Schritt 3 auf.",
               "The basic setup needs only the NAS, the dock and the card, and runs entirely in the home network. If you only want the chat, stop after step 3."))
     anker = (lambda de_, en_: f"{GH}{'#' + en_ if en else '/blob/main/README.de.md#' + de_}")
@@ -342,7 +353,7 @@ def seite(sp):
                "UGREEN iDX6011 Pro with a Radeon RX 7900 XTX in the OCuLink dock: measurements of speed, power, waiting time and risks of a local 125B model. Scripts and raw data on GitHub.")
     basis = "../" if en else ""
     kanon = "https://faf.net/idx/" + ("en/" if en else "")
-    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
+    nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("vektor", T("Vektor", "Vector")), ("strom", T("Strom", "Power")), ("warten", T("Warten", "Waiting")),
            ("versionen", T("Versionen", "Releases")), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
 <html lang="{sp}">

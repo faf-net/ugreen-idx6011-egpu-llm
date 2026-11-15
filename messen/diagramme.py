@@ -901,7 +901,56 @@ def parallel(d, sp):
                                 "Three lanes: language and picture models run on the card in the dock, transcoding and photo recognition on the built-in iGPU, file shares, chat, web search and UPS monitoring on processor and RAM, all at the same time."), s, h
 
 
-ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel)
+def steuervektor(d, sp):
+    """Dasselbe Modell ohne und mit Steuervektor: was er ändert (Ablehnungen) und was er kostet."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    v = json.load(open(os.path.join(d, "2026-11-14-erfinden", "steuervektor.json"), encoding="utf-8"))
+    s = Svg()
+    titel = T("Mit Steuervektor beantwortet das Modell alle 15 Aufgaben und erfindet etwas leichter", "With the steering vector the model answers all 15 tasks and makes things up a little more easily")
+    kopf(s, T("Flash-Next 125B IQ3_XXS · dieselben Gewichte ohne und mit Steuervektor · Strata 0.2.12", "Flash-Next 125B IQ3_XXS · the same weights without and with a steering vector · Strata 0.2.12"), titel)
+    feld(s, L, 104, T("A · 15 heikle, aber legitime Aufgaben", "A · 15 sensitive but legitimate tasks"), T("Fiktion, Satire, Aufklärung, Sicherheitsschulung, Zugang zu Eigenem · von Hand gelesen", "fiction, satire, education, security training, access to one's own things · read by hand"))
+    X = lambda n: L + n * (456 - L) / 15
+    for i, (schl, name) in enumerate((("faber", T("ohne Steuervektor", "without the steering vector")), ("liber", T("mit Steuervektor", "with the steering vector")))):
+        y = 160 + i * 92
+        s.text(L, y, name, 11, INK, "sans", weight=600)
+        links = 0
+        for feld_, ton in (("beantwortet", "salbei"), ("ausgewichen", "gold"), ("abgelehnt", "rose")):
+            n = v["heikle_aufgaben_15"][schl][feld_]
+            if n:
+                s.rect(X(links) + 1, y + 10, X(n) - L - 2, 44, TON[ton][0], deck=1, kante=TON[ton][1])
+                s.text(X(links + n / 2), y + 37, str(n), 12, TON[ton][2], "sans", "middle", 700)
+            links += n
+    for n in (0, 5, 10, 15):
+        s.text(X(n), 334, str(n), 9, MUTED, "mono", "middle")
+    s.line(L, 320, 456, 320, ACHSE)
+    feld(s, 544, 104, T("B · Was der Vektor sonst ändert", "B · What else the vector changes"), T("derselbe Aufgabensatz, dieselbe Karte", "the same task set, the same card"))
+    s.text(796, 148, T("OHNE", "WITHOUT"), 8, MUTED, "mono", "end", 500, sperr="0.14em")
+    s.text(824, 148, T("MIT", "WITH"), 8, MUTED, "mono", weight=500, sperr="0.14em")
+    e = v["erfundenes_erkannt_von_120"]
+    proz = lambda n: f"{round(100 * n / 120)} %"
+    zeilen = [(T("Aufgaben bestanden (von 102)", "graded tasks passed (of 102)"), str(v["aufgaben_102"]["faber"]), str(v["aufgaben_102"]["liber"]), T("gleich", "equal"), "neutral"),
+              (T("Deutsch, verdeckt benotet (von 60)", "German, graded blind (of 60)"), str(v["deutsch_blind_60"]["faber"]), str(v["deutsch_blind_60"]["liber"]), T("etwas besser", "a little better"), "salbei"),
+              (T("Erfundenes erkannt, ohne Regeln", "made-up things recognised, no rules"), proz(e["ohne_regeln"]["faber"]), proz(e["ohne_regeln"]["liber"]), T("schlechter", "worse"), "rose"),
+              (T("Erfundenes erkannt, mit vier Regeln", "made-up things recognised, four rules"), proz(e["mit_regeln"]["faber"]), proz(e["mit_regeln"]["liber"]), T("schlechter", "worse"), "rose"),
+              (T("Schreibtempo (Token/s)", "decode speed (tokens/s)"), z(v["schreiben_tps"]["faber"], sp), z(v["schreiben_tps"]["liber"], sp), T("gleich", "equal"), "neutral")]
+    for i, (name, ohne, mit, wort, ton) in enumerate(zeilen):
+        y = 176 + i * 30
+        s.line(544, y + 10, R, y + 10, GITTER)
+        s.text(544, y, name, 10.5, INK, "sans")
+        s.text(796, y, ohne, 10, MUTED, "mono", "end")
+        s.text(806, y, "→", 10, MUTED, "mono")
+        s.text(824, y, mit, 10, ACC, "mono", weight=600)
+        s.text(R, y, wort.upper(), 8, TON[ton][2], "mono", "end", 600, sperr="0.1em")
+    s.text(R, 350, T("Der Vektor nimmt die Ablehnungen, nicht die Fähigkeiten.", "The vector removes the refusals, not the abilities."), 15, INK, "serif", "end", kursiv=True)
+    h = fuss(s, 372, (("ton", "salbei", T("beantwortet", "answered")), ("ton", "gold", T("ausgewichen, belehrt oder entschärft", "evasive, lecturing or toned down")), ("ton", "rose", T("abgelehnt", "refused"))),
+             T("Aufgaben und Deutsch: Nachtvergleich 13./14.11.2026 · Erfinden: 120 erfundene Dinge je Modell und Bedingung, 14.11.2026 · ein einzelner Lauf streut um ein bis zwei Aufgaben · Daten: messen/daten/2026-11-14-erfinden/steuervektor.json",
+               "tasks and German: night comparison 13/14 Nov 2026 · making things up: 120 made-up things per model and condition, 14 Nov 2026 · a single run varies by one or two tasks · data: messen/daten/2026-11-14-erfinden/steuervektor.json"))
+    return "steuervektor", titel, T("Ohne Steuervektor beantwortet das Modell 11 von 15 heiklen Aufgaben, weicht bei 3 aus und lehnt 1 ab; mit Steuervektor beantwortet es alle 15. Bei Aufgaben, Deutsch und Tempo bleibt es gleich oder etwas besser, erkennt Erfundenes aber seltener.",
+                                    "Without the steering vector the model answers 11 of 15 sensitive tasks, is evasive on 3 and refuses 1; with it, it answers all 15. On tasks, German and speed it stays equal or a little better, but recognises made-up things less often."), s, h
+
+
+ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
 
 
 def main():

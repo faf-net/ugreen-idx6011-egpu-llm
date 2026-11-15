@@ -11,7 +11,7 @@ Fotos, Medien und Backups.
 Alle Werte sind auf meiner Maschine gemessen, sofern nicht anders vermerkt. Das Repo enthält **keinen
 Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte und Messprogramme.
 
-**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS.
+**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS. `liber` ist `faber` mit einem Steuervektor, der die Ablehnungen herausnimmt; damit läuft der Agent ([docs/steuervektor.de.md](docs/steuervektor.de.md)).
 
 ## Auf einen Blick
 
@@ -348,6 +348,8 @@ Die Gegenmaßnahme bleibt dieselbe.
 
 Die Messungen, die vier Regeln und das Prüfer-Plugin: [docs/agent.de.md](docs/agent.de.md).
 
+**Der Agent läuft mit einer Variante mit Steuervektor.** Dieselben Gewichte, aber das Modell lehnt Bitten mit legitimem Zweck nicht mehr ab und entschärft sie nicht: Es beantwortet alle 15 meiner heiklen Testaufgaben statt 11. Aufgaben, Deutsch und Tempo bleiben gleich; der Preis ist, dass es leichter erfindet (mit den vier Regeln 91 % statt 98 % des Erfundenen erkannt). Was der Vektor tut, die Konfiguration und alle Zahlen: [docs/steuervektor.de.md](docs/steuervektor.de.md).
+
 ## Bilder auf derselben Karte: ComfyUI über llama-swap
 
 Seit dem 23.10. macht die XTX auch Bilder. ComfyUI läuft als weiteres Modell in llama-swap, die Karte hält also entweder das Sprachmodell oder die Bildmodelle, nie beides, und llama-swap wechselt bei Bedarf. llama-swap hat dafür einen fertigen Zugang: Ein Modell mit genau dem Namen `comfyui_auto` wird unter `/comfyui/` bedient, und der Websocket des offenen Browser-Tabs lädt das Modell weder noch hält er es fest. Der Eintrag liegt in `konfig/comfyui/llama-swap-comfyui.yaml` (Image `yanwk/comfyui-boot:rocm`, ROCm 7.2, PyTorch 2.13, ComfyUI 0.42.1); er startet in etwa 20 Sekunden.
@@ -376,7 +378,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   konfig/comfyui/               ComfyUI: llama-swap-Eintrag, Download-Skript, Arbeitsabläufe, Bild-Anbieter für Hermes Agent
   konfig/strata-0.2.8/          Startkonfigurationen und llama-swap-Makro für 0.2.8 (Konfigurationen wie bei 0.2.3.1)
   konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
-  konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration
+  konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration, dazu liber.json (die Variante mit Steuervektor)
   konfig/hermes-pruefer/        Plugin für Hermes Agent: prüft jede Antwort mit festen Regeln, ohne Sprachmodell
   konfig/stack/                 Chat und Websuche: Compose-Datei für Open WebUI und SearXNG, auf dem NAS getestet (EN/DE)
 ```
@@ -442,7 +444,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
 **Dokumentation und Diagramme**
 
 ```
-  docs/                         jede Version im Einzelnen, die Dock-Untersuchung, der Agenten-Nachtrag, ComfyUI (EN/DE)
+  docs/                         jede Version im Einzelnen, die Dock-Untersuchung, der Agenten-Nachtrag, der Steuervektor, ComfyUI (EN/DE)
   bilder/                       die Diagramme als PNG, ihre HTML/SVG-Quellen in bilder/html/
   web/                          baut die Seite faf.net/idx aus diesem Repo (bau.py), mit selbst ausgelieferten Schriften
 ```

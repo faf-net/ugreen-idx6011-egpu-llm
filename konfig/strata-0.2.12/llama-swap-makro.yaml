@@ -34,3 +34,13 @@ models:
     proxy: http://127.0.0.1:${PORT}
     checkEndpoint: /health
     ttl: 1800
+
+  # Dieselben Gewichte wie faber, dazu ein Steuervektor, der die Ablehnungsrichtung herausprojiziert (siehe docs/steuervektor.de.md).
+  # Die Vektordatei ist nicht Teil dieses Repos; sie wird unter /strata/data/vektor/ erwartet.
+  liber:
+    name: "Flash-Next 125B mit Steuervektor (Strata 0.2.12, IQ3_XXS)"
+    cmd: ${strata0212} /strata/konfig/liber.json
+    cmdStop: docker stop -t 80 ls-${MODEL_ID}
+    proxy: http://127.0.0.1:${PORT}
+    checkEndpoint: /health
+    ttl: 1800

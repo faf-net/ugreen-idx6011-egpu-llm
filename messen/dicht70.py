@@ -78,6 +78,8 @@ def main():
             frage("Reply with the single word OK.", 4)  # warm
             m = betrieb.Messer(); m.start(); m.beginne("schreiben")
             laeufe = [frage(FRAGE, a.token) for _ in range(2)]
+            while time.time() - m.t0 < betrieb.VORLAUF + 45:  # schnelle Modelle: genug USV-Messpunkte sammeln
+                laeufe.append(frage(FRAGE, a.token))
             m.an = False
             stufe["schreiben_tps"] = [l["schreiben_tps"] for l in laeufe]
             stufe["schreiben_tps_median"] = round(statistics.median(stufe["schreiben_tps"]), 2)

@@ -10,7 +10,7 @@ dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
 Everything here was measured on my machine unless marked otherwise. This repository contains **no Strata code**,
 only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark tools.
 
-**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization.
+**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization. `liber` is `faber` with a steering vector that removes its refusals; the agent runs on it ([docs/steuervektor.md](docs/steuervektor.md)).
 
 ## At a glance
 
@@ -345,6 +345,8 @@ to UGREEN with the pstore record. The mitigation stays the same.
 
 The measurements, the four rules and the checker plugin: [docs/agent.md](docs/agent.md).
 
+**The agent runs on a variant with a steering vector.** The same weights, but the model no longer refuses or waters down requests with a legitimate purpose: it answers all 15 of my sensitive test tasks instead of 11. Tasks, German and speed stay the same; the price is that it makes things up more easily (91 % instead of 98 % of made-up things recognised with the four rules). What the vector does, the config and all numbers: [docs/steuervektor.md](docs/steuervektor.md).
+
 ## Pictures on the same card: ComfyUI through llama-swap
 
 Since 23 Oct the XTX also makes pictures. ComfyUI runs as one more model in llama-swap, so the card holds either the chat model or the picture models, never both, and llama-swap swaps them on demand. llama-swap has a ready entry point for this: a model named exactly `comfyui_auto` is served under `/comfyui/`, and the open browser tab's websocket neither loads the model nor keeps it loaded. The entry is in `konfig/comfyui/llama-swap-comfyui.yaml` (image `yanwk/comfyui-boot:rocm`, ROCm 7.2, PyTorch 2.13, ComfyUI 0.42.1); it starts in about 20 s.
@@ -373,7 +375,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   konfig/comfyui/               ComfyUI: llama-swap entry, download script, workflows, image backend for Hermes Agent
   konfig/strata-0.2.8/          launch configs and llama-swap macro for 0.2.8 (configs unchanged from 0.2.3.1)
   konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
-  konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config
+  konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config, and liber.json (the variant with a steering vector)
   konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
   konfig/stack/                 chat and web search: Compose file for Open WebUI and SearXNG, tested on the NAS (EN/DE)
 ```
@@ -439,7 +441,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
 **Documentation and charts**
 
 ```
-  docs/                         every release in detail, the dock investigation, the agent follow-up, ComfyUI (EN/DE)
+  docs/                         every release in detail, the dock investigation, the agent follow-up, the steering vector, ComfyUI (EN/DE)
   bilder/                       the charts as PNG, their HTML/SVG sources in bilder/html/
   web/                          builds the page faf.net/idx from this repo (bau.py), with self-hosted fonts
 ```
