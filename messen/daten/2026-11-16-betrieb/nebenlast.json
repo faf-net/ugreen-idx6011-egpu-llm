@@ -1,0 +1,210 @@
+{
+ "gemessen": "2026-11-16",
+ "modell": "faber (Flash-Next 125B IQ3_XXS, Strata 0.2.14)",
+ "ablauf": "messen/nebenlast.py with a fixed schedule: transcoding without a model at +1:00, page cache dropped at +2:00, download 1 at +2:30 without a model, faber loaded at +4:30 and writing long answers (1,500 tokens) until +12:30, transcoding and download 2 from +9:00 while it writes; times in seconds from the start",
+ "download": {
+  "protokoll": "HTTP, python3 -m http.server on the NAS serving only this one file, curl -s -o /dev/null on a client with a 5 Gbit/s port",
+  "datei_gb": 17.66,
+  "ohne_modell": {
+   "mb_s": 591.3,
+   "sekunden": 29.9,
+   "start_s": 150.0,
+   "seitencache": "dropped before"
+  },
+  "waehrend_schreiben": {
+   "mb_s": 586.2,
+   "sekunden": 30.1,
+   "start_s": 540.0,
+   "seitencache": "not dropped"
+  }
+ },
+ "transkodieren": {
+  "was": "4K HEVC (60 s, 30 frames/s, 40 Mbit/s) -> 1080p H.264, VAAPI on the Arc iGPU, messen/transkodieren.sh",
+  "ohne_modell_bilder_s": [
+   290.0,
+   291.0,
+   290.0
+  ],
+  "waehrend_schreiben_bilder_s": [
+   241.0,
+   241.0,
+   244.0
+  ],
+  "zeiten_s": {
+   "ohne_modell": [
+    [
+     60.1,
+     66.8
+    ],
+    [
+     66.8,
+     73.4
+    ],
+    [
+     73.4,
+     80.0
+    ]
+   ],
+   "waehrend_schreiben": [
+    [
+     540.1,
+     549.5
+    ],
+    [
+     549.5,
+     559.4
+    ],
+    [
+     559.6,
+     567.8
+    ]
+   ]
+  }
+ },
+ "schreiben_tps": {
+  "allein": [
+   66.2,
+   67.1,
+   67.1,
+   66.2,
+   66.5,
+   68.1,
+   67.4,
+   68.4,
+   68.3
+  ],
+  "waehrend_nebenlast": [
+   66.6,
+   67.6
+  ],
+  "anfragen": [
+   {
+    "start_s": 270.4,
+    "ende_s": 313.3,
+    "neu_token": 1500,
+    "tps": 64.9
+   },
+   {
+    "start_s": 313.4,
+    "ende_s": 336.5,
+    "neu_token": 1500,
+    "tps": 66.2
+   },
+   {
+    "start_s": 336.5,
+    "ende_s": 359.3,
+    "neu_token": 1500,
+    "tps": 67.1
+   },
+   {
+    "start_s": 359.3,
+    "ende_s": 382.1,
+    "neu_token": 1500,
+    "tps": 67.1
+   },
+   {
+    "start_s": 382.1,
+    "ende_s": 405.2,
+    "neu_token": 1500,
+    "tps": 66.2
+   },
+   {
+    "start_s": 405.2,
+    "ende_s": 428.2,
+    "neu_token": 1500,
+    "tps": 66.5
+   },
+   {
+    "start_s": 428.2,
+    "ende_s": 450.7,
+    "neu_token": 1500,
+    "tps": 68.1
+   },
+   {
+    "start_s": 450.7,
+    "ende_s": 473.4,
+    "neu_token": 1500,
+    "tps": 67.4
+   },
+   {
+    "start_s": 473.5,
+    "ende_s": 495.9,
+    "neu_token": 1500,
+    "tps": 68.4
+   },
+   {
+    "start_s": 495.9,
+    "ende_s": 518.3,
+    "neu_token": 1500,
+    "tps": 68.3
+   },
+   {
+    "start_s": 518.3,
+    "ende_s": 541.3,
+    "neu_token": 1500,
+    "tps": 66.5
+   },
+   {
+    "start_s": 541.4,
+    "ende_s": 564.4,
+    "neu_token": 1500,
+    "tps": 66.6
+   },
+   {
+    "start_s": 564.4,
+    "ende_s": 587.1,
+    "neu_token": 1500,
+    "tps": 67.6
+   },
+   {
+    "start_s": 587.1,
+    "ende_s": 609.7,
+    "neu_token": 1500,
+    "tps": 67.8
+   },
+   {
+    "start_s": 609.7,
+    "ende_s": 632.9,
+    "neu_token": 1500,
+    "tps": 65.8
+   },
+   {
+    "start_s": 632.9,
+    "ende_s": 655.5,
+    "neu_token": 1500,
+    "tps": 67.8
+   },
+   {
+    "start_s": 655.5,
+    "ende_s": 678.5,
+    "neu_token": 1500,
+    "tps": 66.6
+   },
+   {
+    "start_s": 678.5,
+    "ende_s": 700.8,
+    "neu_token": 1500,
+    "tps": 68.9
+   },
+   {
+    "start_s": 700.8,
+    "ende_s": 723.8,
+    "neu_token": 1500,
+    "tps": 66.3
+   },
+   {
+    "start_s": 723.8,
+    "ende_s": 746.6,
+    "neu_token": 1500,
+    "tps": 67.1
+   },
+   {
+    "start_s": 746.6,
+    "ende_s": 768.9,
+    "neu_token": 1500,
+    "tps": 68.9
+   }
+  ],
+  "hinweis": "alone: requests that ended before +540 s, without the first one (it includes loading); during the side load: requests overlapping +545 to +570 s (download 2 and transcoding). The side load lasted only about 30 s, so it overlaps one request fully and one in part."
+ }
+}

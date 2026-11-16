@@ -8,6 +8,7 @@ The NAS switched to Strata 0.2.14 on the morning of 16 Nov (engine and control 0
 | `kaltstart-faber.json` | `messen/betrieb.py kaltstart` | empty card to first token, five runs |
 | `wartezeit.json` | `messen/wartezeit.py` | wait for the first word by text length, and for a follow-up question |
 | `zwei.json` | `messen/zwei.py` | two people at once on one model, and alternating between two models |
+| `nebenlast.json` | `messen/nebenlast.py`, `messen/transkodieren.sh` | 16 Nov, 13:30-13:43: transcoding and a 17.7 GB HTTP download (measured by the client, a workstation with a 5 Gbit/s port) without a model and while `faber` writes; every request with start and end. Download 591 / 586 MB/s, transcoding 290 / 241-244 frames/s, decode 66-68 alone and 66.6 / 67.6 in the two requests that overlap the side load |
 | `qualitaet.json` | task set of the night before | the 125B model on 0.2.14 (98 of 102) next to UGREEN's model, which was not run again; the file says which column was measured on which version |
 
 ## Against 15 Nov on Strata 0.2.12

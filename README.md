@@ -137,7 +137,7 @@ Power, cold start, waiting times and the two-person test were measured again on 
 
 ![The NAS keeps working while the model writes](bilder/parallel-en.png)
 
-**The NAS at work while the model writes.** A 17.7 GB file downloaded from the NAS over HTTP at 589 MB/s without a model and 593 MB/s while the model was writing; both runs were limited by the client's 5 Gbit/s port, not by the NAS. Transcoding a 4K HEVC clip to 1080p H.264 on the built-in Arc iGPU dropped from 290 to 158–249 frames/s, still five to eight times real time. Writing stayed at 66 tokens/s during both, inside its normal spread. Not measured: SMB, and a 10 Gbit/s client.
+**The NAS at work while the model writes.** A 17.7 GB file downloaded from the NAS over HTTP at 591 MB/s without a model and 586 MB/s while the model was writing; both runs were limited by the client's 5 Gbit/s port, not by the NAS. Transcoding a 4K HEVC clip to 1080p H.264 on the built-in Arc iGPU dropped from 290 to 241–244 frames/s, still eight times playback speed. Writing stayed at 67 tokens/s during both, inside its normal spread (66–68 alone). Measured on 16 Nov 2026 on Strata 0.2.14 with a fixed schedule (`messen/nebenlast.py`, `messen/daten/2026-11-16-betrieb/nebenlast.json`); the side load lasted only about 30 s and overlapped one request fully and one in part. On 15 Nov on 0.2.12 it was 589 and 593 MB/s and 158–249 frames/s. Not measured: SMB, and a 10 Gbit/s client.
 
 **A dense 70B model on the same card: 2.7 tokens/s.** Llama 3.3 70B Instruct (Q4_K_M, 42.5 GB) with llama.cpp Vulkan, as many layers on the card as fit, the rest on the CPU, 8K context:
 

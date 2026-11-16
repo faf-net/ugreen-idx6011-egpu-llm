@@ -1113,8 +1113,11 @@ def parallel(d, sp):
     """Wer rechnet was: drei Bahnen (Karte im Dock, eingebaute iGPU, CPU und RAM) mit dem, was gleichzeitig läuft."""
     en = sp == "en"
     T = lambda de, en_: en_ if en else de
-    n = json.load(open(os.path.join(d, "2026-11-15-betrieb", "nebenlast.json"), encoding="utf-8"))
-    st = json.load(open(os.path.join(d, "2026-11-15-betrieb", "strom-faber.json"), encoding="utf-8"))["phasen"]["schreiben"]
+    n = json.load(open(betriebsdatei(d, "nebenlast.json"), encoding="utf-8"))
+    st = json.load(open(betriebsdatei(d, "strom-faber.json"), encoding="utf-8"))["phasen"]["schreiben"]
+    tag = n["gemessen"]
+    tag_de, tag_en = f"{int(tag[8:])}.{int(tag[5:7])}.{tag[:4]}", f"{int(tag[8:])} Nov {tag[:4]}"
+    ordner = os.path.basename(os.path.dirname(betriebsdatei(d, "nebenlast.json")))
     tr, dl = n["transkodieren"], n["download"]
     s = Svg()
     titel = T("Das NAS arbeitet weiter, während das Modell schreibt", "The NAS keeps working while the model writes")
@@ -1125,7 +1128,7 @@ def parallel(d, sp):
             (T("Sprachmodell", "Language model"), f"{z(st['tps'], sp)} {T('Token/s', 'tokens/s')}", T("gemessen", "measured"), GUT, True),
             (T("Bildmodelle", "Picture models"), T("8–66 s je Bild, im Wechsel", "8–66 s per picture, in turn"), T("gemessen", "measured"), GUT, False)]),
         (T("Eingebaute iGPU", "Built-in iGPU"), "Intel Arc", STAHL, [
-            (T("Video: Transkodierung", "Video: transcoding"), f"{min(tr['waehrend_schreiben_bilder_s'])}–{max(tr['waehrend_schreiben_bilder_s'])} {T('Bilder/s', 'frames/s')} ({T('ohne Last', 'idle')} {tr['ohne_modell_bilder_s'][0]})", T("gemessen", "measured"), GUT, False),
+            (T("Video: Transkodierung", "Video: transcoding"), f"{z(min(tr['waehrend_schreiben_bilder_s']), sp, 0)}–{z(max(tr['waehrend_schreiben_bilder_s']), sp, 0)} {T('Bilder/s', 'frames/s')} ({T('ohne Last', 'idle')} {z(tr['ohne_modell_bilder_s'][0], sp, 0)})", T("gemessen", "measured"), GUT, False),
             (T("Fotos: Bilderkennung", "Photos: recognition"), T("Dienst von UGOS, läuft weiter", "UGOS service, keeps running"), T("läuft · nicht gemessen", "runs · not measured"), OFFEN, False)]),
         (T("Prozessor und RAM", "Processor and RAM"), "Core Ultra 7 · 64 GB", INK, [
             (T("Dateifreigaben", "File shares"), f"{z(dl['waehrend_schreiben']['mb_s'], sp, 0)} MB/s ({T('ohne Last', 'idle')} {z(dl['ohne_modell']['mb_s'], sp, 0)})", T("gemessen · per HTTP", "measured · over HTTP"), GUT, False),
@@ -1147,8 +1150,8 @@ def parallel(d, sp):
             s.text(x + 12, y + 48, wert, 8.5, MUTED, "mono")
             s.text(x + 12, y + 64, status.upper(), 7.5, sfarbe, "mono", weight=600, sperr="0.12em")
         y += 100
-    h = fuss(s, y + 12, None, T("gemessen am 15.11.2026, während das 125B-Modell durchgehend schrieb · Transkodierung 4K-HEVC nach 1080p-H.264 mit VAAPI · Datei 17,7 GB an einen Arbeitsplatz mit 5 Gbit/s, der die Grenze war · Daten: messen/daten/2026-11-15-betrieb/nebenlast.json",
-                                    "measured on 15 Nov 2026 while the 125B model was writing continuously · transcoding 4K HEVC to 1080p H.264 with VAAPI · 17.7 GB file to a client with 5 Gbit/s, which was the limit · data: messen/daten/2026-11-15-betrieb/nebenlast.json"))
+    h = fuss(s, y + 12, None, T(f"gemessen am {tag_de}, während das 125B-Modell durchgehend schrieb · Transkodierung 4K-HEVC nach 1080p-H.264 mit VAAPI · Datei 17,7 GB an einen Arbeitsplatz mit 5 Gbit/s, der die Grenze war · Daten: messen/daten/{ordner}/nebenlast.json",
+                                    f"measured on {tag_en} while the 125B model was writing continuously · transcoding 4K HEVC to 1080p H.264 with VAAPI · 17.7 GB file to a client with 5 Gbit/s, which was the limit · data: messen/daten/{ordner}/nebenlast.json"))
     return "parallel", titel, T("Drei Bahnen: Auf der Karte im Dock laufen Sprach- und Bildmodelle, auf der eingebauten iGPU Transkodierung und Bilderkennung, auf Prozessor und RAM Dateifreigaben, Chat, Websuche und USV-Überwachung, alles gleichzeitig.",
                                 "Three lanes: language and picture models run on the card in the dock, transcoding and photo recognition on the built-in iGPU, file shares, chat, web search and UPS monitoring on processor and RAM, all at the same time."), s, h
 

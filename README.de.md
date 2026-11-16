@@ -138,7 +138,7 @@ Strom, Kaltstart, Wartezeiten und der Zwei-Personen-Test sind am 16.11.2026 auf 
 
 ![Das NAS arbeitet weiter, während das Modell schreibt](bilder/parallel-de.png)
 
-**NAS-Betrieb, während das Modell schreibt.** Eine 17,7-GB-Datei kam per HTTP mit 589 MB/s vom NAS, während das Modell schrieb mit 593 MB/s; begrenzt hat beide Male der 5-Gbit/s-Anschluss des Arbeitsplatzes, nicht das NAS. Die Transkodierung eines 4K-HEVC-Clips nach 1080p-H.264 auf der eingebauten Arc-iGPU fiel von 290 auf 158–249 Bilder/s, immer noch das Fünf- bis Achtfache der Echtzeit. Das Schreibtempo blieb dabei bei 66 Token/s, innerhalb seiner üblichen Streuung. Nicht gemessen: SMB und ein Arbeitsplatz mit 10 Gbit/s.
+**NAS-Betrieb, während das Modell schreibt.** Eine 17,7-GB-Datei kam per HTTP mit 591 MB/s vom NAS, während das Modell schrieb mit 586 MB/s; begrenzt hat beide Male der 5-Gbit/s-Anschluss des Arbeitsplatzes, nicht das NAS. Die Transkodierung eines 4K-HEVC-Clips nach 1080p-H.264 auf der eingebauten Arc-iGPU fiel von 290 auf 241–244 Bilder/s, immer noch das Achtfache der Wiedergabe. Das Schreibtempo blieb dabei bei 67 Token/s, innerhalb seiner üblichen Streuung (allein 66–68). Gemessen am 16.11.2026 auf Strata 0.2.14 nach festem Zeitplan (`messen/nebenlast.py`, `messen/daten/2026-11-16-betrieb/nebenlast.json`); die Nebenlast dauerte nur rund 30 s und traf eine Anfrage ganz und eine zum Teil. Am 15.11. auf 0.2.12 waren es 589 und 593 MB/s und 158–249 Bilder/s. Nicht gemessen: SMB und ein Arbeitsplatz mit 10 Gbit/s.
 
 **Ein dichtes 70B-Modell auf derselben Karte: 2,7 Token/s.** Llama 3.3 70B Instruct (Q4_K_M, 42,5 GB) mit llama.cpp Vulkan, so viele Schichten auf der Karte wie passen, der Rest auf der CPU, 8K Kontext:
 
