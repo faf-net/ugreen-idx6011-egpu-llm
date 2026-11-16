@@ -355,11 +355,15 @@ to UGREEN with the pstore record. The mitigation stays the same.
 - If a second request (e.g. a command reviewer) runs alongside, each one evicts the conversation cache and every
   long session gets re-read. Strata's conversation parking (`--conversation-cache-*`) solves that.
 
-**Dense models on the same card, and how to make the agent invent less (14 Nov 2026).** Two dense models fully in VRAM write at half the speed of the MoE models and do not judge better. Four rules in the system prompt raise the share of made-up things a model recognises from 17–60 % to 88–99 %, without making it overcautious. For announced steps without a tool the rules are not enough, hence three layers:
+**Dense models on the same card, and how to make the agent invent less (14 Nov 2026).** Two dense models fully in VRAM write at half the speed of the MoE models and do not judge better. In my own probe, four rules in the system prompt raise the share of made-up things a model recognises from 17–60 % to 88–99 %. For announced steps without a tool the rules are not enough, hence three layers:
 
 ![Three layers against made-up answers, and what each one catches](bilder/schichten-en.png)
 
-The measurements, the four rules and the checker plugin: [docs/agent.md](docs/agent.md).
+**Counter-check with public question sets (15/16 Nov 2026): one short rule is enough.** The four rules name the kinds of things my probe asks about, so I checked with questions I did not write. A basic rule ("Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up.") cuts made-up things treated as real from 20 to 6 of 150 and leaves real questions as they are (90 against 87 of 150 right). A strict rule with a fixed "I don't know" halves the wrong answers (58 to 30) and costs some right ones (90 to 84). The four rules cost twice as many right answers for little more.
+
+![Counter-check: made-up things treated as real, and the price on real questions, per rule](bilder/gegenprobe-en.png)
+
+The measurements, the rules in their wording and the checker plugin: [docs/agent.md](docs/agent.md).
 
 **The agent can use any of the models, including an uncensored one.** Which model it takes is a setting. `liber` is the same 125B model with its refusals removed by a steering vector (abliteration). It answers whatever it is asked, including what the original model declines: all 15 of my test tasks that models often refuse, instead of 11. There is no filter left; the responsibility lies with whoever runs it. Tasks, German and speed stay the same; the price is that it makes things up more easily (91 % instead of 98 % of made-up things recognised with the four rules). How it works, the config, all numbers and what you take on: [docs/steuervektor.md](docs/steuervektor.md).
 

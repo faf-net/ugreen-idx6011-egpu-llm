@@ -95,6 +95,8 @@ keins, sag: „Dafür habe ich kein Werkzeug.““ sind es 10 (10), mit den Reg
 berechtigte Aufrufe: von 50 Fällen mit passendem Werkzeug 32 statt 41 Aufrufe (liber 36 statt 46). Allein ist der Satz
 also nicht besser als im Paket.
 
+![Gegenprobe: Erfundenes als echt behandelt und der Preis bei echten Fragen, je Regel](../bilder/gegenprobe-de.png)
+
 Vorbehalte: ein Lauf je Frage bei Temperatur 0,7; an der Grundregel gegen „ohne Regel“ sieht man, dass 10 bis 12
 Antworten ohne jede Regelwirkung kippen, Unterschiede unter etwa 8 Antworten bedeuten also nichts. Gewertet hat faber
 selbst; ich habe über 200 Urteile nachgelesen. Enthaltungen sind genau gezählt, bei „richtig“ gegen „falsch“ irrt der

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The basic rule costs nothing, the strict rule halves the wrong answers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #efeae1; color: #2a2724; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 16px; }
+    .frame { max-width: 1100px; width: 100%; min-width: 0; }
+    .scroll { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 960px; display: block; font-variant-numeric: tabular-nums; }
+    @media print { .scroll { overflow: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame"><div class="scroll">
+    <svg viewBox="0 0 960 492" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="gegenprobe-en-title gegenprobe-en-desc">
+      <title id="gegenprobe-en-title">The basic rule costs nothing, the strict rule halves the wro</title>
+      <desc id="gegenprobe-en-desc">Without a rule the model treats 20 of 150 made-up things as real, with the basic rule 6. On 150 medium real questions 87 stay right with the basic rule (no rule: 90); the strict rule cuts wrong answers from 58 to 30 and says &quot;I don&#x27;t know&quot; 36 times.</desc>
+      <rect width="960" height="492" fill="#efeae1"/>
+      <text x="72.0" y="36.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.16em">FLASH-NEXT 125B · FOUR VERSIONS OF THE SYSTEM PROMPT · PUBLIC QUESTION SETS · 15/16 NOV 2026</text>
+      <text x="72.0" y="68.0" fill="#171512" font-size="25" font-family="'Instrument Serif', Georgia, serif">The basic rule costs nothing, the strict rule halves the wrong answers</text>
+      <text x="72.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">A · MADE-UP THINGS TREATED AS REAL</text>
+      <text x="72.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">of 150 things that do not exist · shorter is better</text>
+      <text x="540.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">B · MEDIUM REAL QUESTIONS</text>
+      <text x="540.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">150 questions: right · wrong · &quot;I don&#x27;t know&quot;</text>
+      <line x1="320.0" y1="140.0" x2="320.0" y2="314.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="320.0" y="330.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">10</text>
+      <line x1="408.0" y1="140.0" x2="408.0" y2="314.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="408.0" y="330.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">20</text>
+      <line x1="232.0" y1="140.0" x2="232.0" y2="314.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="218.0" y="165.0" fill="#2a2724" font-size="11.5" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="end" font-weight="600">no rule</text>
+      <rect x="232.0" y="153.0" width="176.0" height="16.0" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="416.0" y="165.5" fill="#2a2724" font-size="11" font-family="'JetBrains Mono', Consolas, monospace" font-weight="700">20</text>
+      <rect x="540.0" y="153.0" width="216.0" height="16.0" fill="#456579" fill-opacity="0.3" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="648.0" y="165.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">90</text>
+      <rect x="756.0" y="153.0" width="139.2" height="16.0" fill="#9c4d40" fill-opacity="0.28" stroke="#9c4d40" stroke-width="1" rx="2"/>
+      <text x="825.6" y="165.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">58</text>
+      <rect x="895.2" y="153.0" width="4.8" height="16.0" fill="#8b8377" fill-opacity="0.1" stroke="#8b8377" stroke-width="1" rx="2"/>
+      <text x="218.0" y="209.0" fill="#975b34" font-size="11.5" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="end" font-weight="600">basic rule</text>
+      <rect x="232.0" y="197.0" width="52.8" height="16.0" fill="#975b34" fill-opacity="0.3" stroke="#975b34" stroke-width="1.6" rx="2"/>
+      <text x="292.8" y="209.5" fill="#975b34" font-size="11" font-family="'JetBrains Mono', Consolas, monospace" font-weight="700">6</text>
+      <rect x="540.0" y="197.0" width="208.8" height="16.0" fill="#456579" fill-opacity="0.3" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="644.4" y="209.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">87</text>
+      <rect x="748.8" y="197.0" width="144.0" height="16.0" fill="#9c4d40" fill-opacity="0.28" stroke="#9c4d40" stroke-width="1" rx="2"/>
+      <text x="820.8" y="209.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">60</text>
+      <rect x="892.8" y="197.0" width="7.2" height="16.0" fill="#8b8377" fill-opacity="0.1" stroke="#8b8377" stroke-width="1" rx="2"/>
+      <text x="218.0" y="253.0" fill="#2a2724" font-size="11.5" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="end" font-weight="600">strict rule</text>
+      <rect x="232.0" y="241.0" width="1.5" height="16.0" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="241.5" y="253.5" fill="#2a2724" font-size="11" font-family="'JetBrains Mono', Consolas, monospace" font-weight="700">0</text>
+      <rect x="540.0" y="241.0" width="201.6" height="16.0" fill="#456579" fill-opacity="0.3" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="640.8" y="253.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">84</text>
+      <rect x="741.6" y="241.0" width="72.0" height="16.0" fill="#9c4d40" fill-opacity="0.28" stroke="#9c4d40" stroke-width="1" rx="2"/>
+      <text x="777.6" y="253.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">30</text>
+      <rect x="813.6" y="241.0" width="86.4" height="16.0" fill="#8b8377" fill-opacity="0.1" stroke="#8b8377" stroke-width="1" rx="2"/>
+      <text x="856.8" y="253.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">36</text>
+      <text x="218.0" y="297.0" fill="#2a2724" font-size="11.5" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="end" font-weight="600">rules of the first probe</text>
+      <rect x="232.0" y="285.0" width="1.5" height="16.0" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="241.5" y="297.5" fill="#2a2724" font-size="11" font-family="'JetBrains Mono', Consolas, monospace" font-weight="700">0</text>
+      <rect x="540.0" y="285.0" width="180.0" height="16.0" fill="#456579" fill-opacity="0.3" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="630.0" y="297.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">75</text>
+      <rect x="720.0" y="285.0" width="55.2" height="16.0" fill="#9c4d40" fill-opacity="0.28" stroke="#9c4d40" stroke-width="1" rx="2"/>
+      <text x="747.6" y="297.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">23</text>
+      <rect x="775.2" y="285.0" width="124.8" height="16.0" fill="#8b8377" fill-opacity="0.1" stroke="#8b8377" stroke-width="1" rx="2"/>
+      <text x="837.6" y="297.0" fill="#171512" font-size="10" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">52</text>
+      <text x="244.0" y="356.0" fill="#2a2724" font-size="15" font-family="'Instrument Serif', Georgia, serif" font-style="italic">The basic rule leaves real answers as they are.</text>
+      <line x1="40.0" y1="378.0" x2="920.0" y2="378.0" stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"/>
+      <rect x="72.0" y="395.0" width="16.0" height="10.0" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="96.0" y="404.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">right</text>
+      <rect x="151.5" y="395.0" width="16.0" height="10.0" fill="#9c4d40" fill-opacity="0.18" stroke="#9c4d40" stroke-width="1" rx="2"/>
+      <text x="175.5" y="404.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">wrong</text>
+      <rect x="231.0" y="395.0" width="16.0" height="10.0" fill="#8b8377" fill-opacity="0.06" stroke="#8b8377" stroke-width="1" stroke-dasharray="3,2" rx="2"/>
+      <text x="255.0" y="404.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">&quot;I don&#x27;t know&quot;</text>
+      <text x="72.0" y="426.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">one run per question at temperature 0.7 · judged by the same model, samples read by hand</text>
+      <text x="72.0" y="440.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">&quot;I don&#x27;t know&quot; is counted exactly, on right against wrong the judge errs on about every sixth verdict · differences below about 8 answers mean nothing</text>
+      <text x="72.0" y="454.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">left field: clear cases only (three-level verdict) for &quot;no rule&quot; and &quot;basic rule&quot;, the simpler verdict for the two strict versions</text>
+      <text x="72.0" y="468.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">questions: HalluLens and MKQA (German)</text>
+    </svg>
+  </div></div>
+</body>
+</html>

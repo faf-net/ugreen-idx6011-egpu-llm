@@ -203,9 +203,9 @@ def seite(sp):
            "Like a chat service from the cloud, except that the answers come from your own card: one account per person, history, file upload, web search through an own SearXNG."),
          T(f"erstes Wort nach einer Pause: <b>{z(statistics.median(kalt), sp, 0)} s</b> · danach {z(s['tps'], sp, 0)} Token/s", f"first word after a break: <b>{z(statistics.median(kalt), sp, 0)} s</b> · then {z(s['tps'], sp, 0)} tokens/s")),
         ("Agent", "Hermes Agent",
-         T("Ein Agent, den man im Browser oder über den Messenger erreicht, der eigene Werkzeuge bedient und Aufgaben nach Zeitplan erledigt, mit bis zu 256K Token Kontext. Vier Regeln im Systemprompt und ein kleiner Prüfer halten ihn vom Erfinden ab.",
-           "An agent you reach in the browser or through a messenger, that uses its own tools and runs tasks on a schedule, with up to 256K tokens of context. Four rules in the system prompt and a small checker keep it from making things up."),
-         T("Erfundenes erkannt: 17–60 % → <b>88–99 %</b>", "made-up things recognised: 17–60 % → <b>88–99 %</b>")),
+         T("Ein Agent, den man im Browser oder über den Messenger erreicht, der eigene Werkzeuge bedient und Aufgaben nach Zeitplan erledigt, mit bis zu 256K Token Kontext. Eine kurze Regel im Systemprompt und ein kleiner Prüfer halten ihn vom Erfinden ab.",
+           "An agent you reach in the browser or through a messenger, that uses its own tools and runs tasks on a schedule, with up to 256K tokens of context. A short rule in the system prompt and a small checker keep it from making things up."),
+         T("Erfundenes als echt behandelt: 20 → <b>6 von 150</b>", "made-up things treated as real: 20 → <b>6 of 150</b>")),
         ("Messenger", "Signal",
          T("Dem Agenten vom Handy schreiben wie einem Kontakt, auch von unterwegs. Ich empfehle und bevorzuge Signal, weil die Nachrichten dort Ende-zu-Ende-verschlüsselt sind. Telegram und Discord habe ich ebenfalls erfolgreich getestet.",
            "Write to the agent from your phone like to a contact, also when away from home. I recommend and prefer Signal, because messages there are end-to-end encrypted. I have also tested Telegram and Discord successfully."),
@@ -288,6 +288,38 @@ def seite(sp):
     A(f"<h3>{T('Vier Regeln im Systemprompt senken das Erfinden bei diesen Fragen deutlich', 'Four rules in the system prompt clearly reduce making things up on these questions')}</h3>")
     P(T("Ohne die Regeln erkennen die fünf Modelle nur <b>17 bis 60 %</b> des Erfundenen und erfinden den Rest, am häufigsten das Bundesland einer erfundenen Gemeinde und Optionen, die es nicht gibt. Mit den Regeln sind es <b>88 bis 99 %</b>. Echtes beantworten sie dabei so richtig wie vorher (117 bis 120 von 120): Die Regeln machen sie nicht übervorsichtig. Ein anderes Modell half dagegen nicht; zwei dichte Modelle auf derselben Karte erfanden ebenso und schrieben halb so schnell.",
         "Without the rules the five models recognise only <b>17 to 60 %</b> of the made-up things and invent the rest, most often the state of a made-up town and options that do not exist. With the rules it is <b>88 to 99 %</b>. They still answer real things as correctly as before (117 to 120 of 120): the rules do not make them overcautious. A different model did not help; two dense models on the same card invented just as much and wrote at half the speed."))
+    A(f"<h3>{T('Gegenprobe mit fremden Fragen: Eine kurze Regel reicht', 'Counter-check with other questions: a short rule is enough')}</h3>")
+    P(T("Die vier Regeln nennen genau die Arten von Dingen, nach denen meine Probe fragt. Deshalb die Gegenprobe mit öffentlichen Fragensätzen, die ich nicht geschrieben habe: 150 Dinge, die es nicht gibt, 150 schwere und 150 mittelschwere echte Fragen, 150 Agentenfälle mit Werkzeugliste, jeweils mit sechs Fassungen des Systemprompts.",
+        "The four rules name exactly the kinds of things my probe asks about. Hence the counter-check with public question sets I did not write: 150 things that do not exist, 150 hard and 150 medium real questions, 150 agent cases with a tool list, each with six versions of the system prompt."))
+    A(bild(D.gegenprobe, sp))
+    regeln = T("""<span class="g">Grundregel · kostet nichts</span>
+<b>Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.</b>
+<span class="g">Erfundenes als echt behandelt: 20 → 6 von 150 · echte Fragen richtig: 90 → 87 von 150 (im Rauschen)</span>
+
+<span class="g">Strenge Regel · für Antworten, auf die man sich verlassen muss</span>
+<b>Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.</b>
+<span class="g">falsche Antworten: 58 → 30 von 150 · richtige: 90 → 84 · „Weiß ich nicht“: 36-mal</span>
+
+<span class="g">Dazu für Agenten mit Werkzeugen</span>
+<b>Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich kein Werkzeug.“</b>
+<span class="g">falsche Aufrufe: 15 → 10 von 60 · berechtigte Aufrufe: 41 → 32 von 50</span>""",
+               """<span class="g">Basic rule · costs nothing</span>
+<b>Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.</b>
+<span class="g">in English: Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up.</span>
+<span class="g">made-up things treated as real: 20 → 6 of 150 · real questions right: 90 → 87 of 150 (within the noise)</span>
+
+<span class="g">Strict rule · for answers you have to rely on</span>
+<b>Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.</b>
+<span class="g">in English: If you are not sure of something, say explicitly "I don't know". That is a correct answer. Do not invent facts or actions. Guessing is worse than not knowing.</span>
+<span class="g">wrong answers: 58 → 30 of 150 · right ones: 90 → 84 · "I don't know": 36 times</span>
+
+<span class="g">In addition, for agents with tools</span>
+<b>Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich kein Werkzeug.“</b>
+<span class="g">in English: Name only tools and parameters you really have. If there is none, say: "I have no tool for that."</span>
+<span class="g">wrong calls: 15 → 10 of 60 · justified calls: 41 → 32 of 50</span>""")
+    A(f'<div class="rahmen"><span class="schild">{T("REGELN FÜR DEN SYSTEMPROMPT", "RULES FOR THE SYSTEM PROMPT")}</span><pre class="plan konsole-block regeln">{regeln}</pre></div>')
+    P(T("Die <b>Grundregel</b> senkt das Erfinden nicht existierender Dinge um rund drei Viertel und lässt die Antworten auf echte Fragen, wie sie sind. Die <b>strenge Regel</b> sagt bei Antworten, die ohne Regel falsch waren, viermal so oft „Weiß ich nicht“ wie bei richtigen, kostet aber einen Teil der richtigen. Die vier Regeln der ersten Probe kosten doppelt so viele richtige Antworten und bringen kaum mehr. Der Werkzeugsatz senkt falsche Aufrufe, unterdrückt aber auch berechtigte. Das unzensierte Modell verhält sich in allen Punkten wie das Original.",
+        "The <b>basic rule</b> cuts the making up of non-existent things by about three quarters and leaves the answers to real questions as they are. The <b>strict rule</b> says \"I don't know\" four times as often for answers that were wrong without a rule as for right ones, but costs some of the right ones. The four rules of the first probe cost twice as many right answers and gain hardly anything. The tool sentence lowers wrong calls but also suppresses justified ones. The uncensored model behaves like the original on every point."))
     A(f"<h3>{T('Für das Urteil reichen drei Runden nicht', 'For judgement, three rounds are not enough')}</h3>")
     A(bild(D.urteil, sp))
     P(T("Dieselben drei Betriebslagen, zehnmal statt dreimal gestellt. Eine harte Anweisung („weicht die Zahl ab, hör auf“) befolgt das Modell in 10 von 10 Antworten. Wo es selbst abwägen muss, sieht es schlechter aus als nach drei Runden: Bricht nachts ein Lauf ab, erfindet es in 6 von 10 Antworten Fähigkeiten, etwa „ich pausiere die Sammlung“. Wer einen Agenten prüft, sollte jede Lage öfter stellen, als es bequem ist.",
@@ -296,8 +328,8 @@ def seite(sp):
     A(bild(D.schichten, sp))
     P(T("Die Regeln im Prompt fangen erfundene Fakten ab, aber keine angekündigten Schritte. Dafür liefern die Werkzeuge des Agenten jetzt einen fertigen Satz und die erlaubten nächsten Schritte, sodass Zahlen aus dem Code kommen. Und ein kleiner Prüfer ohne Sprachmodell liest jede Antwort: Er meldet Zahlen ohne Beleg, angekündigte Schritte ohne Werkzeug und unbekannte Werkzeugnamen. In den Agentenantworten fand er <b>alle sechs</b> erfundenen Abbruch-Antworten, ohne Fehlalarm bei den übrigen Aufgaben. Erfundene Fakten in Worten sieht er nicht: Von 269 erfundenen Antworten der Probe hätte er keine gemeldet.",
         "The rules in the prompt catch made-up facts, but not announced steps. For those, the agent's tools now return a ready sentence and the allowed next steps, so the numbers come from code. And a small checker without a language model reads every answer: it flags unsupported numbers, announced steps without a tool and unknown tool names. In the agent answers it caught <b>all six</b> made-up abort answers, with no false alarm on the other tasks. It does not see made-up facts in plain words: of 269 made-up probe answers it would have flagged none."))
-    P(T("<b>Grenzen:</b> Die Probe stellt einzelne Fragen ohne Gesprächsverlauf, mit einem kurzen Systemprompt. Wie stark die Regeln in einem langen Agentenprompt wirken, ist nicht gemessen. Die Regeln nennen außerdem genau die Arten von Dingen, nach denen die Probe fragt (Bundesländer, Autoren, Optionen). Ob sie bei anderen Fragen ebenso gut wirken, ist nicht gemessen.",
-        "<b>Limits:</b> the probe asks single questions without a conversation, with a short system prompt. How strongly the rules work inside a long agent prompt is not measured. The rules also name exactly the kinds of things the probe asks about (states, authors, options). Whether they work as well on other questions is not measured.")
+    P(T("<b>Grenzen:</b> Die Probe stellt einzelne Fragen ohne Gesprächsverlauf, mit einem kurzen Systemprompt. Wie stark die Regeln in einem langen Agentenprompt wirken, ist nicht gemessen. Die Gegenprobe lief mit einem Lauf je Frage und wurde vom selben Modell gewertet; Unterschiede von wenigen Antworten bedeuten dort nichts.",
+        "<b>Limits:</b> the probe asks single questions without a conversation, with a short system prompt. How strongly the rules work inside a long agent prompt is not measured. The counter-check ran once per question and was judged by the same model; differences of a few answers mean nothing there.")
       + f' <a href="{doc("agent")}">{T("Alle Messungen im Einzelnen", "All measurements in detail")}</a> · <a href="{GH}/tree/main/konfig/hermes-pruefer">{T("das Prüfer-Plugin", "the checker plugin")}</a> · <a href="{GH}/blob/main/messen/halluzination.py">{T("das Skript der Probe", "the probe script")}</a>')
     zu()
 
@@ -345,8 +377,8 @@ def seite(sp):
         (T("Websuche dazu", "Add web search"), T("SearXNG im selben Stapel. Der Chat sucht darüber im Netz, ohne dass ein Suchkonto oder ein Schlüssel nötig ist. Bei mir fragt SearXNG die Suchmaschinen über ein VPN ab.",
                                                  "SearXNG in the same stack. The chat searches the web through it, with no search account and no key. In my setup SearXNG queries the search engines through a VPN."),
          stack, T("Compose-Datei", "Compose file")),
-        (T("Agent dazu", "Add the agent"), T("Hermes Agent mit dem lokalen Modell: Kontext auf 256K stellen, ein Token-Budget für das Nachdenken setzen und die vier Regeln gegen das Erfinden in den Systemprompt nehmen.",
-                                             "Hermes Agent with the local model: set the context to 256K, give the reasoning a token budget and put the four rules against making things up into the system prompt."),
+        (T("Agent dazu", "Add the agent"), T("Hermes Agent mit dem lokalen Modell: Kontext auf 256K stellen, ein Token-Budget für das Nachdenken setzen und die Grundregel gegen das Erfinden in den Systemprompt nehmen.",
+                                             "Hermes Agent with the local model: set the context to 256K, give the reasoning a token budget and put the basic rule against making things up into the system prompt."),
          doc("agent"), T("Regeln und Prüfer", "Rules and checker")),
         (T("OpenCode 2 dazu", "Add OpenCode 2"), T("OpenCode 2 auf dem eigenen Rechner, mit llama-swap als Anbieter im OpenAI-Format. Für die Sitzungstitel dasselbe Modell eintragen wie für die Arbeit, sonst lädt die Weiche für jeden Titel um.",
                                                "OpenCode 2 on your own computer, with llama-swap as a provider in the OpenAI format. Set the same model for session titles as for the work, otherwise the switch reloads for every title."),

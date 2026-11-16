@@ -920,6 +920,56 @@ def wartezeit(d, sp):
                                  "Timeline of the wait for the first word: questions in a conversation under half a second, one page of text just under three seconds, ten pages a good six, 50 pages about half a minute, a 300-page book a good three minutes; after a break 20 seconds, two people at once eight to eleven."), s, h
 
 
+def gegenprobe(d, sp):
+    """Gegenprobe mit öffentlichen Fragen: Erfundenes als echt behandelt und der Preis bei echten Fragen, je Regelfassung."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    q = json.load(open(os.path.join(d, "2026-11-16-erfinden2", "zahlen.json"), encoding="utf-8"))["modelle"]["faber"]["fassungen"]
+    s = Svg()
+    titel = T("Die Grundregel kostet nichts, die strenge Regel halbiert die falschen Antworten", "The basic rule costs nothing, the strict rule halves the wrong answers")
+    kopf(s, T("Flash-Next 125B · vier Fassungen des Systemprompts · öffentliche Fragensätze · 15./16.11.2026", "Flash-Next 125B · four versions of the system prompt · public question sets · 15/16 Nov 2026"), titel)
+    reihen = (("A", T("ohne Regel", "no rule"), False), ("E", T("Grundregel", "basic rule"), True), ("B", T("strenge Regel", "strict rule"), False), ("D", T("Regeln der ersten Probe", "rules of the first probe"), False))
+    x0 = 232
+    # links: Erfundenes als echt behandelt
+    xa, xb = x0, 452
+    feld(s, L, 104, T("A · Erfundenes als echt behandelt", "A · Made-up things treated as real"), T("von 150 Dingen, die es nicht gibt · kürzer ist besser", "of 150 things that do not exist · shorter is better"))
+    # rechts: echte Fragen
+    xc, xd = 540, 900
+    feld(s, xc, 104, T("B · Mittelschwere echte Fragen", "B · Medium real questions"), T("150 Fragen: richtig · falsch · „weiß ich nicht“", "150 questions: right · wrong · \"I don't know\""))
+    y = 150
+    for anteil in (10, 20):
+        x = xa + anteil / 25 * (xb - xa)
+        s.line(x, y - 10, x, y + 4 * 44 - 12)
+        s.text(x, y + 4 * 44 + 4, str(anteil), 9, MUTED, "mono", "middle")
+    s.line(xa, y - 10, xa, y + 4 * 44 - 12, ACHSE)
+    for k, name, fokus in reihen:
+        f = q[k]
+        erf = f["nichts_dreistufig"]["A"] if "nichts_dreistufig" in f else f["nichts"]["erfunden"]
+        m = f["mittel"] if "mittel" in f else f["leicht"]
+        farbe = ACC if fokus else STAHL
+        s.text(x0 - 14, y + 15, name, 11.5, ACC if fokus else INK, "sans", "end", 600)
+        w = erf / 25 * (xb - xa)
+        s.rect(xa, y + 3, max(w, 1.5), 16, farbe, deck=0.3 if fokus else 0.18, sw=1.6 if fokus else 1, rx=2)
+        s.text(xa + max(w, 1.5) + 8, y + 15.5, str(erf), 11, farbe if fokus else INK, "mono", weight=700)
+        # gestapelter Balken richtig / falsch / enthalten
+        x = xc
+        for wert, ton, deck, kante in ((m["richtig"], STAHL, 0.30, STAHL), (m["falsch"], "#9c4d40", 0.28, "#9c4d40"), (m["nicht_versucht"], BASE, 0.10, BASE)):
+            br = wert / 150 * (xd - xc)
+            s.rect(x, y + 3, br, 16, ton, deck=deck, kante=kante, sw=1, rx=2)
+            if br > 22:
+                s.text(x + br / 2, y + 15, str(wert), 10, TITLE, "mono", "middle", 600)
+            x += br
+        y += 44
+    s.text(xa + 12, y + 30, T("Die Grundregel lässt echte Antworten, wie sie sind.", "The basic rule leaves real answers as they are."), 15, INK, "serif", kursiv=True)
+    h = fuss(s, y + 52, [("balken", STAHL, T("richtig", "right")), ("balken", "#9c4d40", T("falsch", "wrong")), ("leer", BASE, T("„weiß ich nicht“", "\"I don't know\""))],
+             T("ein Lauf je Frage bei Temperatur 0,7 · gewertet vom selben Modell, Stichproben von Hand gelesen · „weiß ich nicht“ ist genau gezählt, bei richtig gegen falsch irrt der Richter bei etwa jedem sechsten Urteil · Unterschiede unter etwa 8 Antworten bedeuten nichts · linkes Feld: bei „ohne Regel“ und „Grundregel“ nur klare Fälle (dreistufiges Urteil), bei den beiden strengen Fassungen das einfachere Urteil · Fragen: HalluLens und MKQA (deutsch)",
+               "one run per question at temperature 0.7 · judged by the same model, samples read by hand · \"I don't know\" is counted exactly, on right against wrong the judge errs on about every sixth verdict · differences below about 8 answers mean nothing · left field: clear cases only (three-level verdict) for \"no rule\" and \"basic rule\", the simpler verdict for the two strict versions · questions: HalluLens and MKQA (German)"))
+    a, e_, b = q["A"], q["E"], q["B"]
+    ma, me, mb = (x["mittel"] if "mittel" in x else x["leicht"] for x in (a, e_, b))
+    return "gegenprobe", titel, T(f"Ohne Regel behandelt das Modell {a['nichts_dreistufig']['A']} von 150 erfundenen Dingen als echt, mit der Grundregel {e_['nichts_dreistufig']['A']}. Auf 150 mittelschweren echten Fragen bleiben mit der Grundregel {me['richtig']} richtig (ohne Regel {ma['richtig']}); die strenge Regel senkt die falschen Antworten von {ma['falsch']} auf {mb['falsch']} und sagt {mb['nicht_versucht']}-mal „weiß ich nicht“.",
+                                  f"Without a rule the model treats {a['nichts_dreistufig']['A']} of 150 made-up things as real, with the basic rule {e_['nichts_dreistufig']['A']}. On 150 medium real questions {me['richtig']} stay right with the basic rule (no rule: {ma['richtig']}); the strict rule cuts wrong answers from {ma['falsch']} to {mb['falsch']} and says \"I don't know\" {mb['nicht_versucht']} times."), s, h
+
+
 def aufbau(d, sp):
     """Schaubild der Anlage: wer mit wem spricht, und was das Haus verlässt."""
     en = sp == "en"
@@ -1078,7 +1128,7 @@ def steuervektor(d, sp):
                                     "The original model answers 11 of 15 tasks that models often refuse, is evasive on 3 and refuses 1; the uncensored one answers all 15. On tasks, German and speed it stays equal or a little better, but recognises made-up things less often."), s, h
 
 
-ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
+ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
 
 
 def main():

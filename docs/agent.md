@@ -97,6 +97,8 @@ kein Werkzeug.“" (name only tools and parameters you really have; if there is 
 of the first probe 6 (9). In return, justified calls go missing: 32 instead of 41 calls in 50 cases with a fitting tool (liber 36
 instead of 46). On its own the sentence is no better than within those rules.
 
+![Counter-check: made-up things treated as real, and the price on real questions, per rule](../bilder/gegenprobe-en.png)
+
 Caveats: one run per question at temperature 0.7; the basic rule against "no rule" shows that 10 to 12 answers flip
 without any effect of a rule, so differences below about 8 answers mean nothing. The judge was faber itself; I read more
 than 200 verdicts by hand. Abstentions are counted exactly; for right against wrong the judge is off in about one in six
