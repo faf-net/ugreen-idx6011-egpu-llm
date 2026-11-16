@@ -140,8 +140,9 @@ def stand():
 def seite(sp):
     en = sp == "en"
     T = (lambda de, en_: en_ if en else de)
-    strom = L("2026-11-15-betrieb", "strom-faber.json")["phasen"]
-    kalt = [k["erste_antwort_s"] for k in L("2026-11-15-betrieb", "kaltstart-faber.json")["laeufe"]]
+    LB = lambda n: json.load(open(D.betriebsdatei(DATEN, n), encoding="utf-8"))   # Nachmessung auf Strata 0.2.14, wo es sie gibt
+    strom = LB("strom-faber.json")["phasen"]
+    kalt = [k["erste_antwort_s"] for k in LB("kaltstart-faber.json")["laeufe"]]
     werk = {s["stufe"]: s for s in L("2026-11-15-betrieb", "werksmodell.json")["stufen"]}
     neben = L("2026-11-15-betrieb", "nebenlast.json")
     dock = L("dock-2026-11-15", "vorfaelle.json")
@@ -149,10 +150,10 @@ def seite(sp):
     ab = D.ohne_switch(DATEN, list(strom.values()) + list(werk.values()) + [gpu])   # Switch an derselben USV abziehen
     for ph_ in ("schreiben", "lesen"):
         strom[ph_]["wh_je_1000_token_ueber_leerlauf"] = round((strom[ph_]["usv_w"]["mittel"] - strom["leer"]["usv_w"]["mittel"]) / strom[ph_]["tps"] / 3.6, 3)
-    pfad = lambda n: os.path.join(DATEN, "2026-11-15-betrieb", n)
-    zwei = L("2026-11-15-betrieb", "zwei.json")["phasen"] if os.path.exists(pfad("zwei.json")) else None
-    qual = L("2026-11-15-betrieb", "qualitaet.json") if os.path.exists(pfad("qualitaet.json")) else None
-    warte = L("2026-11-15-betrieb", "wartezeit.json")["faelle"] if os.path.exists(pfad("wartezeit.json")) else None
+    pfad = lambda n: D.betriebsdatei(DATEN, n)
+    zwei = LB("zwei.json")["phasen"] if os.path.exists(pfad("zwei.json")) else None
+    qual = LB("qualitaet.json") if os.path.exists(pfad("qualitaet.json")) else None
+    warte = LB("wartezeit.json")["faelle"] if os.path.exists(pfad("wartezeit.json")) else None
     s, l = strom["schreiben"], strom["lesen"]
     faktor = round(werk["xtx-vulkan"]["schreiben_tps_median"] / werk["ugreen-werk"]["schreiben_tps_median"])
     readme = GH + ("#readme" if en else "/blob/main/README.de.md")
@@ -251,8 +252,8 @@ def seite(sp):
         F, Q = qual["modelle"]["faber"], qual["modelle"]["qwen35"]
         A(f"<h3>{T('Und die Qualität? Dieselben Aufgaben für beide Modelle', 'And the quality? The same tasks for both models')}</h3>")
         A(bild(D.qualitaet, sp))
-        P(T("Das kleine Modell schreibt fast doppelt so schnell, denkt aber viel länger nach: 2,6-mal so viele Token für dieselben Aufgaben, und in neun Aufgaben war das Denkbudget aufgebraucht, bevor eine Antwort kam. Dafür lässt es den Arbeitsspeicher des NAS frei. Wer vor allem ein NAS will und gelegentlich chattet, ist mit dem kleinen Modell auf der Karte gut bedient; für einen Agenten und lange Texte lohnt das große.",
-            "The small model writes almost twice as fast but thinks much longer: 2.6 times as many tokens for the same tasks, and in nine tasks the reasoning budget was used up before an answer came. In return it leaves the RAM of the NAS free. If you mainly want a NAS and chat now and then, the small model on the card serves you well; for an agent and long texts the big one pays off."))
+        P(T("Das kleine Modell schreibt fast doppelt so schnell, denkt aber viel länger nach: 2,7-mal so viele Token für dieselben Aufgaben, und in neun Aufgaben war das Denkbudget aufgebraucht, bevor eine Antwort kam. Dafür lässt es den Arbeitsspeicher des NAS frei. Wer vor allem ein NAS will und gelegentlich chattet, ist mit dem kleinen Modell auf der Karte gut bedient; für einen Agenten und lange Texte lohnt das große.",
+            "The small model writes almost twice as fast but thinks much longer: 2.7 times as many tokens for the same tasks, and in nine tasks the reasoning budget was used up before an answer came. In return it leaves the RAM of the NAS free. If you mainly want a NAS and chat now and then, the small model on the card serves you well; for an agent and long texts the big one pays off."))
     zu()
 
     kapitel(4, "modell", T("Ein 125B-Modell auf 24 GB", "A 125B model on 24 GB"),
@@ -292,9 +293,10 @@ def seite(sp):
     P(T("Die vier Regeln nennen genau die Arten von Dingen, nach denen meine Probe fragt. Deshalb die Gegenprobe mit öffentlichen Fragensätzen, die ich nicht geschrieben habe: 150 Dinge, die es nicht gibt, 150 schwere und 150 mittelschwere echte Fragen, 150 Agentenfälle mit Werkzeugliste, jeweils mit sechs Fassungen des Systemprompts.",
         "The four rules name exactly the kinds of things my probe asks about. Hence the counter-check with public question sets I did not write: 150 things that do not exist, 150 hard and 150 medium real questions, 150 agent cases with a tool list, each with six versions of the system prompt."))
     A(bild(D.gegenprobe, sp))
-    regeln = T("""<span class="g">Grundregel · kostet nichts</span>
+    regeln = T("""<span class="g">Grundregel · kostet nichts, reicht aber nicht für Befehle</span>
 <b>Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.</b>
 <span class="g">Erfundenes als echt behandelt: 20 → 6 von 150 · echte Fragen richtig: 90 → 87 von 150 (im Rauschen)</span>
+<span class="g">erfundene Befehlsoptionen erkannt: nur 7 von 24, mit ausdrücklicher Nennung 21</span>
 
 <span class="g">Strenge Regel · für Antworten, auf die man sich verlassen muss</span>
 <b>Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.</b>
@@ -303,10 +305,11 @@ def seite(sp):
 <span class="g">Dazu für Agenten mit Werkzeugen</span>
 <b>Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich kein Werkzeug.“</b>
 <span class="g">falsche Aufrufe: 15 → 10 von 60 · berechtigte Aufrufe: 41 → 32 von 50</span>""",
-               """<span class="g">Basic rule · costs nothing</span>
+               """<span class="g">Basic rule · costs nothing, but is not enough for commands</span>
 <b>Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.</b>
 <span class="g">in English: Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up.</span>
 <span class="g">made-up things treated as real: 20 → 6 of 150 · real questions right: 90 → 87 of 150 (within the noise)</span>
+<span class="g">made-up command options recognised: only 7 of 24, with explicit naming 21</span>
 
 <span class="g">Strict rule · for answers you have to rely on</span>
 <b>Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.</b>
@@ -318,8 +321,8 @@ def seite(sp):
 <span class="g">in English: Name only tools and parameters you really have. If there is none, say: "I have no tool for that."</span>
 <span class="g">wrong calls: 15 → 10 of 60 · justified calls: 41 → 32 of 50</span>""")
     A(f'<div class="rahmen"><span class="schild">{T("REGELN FÜR DEN SYSTEMPROMPT", "RULES FOR THE SYSTEM PROMPT")}</span><pre class="plan konsole-block regeln">{regeln}</pre></div>')
-    P(T("Die <b>Grundregel</b> senkt das Erfinden nicht existierender Dinge um rund drei Viertel und lässt die Antworten auf echte Fragen, wie sie sind. Die <b>strenge Regel</b> sagt bei Antworten, die ohne Regel falsch waren, viermal so oft „Weiß ich nicht“ wie bei richtigen, kostet aber einen Teil der richtigen. Die vier Regeln der ersten Probe kosten doppelt so viele richtige Antworten und bringen kaum mehr. Der Werkzeugsatz senkt falsche Aufrufe, unterdrückt aber auch berechtigte. Das unzensierte Modell verhält sich in allen Punkten wie das Original.",
-        "The <b>basic rule</b> cuts the making up of non-existent things by about three quarters and leaves the answers to real questions as they are. The <b>strict rule</b> says \"I don't know\" four times as often for answers that were wrong without a rule as for right ones, but costs some of the right ones. The four rules of the first probe cost twice as many right answers and gain hardly anything. The tool sentence lowers wrong calls but also suppresses justified ones. The uncensored model behaves like the original on every point."))
+    P(T("Die <b>Grundregel</b> senkt das Erfinden nicht existierender Dinge um rund drei Viertel und lässt die Antworten auf echte Fragen, wie sie sind. Die <b>strenge Regel</b> sagt bei Antworten, die ohne Regel falsch waren, viermal so oft „Weiß ich nicht“ wie bei richtigen, kostet aber einen Teil der richtigen. Die vier Regeln der ersten Probe kosten doppelt so viele richtige Antworten und bringen kaum mehr. Der Werkzeugsatz senkt falsche Aufrufe, unterdrückt aber auch berechtigte. Das unzensierte Modell verhält sich in allen Punkten wie das Original. <b>Eine Grenze:</b> Bei erfundenen Befehlsoptionen, die plausibel klingen, hilft die Grundregel kaum. In einer Nachprobe erkannte das Modell mit ihr 7 von 24, mit den Regeln der ersten Probe, die Befehle und Optionen ausdrücklich nennen, 21 (nach Durchsicht von Hand, ein Lauf). Wer einen Agenten Befehle nennen lässt, nimmt diese Nennung dazu.",
+        "The <b>basic rule</b> cuts the making up of non-existent things by about three quarters and leaves the answers to real questions as they are. The <b>strict rule</b> says \"I don't know\" four times as often for answers that were wrong without a rule as for right ones, but costs some of the right ones. The four rules of the first probe cost twice as many right answers and gain hardly anything. The tool sentence lowers wrong calls but also suppresses justified ones. The uncensored model behaves like the original on every point. <b>One limit:</b> with made-up command options that sound plausible, the basic rule hardly helps. In a follow-up the model recognised 7 of 24 with it, and 21 with the rules of the first probe, which name commands and options explicitly (after reading the answers by hand, one run). If your agent names commands, add that naming."))
     A(f"<h3>{T('Für das Urteil reichen drei Runden nicht', 'For judgement, three rounds are not enough')}</h3>")
     A(bild(D.urteil, sp))
     P(T("Dieselben drei Betriebslagen, zehnmal statt dreimal gestellt. Eine harte Anweisung („weicht die Zahl ab, hör auf“) befolgt das Modell in 10 von 10 Antworten. Wo es selbst abwägen muss, sieht es schlechter aus als nach drei Runden: Bricht nachts ein Lauf ab, erfindet es in 6 von 10 Antworten Fähigkeiten, etwa „ich pausiere die Sammlung“. Wer einen Agenten prüft, sollte jede Lage öfter stellen, als es bequem ist.",
@@ -354,8 +357,8 @@ def seite(sp):
 
     kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
     A(bild(D.versionen, sp))
-    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Bis 0.2.13 wurde nichts langsamer. <b>0.2.14</b>, getestet am 15. und 16.11.2026 und noch nicht in Betrieb, liest Prompts von 16K und 32K rund 15 % schneller und schreibt gleich schnell: In drei Läufen im Wechsel mit 0.2.12 lag das Schreibtempo bei 73 gegen 73 Token je Sekunde. Mein Aufgabensatz besteht auf 0.2.14 98 von 102 Aufgaben, auf 0.2.12 waren es 96.",
-        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Up to 0.2.13 nothing got slower. <b>0.2.14</b>, tested on 15 and 16 Nov 2026 and not in production yet, reads prompts of 16K and 32K about 15 % faster and writes equally fast: in three runs alternating with 0.2.12, decode came to 73 against 73 tokens per second. My task set passes 98 of 102 tasks on 0.2.14, against 96 on 0.2.12.")
+    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Bis 0.2.13 wurde nichts langsamer. <b>0.2.14</b>, getestet am 15. und 16.11.2026 und seit dem 16.11. in Betrieb, liest Prompts von 16K und 32K rund 15 % schneller und schreibt gleich schnell: In drei Läufen im Wechsel mit 0.2.12 lag das Schreibtempo bei 73 gegen 73 Token je Sekunde. Mein Aufgabensatz besteht auf 0.2.14 98 von 102 Aufgaben, auf 0.2.12 waren es 96.",
+        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Up to 0.2.13 nothing got slower. <b>0.2.14</b>, tested on 15 and 16 Nov 2026 and in production since 16 Nov, reads prompts of 16K and 32K about 15 % faster and writes equally fast: in three runs alternating with 0.2.12, decode came to 73 against 73 tokens per second. My task set passes 98 of 102 tasks on 0.2.14, against 96 on 0.2.12.")
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
@@ -377,8 +380,8 @@ def seite(sp):
         (T("Websuche dazu", "Add web search"), T("SearXNG im selben Stapel. Der Chat sucht darüber im Netz, ohne dass ein Suchkonto oder ein Schlüssel nötig ist. Bei mir fragt SearXNG die Suchmaschinen über ein VPN ab.",
                                                  "SearXNG in the same stack. The chat searches the web through it, with no search account and no key. In my setup SearXNG queries the search engines through a VPN."),
          stack, T("Compose-Datei", "Compose file")),
-        (T("Agent dazu", "Add the agent"), T("Hermes Agent mit dem lokalen Modell: Kontext auf 256K stellen, ein Token-Budget für das Nachdenken setzen und die Grundregel gegen das Erfinden in den Systemprompt nehmen.",
-                                             "Hermes Agent with the local model: set the context to 256K, give the reasoning a token budget and put the basic rule against making things up into the system prompt."),
+        (T("Agent dazu", "Add the agent"), T("Hermes Agent mit dem lokalen Modell: Kontext auf 256K stellen, ein Token-Budget für das Nachdenken setzen und die Regeln gegen das Erfinden aus Kapitel 5 in den Systemprompt nehmen.",
+                                             "Hermes Agent with the local model: set the context to 256K, give the reasoning a token budget and put the rules against making things up from chapter 5 into the system prompt."),
          doc("agent"), T("Regeln und Prüfer", "Rules and checker")),
         (T("OpenCode 2 dazu", "Add OpenCode 2"), T("OpenCode 2 auf dem eigenen Rechner, mit llama-swap als Anbieter im OpenAI-Format. Für die Sitzungstitel dasselbe Modell eintragen wie für die Arbeit, sonst lädt die Weiche für jeden Titel um.",
                                                "OpenCode 2 on your own computer, with llama-swap as a provider in the OpenAI format. Set the same model for session titles as for the work, otherwise the switch reloads for every title."),
@@ -435,7 +438,7 @@ def seite(sp):
   <p class="vorspann">{T("Chat im Browser, ein Agent und Bilder, gerechnet auf einem UGREEN iDX6011 Pro mit einer Radeon RX 7900 XTX im Dock. Das Sprachmodell hat 125 Milliarden Parameter, das NAS liefert nebenbei weiter Fotos, Medien und Backups, und die Daten bleiben im Haus. Alles hier ist auf meiner Maschine gemessen. Skripte, Konfigurationen und Rohdaten liegen auf", "Chat in the browser, an agent and pictures, computed on a UGREEN iDX6011 Pro with a Radeon RX 7900 XTX in the dock. The language model has 125 billion parameters, the NAS keeps serving photos, media and backups, and the data stays at home. Everything here was measured on my machine. Scripts, configs and raw data are on")} <a href="{readme}">GitHub</a>.</p>
   <figure class="szene"><img src="{basis}bilder/anlage.png?v={stempel("bilder/anlage.png")}" srcset="{basis}bilder/anlage.png?v={stempel("bilder/anlage.png")} 1x, {basis}bilder/anlage@2x.png?v={stempel("bilder/anlage@2x.png")} 2x" width="1032" height="336" alt="{T("Textgrafik: links das NAS mit sechs Einschüben, rechts das Dock mit der Grafikkarte und drei Lüftern, dazwischen das leuchtende OCuLink-Kabel.", "Text graphic: the NAS with six drive bays on the left, the dock with the graphics card and three fans on the right, the glowing OCuLink cable between them.")}"><figcaption><span class="name">{T("Die Anlage", "The setup")}</span><span class="teile">{T("NAS · Kabel · Dock mit Karte", "NAS · cable · dock with card")}</span></figcaption></figure>
   <div class="kacheln">{kacheln}</div>
-  <p class="status"><span class="konsole">[ {T("GEMESSEN", "MEASURED")} ]</span> {T("Stand 15.11.2026 · Strata 0.2.12 · UGOS Pro 1.21.1 · Schätzungen sind als solche bezeichnet", "as of 15 Nov 2026 · Strata 0.2.12 · UGOS Pro 1.21.1 · estimates are marked as such")}</p>
+  <p class="status"><span class="konsole">[ {T("GEMESSEN", "MEASURED")} ]</span> {T("Stand 16.11.2026 · Strata 0.2.14 · UGOS Pro 1.21.1 · Schätzungen sind als solche bezeichnet", "as of 16 Nov 2026 · Strata 0.2.14 · UGOS Pro 1.21.1 · estimates are marked as such")}</p>
   <p class="status"><span class="konsole">[ {T("PARALLEL", "IN PARALLEL")} ]</span> {T("Fotos, Video, Dateifreigaben und USV-Überwachung von UGOS laufen weiter, auch bei geladenem Modell", "photos, video, file shares and UPS monitoring of UGOS keep running, even with the model loaded")}</p>
 </section>
 {rumpf}

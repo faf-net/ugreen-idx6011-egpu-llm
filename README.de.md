@@ -15,17 +15,17 @@ Fotos, Medien und Backups.
 Alle Werte sind auf meiner Maschine gemessen, sofern nicht anders vermerkt. Das Repo enthält **keinen
 Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte und Messprogramme.
 
-**Stand 15.11.2026:** Strata 0.2.12 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS. `liber` ist die unzensierte Fassung von `faber`: dieselben Gewichte ohne die Ablehnungen, sie beantwortet also, was man sie fragt ([docs/steuervektor.de.md](docs/steuervektor.de.md)). Chat und Agent können jedes der drei nutzen.
+**Stand 16.11.2026:** Strata 0.2.14 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS. `liber` ist die unzensierte Fassung von `faber`: dieselben Gewichte ohne die Ablehnungen, sie beantwortet also, was man sie fragt ([docs/steuervektor.de.md](docs/steuervektor.de.md)). Chat und Agent können jedes der drei nutzen.
 
 ## Auf einen Blick
 
 | | |
 |---|---|
 | Schreiben | 63–68 Token/s, bei 248K Token Kontext kaum langsamer |
-| Prompt einlesen | 1.100–1.250 Token/s ab 16K: 26 s für 32K Token, 3,6 min für 250K |
+| Prompt einlesen | 1.300–1.400 Token/s ab 16K: 23 s für 32K Token, 3,4 min für 250K |
 | Kontext | 256K, die Nadel wurde bis 250K in 9 von 9 Fällen gefunden |
 | Speicher | rund 53 GiB der 64 GB RAM, die 24-GB-Karte ist voll |
-| Strom | 1,5 Wh je 1.000 geschriebene Token; NAS und Dock ziehen beim Schreiben 355 W, im Leerlauf 48 W |
+| Strom | 1,4 Wh je 1.000 geschriebene Token; NAS und Dock ziehen beim Schreiben 336 W, im Leerlauf 49 W |
 | Größtes Risiko | ein Dock-Abriss bei geladenem Modell startet das NAS neu (Kernel-Fehler, entschärft) |
 
 ## Was wo steht
@@ -108,7 +108,7 @@ Das Einlesen wächst fast linear mit dem Prompt: 5,5 s bei 4K, 26 s bei 32K, 1,8
 
 Mit geladenem, ruhendem `faber` belegt die Engine 44,6 der 62,3 GiB RAM (die Experten-Gewichte, die nicht auf die Karte passen, die K/V von 32K Token in 3,1 GiB festgepinntem RAM und den Gesprächs-Cache, wie er sich füllt), NAS-Dienste und Kernel 10,2 GiB, 7,5 GiB bleiben verfügbar. Auf der Karte nimmt der Experten-Cache 17,3 von 24 GiB (10.644 Plätze), der MTP-Entwurf 1 GiB, alles Übrige 5,3 GiB, 0,4 GiB bleiben frei. Mit 64 GB RAM ist das ungefähr die Grenze: Ein zweiter großer Dienst daneben verlangt einen kleineren Gesprächs-Cache.
 
-### Strom, Kaltstart, NAS-Betrieb, ein dichtes 70B und UGREENs eigenes Modell (15.11.2026)
+### Strom, Kaltstart, NAS-Betrieb, ein dichtes 70B und UGREENs eigenes Modell (15. und 16.11.2026)
 
 ![Leistung je Phase, und das MoE-Modell gegen ein dichtes 70B](bilder/betrieb-de.png)
 
@@ -116,22 +116,22 @@ Mit geladenem, ruhendem `faber` belegt die Engine 44,6 der 62,3 GiB RAM (die Exp
 
 | Phase | NAS und Dock | Karte allein |
 |---|---:|---:|
-| Leerlauf, kein Modell geladen | 48 W | 9 W |
-| Modell geladen, ruhend | 48 W | 10 W |
-| Schreiben, 66,3 Token/s | 355 W | 205 W |
-| frische 82K-Prompts einlesen, 1.159 Token/s | 392 W | 254 W |
+| Leerlauf, kein Modell geladen | 49 W | 13 W |
+| Modell geladen, ruhend | 50 W | 14 W |
+| Schreiben, 65,9 Token/s | 336 W | 205 W |
+| frische 82K-Prompts einlesen, 1.339 Token/s | 377 W | 231 W |
 
-Das sind **1,5 Wh je 1.000 geschriebene Token** für NAS und Dock (1,3 Wh über Leerlauf) und 0,09 Wh je 1.000 gelesene Token. Ein geladenes, ruhendes Modell kostet nichts Messbares gegenüber der leeren Karte.
+Das sind **1,4 Wh je 1.000 geschriebene Token** für NAS und Dock (1,2 Wh über Leerlauf) und 0,08 Wh je 1.000 gelesene Token. Ein geladenes, ruhendes Modell kostet nichts Messbares gegenüber der leeren Karte.
 
 | Fassung des 125B-Modells | Schreiben T/s | NAS und Dock | je 1.000 geschriebene Token |
 |---|---:|---:|---:|
-| IQ3_XXS (`faber`) | 66,3 | 355 W | 1,5 Wh |
-| IQ3_XXS, unzensiert (`liber`) | 62,9 | 338 W | 1,5 Wh |
-| IQ2_XS (`velox`) | 70,8 | 349 W | 1,4 Wh |
+| IQ3_XXS (`faber`) | 65,9 | 336 W | 1,4 Wh |
+| IQ3_XXS, unzensiert (`liber`) | 63,1 | 342 W | 1,5 Wh |
+| IQ2_XS (`velox`) | 71,9 | 341 W | 1,3 Wh |
 
-Am Vormittag desselben Tages hing noch ein Netzwerk-Switch an der USV; diese erste Messung liegt mit ihrem Abzug in `messen/daten/2026-11-15-betrieb/mit-switch/`. Der gerechnete Wert von damals (1,5 Wh) deckt sich mit dem jetzt gemessenen.
+Strom, Kaltstart, Wartezeiten und der Zwei-Personen-Test sind am 16.11.2026 auf Strata 0.2.14 neu gemessen (`messen/daten/2026-11-16-betrieb/`). Auf 0.2.12 waren es am 15.11. beim Schreiben 66,3 Token/s bei 355 W und 1,5 Wh, beim Einlesen 1.159 Token/s (`messen/daten/2026-11-15-betrieb/`); das Schreiben ist also gleich schnell, das Einlesen 16 % schneller. Die allererste Messung mit einem Netzwerk-Switch an derselben USV liegt mit ihrem Abzug in `messen/daten/2026-11-15-betrieb/mit-switch/`.
 
-**Kaltstart.** Von der leeren Karte bis zum ersten Token: 18,6–19,6 s in fünf Läufen. Den Seitencache vor dem ersten Lauf zu leeren, machte keinen Unterschied (19,6 s).
+**Kaltstart.** Von der leeren Karte bis zum ersten Token: 18,5–19,5 s in fünf Läufen. Den Seitencache vor dem ersten Lauf zu leeren, machte keinen Unterschied (19,5 s).
 
 ![Das NAS arbeitet weiter, während das Modell schreibt](bilder/parallel-de.png)
 
@@ -167,9 +167,9 @@ Auf der Karte schreibt das eingebaute Modell 11-mal so schnell und liest fünfma
 
 | | Flash-Next 125B (MoE, Strata) | Qwen3.5-35B-A3B (UGREENs Datei, auf der Karte) |
 |---|---:|---:|
-| **bestandene Aufgaben (von 102)** | **96** | **90** |
-| Code | 14/15 | 12/15 |
-| Logik | 14/15 | 12/15 |
+| **bestandene Aufgaben (von 102)** | **98** | **90** |
+| Code | 15/15 | 12/15 |
+| Logik | 15/15 | 12/15 |
 | Anweisungen befolgen | 15/15 | 13/15 |
 | Fakten | 12/15 | 12/15 |
 | Werkzeugaufrufe | 20/20 | 20/20 |
@@ -177,23 +177,23 @@ Auf der Karte schreibt das eingebaute Modell 11-mal so schnell und liest fünfma
 | Sicherheit | 17/18 | 17/18 |
 | Denkbudget von 8.000 Token aufgebraucht, keine Antwort | 0 | 9 |
 | Deutsch, verdeckt benotet (von 60) | 47 | 37 |
-| geschriebene Token für alle 114 Aufgaben | 87.007 | 223.795 |
-| Zeit für alle 114 Aufgaben | 27 min | 37 min |
+| geschriebene Token für alle 114 Aufgaben | 82.901 | 223.795 |
+| Zeit für alle 114 Aufgaben | 25 min | 37 min |
 
-Das kleine Modell denkt viel länger nach: Es schreibt für dieselben Aufgaben 2,6-mal so viele Token, deshalb dauert der ganze Satz trotz des höheren Tempos 37 % länger, und in neun Aufgaben war das Denkbudget aufgebraucht, bevor eine Antwort kam. Mit einem größeren Budget würden einige davon vermutlich bestehen; gemessen habe ich das nicht. Für das kleine Modell spricht: Es lässt den Arbeitsspeicher des NAS frei, wo das 125B-Modell rund 53 GiB belegt. Die Zahlen des 125B-Modells stammen vom 13.11. (gleiche Aufgaben, gleiche Strata-Version). Deutsch hat ein Sprachmodell verdeckt benotet, das nicht wusste, welche Antwort von welchem Modell stammt; ein anderer Prüfer als im Nachtrag vom 14.11., die Noten sind also nur innerhalb dieser Tabelle vergleichbar. Daten (nur Zählwerte): `messen/daten/2026-11-15-betrieb/qualitaet.json`.
+Das kleine Modell denkt viel länger nach: Es schreibt für dieselben Aufgaben 2,7-mal so viele Token, deshalb dauert der ganze Satz trotz des höheren Tempos 49 % länger, und in neun Aufgaben war das Denkbudget aufgebraucht, bevor eine Antwort kam. Mit einem größeren Budget würden einige davon vermutlich bestehen; gemessen habe ich das nicht. Für das kleine Modell spricht: Es lässt den Arbeitsspeicher des NAS frei, wo das 125B-Modell rund 53 GiB belegt. Die Zahlen des 125B-Modells stammen vom 16.11. auf Strata 0.2.14 (gleiche Aufgaben); auf 0.2.12 bestand es am 13.11. 96 von 102. Seine Deutsch-Note stammt vom Lauf auf 0.2.12. Deutsch hat ein Sprachmodell verdeckt benotet, das nicht wusste, welche Antwort von welchem Modell stammt; ein anderer Prüfer als im Nachtrag vom 14.11., die Noten sind also nur innerhalb dieser Tabelle vergleichbar. Daten (nur Zählwerte): `messen/daten/2026-11-15-betrieb/qualitaet.json`.
 
 **Zwei Personen gleichzeitig.** `messen/zwei.py` führt erst ein Gespräch mit fünf Fragen allein, dann zwei Gespräche zugleich am selben Modell, dann zwei Personen abwechselnd an zwei verschiedenen Modellen:
 
 | | Warten bis zum ersten Wort (Median) | Schreiben T/s (Median) |
 |---|---:|---:|
-| eine Person allein | 0,2 s | 62,2 |
-| zwei zugleich, Person A | 8,1 s | 64,7 |
-| zwei zugleich, Person B | 10,5 s | 72,6 |
-| abwechselnd an zwei Modellen | 20 s | – |
+| eine Person allein | 0,3 s | 70,1 |
+| zwei zugleich, Person A | 9,5 s | 67,1 |
+| zwei zugleich, Person B | 9,6 s | 73,3 |
+| abwechselnd an zwei Modellen | 19 s | – |
 
 Strata beantwortet eine Anfrage nach der anderen: Die zweite Person wartet, bis die erste Antwort fertig ist, bei Antworten bis 400 Token rund zehn Sekunden, und bekommt dann das volle Tempo. Nutzen zwei Personen zwei verschiedene Modelle, lädt die Karte bei jedem Wechsel um, rund 20 s jedes Mal. Für gemeinsame Nutzung also ein Modell für alle.
 
-Skripte: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`, `messen/zwei.py`. Rohdaten: `messen/daten/2026-11-15-betrieb/`.
+Skripte: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`, `messen/zwei.py`. Rohdaten: `messen/daten/2026-11-16-betrieb/` (Strata 0.2.14) und `messen/daten/2026-11-15-betrieb/`.
 
 ### Kostet Strata Qualität? Strata gegen llama.cpp auf derselben Datei
 
@@ -245,9 +245,9 @@ Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit iden
 | 0.2.8 | 31.10. | **in Betrieb**; gleich; rettet leicht fehlerhafte Tool-Calls; das Docker-Image lässt 854 MiB VRAM frei | [PR #4851](https://github.com/Niko1221/Strata/pull/4851) |
 | 0.2.9, 0.2.10 | 05.11. | zwischendurch **in Betrieb**; 0.2.9 behebt still falsch gelesene lange Prompts (#3431) | – |
 | 0.2.11 | 05.11. | **in Betrieb**; gleich wie 0.2.10 | [#5321](https://github.com/Niko1221/Strata/issues/5321) |
-| 0.2.12 | 08.11. | **in Betrieb, aktuell**; gleich wie 0.2.11; der getunte DFlash2-Drafter ist am Ende langsamer und bleibt aus | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
+| 0.2.12 | 08.11. | **in Betrieb** bis 16.11.; gleich wie 0.2.11; der getunte DFlash2-Drafter ist am Ende langsamer und bleibt aus | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 09.11. | mit abgestimmter Konfiguration gleich, nicht übernommen; das Linux-Docker-Image nutzt die gfx1100-Tabelle nicht mehr und liest 16K-Prompts 35 % langsamer | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
-| 0.2.14 | 15./16.11. | getestet, noch nicht in Betrieb; Schreiben gleich, Prompt-Einlesen in derselben Sitzung bei 16K 16 % und bei 32K 14 % schneller; eigener Aufgabensatz 98 von 102 (0.2.12: 96); keine Treiberpausen auf dieser Karte; `standard-v1` Plausibilität 11 von 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
+| 0.2.14 | 15./16.11. | **in Betrieb, aktuell** seit 16.11.; Schreiben gleich, Prompt-Einlesen in derselben Sitzung bei 16K 16 % und bei 32K 14 % schneller; eigener Aufgabensatz 98 von 102 (0.2.12: 96); keine Treiberpausen auf dieser Karte; `standard-v1` Plausibilität 11 von 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 
 ## Starten
 
@@ -255,7 +255,7 @@ Modelle, Packs und MTP-Kopf legt Strata selbst an (`setup.py`), sie kommen per B
 Startkonfigurationen in `konfig/`, ein llama-swap-Beispiel in `konfig/llama-swap.yaml`. In `allowed_hosts` die
 Namen eintragen, unter denen der Server angesprochen wird (Strata prüft den Host-Header gegen DNS-Rebinding).
 
-Die Konfigurationen `konfig/arbeit.json`, `konfig/schnell.json` und `konfig/llama-swap.yaml` sind die erste Fassung für die selbst gebaute Engine. **Was heute läuft, steht in [`konfig/strata-0.2.12/`](konfig/strata-0.2.12/)**: dieselben Einstellungen für die fertigen Release-Pakete, die Modelle heißen dort `faber` (IQ3_XXS, vorher `arbeit`) und `velox` (IQ2_XS, vorher `schnell`).
+Die Konfigurationen `konfig/arbeit.json`, `konfig/schnell.json` und `konfig/llama-swap.yaml` sind die erste Fassung für die selbst gebaute Engine. **Was heute läuft, steht in [`konfig/strata-0.2.14/`](konfig/strata-0.2.14/)**: dieselben Einstellungen für die fertigen Release-Pakete, die Modelle heißen dort `faber` (IQ3_XXS, vorher `arbeit`) und `velox` (IQ2_XS, vorher `schnell`).
 
 ### Volle Geschwindigkeit im Docker-Image
 
@@ -362,7 +362,7 @@ Die Gegenmaßnahme bleibt dieselbe.
 
 ![Drei Schichten gegen Erfinden, und was jede abfängt](bilder/schichten-de.png)
 
-**Gegenprobe mit öffentlichen Fragensätzen (15./16.11.2026): Eine kurze Regel reicht.** Die vier Regeln nennen die Arten von Dingen, nach denen meine Probe fragt; deshalb die Prüfung mit Fragen, die ich nicht geschrieben habe. Eine Grundregel („Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.“) senkt die Zahl erfundener Dinge, die das Modell als echt behandelt, von 20 auf 6 von 150 und lässt echte Fragen, wie sie sind (90 gegen 87 von 150 richtig). Eine strenge Regel mit festem „Weiß ich nicht“ halbiert die falschen Antworten (58 auf 30) und kostet einige richtige (90 auf 84). Die vier Regeln kosten doppelt so viele richtige Antworten für wenig mehr.
+**Gegenprobe mit öffentlichen Fragensätzen (15./16.11.2026): Eine kurze Regel reicht gegen fremd Klingendes, nicht bei Befehlen.** Die vier Regeln nennen die Arten von Dingen, nach denen meine Probe fragt; deshalb die Prüfung mit Fragen, die ich nicht geschrieben habe. Eine Grundregel („Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.“) senkt die Zahl erfundener Dinge, die das Modell als echt behandelt, von 20 auf 6 von 150 und lässt echte Fragen, wie sie sind (90 gegen 87 von 150 richtig). Eine strenge Regel mit festem „Weiß ich nicht“ halbiert die falschen Antworten (58 auf 30) und kostet einige richtige (90 auf 84). Die vier Regeln kosten doppelt so viele richtige Antworten für wenig mehr. Eine Grenze zeigte die Nachprobe mit meinen eigenen Fragen: Von 24 erfundenen Befehlsoptionen erkennt das unzensierte Modell mit der Grundregel 7, mit den vier Regeln 21 (Ortsnamen 12 gegen 22, nach Durchsicht von Hand). Für Befehle, Optionen und Orte braucht es also die ausdrückliche Nennung.
 
 ![Gegenprobe: Erfundenes als echt behandelt und der Preis bei echten Fragen, je Regel](bilder/gegenprobe-de.png)
 
@@ -399,6 +399,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   konfig/strata-0.2.8/          Startkonfigurationen und llama-swap-Makro für 0.2.8 (Konfigurationen wie bei 0.2.3.1)
   konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
   konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration, dazu liber.json (das unzensierte Modell)
+  konfig/strata-0.2.14/         Startkonfigurationen und llama-swap-Makro für 0.2.14, was heute läuft (Konfigurationen unverändert, nur Engine und Control getauscht)
   konfig/hermes-pruefer/        Plugin für Hermes Agent: prüft jede Antwort mit festen Regeln, ohne Sprachmodell
   konfig/stack/                 Chat und Websuche: Compose-Datei für Open WebUI und SearXNG, auf dem NAS getestet (EN/DE)
   konfig/opencode/              OpenCode 2 im Terminal mit den lokalen Modellen: Beispielkonfiguration und was ich gelernt habe (EN/DE)
@@ -461,6 +462,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/daten/2026-11-15-v0.2.14/  Rohdaten des Tests von 0.2.14: Paare gegen 0.2.12, standard-v1, strata_bench, Nadeln, frische Engines (README darin)
   messen/daten/2026-11-14-erfinden/  Zählwerte: Probe je Modell und Bereich, Nachtvergleich, Urteil mit 10 Runden
   messen/daten/2026-11-15-betrieb/  Strom, Kaltstart, NAS-Betrieb, dichtes 70B, UGREENs eingebautes Modell
+  messen/daten/2026-11-16-betrieb/  Nachmessung auf Strata 0.2.14: Strom und Tempo der drei Modelle, Kaltstart, Wartezeiten, zwei Personen, Aufgabensatz
 ```
 
 **Dokumentation und Diagramme**

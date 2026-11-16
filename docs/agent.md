@@ -80,7 +80,7 @@ Strict rule (B): Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß 
 | medium questions: right / wrong / abstained | 95 / 54 / 1 | 95 / 53 / 2 | 85 / 31 / 34 | 76 / 30 / 44 |
 | hard questions: right / wrong / abstained | 14 / 134 / 2 | 21 / 113 / 16 | 5 / 21 / 124 | 1 / 14 / 135 |
 
-- **The basic rule costs nothing.** It cuts made-up answers about things that do not exist from 20 to 6 and from 25 to 5,
+- **The basic rule costs nothing on these questions.** It cuts made-up answers about things that do not exist from 20 to 6 and from 25 to 5,
   in full sentences instead of a fixed phrase, and leaves answers to real questions as they are. It does not catch wrong
   answers to real questions.
 - **The strict rule halves the wrong answers and costs right ones.** On the medium questions it abstains on 41 % of the
@@ -108,6 +108,26 @@ only; on top come answers that deny the thing and guess what was meant (35 and 4
 basic rule), some right, some made up. The column "rules of the first probe" uses the three general ones of the four
 rules above, without the one about the catalogue database; for it and for the strict rule the first row comes from the
 simpler verdict "made up or recognised". Counts and verdicts: `messen/daten/2026-11-16-erfinden2/`.
+
+**For commands and options the basic rule is not enough.** The four public question sets contain no command options. So on
+16 Nov I ran my first probe again for the uncensored model, once with the basic rule and once with the rules of the first
+probe, in one session (3 rounds, temperature 0.7, 24 made-up items per area). Recognised as made up, after reading the
+answers by hand:
+
+| Area | basic rule | rules of the first probe |
+|---|---:|---:|
+| command options | 7 of 24 | 21 of 24 |
+| places | 12 of 24 | 22 of 24 |
+| technical terms | 19 of 24 | 22 of 24 |
+| books | 24 of 24 | 24 of 24 |
+| tool parameters | 24 of 24 | 24 of 24 |
+
+With the basic rule the model still explains a made-up option fluently when it sounds plausible, for example
+`tar --dedupe-links`. So it helps with things that sound foreign and with tools, but not where an agent can do the most
+damage. Commands, options and places need to be named explicitly, as in the first probe. Real items are answered equally
+well with both (119 and 120 of 120). The script's automatic verdict misses rejections written as full sentences and counts
+4 instead of 7 command options for the basic rule; both counts are in
+`messen/daten/2026-11-16-erfinden2/nachprobe-befehle.json`.
 
 **For judgement, three rounds are not enough.** With `messen/agent_de.py`, faber got the same operating situations ten
 times instead of three:

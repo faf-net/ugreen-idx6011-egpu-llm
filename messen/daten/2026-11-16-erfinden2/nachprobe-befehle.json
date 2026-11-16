@@ -1,0 +1,88 @@
+{
+ "stand": "2026-11-16",
+ "modell": "liber (Flash-Next 125B IQ3_XXS, unzensiert), Strata 0.2.14",
+ "probe": "messen/halluzination.py: 5 Bereiche, je 8 erfundene und 8 echte Dinge, 3 Runden, Temperatur 0,7; beide Arme in derselben Sitzung",
+ "hinweis": "erkannt_automatisch ist die Wertung des Skripts; sie übersieht Ablehnungen in ganzen Sätzen (\"Ich kenne … nicht\", \"Diese Option gibt es nicht\"). erkannt_nach_durchsicht: alle als erfunden gewerteten Antworten von Hand gelesen. Keine Frage- und Antworttexte.",
+ "arme": {
+  "grundregel": {
+   "regel": "Grundregel (E), dazu Werkzeugsatz und der Satz zur Katalogdatenbank",
+   "bereiche": {
+    "ort": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 12,
+     "erkannt_nach_durchsicht": 12,
+     "echt_n": 24,
+     "echt_richtig": 23
+    },
+    "befehl": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 4,
+     "erkannt_nach_durchsicht": 7,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "werk": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 22,
+     "erkannt_nach_durchsicht": 24,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "begriff": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 13,
+     "erkannt_nach_durchsicht": 19,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "werkzeug": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 23,
+     "erkannt_nach_durchsicht": 24,
+     "echt_n": 24,
+     "echt_richtig": 24
+    }
+   }
+  },
+  "saetze_erste_probe": {
+   "regel": "die vier Sätze der ersten Probe",
+   "bereiche": {
+    "ort": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 22,
+     "erkannt_nach_durchsicht": 22,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "befehl": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 21,
+     "erkannt_nach_durchsicht": 21,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "werk": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 24,
+     "erkannt_nach_durchsicht": 24,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "begriff": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 22,
+     "erkannt_nach_durchsicht": 22,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "werkzeug": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 24,
+     "erkannt_nach_durchsicht": 24,
+     "echt_n": 24,
+     "echt_richtig": 24
+    }
+   }
+  }
+ }
+}

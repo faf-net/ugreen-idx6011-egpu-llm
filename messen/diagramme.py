@@ -728,6 +728,12 @@ def dflash2(d, sp):
                                      "Im festen 900-Token-Test schreibt DFlash2 10 bis 15 Prozent schneller als MTP, im echten Lauf mit 114 Aufgaben bleibt das Tempo je Token gleich, die Antworten werden 28 Prozent länger, die Gesamtzeit steigt um 16 Prozent."), s, h
 
 
+def betriebsdatei(d, name):
+    """Betriebsmessung: die Nachmessung auf Strata 0.2.14 vom 16.11.2026, wo es sie gibt, sonst die Messung vom 15.11.2026."""
+    neu = os.path.join(d, "2026-11-16-betrieb", name)
+    return neu if os.path.exists(neu) else os.path.join(d, "2026-11-15-betrieb", name)
+
+
 def ohne_switch(d, eintraege):
     """Früher: Abzug für den Netzwerk-Switch an derselben USV. Seit der Nachmessung am 15.11.2026 hängen NAS und Dock allein an der USV; nichts mehr abzuziehen."""
     return 0
@@ -736,7 +742,7 @@ def ohne_switch(d, eintraege):
 def betrieb(d, sp):
     en = sp == "en"
     o = os.path.join(d, "2026-11-15-betrieb")
-    ph = json.load(open(os.path.join(o, "strom-faber.json"), encoding="utf-8"))["phasen"]
+    ph = json.load(open(betriebsdatei(d, "strom-faber.json"), encoding="utf-8"))["phasen"]
     stufen = [x for f in ("dicht70-gpu.json", "dicht70-cpu.json") for x in json.load(open(os.path.join(o, f), encoding="utf-8"))["stufen"] if "fehler" not in x]
     ab = ohne_switch(d, list(ph.values()) + stufen)
     bestes = max((x for x in stufen if x["ngl"] > 0), key=lambda x: x["schreiben_tps_median"])
@@ -745,7 +751,7 @@ def betrieb(d, sp):
     faktor = round(ph["schreiben"]["tps"] / bestes["schreiben_tps_median"])
     whs = z(ph["schreiben"]["wh_je_1000_token_gesamt"], sp)
     titel = f"{whs} Wh per 1,000 written tokens, and a dense 70B is {faktor} times slower" if en else f"{whs} Wh je 1.000 geschriebene Token, und ein dichtes 70B ist {faktor}-mal langsamer"
-    kopf(s, "UGREEN iDX6011 Pro + RX 7900 XTX · measured at the UPS · 15 Nov 2026" if en else "UGREEN iDX6011 Pro + RX 7900 XTX · an der USV gemessen · 15.11.2026", titel)
+    kopf(s, "UGREEN iDX6011 Pro + RX 7900 XTX · measured at the UPS · 15 and 16 Nov 2026" if en else "UGREEN iDX6011 Pro + RX 7900 XTX · an der USV gemessen · 15. und 16.11.2026", titel)
     feld(s, L, 104, "A · Power · watts" if en else "A · Leistung · Watt", "Flash-Next 125B (MoE) · NAS and dock together" if en else "Flash-Next 125B (MoE) · NAS und Dock zusammen")
     p = Hoch(s, L, 456, 144, 384, 600)
     p.achse(100, sp)
@@ -773,8 +779,8 @@ def betrieb(d, sp):
             s.text(gm, 433, f"{z(wh, sp, 1)} Wh / 1.000 Token" if not en else f"{z(wh, sp, 1)} Wh / 1,000 tokens", 8.5, ACC if fokus else MUTED, "mono", "middle", 600 if fokus else None)
     s.text(R, 172, "Dense weights must all be read for every token." if en else "Dichte Gewichte werden für jedes Token alle gelesen.", 15, INK, "serif", "end", kursiv=True)
     h = fuss(s, 458, (("balken", STAHL, "NAS and dock at the wall" if en else "NAS und Dock an der Steckdose"), ("balken", ACC, "card alone (sysfs)" if en else "Karte allein (sysfs)")),
-             f"UPS values via NUT, the first 45 s of each phase discarded · NAS and dock alone on the UPS · dense 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K context · messen/betrieb.py, messen/dicht70.py · data: messen/daten/2026-11-15-betrieb/" if en else
-             f"USV-Werte über NUT, die ersten 45 s jeder Phase verworfen · NAS und Dock allein an der USV · dichtes 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K Kontext · messen/betrieb.py, messen/dicht70.py · Daten: messen/daten/2026-11-15-betrieb/")
+             f"UPS values via NUT, the first 45 s of each phase discarded · NAS and dock alone on the UPS · dense 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K context · Flash-Next on Strata 0.2.14 (16 Nov), the dense 70B measured on 15 Nov · messen/betrieb.py, messen/dicht70.py · data: messen/daten/2026-11-16-betrieb/ and 2026-11-15-betrieb/" if en else
+             f"USV-Werte über NUT, die ersten 45 s jeder Phase verworfen · NAS und Dock allein an der USV · dichtes 70B: Llama 3.3 70B Instruct Q4_K_M, llama.cpp Vulkan, 8K Kontext · Flash-Next auf Strata 0.2.14 (16.11.), das dichte 70B am 15.11. gemessen · messen/betrieb.py, messen/dicht70.py · Daten: messen/daten/2026-11-16-betrieb/ und 2026-11-15-betrieb/")
     return "betrieb", titel, ("Power at the UPS and at the card for idle, model loaded, writing and reading, and decode speed of the MoE 125B model against a dense 70B model on the same card." if en else
                               "Leistung an der USV und an der Karte für Leerlauf, geladenes Modell, Schreiben und Einlesen, dazu das Schreibtempo des MoE-125B-Modells gegen ein dichtes 70B-Modell auf derselben Karte."), s, h
 
@@ -816,11 +822,11 @@ def qualitaet(d, sp):
     """Zwei Modelle, dieselben Aufgaben: Anteil bestandener Aufgaben je Bereich, dazu zwei Zahlenpaare."""
     en = sp == "en"
     T = lambda de, en_: en_ if en else de
-    q = json.load(open(os.path.join(d, "2026-11-15-betrieb", "qualitaet.json"), encoding="utf-8"))["modelle"]
+    q = json.load(open(betriebsdatei(d, "qualitaet.json"), encoding="utf-8"))["modelle"]
     F, Q = q["faber"], q["qwen35"]
     s = Svg()
     titel = T("Das 125B-Modell besteht mehr Aufgaben und schreibt das bessere Deutsch", "The 125B model passes more tasks and writes the better German")
-    kopf(s, T("Flash-Next 125B gegen UGREENs Qwen3.5-35B · dieselben Aufgaben · RX 7900 XTX · 15.11.2026", "Flash-Next 125B against UGREEN's Qwen3.5-35B · the same tasks · RX 7900 XTX · 15 Nov 2026"), titel)
+    kopf(s, T("Flash-Next 125B gegen UGREENs Qwen3.5-35B · dieselben Aufgaben · RX 7900 XTX · 15. und 16.11.2026", "Flash-Next 125B against UGREEN's Qwen3.5-35B · the same tasks · RX 7900 XTX · 15 and 16 Nov 2026"), titel)
     feld(s, L, 104, T("A · Bestanden · Anteil der Aufgaben", "A · Passed · share of tasks"), T("länger ist besser", "longer is better"))
     x0, x1 = 232, 560
     reihen = [(T("Alle benoteten Aufgaben", "All graded tasks"), F["bestanden_gesamt"], Q["bestanden_gesamt"], 102, True)]
@@ -858,8 +864,8 @@ def qualitaet(d, sp):
     s.text(xr, 356, T("Das kleine Modell schreibt schneller,", "The small model writes faster"), 15, INK, "serif", kursiv=True)
     s.text(xr, 374, T("denkt aber viel länger nach.", "but thinks much longer."), 15, INK, "serif", kursiv=True)
     h = fuss(s, unten + 40, [("balken", ACC, "Flash-Next 125B"), ("balken", STAHL, T("Qwen3.5-35B (UGREENs Modell)", "Qwen3.5-35B (UGREEN's model)"))],
-             T("102 automatisch benotete Aufgaben, davon je 15 in den vier gezeigten Bereichen · Deutsch: 12 Texte, verdeckt benotet, höchstens 60 Punkte · beide Modelle auf derselben Karte, gleiche Aufgaben, ein Lauf",
-               "102 automatically graded tasks, 15 each in the four areas shown · German: 12 texts, graded blind, at most 60 points · both models on the same card, the same tasks, one run"))
+             T("102 automatisch benotete Aufgaben, davon je 15 in den vier gezeigten Bereichen · Deutsch: 12 Texte, verdeckt benotet, höchstens 60 Punkte · beide Modelle auf derselben Karte, gleiche Aufgaben, ein Lauf · Flash-Next auf Strata 0.2.14 (16.11.), seine Deutsch-Note vom Lauf auf 0.2.12",
+               "102 automatically graded tasks, 15 each in the four areas shown · German: 12 texts, graded blind, at most 60 points · both models on the same card, the same tasks, one run · Flash-Next on Strata 0.2.14 (16 Nov), its German grade from the run on 0.2.12"))
     return "qualitaet", titel, T(f"Flash-Next 125B besteht {F['bestanden_gesamt']} von 102 Aufgaben, UGREENs Qwen3.5-35B {Q['bestanden_gesamt']}; im Deutschen {F['deutsch_blind_60']} gegen {Q['deutsch_blind_60']} von 60 Punkten. Beim kleinen Modell war in {Q['denkbudget_erschoepft']} Aufgaben das Denkbudget aufgebraucht.",
                                  f"Flash-Next 125B passes {F['bestanden_gesamt']} of 102 tasks, UGREEN's Qwen3.5-35B {Q['bestanden_gesamt']}; in German {F['deutsch_blind_60']} against {Q['deutsch_blind_60']} of 60 points. The small model used up its reasoning budget in {Q['denkbudget_erschoepft']} tasks."), s, h
 
@@ -868,14 +874,14 @@ def wartezeit(d, sp):
     """Wartezeit bis zum ersten Wort als Zeitstrahl: oben Texte zum Lesen nach Länge, unten Gespräch und besondere Fälle."""
     en = sp == "en"
     T = lambda de, en_: en_ if en else de
-    lade = lambda name: json.load(open(os.path.join(d, "2026-11-15-betrieb", name), encoding="utf-8"))
+    lade = lambda name: json.load(open(betriebsdatei(d, name), encoding="utf-8"))
     warte = lade("wartezeit.json")["faelle"]
     zwei = lade("zwei.json")["phasen"]
     kalt = statistics.median(k["erste_antwort_s"] for k in lade("kaltstart-faber.json")["laeufe"])
     med = lambda name, f: statistics.median(x[f] for x in warte[name])
     s = Svg()
-    titel = T("Im Gespräch kommt die Antwort sofort, ein ganzes Buch liest das Modell in drei Minuten", "In a conversation the answer comes at once, a whole book takes the model three minutes to read")
-    kopf(s, T("Qwen3.8-Flash-Next 125B · Warten bis zum ersten Wort der Antwort · iDX6011 Pro · 15.11.2026", "Qwen3.8-Flash-Next 125B · wait for the first word of the answer · iDX6011 Pro · 15 Nov 2026"), titel)
+    titel = T("Im Gespräch kommt die Antwort sofort, ein ganzes Buch liest das Modell in unter drei Minuten", "In a conversation the answer comes at once, a whole book takes the model under three minutes to read")
+    kopf(s, T("Qwen3.8-Flash-Next 125B · Warten bis zum ersten Wort der Antwort · iDX6011 Pro · Strata 0.2.14 · 16.11.2026", "Qwen3.8-Flash-Next 125B · wait for the first word of the answer · iDX6011 Pro · Strata 0.2.14 · 16 Nov 2026"), titel)
     x0, x1, lo, hi, ya = 96, 896, 0.2, 300.0, 240
     X = lambda v: x0 + (math.log10(v) - math.log10(lo)) / (math.log10(hi) - math.log10(lo)) * (x1 - x0)
     dauer = lambda v: (f"{z(v, sp, 1)} s" if v < 90 else f"{z(v / 60, sp, 1)} min")
@@ -911,13 +917,14 @@ def wartezeit(d, sp):
         s.text(xt, tiefe + 284, zahl, 16, TITLE, "mono", anker, 700)
         s.text(xt, tiefe + 300, name, 10.5, MUTED, "sans", anker)
     unten(X(a), X(b), 0, f"{z(a, sp, 2)}–{z(b, sp, 1)} s", T("Fragen im laufenden Gespräch", "questions in a running conversation"), "start", X(a) - 5)
-    unten(X(g[0]), X(g[1]), 0, f"{z(g[0], sp, 0)}–{z(g[1], sp, 0)} s", T("zwei fragen zugleich", "two people ask at once"))
+    spanne = f"{z(g[0], sp, 0)}–{z(g[1], sp, 0)} s" if z(g[0], sp, 0) != z(g[1], sp, 0) else T(f"rund {z(g[0], sp, 0)} s", f"about {z(g[0], sp, 0)} s")
+    unten(X(g[0]), X(g[1]), 0, spanne, T("zwei fragen zugleich", "two people ask at once"))
     unten(X(kalt), X(kalt), 36, f"{z(kalt, sp, 0)} s", T("erste Frage nach 30 min Pause", "first question after a 30-minute break"))
     h = fuss(s, 388, None,
              T("Median aus bis zu drei Läufen, das Buch mit 300 Seiten ein Lauf · die Zeitachse ist logarithmisch: gleiche Abstände sind gleiche Vielfache · eine Folgefrage zum selben langen Text kommt wieder nach rund 0,3 s · nach 30 Minuten ohne Anfrage wird das Modell entladen",
                "median of up to three runs, the 300-page book one run · the time axis is logarithmic: equal distances are equal multiples · a follow-up question on the same long text comes after about 0.3 s again · after 30 minutes without a request the model is unloaded"))
-    return "wartezeit", titel, T("Zeitstrahl der Wartezeit bis zum ersten Wort: Fragen im Gespräch unter einer halben Sekunde, eine Seite Text knapp drei Sekunden, zehn Seiten gut sechs, 50 Seiten rund eine halbe Minute, ein Buch von 300 Seiten gut drei Minuten; nach einer Pause 20 Sekunden, zu zweit acht bis elf.",
-                                 "Timeline of the wait for the first word: questions in a conversation under half a second, one page of text just under three seconds, ten pages a good six, 50 pages about half a minute, a 300-page book a good three minutes; after a break 20 seconds, two people at once eight to eleven."), s, h
+    return "wartezeit", titel, T("Zeitstrahl der Wartezeit bis zum ersten Wort: Fragen im Gespräch unter einer halben Sekunde, eine Seite Text knapp drei Sekunden, zehn Seiten knapp sechs, 50 Seiten rund eine halbe Minute, ein Buch von 300 Seiten knapp drei Minuten; nach einer Pause 19 Sekunden, zu zweit rund zehn.",
+                                 "Timeline of the wait for the first word: questions in a conversation under half a second, one page of text just under three seconds, ten pages just under six, 50 pages about half a minute, a 300-page book just under three minutes; after a break 19 seconds, two people at once about ten."), s, h
 
 
 def gegenprobe(d, sp):

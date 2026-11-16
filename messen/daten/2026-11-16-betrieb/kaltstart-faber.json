@@ -1,0 +1,26 @@
+{
+ "model": "faber",
+ "beginn": "2026-11-16T09:11:05",
+ "laeufe": [
+  {
+   "platte_kalt": true,
+   "erste_antwort_s": 19.49
+  },
+  {
+   "platte_kalt": false,
+   "erste_antwort_s": 19.48
+  },
+  {
+   "platte_kalt": false,
+   "erste_antwort_s": 19.53
+  },
+  {
+   "platte_kalt": false,
+   "erste_antwort_s": 18.56
+  },
+  {
+   "platte_kalt": false,
+   "erste_antwort_s": 18.49
+  }
+ ]
+}

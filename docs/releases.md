@@ -6,7 +6,7 @@ In configs, scripts and file names the two models go by short names: `faber` is 
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
 
-## Follow-up 15 Nov 2026: Strata 0.2.14 reads long prompts faster, tested and not in production yet
+## Follow-up 15/16 Nov 2026: Strata 0.2.14 reads long prompts faster, in production since 16 Nov
 
 Engine 0.1.60 `hip-rx7900` with control 0.1.60 against 0.2.12, identical run config (`konfig/strata-0.2.12/`), NAS services running, only my agent paused. The release moves prompt reading to Strata's own kernels on AMD and NVIDIA, and its notes carry no measurement for the RX 7900 under Linux. Here is one.
 
@@ -25,7 +25,7 @@ One number goes the other way: in the agent test of `strata_bench.py` the decode
 
 Two things I looked for. The release notes list driver pauses and one card reset for a Radeon R9700 under Linux; in 192 kB of engine log from this session there is no such line, and the kernel log is clean. And `standard-v1` is complete but passes 11 of 12 sanity checks instead of 12: in T2 the model returned no structured tool call and wrote that it had already called the tool. One run does not tell me whether that is the sampling at temperature 1.0 or the new version.
 
-No Docker image run this time, the `0.2.14-rocm-gfx110x` image was not published when I measured. My large task set (114 tasks, 102 auto-graded) passes 98 on 0.2.14 against 96 on 0.2.12 (13 Nov): one code and one logic task that failed now pass, nothing that passed fails, which on this set is equal and not better. It took 1,489 s against 1,622 s, decode median 75.2 against 73.5 tok/s. **This NAS still serves with 0.2.12 for now.** Raw data: `messen/daten/2026-11-15-v0.2.14/`, reported to Strata as [#6056](https://github.com/Niko1221/Strata/issues/6056).
+No Docker image run this time, the `0.2.14-rocm-gfx110x` image was not published when I measured. My large task set (114 tasks, 102 auto-graded) passes 98 on 0.2.14 against 96 on 0.2.12 (13 Nov): one code and one logic task that failed now pass, nothing that passed fails, which on this set is equal and not better. It took 1,489 s against 1,622 s, decode median 75.2 against 73.5 tok/s. **Since 16 Nov this NAS serves with 0.2.14**, with the unchanged run configs (`konfig/strata-0.2.14/`). After the switch all three models answer, make a tool call and log the gfx1100 table as enabled, and the uncensored model loads its control vector and reads a picture. 0.2.12 stays on disk as the way back. Raw data: `messen/daten/2026-11-15-v0.2.14/`, reported to Strata as [#6056](https://github.com/Niko1221/Strata/issues/6056).
 
 ## Follow-up 9 Nov 2026: Strata 0.2.13, and without the gfx1100 table the Docker image reads 16K prompts 35 % slower
 

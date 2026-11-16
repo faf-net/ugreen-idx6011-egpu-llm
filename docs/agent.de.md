@@ -78,7 +78,7 @@ Strenge Regel (B):  Wenn du etwas nicht sicher weißt, sage ausdrücklich „Wei
 | mittelschwere Fragen: richtig / falsch / enthalten | 95 / 54 / 1 | 95 / 53 / 2 | 85 / 31 / 34 | 76 / 30 / 44 |
 | schwere Fragen: richtig / falsch / enthalten | 14 / 134 / 2 | 21 / 113 / 16 | 5 / 21 / 124 | 1 / 14 / 135 |
 
-- **Die Grundregel kostet nichts.** Sie senkt das Erfinden nicht existierender Dinge von 20 auf 6 und von 25 auf 5, in
+- **Die Grundregel kostet bei diesen Fragen nichts.** Sie senkt das Erfinden nicht existierender Dinge von 20 auf 6 und von 25 auf 5, in
   ganzen Sätzen statt mit einer Formel, und lässt die Antworten auf echte Fragen, wie sie sind. Falsche Antworten auf
   echte Fragen fängt sie nicht ab.
 - **Die strenge Regel halbiert die falschen Antworten und kostet richtige.** Auf den mittelschweren Fragen enthält sie
@@ -106,6 +106,26 @@ Die mittelschweren Fragen stammen aus einer Übersetzung mit Mängeln und handel
 gemeint sein könnte (ohne Regel 35 und 43, mit Grundregel 18 und 25), teils richtig, teils erfunden. Die Spalte „Regeln der ersten Probe“ nutzt die drei
 allgemeinen der vier Sätze oben, ohne den zur Katalogdatenbank; für sie und für die strenge Regel stammt die erste Zeile
 aus dem einfacheren Urteil „erfunden oder erkannt“. Zählwerte und Urteile: `messen/daten/2026-11-16-erfinden2/`.
+
+**Für Befehle und Optionen reicht die Grundregel nicht.** In den vier öffentlichen Fragensätzen kommen keine Befehlsoptionen
+vor. Deshalb lief am 16.11. meine erste Probe noch einmal für das unzensierte Modell, einmal mit der Grundregel und einmal
+mit den Regeln der ersten Probe, in einer Sitzung (3 Runden, Temperatur 0,7, je Bereich 24 erfundene Dinge). Erkannt als
+erfunden, nach Durchsicht von Hand:
+
+| Bereich | Grundregel | Regeln der ersten Probe |
+|---|---:|---:|
+| Befehlsoptionen | 7 von 24 | 21 von 24 |
+| Ortsnamen | 12 von 24 | 22 von 24 |
+| Fachbegriffe | 19 von 24 | 22 von 24 |
+| Buchtitel | 24 von 24 | 24 von 24 |
+| Werkzeugparameter | 24 von 24 | 24 von 24 |
+
+Mit der Grundregel erklärt das Modell eine erfundene Option weiter flüssig, wenn sie plausibel klingt, etwa
+`tar --dedupe-links`. Sie hilft also bei Dingen, die fremd klingen, und beim Werkzeug, aber nicht dort, wo ein Agent am
+meisten Schaden anrichten kann. Für Befehle, Optionen und Orte braucht es die ausdrückliche Nennung aus der ersten Probe.
+Echtes beantwortet das Modell mit beiden Regeln gleich gut (119 und 120 von 120). Die automatische Wertung des Skripts
+übersieht Ablehnungen in ganzen Sätzen und zählt bei der Grundregel 4 statt 7 Befehlsoptionen; beide Zählungen stehen in
+`messen/daten/2026-11-16-erfinden2/nachprobe-befehle.json`.
 
 **Beim Urteil helfen drei Runden nicht weiter.** Mit `messen/agent_de.py` bekam faber dieselben Betriebslagen zehnmal
 statt dreimal:

@@ -6,7 +6,7 @@ In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen:
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
-## Nachtrag 15.11.2026: Strata 0.2.14 liest lange Prompts schneller, getestet und noch nicht in Betrieb
+## Nachtrag 15./16.11.2026: Strata 0.2.14 liest lange Prompts schneller, seit 16.11. in Betrieb
 
 Engine 0.1.60 `hip-rx7900` mit Control 0.1.60 gegen 0.2.12, gleiche Laufkonfiguration (`konfig/strata-0.2.12/`), NAS-Dienste an, nur mein Agent angehalten. Die Version verlegt das Prompt-Einlesen auf AMD und NVIDIA auf Stratas eigene Kernel, und die Release-Notiz enthält keine Messung für die RX 7900 unter Linux. Hier ist eine.
 
@@ -25,7 +25,7 @@ Eine Zahl geht in die andere Richtung: Im Agenten-Test von `strata_bench.py` lie
 
 Zwei Dinge habe ich gezielt gesucht. Die Release-Notiz nennt für eine Radeon R9700 unter Linux Treiberpausen und einen Karten-Reset; in 192 kB Engine-Log dieser Sitzung steht keine solche Zeile, und das Kernel-Log ist sauber. Und `standard-v1` ist vollständig, besteht aber 11 von 12 Plausibilitätsprüfungen statt 12: Bei T2 kam kein strukturierter Tool-Call, das Modell schrieb, es habe das Werkzeug schon aufgerufen. Ein Lauf sagt mir nicht, ob das am Sampling bei Temperatur 1,0 liegt oder an der neuen Version.
 
-Diesmal ohne Lauf im Docker-Image, `0.2.14-rocm-gfx110x` war zum Messzeitpunkt nicht veröffentlicht. Mein großer Aufgabensatz (114 Aufgaben, 102 automatisch bewertet) besteht auf 0.2.14 98 gegen 96 auf 0.2.12 (13.11.): Eine Code- und eine Logik-Aufgabe, die durchgefallen waren, bestehen jetzt, keine bestandene fällt durch; auf diesem Satz heißt das gleich, nicht besser. Er brauchte 1.489 s gegen 1.622 s, Schreiben im Median 75,2 gegen 73,5 Token/s. **Dieses NAS läuft vorerst weiter mit 0.2.12.** Rohdaten: `messen/daten/2026-11-15-v0.2.14/`, an Strata gemeldet als [#6056](https://github.com/Niko1221/Strata/issues/6056).
+Diesmal ohne Lauf im Docker-Image, `0.2.14-rocm-gfx110x` war zum Messzeitpunkt nicht veröffentlicht. Mein großer Aufgabensatz (114 Aufgaben, 102 automatisch bewertet) besteht auf 0.2.14 98 gegen 96 auf 0.2.12 (13.11.): Eine Code- und eine Logik-Aufgabe, die durchgefallen waren, bestehen jetzt, keine bestandene fällt durch; auf diesem Satz heißt das gleich, nicht besser. Er brauchte 1.489 s gegen 1.622 s, Schreiben im Median 75,2 gegen 73,5 Token/s. **Seit 16.11. läuft dieses NAS mit 0.2.14**, mit den unveränderten Laufkonfigurationen (`konfig/strata-0.2.14/`). Nach der Umstellung antworten alle drei Modelle, setzen einen Tool-Call ab und melden die gfx1100-Tabelle als aktiv, und das unzensierte Modell lädt seinen Steuervektor und liest ein Bild. 0.2.12 bleibt als Rückweg auf der Platte. Rohdaten: `messen/daten/2026-11-15-v0.2.14/`, an Strata gemeldet als [#6056](https://github.com/Niko1221/Strata/issues/6056).
 
 ## Nachtrag 09.11.2026: Strata 0.2.13, und ohne gfx1100-Tabelle liest das Docker-Image 16K-Prompts 35 % langsamer
 

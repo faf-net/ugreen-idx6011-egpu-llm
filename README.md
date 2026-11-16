@@ -14,17 +14,17 @@ dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
 Everything here was measured on my machine unless marked otherwise. This repository contains **no Strata code**,
 only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark tools.
 
-**As of 15 Nov 2026:** Strata 0.2.12 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization. `liber` is the uncensored version of `faber`: the same weights with the refusals removed, so it answers whatever it is asked ([docs/steuervektor.md](docs/steuervektor.md)). Chat and agent can use any of the three.
+**As of 16 Nov 2026:** Strata 0.2.14 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization. `liber` is the uncensored version of `faber`: the same weights with the refusals removed, so it answers whatever it is asked ([docs/steuervektor.md](docs/steuervektor.md)). Chat and agent can use any of the three.
 
 ## At a glance
 
 | | |
 |---|---|
 | Writing | 63–68 tokens/s, barely slower at 248K tokens of context |
-| Reading a prompt | 1,100–1,250 tokens/s from 16K on: 26 s for 32K tokens, 3.6 min for 250K |
+| Reading a prompt | 1,300–1,400 tokens/s from 16K on: 23 s for 32K tokens, 3.4 min for 250K |
 | Context | 256K, the needle was found 9 of 9 times up to 250K |
 | Memory | about 53 GiB of the 64 GB RAM, the 24 GB card is full |
-| Power | 1.5 Wh per 1,000 written tokens; NAS and dock draw 355 W while writing, 48 W idle |
+| Power | 1.4 Wh per 1,000 written tokens; NAS and dock draw 336 W while writing, 49 W idle |
 | Biggest risk | a dock dropout with a model loaded reboots the NAS (kernel bug, mitigated) |
 
 ## Where to find what
@@ -107,7 +107,7 @@ Reading grows almost linearly with the prompt: 5.5 s at 4K, 26 s at 32K, 1.8 min
 
 With the 125B model (`faber`) loaded and idle, the engine holds 44.6 GiB of the 62.3 GiB RAM (the expert weights that do not fit on the card, the K/V of 32K tokens in 3.1 GiB of pinned RAM, and the conversation cache as it fills), the NAS services and the kernel 10.2 GiB, and 7.5 GiB stay available. On the card the expert cache takes 17.3 GiB of 24 GiB (10,644 slots), the MTP draft 1 GiB, everything else 5.3 GiB, 0.4 GiB stay free. With 64 GB RAM this is about the limit: a second large service next to it needs the conversation cache made smaller.
 
-### Power, cold start, the NAS at work, a dense 70B and UGREEN's own model (15 Nov 2026)
+### Power, cold start, the NAS at work, a dense 70B and UGREEN's own model (15 and 16 Nov 2026)
 
 ![Power per phase, and the MoE model against a dense 70B](bilder/betrieb-en.png)
 
@@ -115,22 +115,22 @@ With the 125B model (`faber`) loaded and idle, the engine holds 44.6 GiB of the 
 
 | Phase | NAS and dock | Card alone |
 |---|---:|---:|
-| idle, no model loaded | 48 W | 9 W |
-| model loaded, idle | 48 W | 10 W |
-| writing, 66.3 tokens/s | 355 W | 205 W |
-| reading fresh 82K prompts, 1,159 tokens/s | 392 W | 254 W |
+| idle, no model loaded | 49 W | 13 W |
+| model loaded, idle | 50 W | 14 W |
+| writing, 65.9 tokens/s | 336 W | 205 W |
+| reading fresh 82K prompts, 1,339 tokens/s | 377 W | 231 W |
 
-That is **1.5 Wh per 1,000 written tokens** for NAS and dock (1.3 Wh above idle) and 0.09 Wh per 1,000 tokens read. A loaded, idle model costs nothing measurable over the empty card.
+That is **1.4 Wh per 1,000 written tokens** for NAS and dock (1.2 Wh above idle) and 0.08 Wh per 1,000 tokens read. A loaded, idle model costs nothing measurable over the empty card.
 
 | Version of the 125B model | Decode tok/s | NAS and dock | per 1,000 written tokens |
 |---|---:|---:|---:|
-| IQ3_XXS (`faber`) | 66.3 | 355 W | 1.5 Wh |
-| IQ3_XXS, uncensored (`liber`) | 62.9 | 338 W | 1.5 Wh |
-| IQ2_XS (`velox`) | 70.8 | 349 W | 1.4 Wh |
+| IQ3_XXS (`faber`) | 65.9 | 336 W | 1.4 Wh |
+| IQ3_XXS, uncensored (`liber`) | 63.1 | 342 W | 1.5 Wh |
+| IQ2_XS (`velox`) | 71.9 | 341 W | 1.3 Wh |
 
-In the morning of the same day a network switch was still on that UPS; that first measurement and its deduction are in `messen/daten/2026-11-15-betrieb/mit-switch/`. The value calculated then (1.5 Wh) matches the one measured now.
+Power, cold start, waiting times and the two-person test were measured again on 16 Nov 2026 on Strata 0.2.14 (`messen/daten/2026-11-16-betrieb/`). On 0.2.12 it was 66.3 tokens/s at 355 W and 1.5 Wh while writing on 15 Nov, and 1,159 tokens/s while reading (`messen/daten/2026-11-15-betrieb/`); so writing is equally fast and reading 16 % faster. The very first measurement, with a network switch on the same UPS, and its deduction are in `messen/daten/2026-11-15-betrieb/mit-switch/`.
 
-**Cold start.** From an unloaded card to the first token: 18.6–19.6 s in five runs. Dropping the page cache before the first run made no difference (19.6 s).
+**Cold start.** From an unloaded card to the first token: 18.5–19.5 s in five runs. Dropping the page cache before the first run made no difference (19.5 s).
 
 ![The NAS keeps working while the model writes](bilder/parallel-en.png)
 
@@ -166,9 +166,9 @@ On the card the built-in model writes 11 times faster and reads five times faste
 
 | | Flash-Next 125B (MoE, Strata) | Qwen3.5-35B-A3B (UGREEN's file, on the card) |
 |---|---:|---:|
-| **graded tasks passed (of 102)** | **96** | **90** |
-| code | 14/15 | 12/15 |
-| logic | 14/15 | 12/15 |
+| **graded tasks passed (of 102)** | **98** | **90** |
+| code | 15/15 | 12/15 |
+| logic | 15/15 | 12/15 |
 | following instructions | 15/15 | 13/15 |
 | facts | 12/15 | 12/15 |
 | tool calls | 20/20 | 20/20 |
@@ -176,23 +176,23 @@ On the card the built-in model writes 11 times faster and reads five times faste
 | safety | 17/18 | 17/18 |
 | reasoning budget of 8,000 tokens used up, no answer | 0 | 9 |
 | German, graded blind (of 60) | 47 | 37 |
-| tokens written for all 114 tasks | 87,007 | 223,795 |
-| time for all 114 tasks | 27 min | 37 min |
+| tokens written for all 114 tasks | 82,901 | 223,795 |
+| time for all 114 tasks | 25 min | 37 min |
 
-The small model thinks much longer: it writes 2.6 times as many tokens for the same tasks, so despite the higher speed the whole set takes 37 % longer, and in nine tasks it used up the reasoning budget without answering. With a larger budget some of those would probably pass; I did not measure that. What speaks for the small model: it leaves the RAM of the NAS free, where the 125B model takes about 53 GiB. The 125B numbers are from 13 Nov (same tasks, same Strata release). German was graded blind by a language model that did not know which answer came from which model; a different grader than in the 14 Nov follow-up, so the scores are comparable within this table only. Data (counts only): `messen/daten/2026-11-15-betrieb/qualitaet.json`.
+The small model thinks much longer: it writes 2.7 times as many tokens for the same tasks, so despite the higher speed the whole set takes 49 % longer, and in nine tasks it used up the reasoning budget without answering. With a larger budget some of those would probably pass; I did not measure that. What speaks for the small model: it leaves the RAM of the NAS free, where the 125B model takes about 53 GiB. The 125B numbers are from 16 Nov on Strata 0.2.14 (same tasks); on 0.2.12 it passed 96 of 102 on 13 Nov. Its German grade is from the run on 0.2.12. German was graded blind by a language model that did not know which answer came from which model; a different grader than in the 14 Nov follow-up, so the scores are comparable within this table only. Data (counts only): `messen/daten/2026-11-15-betrieb/qualitaet.json`.
 
 **Two people at the same time.** `messen/zwei.py` runs one conversation of five questions alone, then two conversations at once on the same model, then two people alternating between two different models:
 
 | | Wait for the first word (median) | Decode tok/s (median) |
 |---|---:|---:|
-| one person alone | 0.2 s | 62.2 |
-| two at once, person A | 8.1 s | 64.7 |
-| two at once, person B | 10.5 s | 72.6 |
-| alternating between two models | 20 s | – |
+| one person alone | 0.3 s | 70.1 |
+| two at once, person A | 9.5 s | 67.1 |
+| two at once, person B | 9.6 s | 73.3 |
+| alternating between two models | 19 s | – |
 
 Strata answers one request after the other: the second person waits until the first answer is finished, about ten seconds with answers of up to 400 tokens, and then gets the full speed. If two people use two different models, the card reloads on every change, about 20 s each time. For shared use, one model for everyone.
 
-Scripts: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`, `messen/zwei.py`. Raw data: `messen/daten/2026-11-15-betrieb/`.
+Scripts: `messen/betrieb.py`, `messen/dicht70.py`, `messen/werksmodell.py`, `messen/transkodieren.sh`, `messen/zwei.py`. Raw data: `messen/daten/2026-11-16-betrieb/` (Strata 0.2.14) and `messen/daten/2026-11-15-betrieb/`.
 
 ### Does Strata cost quality? Strata vs llama.cpp on the same file
 
@@ -244,9 +244,9 @@ Every release since 0.2.0-beta was measured here against the one before it, with
 | 0.2.8 | 31 Oct | **in production**; equal; recovers malformed tool calls; the Docker image leaves 854 MiB of VRAM free | [PR #4851](https://github.com/Niko1221/Strata/pull/4851) |
 | 0.2.9, 0.2.10 | 5 Nov | **in production** in between; 0.2.9 fixes silently wrong long prompts (#3431) | – |
 | 0.2.11 | 5 Nov | **in production**; equal to 0.2.10 | [#5321](https://github.com/Niko1221/Strata/issues/5321) |
-| 0.2.12 | 8 Nov | **in production, current**; equal to 0.2.11; the tuned DFlash2 drafter is slower end to end and stays off | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
+| 0.2.12 | 8 Nov | **in production** until 16 Nov; equal to 0.2.11; the tuned DFlash2 drafter is slower end to end and stays off | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 9 Nov | equal with the tuned config, not adopted; the Linux Docker image no longer uses the gfx1100 table and reads 16K prompts 35 % slower | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
-| 0.2.14 | 15/16 Nov | tested, not in production yet; decode equal, prompt reading 16 % faster at 16K and 14 % at 32K in the same session; own task set 98 of 102 (0.2.12: 96); no driver pauses on this card; `standard-v1` sanity 11 of 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
+| 0.2.14 | 15/16 Nov | **in production, current** since 16 Nov; decode equal, prompt reading 16 % faster at 16K and 14 % at 32K in the same session; own task set 98 of 102 (0.2.12: 96); no driver pauses on this card; `standard-v1` sanity 11 of 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 
 ## Run
 
@@ -254,7 +254,7 @@ Strata's `setup.py` creates models, packs and the MTP head; they are bind-mounte
 are in `konfig/`, a llama-swap example in `konfig/llama-swap.yaml`. Put the host names the server is reached under
 into `allowed_hosts` (Strata checks the Host header against DNS rebinding).
 
-The configs in `konfig/arbeit.json`, `konfig/schnell.json` and `konfig/llama-swap.yaml` are the first version for the self-built engine. **What runs today is in [`konfig/strata-0.2.12/`](konfig/strata-0.2.12/)**: the same settings for the prebuilt release packages, with the models named `faber` (IQ3_XXS, was `arbeit`) and `velox` (IQ2_XS, was `schnell`).
+The configs in `konfig/arbeit.json`, `konfig/schnell.json` and `konfig/llama-swap.yaml` are the first version for the self-built engine. **What runs today is in [`konfig/strata-0.2.14/`](konfig/strata-0.2.14/)**: the same settings for the prebuilt release packages, with the models named `faber` (IQ3_XXS, was `arbeit`) and `velox` (IQ2_XS, was `schnell`).
 
 ### Full speed in the Docker image
 
@@ -359,7 +359,7 @@ to UGREEN with the pstore record. The mitigation stays the same.
 
 ![Three layers against made-up answers, and what each one catches](bilder/schichten-en.png)
 
-**Counter-check with public question sets (15/16 Nov 2026): one short rule is enough.** The four rules name the kinds of things my probe asks about, so I checked with questions I did not write. A basic rule ("Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up.") cuts made-up things treated as real from 20 to 6 of 150 and leaves real questions as they are (90 against 87 of 150 right). A strict rule with a fixed "I don't know" halves the wrong answers (58 to 30) and costs some right ones (90 to 84). The four rules cost twice as many right answers for little more.
+**Counter-check with public question sets (15/16 Nov 2026): one short rule is enough against things that sound foreign, not for commands.** The four rules name the kinds of things my probe asks about, so I checked with questions I did not write. A basic rule ("Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up.") cuts made-up things treated as real from 20 to 6 of 150 and leaves real questions as they are (90 against 87 of 150 right). A strict rule with a fixed "I don't know" halves the wrong answers (58 to 30) and costs some right ones (90 to 84). The four rules cost twice as many right answers for little more. A follow-up with my own questions showed a limit: of 24 made-up command options the uncensored model recognises 7 with the basic rule and 21 with the four rules (places 12 against 22, after reading the answers by hand). So commands, options and places need to be named explicitly.
 
 ![Counter-check: made-up things treated as real, and the price on real questions, per rule](bilder/gegenprobe-en.png)
 
@@ -396,6 +396,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   konfig/strata-0.2.8/          launch configs and llama-swap macro for 0.2.8 (configs unchanged from 0.2.3.1)
   konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
   konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config, and liber.json (the uncensored model)
+  konfig/strata-0.2.14/         launch configs and llama-swap macro for 0.2.14, what runs today (configs unchanged, only engine and control swapped)
   konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
   konfig/stack/                 chat and web search: Compose file for Open WebUI and SearXNG, tested on the NAS (EN/DE)
   konfig/opencode/              OpenCode 2 in the terminal with the local models: example config and what I learned (EN/DE)
@@ -458,6 +459,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/daten/2026-11-15-v0.2.14/  raw data of the 0.2.14 test: pairs against 0.2.12, standard-v1, strata_bench, needles, fresh engines (README inside)
   messen/daten/2026-11-14-erfinden/  counts: probe per model and area, night comparison, judgement with 10 rounds
   messen/daten/2026-11-15-betrieb/  power, cold start, NAS at work, dense 70B, UGREEN's built-in model
+  messen/daten/2026-11-16-betrieb/  re-measured on Strata 0.2.14: power and speed of the three models, cold start, waiting times, two people, task set
 ```
 
 **Documentation and charts**
