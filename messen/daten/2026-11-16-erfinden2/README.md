@@ -17,7 +17,7 @@ The wording of every version is in `erfinden2.py` (`FASSUNGEN`).
 
 | Set | Source | Licence |
 |---|---|---|
-| `nichts`, 150 things that do not exist | HalluLens (`swiss-ai/hallulens`), names of non-existent medicines, places and events | see the dataset card |
+| `nichts`, 150 things that do not exist | HalluLens (`facebookresearch/HalluLens`, task NonExistentRefusal; I used the copy `swiss-ai/hallulens`), names of non-existent medicines, places and events | CC BY-NC for the majority of the project, no version given; the copy's dataset card states no licence |
 | `fakten`, 150 hard fact questions | SimpleQA Verified Multilingual, German (`ellamind/simpleqa-verified-multilingual`) | CC BY 4.0 |
 | `mittel`, 150 medium everyday questions | MKQA, German (`apple/ml-mkqa`): 200 drawn at random, 44 struck by reading the question (time-dependent, garbled translation, unusable target), the first 150 of the rest | CC BY-SA 3.0 |
 | `werkzeug`, 150 agent cases | When2Call (`nvidia/When2Call`): 60 without a fitting tool, 40 with a missing parameter, 50 with a fitting tool | CC BY 4.0 |
