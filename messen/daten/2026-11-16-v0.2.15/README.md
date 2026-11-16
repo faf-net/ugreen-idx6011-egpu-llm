@@ -26,4 +26,4 @@ Equally fast. Prompt reading is equal to the token in the alternating runs; deco
 
 My small task set (35 tasks: tools, code and a few others, temperature 0) passed 34 of 35 on 0.2.15 and 35 of 35 on 0.2.14 the same day: tools 20 of 20, code 14 of 15. The one that failed is a code task that flips between runs. Only the counts are given here.
 
-Nothing was reported to Strata.
+Reported to Strata as a comment in [#6056](https://github.com/Niko1221/Strata/issues/6056).

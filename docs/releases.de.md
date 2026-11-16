@@ -19,7 +19,7 @@ Control 0.1.61 mit der Engine 0.1.60 `hip-rx7900`, also derselben Engine wie in 
 
 **Gleich schnell.** Die Paare liegen 0,1 Token/s auseinander. In den drei Läufen im Wechsel, jede Engine frisch geladen und die Reihenfolge je Runde gewechselt, ist das Einlesen auf den Token genau gleich, und das Schreiben liegt in der Streuung, die dieser Test auch bei gleicher Version zeigt. Die Paare messen kurze Antworten mit wenig vorhersehbarem Text, deshalb liegen sie bei 59 und nicht bei den 66 Token/s langer Antworten. `standard-v1` ist vollständig und besteht 12 von 12 Plausibilitätsprüfungen; 4K kam in diesem einen Lauf mit 747 Token/s, in den drei Läufen von `strata_bench.py` mit 786 wie bei 0.2.14. Mein kleiner Aufgabensatz (35 Aufgaben) besteht 34, 0.2.14 am selben Tag 35: Werkzeuge 20 von 20, Code 14 von 15, durchgefallen ist eine Code-Aufgabe, die zwischen Läufen kippt.
 
-Weil die Engine dieselbe ist und nichts schneller wird, bleibt dieses NAS bei 0.2.14. Rohdaten: `messen/daten/2026-11-16-v0.2.15/`. An Strata gemeldet: nichts.
+Weil die Engine dieselbe ist und nichts schneller wird, bleibt dieses NAS bei 0.2.14. Rohdaten: `messen/daten/2026-11-16-v0.2.15/`. An Strata gemeldet als Kommentar in [#6056](https://github.com/Niko1221/Strata/issues/6056).
 
 ## Nachtrag 15./16.11.2026: Strata 0.2.14 liest lange Prompts schneller, seit 16.11. in Betrieb
 

@@ -19,7 +19,7 @@ Control 0.1.61 with engine 0.1.60 `hip-rx7900`, the same engine as in 0.2.14; on
 
 **Equally fast.** The pairs are 0.1 tokens/s apart. In the three alternating runs, each engine loaded fresh and the order swapped every round, prompt reading is equal to the token, and decode lies within the scatter this test shows for one and the same release. The pairs measure short answers with less predictable text, which is why they come to 59 rather than the 66 tokens/s of long answers. `standard-v1` is complete and passes 12 of 12 sanity checks; 4K came at 747 tokens/s in this one run and at 786 in the three `strata_bench.py` runs, as with 0.2.14. My small task set (35 tasks) passes 34, 0.2.14 on the same day 35: tools 20 of 20, code 14 of 15; the one that failed is a code task that flips between runs.
 
-Since the engine is the same and nothing gets faster, this NAS stays on 0.2.14. Raw data: `messen/daten/2026-11-16-v0.2.15/`. Reported to Strata: nothing.
+Since the engine is the same and nothing gets faster, this NAS stays on 0.2.14. Raw data: `messen/daten/2026-11-16-v0.2.15/`. Reported to Strata as a comment in [#6056](https://github.com/Niko1221/Strata/issues/6056).
 
 ## Follow-up 15/16 Nov 2026: Strata 0.2.14 reads long prompts faster, in production since 16 Nov
 
