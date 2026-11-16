@@ -71,7 +71,7 @@ BEREICHE = [
       ("der Satz von Rice", r"unentscheidbar|nicht.*entscheid|semantisch|nicht.*berechenbar"),
       ("das CAP-Theorem", r"Konsisten|Verfügbar|Partition"), ("das Hookesche Gesetz", r"proportional|Feder|Dehnung|linear"),
       ],
-     ["das Strelinghaus-Theorem", "das Lemma von Hessenbrink",   # bis 16.11.2026 „das Kornblum-Theorem“, ähnelt einem echten Satz
+     ["das Strelinghaus-Theorem", "das Lemma von Hessenbrink",   # am 16.11.2026 ersetzt, der frühere Begriff ähnelte einem echten Satz
       "die Wendtsche Stromregel", "der Satz von Ollmann-Tiedge",
       "das Brökersche Paradoxon", "das Velmer-Kriterium", "das Gesetz von Strassberg-Lind", "die Tessel-Ungleichung"]),
     ("werkzeug", "{}",
