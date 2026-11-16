@@ -441,8 +441,7 @@ def seite(sp):
 {rumpf}
 </main>
 <footer>
-  <p><a href="{readme}">github.com/faf-net/ugreen-idx6011-egpu-llm</a> · MIT · {T("Stand", "build")} {time.strftime("%d.%m.%Y" if not en else "%d %b %Y")}{" · " + stand() if stand() else ""}</p>
-  <p>{T("Keine Cookies, kein Tracking, keine Fremdserver. Schriften: Instrument Serif, Atkinson Hyperlegible Next, JetBrains Mono (SIL Open Font License), von hier ausgeliefert.", "No cookies, no tracking, no third-party servers. Fonts: Instrument Serif, Atkinson Hyperlegible Next, JetBrains Mono (SIL Open Font License), served from here.")} <a href="{'../../' if en else '../'}">faf.net</a></p>
+  <p><a href="{readme}">github.com/faf-net/ugreen-idx6011-egpu-llm</a> · MIT · {T("Stand", "build")} {time.strftime("%d.%m.%Y" if not en else "%d %b %Y")}{" · " + stand() if stand() else ""} · <a href="{'../../' if en else '../'}">faf.net</a></p>
   <p class="eof">[ EOF ]</p>
 </footer>
 </body>
