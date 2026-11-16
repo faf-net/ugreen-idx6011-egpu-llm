@@ -372,7 +372,7 @@ Die Gegenmaßnahme bleibt dieselbe.
 
 Die Messungen, die Regeln im Wortlaut und das Prüfer-Plugin: [docs/agent.de.md](docs/agent.de.md).
 
-**Der Agent kann jedes der Modelle nutzen, auch ein unzensiertes.** Welches Modell er nimmt, ist eine Einstellung. `liber` ist dasselbe 125B-Modell, dem ein Steuervektor die Ablehnungen entfernt (Abliteration). Es beantwortet, was man es fragt, auch das, was das Originalmodell verweigert: alle 15 meiner Testaufgaben, die Modelle oft ablehnen, statt 11. Einen Filter gibt es nicht mehr; die Verantwortung liegt bei dem, der es betreibt. Aufgaben, Deutsch und Tempo bleiben gleich; der Preis ist, dass es leichter erfindet (mit den vier Regeln 91 % statt 98 % des Erfundenen erkannt). Wie es funktioniert, die Konfiguration, alle Zahlen und was man damit auf sich nimmt: [docs/steuervektor.de.md](docs/steuervektor.de.md).
+**Der Agent kann jedes der Modelle nutzen, auch ein unzensiertes.** Welches Modell er nimmt, ist eine Einstellung. `liber` ist dasselbe 125B-Modell, dem ein Steuervektor die Ablehnungen entfernt (Abliteration). Es beantwortet, was man es fragt, auch das, was das Originalmodell verweigert: alle 15 meiner Testaufgaben, die Modelle oft ablehnen, statt 11. Einen Filter gibt es nicht mehr; die Verantwortung liegt bei dem, der es betreibt. Aufgaben, Deutsch und Tempo bleiben gleich, und es erfindet nicht messbar mehr als das Original (25 gegen 20 von 150 Dingen, die es nicht gibt, als echt behandelt; mit einer kurzen Regel 5 gegen 6). Wie es funktioniert, die Konfiguration, alle Zahlen und was man damit auf sich nimmt: [docs/steuervektor.de.md](docs/steuervektor.de.md).
 
 ## Bilder auf derselben Karte: ComfyUI über llama-swap
 

@@ -31,6 +31,7 @@ The settings are in [`konfig/strata-0.2.12/liber.json`](../konfig/strata-0.2.12/
 | German, graded blind (of 60) | 51 | 54 |
 | made-up things recognised, without rules (of 120) | 35 (29 %) | 20 (17 %) |
 | made-up things recognised, with the four rules (of 120) | 117 (98 %) | 109 (91 %) |
+| counter-check 16 Nov: made-up things treated as real, without a rule / with a short rule (of 150) | 20 / 6 | 25 / 5 |
 | real things answered correctly, without / with rules (of 120) | 120 / 120 | 119 / 119 |
 | decode, long answer | 63.7 tok/s | 61.9 tok/s |
 | prompt reading at 32K | 1,183 tok/s | 1,188 tok/s |
@@ -39,7 +40,7 @@ The 15 tasks come from areas where language models usually refuse, evade or lect
 
 **The abilities stay.** Tasks, German and speed are the same within the spread of a single run; the two-task difference is not a finding.
 
-**The price: it makes things up more easily.** Without rules in the system prompt `liber` recognises only 17 % of made-up things instead of 29 %. The [four rules](agent.md) repair most of it, but a gap remains: 91 % instead of 98 %, mainly on made-up command options (17 of 24 recognised). A model that no longer says "no" also says "I don't know" less often. If you use it for an agent, the rules and the checker are not optional.
+**Does it make up more? Not measurably.** In the counter-check with a public question set `liber` treated 25 of 150 things that do not exist as real, the original 20; with a short rule in the system prompt it was 5 and 6 ([docs/agent.md](agent.md)). In my first, smaller probe `liber` trailed a little: 17 instead of 29 % of made-up things recognised without rules, 91 instead of 98 % with the four rules, mainly on made-up command options (17 of 24). One run per model, so this is no more than a hint. An agent cannot do without the rules and the checker with either model.
 
 **Judgement is no better.** In the ten-round test both models follow a hard instruction in 10 of 10 answers, and both invent capabilities when a job aborts at night: the original in 6 of 10 answers, `liber` in 8 of 10.
 

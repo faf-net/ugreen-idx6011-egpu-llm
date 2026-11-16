@@ -31,6 +31,7 @@ Die Einstellungen stehen in [`konfig/strata-0.2.12/liber.json`](../konfig/strata
 | Deutsch, verdeckt benotet (von 60) | 51 | 54 |
 | Erfundenes erkannt, ohne Regeln (von 120) | 35 (29 %) | 20 (17 %) |
 | Erfundenes erkannt, mit den vier Regeln (von 120) | 117 (98 %) | 109 (91 %) |
+| Gegenprobe 16.11.: Erfundenes als echt behandelt, ohne Regel / mit kurzer Regel (von 150) | 20 / 6 | 25 / 5 |
 | Echtes richtig beantwortet, ohne / mit Regeln (von 120) | 120 / 120 | 119 / 119 |
 | Schreiben, lange Antwort | 63,7 T/s | 61,9 T/s |
 | Einlesen bei 32K | 1.183 T/s | 1.188 T/s |
@@ -39,7 +40,7 @@ Die 15 Aufgaben stammen aus Bereichen, in denen Sprachmodelle üblicherweise abl
 
 **Die Fähigkeiten bleiben.** Aufgaben, Deutsch und Tempo sind innerhalb der Streuung eines einzelnen Laufs gleich; der Unterschied von zwei Aufgaben ist kein Befund.
 
-**Der Preis: Es erfindet leichter.** Ohne Regeln im Systemprompt erkennt `liber` nur 17 % des Erfundenen statt 29 %. Die [vier Regeln](agent.de.md) holen das meiste zurück, aber eine Lücke bleibt: 91 % statt 98 %, vor allem bei erfundenen Befehlsoptionen (17 von 24 erkannt). Ein Modell, das nicht mehr „nein“ sagt, sagt auch seltener „weiß ich nicht“. Wer es für einen Agenten nimmt, kann auf Regeln und Prüfer nicht verzichten.
+**Erfindet es mehr? Nicht messbar.** In der Gegenprobe mit einem öffentlichen Fragensatz behandelte `liber` 25 von 150 Dingen, die es nicht gibt, als echt, das Original 20; mit einer kurzen Regel im Systemprompt waren es 5 und 6 ([docs/agent.de.md](agent.de.md)). In meiner ersten, kleineren Probe lag `liber` etwas zurück: 17 statt 29 % des Erfundenen erkannt ohne Regeln, 91 statt 98 % mit den vier Regeln, vor allem bei erfundenen Befehlsoptionen (17 von 24). Ein Lauf je Modell, mehr als ein Hinweis ist das nicht. Auf Regeln und Prüfer kann ein Agent mit keinem der beiden Modelle verzichten.
 
 **Das Urteil wird nicht besser.** Im Test mit zehn Runden befolgen beide Modelle eine harte Anweisung in 10 von 10 Antworten, und beide erfinden Fähigkeiten, wenn nachts ein Lauf abbricht: in 6 von 10 Antworten das Original, in 8 von 10 `liber`.
 

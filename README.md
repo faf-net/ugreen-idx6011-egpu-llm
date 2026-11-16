@@ -369,7 +369,7 @@ to UGREEN with the pstore record. The mitigation stays the same.
 
 The measurements, the rules in their wording and the checker plugin: [docs/agent.md](docs/agent.md).
 
-**The agent can use any of the models, including an uncensored one.** Which model it takes is a setting. `liber` is the same 125B model with its refusals removed by a steering vector (abliteration). It answers whatever it is asked, including what the original model declines: all 15 of my test tasks that models often refuse, instead of 11. There is no filter left; the responsibility lies with whoever runs it. Tasks, German and speed stay the same; the price is that it makes things up more easily (91 % instead of 98 % of made-up things recognised with the four rules). How it works, the config, all numbers and what you take on: [docs/steuervektor.md](docs/steuervektor.md).
+**The agent can use any of the models, including an uncensored one.** Which model it takes is a setting. `liber` is the same 125B model with its refusals removed by a steering vector (abliteration). It answers whatever it is asked, including what the original model declines: all 15 of my test tasks that models often refuse, instead of 11. There is no filter left; the responsibility lies with whoever runs it. Tasks, German and speed stay the same, and it does not measurably make up more than the original (25 against 20 of 150 things that do not exist treated as real; 5 against 6 with a short rule). How it works, the config, all numbers and what you take on: [docs/steuervektor.md](docs/steuervektor.md).
 
 ## Pictures on the same card: ComfyUI through llama-swap
 

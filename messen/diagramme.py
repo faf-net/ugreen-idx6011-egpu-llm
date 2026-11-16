@@ -629,7 +629,7 @@ def erfinden(d, sp):
             s.text(X(hi[0]) + 10, y + 3, str(hi[0]), 8.5, hi[1], "mono", weight=600 if hi[1] == ACC else None)
     s.text(544, 596, "Rules beat the choice of model:" if en else "Die Regeln wirken stärker als die Modellwahl:", 17, INK, "serif", kursiv=True)
     s.text(544, 620, "every model ends between 88 and 99 %." if en else "Jedes Modell landet zwischen 88 und 99 %.", 17, INK, "serif", kursiv=True)
-    s.text(544, 652, "The uncensored model makes things up more easily: 17 instead of" if en else "Das unzensierte Modell erfindet leichter: 17 statt 29 % ohne Regeln,", 10.5, MUTED, "sans")
+    s.text(544, 652, "The uncensored model trails a little in this probe: 17 instead of" if en else "Das unzensierte Modell liegt in dieser Probe etwas zurück: 17 statt 29 % ohne Regeln,", 10.5, MUTED, "sans")
     s.text(544, 668, "29 % without rules, 91 instead of 98 % with them." if en else "91 statt 98 % mit Regeln.", 10.5, MUTED, "sans")
     s.text(W / 2, 740, ("made-up questions answered with “I don't know” (of 24 per area)" if en else "erfundene Fragen mit „weiß ich nicht“ beantwortet (von 24 je Bereich)").upper(), 8, MUTED, "mono", "middle", sperr="0.14em")
     h = fuss(s, 760, (("punkt-hohl", MUTED, "without rules" if en else "ohne Regeln"), ("punkt", ACC, "with the four rules" if en else "mit den vier Regeln")),
@@ -1143,7 +1143,7 @@ def steuervektor(d, sp):
     T = lambda de, en_: en_ if en else de
     v = json.load(open(os.path.join(d, "2026-11-14-erfinden", "steuervektor.json"), encoding="utf-8"))
     s = Svg()
-    titel = T("Unzensiert beantwortet das Modell alles und erfindet leichter", "Uncensored, the model answers everything and makes things up more easily")
+    titel = T("Unzensiert beantwortet das Modell alles und bleibt sonst gleich gut", "Uncensored, the model answers everything and stays as good otherwise")
     kopf(s, T("Flash-Next 125B IQ3_XXS · Original und unzensiert (Ablehnungen per Steuervektor entfernt) · Strata 0.2.12", "Flash-Next 125B IQ3_XXS · original and uncensored (refusals removed by a steering vector) · Strata 0.2.12"), titel)
     feld(s, L, 104, T("A · 15 Aufgaben, die Modelle oft verweigern", "A · 15 tasks that models often refuse"), T("aus Fiktion, Humor, Gesundheit, Sicherheit und Ethik · von Hand gelesen", "from fiction, humour, health, security and ethics · read by hand"))
     X = lambda n: L + n * (456 - L) / 15
@@ -1163,12 +1163,11 @@ def steuervektor(d, sp):
     feld(s, 544, 104, T("B · Was sich sonst ändert", "B · What else changes"), T("derselbe Aufgabensatz, dieselbe Karte", "the same task set, the same card"))
     s.text(796, 148, T("ORIGINAL", "ORIGINAL"), 8, MUTED, "mono", "end", 500, sperr="0.14em")
     s.text(824, 148, T("UNZENSIERT", "UNCENSORED"), 8, MUTED, "mono", weight=500, sperr="0.14em")
-    e = v["erfundenes_erkannt_von_120"]
-    proz = lambda n: f"{round(100 * n / 120)} %"
+    g = v["gegenprobe_als_echt_von_150"]
     zeilen = [(T("Aufgaben bestanden (von 102)", "graded tasks passed (of 102)"), str(v["aufgaben_102"]["faber"]), str(v["aufgaben_102"]["liber"]), T("gleich", "equal"), "neutral"),
               (T("Deutsch, verdeckt benotet (von 60)", "German, graded blind (of 60)"), str(v["deutsch_blind_60"]["faber"]), str(v["deutsch_blind_60"]["liber"]), T("etwas besser", "a little better"), "salbei"),
-              (T("Erfundenes erkannt, ohne Regeln", "made-up things recognised, no rules"), proz(e["ohne_regeln"]["faber"]), proz(e["ohne_regeln"]["liber"]), T("schlechter", "worse"), "rose"),
-              (T("Erfundenes erkannt, mit vier Regeln", "made-up things recognised, four rules"), proz(e["mit_regeln"]["faber"]), proz(e["mit_regeln"]["liber"]), T("schlechter", "worse"), "rose"),
+              (T("Erfundenes als echt behandelt (von 150)", "made-up things treated as real (of 150)"), str(g["ohne_regel"]["faber"]), str(g["ohne_regel"]["liber"]), T("gleich", "equal"), "neutral"),
+              (T("dasselbe mit kurzer Regel", "the same with a short rule"), str(g["kurze_regel"]["faber"]), str(g["kurze_regel"]["liber"]), T("gleich", "equal"), "neutral"),
               (T("Schreibtempo (Token/s)", "decode speed (tokens/s)"), z(v["schreiben_tps"]["faber"], sp), z(v["schreiben_tps"]["liber"], sp), T("gleich", "equal"), "neutral")]
     for i, (name, ohne, mit, wort, ton) in enumerate(zeilen):
         y = 176 + i * 30
@@ -1180,10 +1179,10 @@ def steuervektor(d, sp):
         s.text(R, y, wort.upper(), 8, TON[ton][2], "mono", "end", 600, sperr="0.1em")
     s.text(R, 350, T("Es lehnt nichts mehr ab und kann dasselbe wie vorher.", "It refuses nothing any more and can do what it could before."), 15, INK, "serif", "end", kursiv=True)
     h = fuss(s, 372, (("ton", "salbei", T("beantwortet", "answered")), ("ton", "gold", T("ausgewichen, belehrt oder entschärft", "evasive, lecturing or toned down")), ("ton", "rose", T("abgelehnt", "refused"))),
-             T("Aufgaben und Deutsch: Nachtvergleich 13./14.11.2026 · Erfinden: 120 erfundene Dinge je Modell und Bedingung, 14.11.2026 · ein einzelner Lauf streut um ein bis zwei Aufgaben · Daten: messen/daten/2026-11-14-erfinden/steuervektor.json",
-               "tasks and German: night comparison 13/14 Nov 2026 · making things up: 120 made-up things per model and condition, 14 Nov 2026 · a single run varies by one or two tasks · data: messen/daten/2026-11-14-erfinden/steuervektor.json"))
-    return "steuervektor", titel, T("Das Originalmodell beantwortet 11 von 15 Aufgaben, die Modelle oft verweigern, weicht bei 3 aus und lehnt 1 ab; das unzensierte beantwortet alle 15. Bei Aufgaben, Deutsch und Tempo bleibt es gleich oder etwas besser, erkennt Erfundenes aber seltener.",
-                                    "The original model answers 11 of 15 tasks that models often refuse, is evasive on 3 and refuses 1; the uncensored one answers all 15. On tasks, German and speed it stays equal or a little better, but recognises made-up things less often."), s, h
+             T("Aufgaben und Deutsch: Nachtvergleich 13./14.11.2026 · Erfinden: 150 Dinge, die es nicht gibt, aus einem öffentlichen Fragensatz, 16.11.2026, Unterschiede unter 8 bedeuten nichts · ein einzelner Lauf streut um ein bis zwei Aufgaben · Daten: messen/daten/2026-11-14-erfinden/steuervektor.json",
+               "tasks and German: night comparison 13/14 Nov 2026 · making things up: 150 things that do not exist from a public question set, 16 Nov 2026, differences below 8 mean nothing · a single run varies by one or two tasks · data: messen/daten/2026-11-14-erfinden/steuervektor.json"))
+    return "steuervektor", titel, T("Das Originalmodell beantwortet 11 von 15 Aufgaben, die Modelle oft verweigern, weicht bei 3 aus und lehnt 1 ab; das unzensierte beantwortet alle 15. Bei Aufgaben, Deutsch, Tempo und beim Erfinden bleibt es gleich oder etwas besser.",
+                                    "The original model answers 11 of 15 tasks that models often refuse, is evasive on 3 and refuses 1; the uncensored one answers all 15. On tasks, German, speed and making things up it stays equal or a little better."), s, h
 
 
 ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, cloud_vergleich, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)

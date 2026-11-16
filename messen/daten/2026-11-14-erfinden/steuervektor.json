@@ -113,5 +113,16 @@
  "einlesen_32k_tps": {
   "faber": 1183,
   "liber": 1188
+ },
+ "gegenprobe_als_echt_von_150": {
+  "quelle": "messen/daten/2026-11-16-erfinden2/zahlen.json, Satz nichts, Fassungen A und E",
+  "ohne_regel": {
+   "faber": 20,
+   "liber": 25
+  },
+  "kurze_regel": {
+   "faber": 6,
+   "liber": 5
+  }
  }
 }
