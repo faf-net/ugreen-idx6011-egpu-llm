@@ -635,7 +635,7 @@ def schichten(d, sp):
               (("announced steps", "without a tool"), ("angekündigte Schritte", "ohne Werkzeug")), (("unknown tool names",), ("unbekannte Werkzeugnamen",)))
     # g = fängt ab, gemessen · u = hilft, nicht gemessen · b = blind · n = nicht zuständig
     art = {"g": ("salbei", "catches it", "fängt es ab"), "u": ("gold", "helps · not measured", "hilft · nicht gemessen"), "b": ("rose", "blind", "blind"), "n": ("neutral", "not its job", "nicht zuständig")}
-    zellen = [[("g", "29–60 % → 88–99 %, four models", "29–60 % → 88–99 %, vier Modelle"), ("n", "", ""), ("b", "0 of 269 caught", "0 von 269 erkannt")],
+    zellen = [[("g", "17–60 % → 88–99 %, five models", "17–60 % → 88–99 %, fünf Modelle"), ("n", "", ""), ("b", "0 of 269 caught", "0 von 269 erkannt")],
               [("u", "“never invent numbers”", "„nie Zahlen erfinden“"), ("u", "numbers come from code", "Zahlen kommen aus dem Code"), ("g", "", "")],
               [("n", "", ""), ("u", "only allowed steps offered", "nur erlaubte Schritte angeboten"), ("g", "6 of 6", "6 von 6")],
               [("g", "10–20 → 23–24 of 24", "10–20 → 23–24 von 24"), ("n", "", ""), ("g", "", "")]]
@@ -916,7 +916,8 @@ def wartezeit(d, sp):
         xt = xm if xt is None else xt
         s.text(xt, tiefe + 284, zahl, 16, TITLE, "mono", anker, 700)
         s.text(xt, tiefe + 300, name, 10.5, MUTED, "sans", anker)
-    unten(X(a), X(b), 0, f"{z(a, sp, 2)}–{z(b, sp, 1)} s", T("Fragen im laufenden Gespräch", "questions in a running conversation"), "start", X(a) - 5)
+    kurz = f"{z(a, sp, 1)}–{z(b, sp, 1)} s" if z(a, sp, 1) != z(b, sp, 1) else T(f"rund {z(a, sp, 1)} s", f"about {z(a, sp, 1)} s")
+    unten(X(a), X(b), 0, kurz, T("Fragen im laufenden Gespräch", "questions in a running conversation"), "start", X(a) - 5)
     spanne = f"{z(g[0], sp, 0)}–{z(g[1], sp, 0)} s" if z(g[0], sp, 0) != z(g[1], sp, 0) else T(f"rund {z(g[0], sp, 0)} s", f"about {z(g[0], sp, 0)} s")
     unten(X(g[0]), X(g[1]), 0, spanne, T("zwei fragen zugleich", "two people ask at once"))
     unten(X(kalt), X(kalt), 36, f"{z(kalt, sp, 0)} s", T("erste Frage nach 30 min Pause", "first question after a 30-minute break"))
@@ -1027,7 +1028,7 @@ def aufbau(d, sp):
     knoten(512, 132, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches through a VPN"), "extern")
     knoten(272, 340, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
     knoten(512, 340, T("Weiche", "Switch"), "llama-swap", T("ein Modell zur Zeit", "one model at a time"))
-    knoten(744, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 67 Token/s · 256K", "Strata · 67 tokens/s · 256K"), "fokus", w=152)
+    knoten(744, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 66 Token/s · 256K", "Strata · 66 tokens/s · 256K"), "fokus", w=152)
     knoten(744, 340, T("Bilder", "Pictures"), "ComfyUI", T("8–66 s je Bild", "8–66 s per picture"), w=152)
     y = 536
     s.line(40, y, W - 40, y, 'stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"')
@@ -1036,8 +1037,8 @@ def aufbau(d, sp):
     s.roh(f'<path d="M 280,{y + 22} H 312" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#{pf})"/>')
     s.text(324, y + 26, T("verlässt das Haus", "leaves the house"), 10, INK, "sans")
     s.text(R, y + 27, T("Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.", "Only search queries and messenger messages leave the house."), 15, INK, "serif", "end", kursiv=True)
-    s.text(L, y + 48, T("Chat, Suche und Agent laufen als Container, die Modelle auf der Karte im Dock · Zugang von unterwegs über einen eigenen Zugang mit Anmeldung",
-                        "Chat, search and agent run as containers, the models on the card in the dock · access from outside through an own gateway with login"), 8.5, MUTED, "mono")
+    s.text(L, y + 48, T("Chat, Suche und Agent laufen als Container, die Modelle auf der Karte im Dock",
+                        "Chat, search and agent run as containers, the models on the card in the dock"), 8.5, MUTED, "mono")
     return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, ebenso OpenCode 2 aus dem Terminal des eigenen Rechners. llama-swap lädt auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI. Nur Suchanfragen und Messenger-Nachrichten verlassen das Haus.",
                               "Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, as does OpenCode 2 from the terminal of your own computer. llama-swap loads either the language model or ComfyUI on the RX 7900 XTX. Only search queries and messenger messages leave the house."), s, 600
 
