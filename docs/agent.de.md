@@ -52,6 +52,59 @@ Grenzen: einzelne Fragen ohne Gesprächsverlauf und ein kurzer Systemprompt. In 
 Wirkung nicht gemessen. Die Regeln nennen außerdem genau die Arten von Dingen, nach denen die Probe fragt
 (Bundesländer, Autoren, Optionen); ob sie bei anderen Fragen ebenso gut wirken, ist ebenfalls nicht gemessen.
 
+**Gegenprobe mit fremden Fragen (15./16.11.2026): Eine kurze Regel reicht gegen Erfundenes, eine strenge kostet richtige Antworten.**
+Die vier Sätze oben nennen genau die Arten von Dingen, nach denen meine Probe fragt. Ob eine allgemein formulierte Regel
+bei anderen Fragen wirkt, prüft `messen/erfinden2.py` mit vier öffentlichen Fragensätzen zu je 150 Fragen: Dinge, die es
+nicht gibt (HalluLens), schwere Faktenfragen (SimpleQA Verified, deutsch), mittelschwere Alltagsfragen (MKQA, deutsch)
+und Agentenfälle mit Werkzeugliste (When2Call). Zwei Regeln im Wortlaut, jeweils an einen kurzen Systemprompt gehängt:
+
+```
+Grundregel (E):  Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht,
+                 sag das, statt etwas zu erfinden.
+
+Strenge Regel (B):  Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige
+                    Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.
+```
+
+| `faber` (Original) | ohne Regel | Grundregel E | strenge Regel B | Regeln der ersten Probe (D) |
+|---|---:|---:|---:|---:|
+| Erfundenes als echt behandelt (von 150) | 20 | 6 | 0 | 0 |
+| mittelschwere Fragen: richtig / falsch / enthalten | 90 / 58 / 2 | 87 / 60 / 3 | 84 / 30 / 36 | 75 / 23 / 52 |
+| schwere Fragen: richtig / falsch / enthalten | 19 / 125 / 6 | 15 / 109 / 26 | 3 / 13 / 134 | 4 / 5 / 141 |
+
+| `liber` (unzensiert) | ohne Regel | Grundregel E | strenge Regel B | Regeln der ersten Probe (D) |
+|---|---:|---:|---:|---:|
+| Erfundenes als echt behandelt (von 150) | 25 | 5 | 2 | 2 |
+| mittelschwere Fragen: richtig / falsch / enthalten | 95 / 54 / 1 | 95 / 53 / 2 | 85 / 31 / 34 | 76 / 30 / 44 |
+| schwere Fragen: richtig / falsch / enthalten | 14 / 134 / 2 | 21 / 113 / 16 | 5 / 21 / 124 | 1 / 14 / 135 |
+
+- **Die Grundregel kostet nichts.** Sie senkt das Erfinden nicht existierender Dinge von 20 auf 6 und von 25 auf 5, in
+  ganzen Sätzen statt mit einer Formel, und lässt die Antworten auf echte Fragen, wie sie sind. Falsche Antworten auf
+  echte Fragen fängt sie nicht ab.
+- **Die strenge Regel halbiert die falschen Antworten und kostet richtige.** Auf den mittelschweren Fragen enthält sie
+  sich bei 41 % der Antworten, die ohne Regel falsch waren, und bei 11 % derer, die richtig waren. Sie unterscheidet
+  also, aber grob. Bei Fragen, die das Modell kaum beantworten kann, bleibt fast nur noch „Weiß ich nicht“ übrig.
+- **Die Regeln der ersten Probe sind nicht besser als die strenge Regel,** sie kosten auf mittelschweren Fragen doppelt so viele
+  richtige Antworten (90 → 75) für wenig mehr Wirkung.
+- **Das unzensierte Modell erfindet etwas mehr,** die Unterschiede zum Original liegen aber im Bereich der Streuung.
+
+**Bei Werkzeugen wirkt nur der ausdrückliche Satz, und auch er hat einen Preis.** In 60 Fällen ohne passendes Werkzeug
+ruft faber ohne Regel 15-mal trotzdem eines auf (liber 21-mal). Die Grundregel und die strenge Regel ändern daran
+nichts (15 und 14, liber 19 und 24). Mit dem Satz „Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es
+keins, sag: „Dafür habe ich kein Werkzeug.““ sind es 10 (10), mit den Regeln der ersten Probe 6 (9). Dafür unterbleiben
+berechtigte Aufrufe: von 50 Fällen mit passendem Werkzeug 32 statt 41 Aufrufe (liber 36 statt 46). Allein ist der Satz
+also nicht besser als im Paket.
+
+Vorbehalte: ein Lauf je Frage bei Temperatur 0,7; an der Grundregel gegen „ohne Regel“ sieht man, dass 10 bis 12
+Antworten ohne jede Regelwirkung kippen, Unterschiede unter etwa 8 Antworten bedeuten also nichts. Gewertet hat faber
+selbst; ich habe über 200 Urteile nachgelesen. Enthaltungen sind genau gezählt, bei „richtig“ gegen „falsch“ irrt der
+Richter auf den mittelschweren Fragen bei etwa jedem sechsten Urteil, in beide Richtungen und in allen Spalten gleich.
+Die mittelschweren Fragen stammen aus einer Übersetzung mit Mängeln und handeln oft von US-Fernsehen und Musik.
+„Erfundenes als echt behandelt“ zählt nur klare Fälle; dazu kommen Antworten, die das Ding verneinen und raten, was
+gemeint sein könnte (ohne Regel 35 und 43, mit Grundregel 18 und 25), teils richtig, teils erfunden. Die Spalte „Regeln der ersten Probe“ nutzt die drei
+allgemeinen der vier Sätze oben, ohne den zur Katalogdatenbank; für sie und für die strenge Regel stammt die erste Zeile
+aus dem einfacheren Urteil „erfunden oder erkannt“. Zählwerte und Urteile: `messen/daten/2026-11-16-erfinden2/`.
+
 **Beim Urteil helfen drei Runden nicht weiter.** Mit `messen/agent_de.py` bekam faber dieselben Betriebslagen zehnmal
 statt dreimal:
 

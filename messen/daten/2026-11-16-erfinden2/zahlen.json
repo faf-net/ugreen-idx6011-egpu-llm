@@ -1,0 +1,577 @@
+{
+ "stand": "2026-11-16",
+ "temperatur": 0.7,
+ "laeufe_je_frage": 1,
+ "richter": "faber (dasselbe Modell wie einer der Prüflinge), Stichproben von Hand gelesen",
+ "fassungen": {
+  "A": "ohne Regel",
+  "B": "allgemeine Regel mit Antwortformel",
+  "C": "B mit nicht abschließenden Beispielen",
+  "D": "die vier Regeln der ersten Probe (nennen Kategorien)",
+  "E": "Regel über Bekanntheit, ohne Antwortformel",
+  "F": "nur der Werkzeugsatz aus D"
+ },
+ "saetze": {
+  "nichts": "150 Dinge, die es nicht gibt (HalluLens)",
+  "fakten": "150 schwere Faktenfragen (SimpleQA Verified, deutsch)",
+  "mittel": "150 mittelschwere Alltagsfragen (MKQA, deutsch, nach Fragetext bereinigt)",
+  "werkzeug": "150 Agentenfälle (When2Call): 60 ohne passendes Werkzeug, 40 mit fehlender Angabe, 50 mit passendem Werkzeug"
+ },
+ "hinweise": [
+  "Enthaltungen (nicht_versucht) sind fast immer die wörtliche Formel und damit genau gezählt.",
+  "richtig und falsch sind Richterurteile: auf dem Satz mittel irrt der Richter bei etwa jedem sechsten Urteil, in beide Richtungen und in allen Fassungen gleich. Unterschiede unter etwa 8 Antworten nicht deuten.",
+  "nichts_dreistufig: A = behandelt das Ding als real, B = kennt es nicht und nennt nichts anderes, C = verneint, rät aber, was gemeint sein könnte.",
+  "mittel_nachsichtig: die als falsch gewerteten Antworten ein zweites Mal gewertet (Jahr genügt bei wann-Fragen, Zahlen bis 2 % Abweichung oder andere Einheit gelten als gleich).",
+  "handlung_behauptet ist nicht aufgeführt: Der Richter zählt dort auch angekündigte Aufrufe mit."
+ ],
+ "modelle": {
+  "faber": {
+   "fassungen": {
+    "A": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 126,
+      "erfunden": 24
+     },
+     "nichts_dreistufig": {
+      "A": 20,
+      "B": 95,
+      "C": 35
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 19,
+      "falsch": 125,
+      "nicht_versucht": 6
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 15,
+      "abgelehnt": 33,
+      "nachgefragt": 5
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 28,
+      "nachgefragt": 10,
+      "abgelehnt": 0
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 41
+     },
+     "mittel": {
+      "n": 150,
+      "richtig": 90,
+      "falsch": 58,
+      "nicht_versucht": 2
+     },
+     "mittel_nachsichtig": {
+      "n": 150,
+      "richtig": 92,
+      "falsch": 55,
+      "nicht_versucht": 3
+     },
+     "abgeschnitten": 0
+    },
+    "B": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 150,
+      "erfunden": 0
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 3,
+      "falsch": 13,
+      "nicht_versucht": 134
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 14,
+      "abgelehnt": 37,
+      "nachgefragt": 3
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 30,
+      "nachgefragt": 8,
+      "abgelehnt": 2
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 38
+     },
+     "mittel": {
+      "n": 150,
+      "richtig": 84,
+      "falsch": 30,
+      "nicht_versucht": 36
+     },
+     "mittel_nachsichtig": {
+      "n": 150,
+      "richtig": 84,
+      "falsch": 30,
+      "nicht_versucht": 36
+     },
+     "abgeschnitten": 0
+    },
+    "C": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 150,
+      "erfunden": 0
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 3,
+      "falsch": 4,
+      "nicht_versucht": 143
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 16,
+      "abgelehnt": 40,
+      "nachgefragt": 0
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 19,
+      "nachgefragt": 16,
+      "abgelehnt": 3
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 33
+     }
+    },
+    "D": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 150,
+      "erfunden": 0
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 4,
+      "falsch": 5,
+      "nicht_versucht": 141
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 6,
+      "abgelehnt": 51,
+      "nachgefragt": 1
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 22,
+      "nachgefragt": 9,
+      "abgelehnt": 7
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 37
+     },
+     "mittel": {
+      "n": 150,
+      "richtig": 75,
+      "falsch": 23,
+      "nicht_versucht": 52
+     },
+     "mittel_nachsichtig": {
+      "n": 150,
+      "richtig": 75,
+      "falsch": 23,
+      "nicht_versucht": 52
+     },
+     "abgeschnitten": 0
+    },
+    "E": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 144,
+      "erfunden": 6
+     },
+     "nichts_dreistufig": {
+      "A": 6,
+      "B": 126,
+      "C": 18
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 15,
+      "falsch": 109,
+      "nicht_versucht": 26
+     },
+     "mittel": {
+      "n": 150,
+      "richtig": 87,
+      "falsch": 60,
+      "nicht_versucht": 3
+     },
+     "mittel_nachsichtig": {
+      "n": 150,
+      "richtig": 88,
+      "falsch": 58,
+      "nicht_versucht": 4
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 15,
+      "abgelehnt": 38,
+      "nachgefragt": 3
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 22,
+      "nachgefragt": 13,
+      "abgelehnt": 3
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 35
+     },
+     "abgeschnitten": 1
+    },
+    "F": {
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 10,
+      "abgelehnt": 45,
+      "nachgefragt": 3
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 21,
+      "nachgefragt": 11,
+      "abgelehnt": 4
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 32
+     },
+     "abgeschnitten": 2
+    }
+   },
+   "mittel_uebergang_von_A": {
+    "B": {
+     "in_A_richtig": {
+      "n": 90,
+      "richtig": 76,
+      "falsch": 4,
+      "enthalten": 10
+     },
+     "in_A_falsch": {
+      "n": 58,
+      "richtig": 8,
+      "falsch": 26,
+      "enthalten": 24
+     }
+    },
+    "D": {
+     "in_A_richtig": {
+      "n": 90,
+      "richtig": 69,
+      "falsch": 2,
+      "enthalten": 19
+     },
+     "in_A_falsch": {
+      "n": 58,
+      "richtig": 6,
+      "falsch": 21,
+      "enthalten": 31
+     }
+    },
+    "E": {
+     "in_A_richtig": {
+      "n": 90,
+      "richtig": 78,
+      "falsch": 12,
+      "enthalten": 0
+     },
+     "in_A_falsch": {
+      "n": 58,
+      "richtig": 9,
+      "falsch": 47,
+      "enthalten": 2
+     }
+    }
+   }
+  },
+  "liber": {
+   "fassungen": {
+    "A": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 120,
+      "erfunden": 30
+     },
+     "nichts_dreistufig": {
+      "A": 25,
+      "B": 82,
+      "C": 43
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 14,
+      "falsch": 134,
+      "nicht_versucht": 2
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 21,
+      "abgelehnt": 29,
+      "nachgefragt": 4
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 27,
+      "nachgefragt": 10,
+      "abgelehnt": 2
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 46
+     },
+     "mittel": {
+      "n": 150,
+      "richtig": 95,
+      "falsch": 54,
+      "nicht_versucht": 1
+     },
+     "mittel_nachsichtig": {
+      "n": 150,
+      "richtig": 96,
+      "falsch": 53,
+      "nicht_versucht": 1
+     },
+     "abgeschnitten": 0
+    },
+    "B": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 148,
+      "erfunden": 2
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 5,
+      "falsch": 21,
+      "nicht_versucht": 124
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 24,
+      "abgelehnt": 26,
+      "nachgefragt": 4
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 24,
+      "nachgefragt": 9,
+      "abgelehnt": 4
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 41
+     },
+     "mittel": {
+      "n": 150,
+      "richtig": 85,
+      "falsch": 31,
+      "nicht_versucht": 34
+     },
+     "mittel_nachsichtig": {
+      "n": 150,
+      "richtig": 85,
+      "falsch": 31,
+      "nicht_versucht": 34
+     },
+     "abgeschnitten": 0
+    },
+    "C": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 150,
+      "erfunden": 0
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 4,
+      "falsch": 9,
+      "nicht_versucht": 137
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 20,
+      "abgelehnt": 32,
+      "nachgefragt": 4
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 24,
+      "nachgefragt": 10,
+      "abgelehnt": 3
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 35
+     }
+    },
+    "D": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 148,
+      "erfunden": 2
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 1,
+      "falsch": 14,
+      "nicht_versucht": 135
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 9,
+      "abgelehnt": 46,
+      "nachgefragt": 2
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 24,
+      "nachgefragt": 4,
+      "abgelehnt": 10
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 43
+     },
+     "mittel": {
+      "n": 150,
+      "richtig": 76,
+      "falsch": 30,
+      "nicht_versucht": 44
+     },
+     "mittel_nachsichtig": {
+      "n": 150,
+      "richtig": 77,
+      "falsch": 29,
+      "nicht_versucht": 44
+     },
+     "abgeschnitten": 0
+    },
+    "E": {
+     "nichts": {
+      "n": 150,
+      "erkannt": 144,
+      "erfunden": 6
+     },
+     "nichts_dreistufig": {
+      "A": 5,
+      "B": 120,
+      "C": 25
+     },
+     "fakten": {
+      "n": 150,
+      "richtig": 21,
+      "falsch": 113,
+      "nicht_versucht": 16
+     },
+     "mittel": {
+      "n": 150,
+      "richtig": 95,
+      "falsch": 53,
+      "nicht_versucht": 2
+     },
+     "mittel_nachsichtig": {
+      "n": 150,
+      "richtig": 95,
+      "falsch": 53,
+      "nicht_versucht": 2
+     },
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 19,
+      "abgelehnt": 36,
+      "nachgefragt": 1
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 27,
+      "nachgefragt": 8,
+      "abgelehnt": 2
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 32
+     },
+     "abgeschnitten": 2
+    },
+    "F": {
+     "kein_werkzeug": {
+      "n": 60,
+      "aufruf": 10,
+      "abgelehnt": 43,
+      "nachgefragt": 3
+     },
+     "angabe_fehlt": {
+      "n": 40,
+      "aufruf": 18,
+      "nachgefragt": 15,
+      "abgelehnt": 3
+     },
+     "werkzeug_passt": {
+      "n": 50,
+      "aufruf": 36
+     },
+     "abgeschnitten": 1
+    }
+   },
+   "mittel_uebergang_von_A": {
+    "B": {
+     "in_A_richtig": {
+      "n": 95,
+      "richtig": 77,
+      "falsch": 7,
+      "enthalten": 11
+     },
+     "in_A_falsch": {
+      "n": 54,
+      "richtig": 8,
+      "falsch": 24,
+      "enthalten": 22
+     }
+    },
+    "D": {
+     "in_A_richtig": {
+      "n": 95,
+      "richtig": 67,
+      "falsch": 10,
+      "enthalten": 18
+     },
+     "in_A_falsch": {
+      "n": 54,
+      "richtig": 9,
+      "falsch": 20,
+      "enthalten": 25
+     }
+    },
+    "E": {
+     "in_A_richtig": {
+      "n": 95,
+      "richtig": 85,
+      "falsch": 10,
+      "enthalten": 0
+     },
+     "in_A_falsch": {
+      "n": 54,
+      "richtig": 10,
+      "falsch": 42,
+      "enthalten": 2
+     }
+    }
+   }
+  }
+ }
+}

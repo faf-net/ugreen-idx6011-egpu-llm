@@ -50,6 +50,63 @@ guess ("it may be in …") count as made up. Limits: single questions without a 
 long agent prompt is not measured. The rules also name exactly the kinds of things the probe asks about (states, authors,
 options); whether they work as well on other questions is not measured either.
 
+**Counter-check with other people's questions (15/16 Nov 2026): a short rule is enough against made-up things, a strict one costs right answers.**
+The four rules above name exactly the kinds of things my probe asks about. Whether a generally worded rule works on other
+questions is what `messen/erfinden2.py` checks, with four public question sets of 150 questions each: things that do not
+exist (HalluLens), hard fact questions (SimpleQA Verified, German), medium everyday questions (MKQA, German) and agent
+cases with a tool list (When2Call). Two rules, each appended to a short (German) system prompt:
+
+```
+Basic rule (E):  Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht,
+                 sag das, statt etwas zu erfinden.
+                 (Answer what you know. If you do not know a thing, a name or a tool at all, say so
+                 instead of making something up.)
+
+Strict rule (B): Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige
+                 Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.
+                 (If you are not sure, say "I don't know" explicitly. That is a correct answer. Do not make up
+                 facts or actions. Guessing is worse than not knowing.)
+```
+
+| `faber` (original) | no rule | basic rule E | strict rule B | rules of the first probe (D) |
+|---|---:|---:|---:|---:|
+| made-up things treated as real (of 150) | 20 | 6 | 0 | 0 |
+| medium questions: right / wrong / abstained | 90 / 58 / 2 | 87 / 60 / 3 | 84 / 30 / 36 | 75 / 23 / 52 |
+| hard questions: right / wrong / abstained | 19 / 125 / 6 | 15 / 109 / 26 | 3 / 13 / 134 | 4 / 5 / 141 |
+
+| `liber` (uncensored) | no rule | basic rule E | strict rule B | rules of the first probe (D) |
+|---|---:|---:|---:|---:|
+| made-up things treated as real (of 150) | 25 | 5 | 2 | 2 |
+| medium questions: right / wrong / abstained | 95 / 54 / 1 | 95 / 53 / 2 | 85 / 31 / 34 | 76 / 30 / 44 |
+| hard questions: right / wrong / abstained | 14 / 134 / 2 | 21 / 113 / 16 | 5 / 21 / 124 | 1 / 14 / 135 |
+
+- **The basic rule costs nothing.** It cuts made-up answers about things that do not exist from 20 to 6 and from 25 to 5,
+  in full sentences instead of a fixed phrase, and leaves answers to real questions as they are. It does not catch wrong
+  answers to real questions.
+- **The strict rule halves the wrong answers and costs right ones.** On the medium questions it abstains on 41 % of the
+  answers that were wrong without a rule and on 11 % of those that were right. So it does tell them apart, but roughly.
+  On questions the model can hardly answer, almost nothing but "I don't know" is left.
+- **The rules of the first probe are no better than the strict rule;** on medium questions they cost twice as many right answers
+  (90 → 75) for little extra effect.
+- **The uncensored model makes up a little more,** but the differences to the original are within the scatter.
+
+**For tools only the explicit sentence works, and it has a price too.** In 60 cases without a fitting tool, faber calls one
+anyway 15 times without a rule (liber 21 times). The basic and the strict rule change nothing (15 and 14, liber 19 and
+24). With the sentence "Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich
+kein Werkzeug.“" (name only tools and parameters you really have; if there is none, say so) it is 10 (10), with the rules
+of the first probe 6 (9). In return, justified calls go missing: 32 instead of 41 calls in 50 cases with a fitting tool (liber 36
+instead of 46). On its own the sentence is no better than within those rules.
+
+Caveats: one run per question at temperature 0.7; the basic rule against "no rule" shows that 10 to 12 answers flip
+without any effect of a rule, so differences below about 8 answers mean nothing. The judge was faber itself; I read more
+than 200 verdicts by hand. Abstentions are counted exactly; for right against wrong the judge is off in about one in six
+verdicts on the medium questions, in both directions and in all columns alike. The medium questions come from a
+translation with flaws and are often about US television and music. "Made-up things treated as real" counts clear cases
+only; on top come answers that deny the thing and guess what was meant (35 and 43 without a rule, 18 and 25 with the
+basic rule), some right, some made up. The column "rules of the first probe" uses the three general ones of the four
+rules above, without the one about the catalogue database; for it and for the strict rule the first row comes from the
+simpler verdict "made up or recognised". Counts and verdicts: `messen/daten/2026-11-16-erfinden2/`.
+
 **For judgement, three rounds are not enough.** With `messen/agent_de.py`, faber got the same operating situations ten
 times instead of three:
 
