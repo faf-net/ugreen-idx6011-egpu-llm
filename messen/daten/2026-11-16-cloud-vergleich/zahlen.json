@@ -1,0 +1,309 @@
+{
+ "measured": "2026-11-16 (Sonnet 5.5, Flash-Next IQ3_XXS and its uncensored variant on Strata 0.2.14); 2026-11-13 (Flash-Next IQ2_XS on Strata 0.2.12, the two dense models); 2026-11-15 (Qwen3.5-35B-A3B)",
+ "tasks": "102 automatically graded tasks of the own German-language task set (114 with the 12 German writing tasks), one run per model",
+ "counting": "passed_automatic is the script's verdict. passed_after_reading adds the fact questions about things that do not exist where the answer is right but the script's pattern misses it. The diagram shows passed_after_reading, like the six-model diagram.",
+ "models": {
+  "faber": {
+   "name": "Flash-Next IQ3_XXS (MoE)",
+   "where": "local, Strata 0.2.14",
+   "date": "2026-11-16",
+   "passed_automatic": 98,
+   "passed_after_reading": 98,
+   "by_category_automatic": {
+    "instruction": [
+     15,
+     15
+    ],
+    "code": [
+     15,
+     15
+    ],
+    "facts": [
+     12,
+     15
+    ],
+    "long-context": [
+     4,
+     4
+    ],
+    "logic": [
+     15,
+     15
+    ],
+    "agent-safety": [
+     17,
+     18
+    ],
+    "tool-calls": [
+     20,
+     20
+    ]
+   }
+  },
+  "liber": {
+   "name": "Flash-Next IQ3_XXS, uncensored",
+   "where": "local, Strata 0.2.14",
+   "date": "2026-11-16",
+   "passed_automatic": 96,
+   "passed_after_reading": 97,
+   "by_category_automatic": {
+    "instruction": [
+     15,
+     15
+    ],
+    "code": [
+     14,
+     15
+    ],
+    "facts": [
+     11,
+     15
+    ],
+    "long-context": [
+     4,
+     4
+    ],
+    "logic": [
+     15,
+     15
+    ],
+    "agent-safety": [
+     17,
+     18
+    ],
+    "tool-calls": [
+     20,
+     20
+    ]
+   }
+  },
+  "velox": {
+   "name": "Flash-Next IQ2_XS (MoE)",
+   "where": "local, Strata 0.2.12",
+   "date": "2026-11-13",
+   "passed_automatic": 97,
+   "passed_after_reading": 97,
+   "by_category_automatic": {
+    "instruction": [
+     15,
+     15
+    ],
+    "code": [
+     14,
+     15
+    ],
+    "facts": [
+     12,
+     15
+    ],
+    "long-context": [
+     4,
+     4
+    ],
+    "logic": [
+     15,
+     15
+    ],
+    "agent-safety": [
+     17,
+     18
+    ],
+    "tool-calls": [
+     20,
+     20
+    ]
+   }
+  },
+  "gemma31": {
+   "name": "Gemma 4 31B (dense)",
+   "where": "local, llama.cpp",
+   "date": "2026-11-13",
+   "passed_automatic": 95,
+   "passed_after_reading": 97,
+   "by_category_automatic": {
+    "instruction": [
+     14,
+     15
+    ],
+    "code": [
+     15,
+     15
+    ],
+    "facts": [
+     10,
+     15
+    ],
+    "long-context": [
+     4,
+     4
+    ],
+    "logic": [
+     15,
+     15
+    ],
+    "agent-safety": [
+     17,
+     18
+    ],
+    "tool-calls": [
+     20,
+     20
+    ]
+   }
+  },
+  "qwen27": {
+   "name": "Qwen3.8-27B (dense)",
+   "where": "local, llama.cpp",
+   "date": "2026-11-13",
+   "passed_automatic": 89,
+   "passed_after_reading": 92,
+   "by_category_automatic": {
+    "instruction": [
+     15,
+     15
+    ],
+    "code": [
+     10,
+     15
+    ],
+    "facts": [
+     9,
+     15
+    ],
+    "long-context": [
+     4,
+     4
+    ],
+    "logic": [
+     15,
+     15
+    ],
+    "agent-safety": [
+     17,
+     18
+    ],
+    "tool-calls": [
+     19,
+     20
+    ]
+   }
+  },
+  "qwen35": {
+   "name": "Qwen3.5-35B-A3B (UGREEN stock model)",
+   "where": "local, llama.cpp Vulkan",
+   "date": "2026-11-15",
+   "passed_automatic": 90,
+   "passed_after_reading": 90,
+   "by_category_automatic": {
+    "instruction": [
+     13,
+     15
+    ],
+    "code": [
+     12,
+     15
+    ],
+    "facts": [
+     12,
+     15
+    ],
+    "long-context": [
+     4,
+     4
+    ],
+    "logic": [
+     12,
+     15
+    ],
+    "agent-safety": [
+     17,
+     18
+    ],
+    "tool-calls": [
+     20,
+     20
+    ]
+   }
+  },
+  "sonnet55-medium": {
+   "name": "Sonnet 5.5 Medium",
+   "where": "cloud, API",
+   "effort": "medium",
+   "date": "2026-11-16",
+   "passed_automatic": 96,
+   "passed_after_reading": 97,
+   "by_category_automatic": {
+    "instruction": [
+     12,
+     15
+    ],
+    "code": [
+     15,
+     15
+    ],
+    "facts": [
+     14,
+     15
+    ],
+    "long-context": [
+     3,
+     4
+    ],
+    "logic": [
+     15,
+     15
+    ],
+    "agent-safety": [
+     17,
+     18
+    ],
+    "tool-calls": [
+     20,
+     20
+    ]
+   },
+   "output_tokens_114_tasks": 26821,
+   "request_seconds_114_tasks": 310
+  },
+  "sonnet55-high": {
+   "name": "Sonnet 5.5 High",
+   "where": "cloud, API",
+   "effort": "high",
+   "date": "2026-11-16",
+   "passed_automatic": 97,
+   "passed_after_reading": 98,
+   "by_category_automatic": {
+    "instruction": [
+     13,
+     15
+    ],
+    "code": [
+     15,
+     15
+    ],
+    "facts": [
+     14,
+     15
+    ],
+    "long-context": [
+     3,
+     4
+    ],
+    "logic": [
+     15,
+     15
+    ],
+    "agent-safety": [
+     17,
+     18
+    ],
+    "tool-calls": [
+     20,
+     20
+    ]
+   },
+   "output_tokens_114_tasks": 33000,
+   "request_seconds_114_tasks": 338
+  }
+ }
+}

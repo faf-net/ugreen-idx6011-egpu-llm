@@ -272,6 +272,8 @@ def seite(sp):
     A(bild(D.dicht_moe, sp))
     P(T("Auf der Karte laufen auch kleinere Modelle, die ganz in den Grafikspeicher passen. Zwei dichte Modelle schreiben halb so schnell wie das 125B-Modell und bestehen nicht mehr Aufgaben. UGREENs mitgeliefertes Qwen 3.5 schreibt am schnellsten, hat aber das schwächste Deutsch und besteht die wenigsten Aufgaben. Schnell und gut im Deutschen zugleich sind nur die Fassungen des 125B-Modells; die unzensierte liegt im Deutschen vorn. Die Zahlen dieses Diagramms stammen von Strata 0.2.12; auf 0.2.14 besteht das 125B-Modell 98 statt 96 von 102 Aufgaben. Ein bis zwei Aufgaben kippen zwischen zwei Läufen derselben Version, 96 und 98 heißen also gleich.",
         "Smaller models that fit entirely into video memory run on the card as well. Two dense models write at half the speed of the 125B model and do not pass more tasks. UGREEN's bundled Qwen 3.5 writes fastest but has the weakest German and passes the fewest tasks. Only the versions of the 125B model are both fast and good at German; the uncensored one leads in German. The numbers in this chart are from Strata 0.2.12; on 0.2.14 the 125B model passes 98 instead of 96 of 102 tasks. One or two tasks flip between two runs of the same release, so 96 and 98 mean equal."))
+    A(f"<h3>{T('Und gegen ein Modell aus der Cloud?', 'And against a model in the cloud?')}</h3>")
+    A(bild(D.cloud_vergleich, sp))
     A(f"<h3 id=\"warten\">{T('Wartezeiten im Alltag', 'Waiting times in everyday use')}</h3>")
     if warte and zwei:
         A(bild(D.wartezeit, sp))

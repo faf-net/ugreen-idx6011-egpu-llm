@@ -182,6 +182,10 @@ Auf der Karte schreibt das eingebaute Modell 11-mal so schnell und liest fünfma
 
 Das kleine Modell denkt viel länger nach: Es schreibt für dieselben Aufgaben 2,7-mal so viele Token, deshalb dauert der ganze Satz trotz des höheren Tempos 49 % länger, und in neun Aufgaben war das Denkbudget aufgebraucht, bevor eine Antwort kam. Mit einem größeren Budget würden einige davon vermutlich bestehen; gemessen habe ich das nicht. Für das kleine Modell spricht: Es lässt den Arbeitsspeicher des NAS frei, wo das 125B-Modell rund 53 GiB belegt. Die Zahlen des 125B-Modells stammen vom 16.11. auf Strata 0.2.14 (gleiche Aufgaben); auf 0.2.12 bestand es am 13.11. 96 von 102. Seine Deutsch-Note stammt vom Lauf auf 0.2.12. Deutsch hat ein Sprachmodell verdeckt benotet, das nicht wusste, welche Antwort von welchem Modell stammt; ein anderer Prüfer als im Nachtrag vom 14.11., die Noten sind also nur innerhalb dieser Tabelle vergleichbar. Daten (nur Zählwerte): `messen/daten/2026-11-15-betrieb/qualitaet.json`.
 
+![Bestandene Aufgaben von 102: sechs lokale Modelle und Sonnet 5.5 mit zwei Denkstufen](bilder/cloud-vergleich-de.png)
+
+Derselbe Aufgabensatz gegen ein Modell aus der Cloud, Sonnet 5.5 über die API mit zwei Denkstufen; Zählwerte in `messen/daten/2026-11-16-cloud-vergleich/`.
+
 **Zwei Personen gleichzeitig.** `messen/zwei.py` führt erst ein Gespräch mit fünf Fragen allein, dann zwei Gespräche zugleich am selben Modell, dann zwei Personen abwechselnd an zwei verschiedenen Modellen:
 
 | | Warten bis zum ersten Wort (Median) | Schreiben T/s (Median) |
@@ -362,7 +366,7 @@ Die Gegenmaßnahme bleibt dieselbe.
 
 ![Drei Schichten gegen Erfinden, und was jede abfängt](bilder/schichten-de.png)
 
-**Gegenprobe mit öffentlichen Fragensätzen (15./16.11.2026): Eine kurze Regel reicht gegen fremd Klingendes, nicht bei Befehlen.** Die vier Regeln nennen die Arten von Dingen, nach denen meine Probe fragt; deshalb die Prüfung mit Fragen, die ich nicht geschrieben habe. Eine Grundregel („Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.“) senkt die Zahl erfundener Dinge, die das Modell als echt behandelt, von 20 auf 6 von 150 und lässt echte Fragen, wie sie sind (90 gegen 87 von 150 richtig). Eine strenge Regel mit festem „Weiß ich nicht“ halbiert die falschen Antworten (58 auf 30) und kostet einige richtige (90 auf 84). Die vier Regeln kosten doppelt so viele richtige Antworten für wenig mehr. Eine Grenze zeigte die Nachprobe mit meinen eigenen Fragen: Von 24 erfundenen Befehlsoptionen erkennt das unzensierte Modell mit der Grundregel 7, mit den vier Regeln 21 (Ortsnamen 12 gegen 22, nach Durchsicht von Hand). Für Befehle, Optionen und Orte braucht es also die ausdrückliche Nennung.
+**Gegenprobe mit öffentlichen Fragensätzen (15./16.11.2026): Eine kurze Regel reicht gegen fremd Klingendes, nicht bei Befehlen.** Die vier Regeln nennen die Arten von Dingen, nach denen meine Probe fragt; deshalb die Prüfung mit Fragen, die ich nicht geschrieben habe. Eine Grundregel („Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.“) senkt die Zahl erfundener Dinge, die das Modell als echt behandelt, von 20 auf 6 von 150 und lässt echte Fragen, wie sie sind (90 gegen 87 von 150 richtig). Eine strenge Regel mit festem „Weiß ich nicht“ halbiert die falschen Antworten (58 auf 30) und kostet einige richtige (90 auf 84). Die vier Regeln kosten doppelt so viele richtige Antworten für wenig mehr. Eine Grenze zeigte die Nachprobe mit meinen eigenen Fragen: Von 24 erfundenen Befehlsoptionen erkennt das unzensierte Modell mit der Grundregel 7, mit den vier Regeln 21 (Ortsnamen 12 gegen 22, nach Durchsicht von Hand). Für Befehle, Optionen und Orte braucht es also die ausdrückliche Nennung. Eine Kombination leistet das in einem Satz (die Grundregel plus „Das gilt besonders für Befehle, Optionen und Ortsnamen: Kennst du sie nicht sicher, sag das, auch wenn sie plausibel klingen.“): 17 von 24 Befehlsoptionen und 19 von 24 Ortsnamen, insgesamt 104 von 120 erfundenen Dingen gegen 86 mit der Grundregel und 113 mit den vier Regeln, und 91 von 150 mittelschweren Fragen richtig gegen 95 ohne Regel und 76 mit den vier Regeln. Mein Agent läuft seit dem 16.11.2026 damit.
 
 ![Gegenprobe: Erfundenes als echt behandelt und der Preis bei echten Fragen, je Regel](bilder/gegenprobe-de.png)
 
@@ -463,6 +467,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/daten/2026-11-14-erfinden/  Zählwerte: Probe je Modell und Bereich, Nachtvergleich, Urteil mit 10 Runden
   messen/daten/2026-11-15-betrieb/  Strom, Kaltstart, NAS-Betrieb, dichtes 70B, UGREENs eingebautes Modell
   messen/daten/2026-11-16-betrieb/  Nachmessung auf Strata 0.2.14: Strom und Tempo der drei Modelle, Kaltstart, Wartezeiten, zwei Personen, Aufgabensatz
+  messen/daten/2026-11-16-cloud-vergleich/  derselbe Aufgabensatz gegen Sonnet 5.5 über die API: Zählwerte je Aufgabenart, keine Texte
 ```
 
 **Dokumentation und Diagramme**

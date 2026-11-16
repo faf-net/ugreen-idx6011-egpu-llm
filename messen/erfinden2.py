@@ -35,6 +35,9 @@ FASSUNGEN = {
     # Nachlauf: E setzt an der Bekanntheit an und gibt keine Antwortformel vor; F ist der Werkzeugsatz aus D allein
     "E": "\n\nBeantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.",
     "F": "\n\nNenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich kein Werkzeug.“",
+    # 16.11.2026: Kombination, Grundregel plus ein Satz zu Befehlen, Optionen und Orten (Nachprobe mit eigenen Fragen: E allein reicht dort nicht)
+    "K": ("\n\nBeantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden. "
+          "Das gilt besonders für Befehle, Optionen und Ortsnamen: Kennst du sie nicht sicher, sag das, auch wenn sie plausibel klingen."),
 }
 ERSTLAUF = ["A", "B", "C", "D"]
 

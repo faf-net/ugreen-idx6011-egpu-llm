@@ -544,6 +544,56 @@ def dicht_moe(d, sp):
                                  "Six models on one card by decode speed and blind-graded German: the three 125B models write at 62 to 74 tokens per second with 46 to 54 of 60 points, two dense models at 35 and 36 with 38 and 52, UGREEN's Qwen 3.5 at 114 with 37."), s, h
 
 
+def cloud_vergleich(d, sp):
+    """Bestandene Aufgaben von 102: die sechs lokalen Modelle und, abgesetzt, Sonnet 5.5 mit zwei Denkstufen."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    nacht = json.load(open(os.path.join(d, "2026-11-14-erfinden/nacht.json"), encoding="utf-8"))["modelle"]
+    zahl = json.load(open(os.path.join(d, "2026-11-16-cloud-vergleich", "zahlen.json"), encoding="utf-8"))["models"]
+    werk = json.load(open(os.path.join(d, "2026-11-15-betrieb", "qualitaet.json"), encoding="utf-8"))["modelle"]["qwen35"]["bestanden_gesamt"]
+    heute = json.load(open(betriebsdatei(d, "qualitaet.json"), encoding="utf-8"))["modelle"]["faber"]["bestanden_gesamt"]
+    lokal = [("faber", heute, "Strata 0.2.14"), ("liber", zahl["liber"]["passed_after_reading"], "Strata 0.2.14"), ("velox", nacht["velox"]["punkte"]["gesamt"], "Strata 0.2.12"),
+             ("gemma31", nacht["gemma31"]["punkte"]["gesamt"], "llama.cpp"), ("qwen27", nacht["qwen27"]["punkte"]["gesamt"], "llama.cpp"), ("qwen35", werk, "llama.cpp")]
+    cloud = [("Sonnet 5.5 High", zahl["sonnet55-high"]["passed_after_reading"], T("über die API", "over the API")),
+             ("Sonnet 5.5 Medium", zahl["sonnet55-medium"]["passed_after_reading"], T("über die API", "over the API"))]
+    s = Svg()
+    titel = T("Bestandene Aufgaben von 102", "Tasks passed, of 102")
+    kopf(s, T("RX 7900 XTX · sechs lokale Modelle und Sonnet 5.5 · 13. bis 16.11.2026", "RX 7900 XTX · six local models and Sonnet 5.5 · 13 to 16 Nov 2026"), titel)
+    x0, x1, zeile = 360, R - 60, 34
+    X = lambda v: x0 + (v - 85) / (102 - 85) * (x1 - x0)
+    oben, y = 112, 136
+    unten = y + (len(lokal) + len(cloud)) * zeile + 30
+    for v in (85, 90, 95, 100):
+        s.line(X(v), oben, X(v), unten - 14)
+        s.text(X(v), unten, str(v), 9, MUTED, "mono", "middle")
+    s.line(X(102), oben, X(102), unten - 14, 'stroke="#2a2724" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="3 3"')
+    s.text(X(102), unten, "102", 9, MUTED, "mono", "middle")
+    s.text(L, oben, T("LOKAL, AUF DER KARTE", "LOCAL, ON THE CARD"), 8.5, MUTED, "mono", weight=500, sperr="0.14em")
+    for m, v, sub in lokal:
+        moe = m in ("faber", "velox", "liber")
+        s.text(L, y + 4, modellname(m, sp), 12, ACC if moe else INK, "sans", weight=600)
+        s.text(L, y + 17, sub, 8.5, MUTED, "mono")
+        s.punkt(X(v), y, ACC if moe else STAHL, not moe, r=6)
+        s.text(X(v) + 14, y + 4, str(v), 11, INK, "mono", weight=600)
+        y += zeile
+    y += 6
+    s.line(40, y - 18, W - 40, y - 18, 'stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"')
+    s.text(L, y, T("CLOUD, ZUM VERGLEICH", "CLOUD, FOR COMPARISON"), 8.5, MUTED, "mono", weight=500, sperr="0.14em")
+    y += 24
+    for name, v, sub in cloud:
+        s.text(L, y + 4, name, 12, INK, "sans", weight=600)
+        s.text(L, y + 17, sub, 8.5, MUTED, "mono")
+        s.punkt(X(v), y, PETROL, r=6)
+        s.text(X(v) + 14, y + 4, str(v), 11, INK, "mono", weight=600)
+        y += zeile
+    h = fuss(s, unten + 18, (("punkt", ACC, T("Flash-Next 125B (Strata)", "Flash-Next 125B (Strata)")), ("punkt-hohl", STAHL, T("kleinere Modelle, ganz im VRAM", "smaller models, fully in VRAM")), ("punkt", PETROL, "Sonnet 5.5")),
+             T("102 automatisch benotete Aufgaben, Faktenfragen nachgelesen · je ein Lauf · die Achse beginnt bei 85 · Flash-Next IQ3_XXS und unzensiert am 16.11.2026, IQ2_XS und die dichten Modelle am 13.11., UGREENs Werksmodell am 15.11. · Sonnet 5.5 über die API am 16.11.2026, Denkaufwand medium und high, voreingestellte Temperatur · Daten: messen/daten/2026-11-16-cloud-vergleich/",
+               "102 automatically graded tasks, fact questions read by hand · one run each · the axis starts at 85 · Flash-Next IQ3_XXS and uncensored on 16 Nov 2026, IQ2_XS and the dense models on 13 Nov, UGREEN's stock model on 15 Nov · Sonnet 5.5 over the API on 16 Nov 2026, effort medium and high, default temperature · data: messen/daten/2026-11-16-cloud-vergleich/"))
+    alle = ", ".join(f"{modellname(m, sp)} {v}" for m, v, _ in lokal) + ", " + ", ".join(f"{n} {v}" for n, v, _ in cloud)
+    return "cloud-vergleich", titel, T(f"Bestandene Aufgaben von 102 für sechs lokale Modelle und Sonnet 5.5 mit zwei Denkstufen: {alle}.",
+                                       f"Tasks passed out of 102 for six local models and Sonnet 5.5 at two effort levels: {alle}."), s, h
+
+
 def erfinden(d, sp):
     en = sp == "en"
     daten = json.load(open(os.path.join(d, "2026-11-14-erfinden/probe.json"), encoding="utf-8"))["modelle"]
@@ -1136,7 +1186,7 @@ def steuervektor(d, sp):
                                     "The original model answers 11 of 15 tasks that models often refuse, is evasive on 3 and refuses 1; the uncensored one answers all 15. On tasks, German and speed it stays equal or a little better, but recognises made-up things less often."), s, h
 
 
-ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
+ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, cloud_vergleich, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
 
 
 def main():

@@ -181,6 +181,10 @@ On the card the built-in model writes 11 times faster and reads five times faste
 
 The small model thinks much longer: it writes 2.7 times as many tokens for the same tasks, so despite the higher speed the whole set takes 49 % longer, and in nine tasks it used up the reasoning budget without answering. With a larger budget some of those would probably pass; I did not measure that. What speaks for the small model: it leaves the RAM of the NAS free, where the 125B model takes about 53 GiB. The 125B numbers are from 16 Nov on Strata 0.2.14 (same tasks); on 0.2.12 it passed 96 of 102 on 13 Nov. Its German grade is from the run on 0.2.12. German was graded blind by a language model that did not know which answer came from which model; a different grader than in the 14 Nov follow-up, so the scores are comparable within this table only. Data (counts only): `messen/daten/2026-11-15-betrieb/qualitaet.json`.
 
+![Tasks passed out of 102: six local models and Sonnet 5.5 at two effort levels](bilder/cloud-vergleich-en.png)
+
+The same task set against a cloud model, Sonnet 5.5 over the API at two effort levels; counts in `messen/daten/2026-11-16-cloud-vergleich/`.
+
 **Two people at the same time.** `messen/zwei.py` runs one conversation of five questions alone, then two conversations at once on the same model, then two people alternating between two different models:
 
 | | Wait for the first word (median) | Decode tok/s (median) |
@@ -359,7 +363,7 @@ to UGREEN with the pstore record. The mitigation stays the same.
 
 ![Three layers against made-up answers, and what each one catches](bilder/schichten-en.png)
 
-**Counter-check with public question sets (15/16 Nov 2026): one short rule is enough against things that sound foreign, not for commands.** The four rules name the kinds of things my probe asks about, so I checked with questions I did not write. A basic rule ("Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up.") cuts made-up things treated as real from 20 to 6 of 150 and leaves real questions as they are (90 against 87 of 150 right). A strict rule with a fixed "I don't know" halves the wrong answers (58 to 30) and costs some right ones (90 to 84). The four rules cost twice as many right answers for little more. A follow-up with my own questions showed a limit: of 24 made-up command options the uncensored model recognises 7 with the basic rule and 21 with the four rules (places 12 against 22, after reading the answers by hand). So commands, options and places need to be named explicitly.
+**Counter-check with public question sets (15/16 Nov 2026): one short rule is enough against things that sound foreign, not for commands.** The four rules name the kinds of things my probe asks about, so I checked with questions I did not write. A basic rule ("Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up.") cuts made-up things treated as real from 20 to 6 of 150 and leaves real questions as they are (90 against 87 of 150 right). A strict rule with a fixed "I don't know" halves the wrong answers (58 to 30) and costs some right ones (90 to 84). The four rules cost twice as many right answers for little more. A follow-up with my own questions showed a limit: of 24 made-up command options the uncensored model recognises 7 with the basic rule and 21 with the four rules (places 12 against 22, after reading the answers by hand). So commands, options and places need to be named explicitly. A combination does that in one sentence (the basic rule plus "This applies especially to commands, options and place names: if you do not know them for certain, say so, even if they sound plausible."): 17 of 24 command options and 19 of 24 places, 104 of 120 made-up things in all against 86 with the basic rule and 113 with the four rules, and 91 of 150 medium questions right against 95 without a rule and 76 with the four rules. My agent has been running with it since 16 Nov 2026.
 
 ![Counter-check: made-up things treated as real, and the price on real questions, per rule](bilder/gegenprobe-en.png)
 
@@ -460,6 +464,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/daten/2026-11-14-erfinden/  counts: probe per model and area, night comparison, judgement with 10 rounds
   messen/daten/2026-11-15-betrieb/  power, cold start, NAS at work, dense 70B, UGREEN's built-in model
   messen/daten/2026-11-16-betrieb/  re-measured on Strata 0.2.14: power and speed of the three models, cold start, waiting times, two people, task set
+  messen/daten/2026-11-16-cloud-vergleich/  the same task set against Sonnet 5.5 over the API: counts per category, no texts
 ```
 
 **Documentation and charts**

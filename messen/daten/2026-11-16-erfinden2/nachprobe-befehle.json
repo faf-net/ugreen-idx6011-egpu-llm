@@ -1,8 +1,8 @@
 {
  "stand": "2026-11-16",
  "modell": "liber (Flash-Next 125B IQ3_XXS, unzensiert), Strata 0.2.14",
- "probe": "messen/halluzination.py: 5 Bereiche, je 8 erfundene und 8 echte Dinge, 3 Runden, Temperatur 0,7; beide Arme in derselben Sitzung",
- "hinweis": "erkannt_automatisch ist die Wertung des Skripts; sie übersieht Ablehnungen in ganzen Sätzen (\"Ich kenne … nicht\", \"Diese Option gibt es nicht\"). erkannt_nach_durchsicht: alle als erfunden gewerteten Antworten von Hand gelesen. Keine Frage- und Antworttexte.",
+ "probe": "messen/halluzination.py: 5 Bereiche, je 8 erfundene und 8 echte Dinge, 3 Runden, Temperatur 0,7; Grundregel und Sätze der ersten Probe in derselben Sitzung, die Kombination zwei Stunden später am selben Tag",
+ "hinweis": "erkannt_automatisch ist die Wertung des Skripts; sie übersieht Ablehnungen in ganzen Sätzen (\"Ich kenne … nicht\", \"Diese Option gibt es nicht\"). erkannt_nach_durchsicht: alle als erfunden gewerteten Antworten von Hand gelesen. Keine Frage- und Antworttexte. Einer der acht erfundenen Begriffe gleicht einem echten Satz der Mathematik; die Zeile begriff ist deshalb mit Vorsicht zu lesen. In allen drei Armen fiel dieser Begriff gleich aus (eine Ablehnung, zwei Erklärungen mit falschem Inhalt).",
  "arme": {
   "grundregel": {
    "regel": "Grundregel (E), dazu Werkzeugsatz und der Satz zur Katalogdatenbank",
@@ -81,6 +81,74 @@
      "erkannt_nach_durchsicht": 24,
      "echt_n": 24,
      "echt_richtig": 24
+    }
+   }
+  },
+  "kombination": {
+   "regel": "Kombination (K): Grundregel plus ein Satz zu Befehlen, Optionen und Ortsnamen, dazu Werkzeugsatz und der Satz zur Katalogdatenbank",
+   "bereiche": {
+    "ort": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 19,
+     "erkannt_nach_durchsicht": 19,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "befehl": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 16,
+     "erkannt_nach_durchsicht": 17,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "werk": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 24,
+     "erkannt_nach_durchsicht": 24,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "begriff": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 20,
+     "erkannt_nach_durchsicht": 20,
+     "echt_n": 24,
+     "echt_richtig": 24
+    },
+    "werkzeug": {
+     "erfunden_n": 24,
+     "erkannt_automatisch": 23,
+     "erkannt_nach_durchsicht": 24,
+     "echt_n": 24,
+     "echt_richtig": 24
+    }
+   },
+   "preis_mittelschwere_fragen": {
+    "satz": "mittel (150 Fragen, messen/erfinden2.py, Fassung K, Richter faber)",
+    "richtig": 91,
+    "falsch": 54,
+    "nicht_versucht": 5,
+    "zum_vergleich": {
+     "A": [
+      95,
+      54,
+      1
+     ],
+     "B": [
+      85,
+      31,
+      34
+     ],
+     "D": [
+      76,
+      30,
+      44
+     ],
+     "E": [
+      95,
+      53,
+      2
+     ]
     }
    }
   }

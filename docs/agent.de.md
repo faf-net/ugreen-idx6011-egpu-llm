@@ -108,22 +108,34 @@ allgemeinen der vier Sätze oben, ohne den zur Katalogdatenbank; für sie und f�
 aus dem einfacheren Urteil „erfunden oder erkannt“. Zählwerte und Urteile: `messen/daten/2026-11-16-erfinden2/`.
 
 **Für Befehle und Optionen reicht die Grundregel nicht.** In den vier öffentlichen Fragensätzen kommen keine Befehlsoptionen
-vor. Deshalb lief am 16.11. meine erste Probe noch einmal für das unzensierte Modell, einmal mit der Grundregel und einmal
-mit den Regeln der ersten Probe, in einer Sitzung (3 Runden, Temperatur 0,7, je Bereich 24 erfundene Dinge). Erkannt als
-erfunden, nach Durchsicht von Hand:
+vor. Deshalb lief am 16.11. meine erste Probe noch einmal für das unzensierte Modell: mit der Grundregel, mit den Regeln
+der ersten Probe und mit einer Kombination, der Grundregel plus einem Satz, der Befehle, Optionen und Ortsnamen nennt
+(3 Runden, Temperatur 0,7, je Bereich 24 erfundene Dinge; die ersten beiden in einer Sitzung, die Kombination zwei Stunden
+später). Erkannt als erfunden, nach Durchsicht von Hand:
 
-| Bereich | Grundregel | Regeln der ersten Probe |
-|---|---:|---:|
-| Befehlsoptionen | 7 von 24 | 21 von 24 |
-| Ortsnamen | 12 von 24 | 22 von 24 |
-| Fachbegriffe | 19 von 24 | 22 von 24 |
-| Buchtitel | 24 von 24 | 24 von 24 |
-| Werkzeugparameter | 24 von 24 | 24 von 24 |
+| Bereich | Grundregel | Regeln der ersten Probe | Kombination |
+|---|---:|---:|---:|
+| Befehlsoptionen | 7 von 24 | 21 von 24 | 17 von 24 |
+| Ortsnamen | 12 von 24 | 22 von 24 | 19 von 24 |
+| Fachbegriffe | 19 von 24 | 22 von 24 | 20 von 24 |
+| Buchtitel | 24 von 24 | 24 von 24 | 24 von 24 |
+| Werkzeugparameter | 24 von 24 | 24 von 24 | 24 von 24 |
+| alle fünf | 86 von 120 | 113 von 120 | 104 von 120 |
 
 Mit der Grundregel erklärt das Modell eine erfundene Option weiter flüssig, wenn sie plausibel klingt, etwa
 `tar --dedupe-links`. Sie hilft also bei Dingen, die fremd klingen, und beim Werkzeug, aber nicht dort, wo ein Agent am
-meisten Schaden anrichten kann. Für Befehle, Optionen und Orte braucht es die ausdrückliche Nennung aus der ersten Probe.
-Echtes beantwortet das Modell mit beiden Regeln gleich gut (119 und 120 von 120). Die automatische Wertung des Skripts
+meisten Schaden anrichten kann. Befehle, Optionen und Orte müssen ausdrücklich genannt werden. Die Kombination tut das in
+einem Satz:
+
+```
+Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden. Das gilt besonders für Befehle, Optionen und Ortsnamen: Kennst du sie nicht sicher, sag das, auch wenn sie plausibel klingen.
+```
+
+Sie holt den größten Teil dessen zurück, was der Grundregel fehlt, und kostet nicht, was die Regeln der ersten Probe
+kosten: Bei den 150 mittelschweren Fragen der Gegenprobe beantwortet das unzensierte Modell mit ihr 91 richtig, ohne Regel
+95 und mit den Regeln der ersten Probe 76. Mein Agent läuft seit dem 16.11.2026 mit dieser Regel. Je ein Lauf; der Abstand
+zwischen der Kombination und den Regeln der ersten Probe (104 gegen 113) ist nicht sicher.
+Echtes beantwortet das Modell mit allen dreien gleich gut (119, 120 und 120 von 120). Die automatische Wertung des Skripts
 übersieht Ablehnungen in ganzen Sätzen und zählt bei der Grundregel 4 statt 7 Befehlsoptionen; beide Zählungen stehen in
 `messen/daten/2026-11-16-erfinden2/nachprobe-befehle.json`.
 

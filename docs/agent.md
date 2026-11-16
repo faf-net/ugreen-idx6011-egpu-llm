@@ -110,22 +110,33 @@ rules above, without the one about the catalogue database; for it and for the st
 simpler verdict "made up or recognised". Counts and verdicts: `messen/daten/2026-11-16-erfinden2/`.
 
 **For commands and options the basic rule is not enough.** The four public question sets contain no command options. So on
-16 Nov I ran my first probe again for the uncensored model, once with the basic rule and once with the rules of the first
-probe, in one session (3 rounds, temperature 0.7, 24 made-up items per area). Recognised as made up, after reading the
-answers by hand:
+16 Nov I ran my first probe again for the uncensored model, with the basic rule, with the rules of the first probe, and
+with a combination: the basic rule plus one sentence that names commands, options and place names (3 rounds, temperature
+0.7, 24 made-up items per area; the first two in one session, the combination two hours later). Recognised as made up,
+after reading the answers by hand:
 
-| Area | basic rule | rules of the first probe |
-|---|---:|---:|
-| command options | 7 of 24 | 21 of 24 |
-| places | 12 of 24 | 22 of 24 |
-| technical terms | 19 of 24 | 22 of 24 |
-| books | 24 of 24 | 24 of 24 |
-| tool parameters | 24 of 24 | 24 of 24 |
+| Area | basic rule | rules of the first probe | combination |
+|---|---:|---:|---:|
+| command options | 7 of 24 | 21 of 24 | 17 of 24 |
+| places | 12 of 24 | 22 of 24 | 19 of 24 |
+| technical terms | 19 of 24 | 22 of 24 | 20 of 24 |
+| books | 24 of 24 | 24 of 24 | 24 of 24 |
+| tool parameters | 24 of 24 | 24 of 24 | 24 of 24 |
+| all five | 86 of 120 | 113 of 120 | 104 of 120 |
 
 With the basic rule the model still explains a made-up option fluently when it sounds plausible, for example
 `tar --dedupe-links`. So it helps with things that sound foreign and with tools, but not where an agent can do the most
-damage. Commands, options and places need to be named explicitly, as in the first probe. Real items are answered equally
-well with both (119 and 120 of 120). The script's automatic verdict misses rejections written as full sentences and counts
+damage. Commands, options and places need to be named explicitly. The combination does that in one sentence:
+
+```
+Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden. Das gilt besonders für Befehle, Optionen und Ortsnamen: Kennst du sie nicht sicher, sag das, auch wenn sie plausibel klingen.
+```
+
+It brings back most of what the basic rule misses and does not cost what the rules of the first probe cost: on the 150
+medium questions of the counter-check the uncensored model gets 91 right with it, against 95 without a rule and 76 with the
+rules of the first probe. My agent has been running with this rule since 16 Nov 2026. One run each; the gap between the
+combination and the rules of the first probe (104 against 113) is not certain. Real items are answered equally
+well with all three (119, 120 and 120 of 120). The script's automatic verdict misses rejections written as full sentences and counts
 4 instead of 7 command options for the basic rule; both counts are in
 `messen/daten/2026-11-16-erfinden2/nachprobe-befehle.json`.
 
