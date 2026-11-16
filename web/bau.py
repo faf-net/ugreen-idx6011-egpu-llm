@@ -206,7 +206,7 @@ def seite(sp):
         ("Agent", "Hermes Agent",
          T("Ein Agent, den man im Browser oder über den Messenger erreicht, der eigene Werkzeuge bedient und Aufgaben nach Zeitplan erledigt, mit bis zu 256K Token Kontext. Regeln im Systemprompt und ein kleiner Prüfer halten ihn vom Erfinden ab.",
            "An agent you reach in the browser or through a messenger, that uses its own tools and runs tasks on a schedule, with up to 256K tokens of context. Rules in the system prompt and a small checker keep it from making things up."),
-         T("Erfundenes erkannt: 29 % → <b>98 %</b> mit Regeln", "made-up things recognised: 29 % → <b>98 %</b> with rules")),
+         T("Erfundenes erkannt mit Regel: <b>104 von 120</b>", "made-up things recognised with the rule: <b>104 of 120</b>")),
         ("Messenger", "Signal",
          T("Dem Agenten vom Handy schreiben wie einem Kontakt, auch von unterwegs. Ich empfehle und bevorzuge Signal, weil die Nachrichten dort Ende-zu-Ende-verschlüsselt sind. Telegram und Discord habe ich ebenfalls erfolgreich getestet.",
            "Write to the agent from your phone like to a contact, also when away from home. I recommend and prefer Signal, because messages there are end-to-end encrypted. I have also tested Telegram and Discord successfully."),
@@ -284,6 +284,35 @@ def seite(sp):
     kapitel(5, "agent", T("Damit der Agent nicht erfindet", "Keeping the agent from making things up"),
             T("Ein lokales Modell weiß weniger als eines aus der Cloud und gibt das ungern zu. Der Agent zeigte zwei Schwächen: Er erfand Antworten zu Dingen, die es nicht gibt, und er kündigte Schritte an, für die er kein Werkzeug hat. Beides habe ich erst gemessen und dann gesenkt.",
               "A local model knows less than one from the cloud and does not like to admit it. The agent showed two weaknesses: it made up answers about things that do not exist, and it announced steps it has no tool for. I measured both first and then brought them down."))
+    A(f"<h3>{T('Was in den Systemprompt gehört', 'What belongs in the system prompt')}</h3>")
+    regeln = T("""<span class="g">Gegen das Erfinden · mit dieser Regel läuft mein Agent seit dem 16.11.2026</span>
+<b>Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden. Das gilt besonders für Befehle, Optionen und Ortsnamen: Kennst du sie nicht sicher, sag das, auch wenn sie plausibel klingen.</b>
+<span class="g">Erfundenes erkannt: 104 von 120 · erfundene Befehlsoptionen: 17 von 24 · echte Fragen richtig: 91 von 150, ohne Regel 95 (im Rauschen)</span>
+
+<span class="g">Dazu für Agenten mit Werkzeugen</span>
+<b>Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich kein Werkzeug.“</b>
+<span class="g">falsche Aufrufe: 15 → 10 von 60 · berechtigte Aufrufe: 41 → 32 von 50</span>
+
+<span class="g">Strenge Regel · stattdessen, wenn eine falsche Antwort teurer ist als eine fehlende</span>
+<b>Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.</b>
+<span class="g">falsche Antworten: 58 → 30 von 150 · richtige: 90 → 84 · „Weiß ich nicht“: 36-mal</span>""",
+               """<span class="g">Against making things up · my agent has run with this rule since 16 Nov 2026</span>
+<b>Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden. Das gilt besonders für Befehle, Optionen und Ortsnamen: Kennst du sie nicht sicher, sag das, auch wenn sie plausibel klingen.</b>
+<span class="g">in English: Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up. This applies especially to commands, options and place names: if you are not sure you know them, say so, even if they sound plausible.</span>
+<span class="g">made-up things recognised: 104 of 120 · made-up command options: 17 of 24 · real questions right: 91 of 150, without a rule 95 (within the noise)</span>
+
+<span class="g">In addition, for agents with tools</span>
+<b>Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich kein Werkzeug.“</b>
+<span class="g">in English: Name only tools and parameters you really have. If there is none, say: "I have no tool for that."</span>
+<span class="g">wrong calls: 15 → 10 of 60 · justified calls: 41 → 32 of 50</span>
+
+<span class="g">Strict rule · instead, when a wrong answer costs more than a missing one</span>
+<b>Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.</b>
+<span class="g">in English: If you are not sure of something, say explicitly "I don't know". That is a correct answer. Do not invent facts or actions. Guessing is worse than not knowing.</span>
+<span class="g">wrong answers: 58 → 30 of 150 · right ones: 90 → 84 · "I don't know": 36 times</span>""")
+    A(f'<div class="rahmen"><span class="schild">{T("REGELN FÜR DEN SYSTEMPROMPT", "RULES FOR THE SYSTEM PROMPT")}</span><pre class="plan konsole-block regeln">{regeln}</pre></div>')
+    P(T("Der erste Satz der Regel senkt das Erfinden bei Dingen, die fremd klingen, um rund drei Viertel und kostet keine richtigen Antworten. Bei Befehlsoptionen und Ortsnamen, die plausibel klingen, versagt er allein: Das Modell erkannte nur 7 von 24 erfundenen Optionen. Der Zusatz holt das zurück (17 von 24), ohne bei gewöhnlichen Fragen etwas zu kosten. Regeln mit festem „Weiß ich nicht“ erkennen noch etwas mehr (21 von 24), kosten aber etwa jede fünfte richtige Antwort. Wie ich zu diesen Sätzen gekommen bin, steht in den drei Messungen darunter.",
+        "The first sentence of the rule cuts the making up of things that sound foreign by about three quarters and costs no right answers. On command options and place names that sound plausible it fails on its own: the model recognised only 7 of 24 made-up options. The addition brings that back (17 of 24) without costing anything on ordinary questions. Rules with a fixed \"I don't know\" recognise a little more (21 of 24) but cost about every fifth right answer. How I arrived at these sentences is in the three measurements below."))
     A(f"<h3>{T('Erst messen: 16 Fragen je Bereich, die Hälfte davon erfunden', 'Measure first: 16 questions per area, half of them made up')}</h3>")
     P(T("Die Probe fragt in fünf Bereichen nach je acht echten und acht erfundenen Dingen: Gemeinden, Befehlsoptionen, Lehrsätze, Bücher und Parameter der eigenen Werkzeuge. Drei Runden, fünf Modelle, jeweils ohne und mit Regeln: 2.400 Antworten. Zweifelsfälle habe ich nachgelesen; ein „weiß ich nicht“, das trotzdem eine Vermutung anbietet, zählt als erfunden.",
         "The probe asks about eight real and eight made-up things in each of five areas: towns, command options, theorems, books and parameters of the agent's own tools. Three rounds, five models, each without and with rules: 2,400 answers. I re-read the doubtful verdicts; an \"I don't know\" that still offers a guess counts as made up."))
@@ -291,40 +320,15 @@ def seite(sp):
     A(f"<h3>{T('Vier Regeln im Systemprompt senken das Erfinden bei diesen Fragen deutlich', 'Four rules in the system prompt clearly reduce making things up on these questions')}</h3>")
     P(T("Ohne die Regeln erkennen die fünf Modelle nur <b>17 bis 60 %</b> des Erfundenen und erfinden den Rest, am häufigsten das Bundesland einer erfundenen Gemeinde und Optionen, die es nicht gibt. Mit den Regeln sind es <b>88 bis 99 %</b>. Echtes beantworten sie dabei so richtig wie vorher (117 bis 120 von 120): Die Regeln machen sie nicht übervorsichtig. Ein anderes Modell half dagegen nicht; zwei dichte Modelle auf derselben Karte erfanden ebenso und schrieben halb so schnell.",
         "Without the rules the five models recognise only <b>17 to 60 %</b> of the made-up things and invent the rest, most often the state of a made-up town and options that do not exist. With the rules it is <b>88 to 99 %</b>. They still answer real things as correctly as before (117 to 120 of 120): the rules do not make them overcautious. A different model did not help; two dense models on the same card invented just as much and wrote at half the speed."))
-    A(f"<h3>{T('Gegenprobe mit fremden Fragen: Eine kurze Regel hilft, reicht aber nicht überall', 'Counter-check with other questions: a short rule helps, but not everywhere')}</h3>")
+    A(f"<h3>{T('Gegenprobe mit fremden Fragen: Ein kurzer Satz hilft, reicht aber nicht überall', 'Counter-check with other questions: a short sentence helps, but not everywhere')}</h3>")
     P(T("Die vier Regeln nennen genau die Arten von Dingen, nach denen meine Probe fragt. Deshalb die Gegenprobe mit öffentlichen Fragensätzen, die ich nicht geschrieben habe: 150 Dinge, die es nicht gibt, 150 schwere und 150 mittelschwere echte Fragen, 150 Agentenfälle mit Werkzeugliste, jeweils mit sechs Fassungen des Systemprompts.",
         "The four rules name exactly the kinds of things my probe asks about. Hence the counter-check with public question sets I did not write: 150 things that do not exist, 150 hard and 150 medium real questions, 150 agent cases with a tool list, each with six versions of the system prompt."))
     A(bild(D.gegenprobe, sp))
-    regeln = T("""<span class="g">Grundregel · kostet nichts, reicht aber nicht für Befehle</span>
-<b>Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.</b>
-<span class="g">Erfundenes als echt behandelt: 20 → 6 von 150 · echte Fragen richtig: 90 → 87 von 150 (im Rauschen)</span>
-<span class="g">erfundene Befehlsoptionen erkannt: nur 7 von 24, mit ausdrücklicher Nennung 21</span>
-
-<span class="g">Strenge Regel · für Antworten, auf die man sich verlassen muss</span>
-<b>Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.</b>
-<span class="g">falsche Antworten: 58 → 30 von 150 · richtige: 90 → 84 · „Weiß ich nicht“: 36-mal</span>
-
-<span class="g">Dazu für Agenten mit Werkzeugen</span>
-<b>Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich kein Werkzeug.“</b>
-<span class="g">falsche Aufrufe: 15 → 10 von 60 · berechtigte Aufrufe: 41 → 32 von 50</span>""",
-               """<span class="g">Basic rule · costs nothing, but is not enough for commands</span>
-<b>Beantworte, was du weißt. Kennst du eine Sache, einen Namen oder ein Werkzeug gar nicht, sag das, statt etwas zu erfinden.</b>
-<span class="g">in English: Answer what you know. If you do not know a thing, a name or a tool at all, say so instead of making something up.</span>
-<span class="g">made-up things treated as real: 20 → 6 of 150 · real questions right: 90 → 87 of 150 (within the noise)</span>
-<span class="g">made-up command options recognised: only 7 of 24, with explicit naming 21</span>
-
-<span class="g">Strict rule · for answers you have to rely on</span>
-<b>Wenn du etwas nicht sicher weißt, sage ausdrücklich „Weiß ich nicht“. Das ist eine richtige Antwort. Erfinde keine Fakten und keine Handlungen. Raten ist schlechter als Nichtwissen.</b>
-<span class="g">in English: If you are not sure of something, say explicitly "I don't know". That is a correct answer. Do not invent facts or actions. Guessing is worse than not knowing.</span>
-<span class="g">wrong answers: 58 → 30 of 150 · right ones: 90 → 84 · "I don't know": 36 times</span>
-
-<span class="g">In addition, for agents with tools</span>
-<b>Nenne nur Werkzeuge und Parameter, die du wirklich hast. Gibt es keins, sag: „Dafür habe ich kein Werkzeug.“</b>
-<span class="g">in English: Name only tools and parameters you really have. If there is none, say: "I have no tool for that."</span>
-<span class="g">wrong calls: 15 → 10 of 60 · justified calls: 41 → 32 of 50</span>""")
-    A(f'<div class="rahmen"><span class="schild">{T("REGELN FÜR DEN SYSTEMPROMPT", "RULES FOR THE SYSTEM PROMPT")}</span><pre class="plan konsole-block regeln">{regeln}</pre></div>')
-    P(T("Die <b>Grundregel</b> senkt das Erfinden nicht existierender Dinge um rund drei Viertel und lässt die Antworten auf echte Fragen, wie sie sind. Die <b>strenge Regel</b> sagt bei Antworten, die ohne Regel falsch waren, viermal so oft „Weiß ich nicht“ wie bei richtigen, kostet aber einen Teil der richtigen. Die vier Regeln der ersten Probe kosten doppelt so viele richtige Antworten und bringen kaum mehr. Der Werkzeugsatz senkt falsche Aufrufe, unterdrückt aber auch berechtigte. Das unzensierte Modell verhält sich in allen Punkten wie das Original. <b>Eine Grenze:</b> Bei erfundenen Befehlsoptionen, die plausibel klingen, hilft die Grundregel kaum. In einer Nachprobe erkannte das Modell mit ihr 7 von 24, mit den Regeln der ersten Probe, die Befehle und Optionen ausdrücklich nennen, 21 (nach Durchsicht von Hand, ein Lauf). Wer einen Agenten Befehle nennen lässt, nimmt diese Nennung dazu.",
-        "The <b>basic rule</b> cuts the making up of non-existent things by about three quarters and leaves the answers to real questions as they are. The <b>strict rule</b> says \"I don't know\" four times as often for answers that were wrong without a rule as for right ones, but costs some of the right ones. The four rules of the first probe cost twice as many right answers and gain hardly anything. The tool sentence lowers wrong calls but also suppresses justified ones. The uncensored model behaves like the original on every point. <b>One limit:</b> with made-up command options that sound plausible, the basic rule hardly helps. In a follow-up the model recognised 7 of 24 with it, and 21 with the rules of the first probe, which name commands and options explicitly (after reading the answers by hand, one run). If your agent names commands, add that naming."))
+    P(T("Der kurze Satz („Grundregel“ im Diagramm) senkt das Erfinden nicht existierender Dinge von 20 auf 6 von 150 und lässt die Antworten auf echte Fragen, wie sie sind. Die <b>strenge Regel</b> sagt bei Antworten, die ohne Regel falsch waren, viermal so oft „Weiß ich nicht“ wie bei richtigen, kostet aber einen Teil der richtigen. Die vier Regeln der ersten Probe kosten doppelt so viele richtige Antworten und bringen kaum mehr. Der Werkzeugsatz senkt falsche Aufrufe, unterdrückt aber auch berechtigte. Das unzensierte Modell verhält sich in allen Punkten wie das Original.",
+        "The short sentence (\"basic rule\" in the chart) lowers the making up of non-existent things from 20 to 6 of 150 and leaves the answers to real questions as they are. The <b>strict rule</b> says \"I don't know\" four times as often for answers that were wrong without a rule as for right ones, but costs some of the right ones. The four rules of the first probe cost twice as many right answers and gain hardly anything. The tool sentence lowers wrong calls but also suppresses justified ones. The uncensored model behaves like the original on every point."))
+    A(f"<h3>{T('Nachprobe: Befehle und Orte brauchen einen eigenen Satz', 'Follow-up: commands and places need a sentence of their own')}</h3>")
+    P(T("In den öffentlichen Fragensätzen kommen keine Befehlsoptionen vor. Deshalb lief meine erste Probe noch einmal für das unzensierte Modell, mit drei Fassungen: dem kurzen Satz allein, dem kurzen Satz mit dem Zusatz zu Befehlen, Optionen und Ortsnamen, und den vier Regeln der ersten Probe. Von 24 erfundenen Befehlsoptionen erkannte das Modell <b>7, 17 und 21</b>, von 24 erfundenen Ortsnamen 12, 19 und 22, von allen 120 erfundenen Dingen 86, 104 und 113. Bei den 150 mittelschweren echten Fragen blieben mit dem Zusatz 91 richtig (ohne Regel 95, mit den vier Regeln 76). Je ein Lauf bei Temperatur 0,7, alle nicht erkannten Antworten von Hand gelesen.",
+        "The public question sets contain no command options. So my first probe ran again for the uncensored model, with three versions: the short sentence alone, the short sentence with the addition on commands, options and place names, and the four rules of the first probe. Of 24 made-up command options the model recognised <b>7, 17 and 21</b>, of 24 made-up place names 12, 19 and 22, of all 120 made-up things 86, 104 and 113. On the 150 medium real questions 91 stayed right with the addition (95 without a rule, 76 with the four rules). One run each at temperature 0.7, every unrecognised answer read by hand."))
     A(f"<h3>{T('Für das Urteil reichen drei Runden nicht', 'For judgement, three rounds are not enough')}</h3>")
     A(bild(D.urteil, sp))
     P(T("Dieselben drei Betriebslagen, zehnmal statt dreimal gestellt. Eine harte Anweisung („weicht die Zahl ab, hör auf“) befolgt das Modell in 10 von 10 Antworten. Wo es selbst abwägen muss, sieht es schlechter aus als nach drei Runden: Bricht nachts ein Lauf ab, erfindet es in 6 von 10 Antworten Fähigkeiten, etwa „ich pausiere die Sammlung“. Wer einen Agenten prüft, sollte jede Lage öfter stellen, als es bequem ist.",
