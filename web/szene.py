@@ -2,7 +2,7 @@
 """Rendert die Textgrafik für den Seitenkopf nach web/bilder/ (einfach und doppelt aufgelöst).
 
 Braucht den Baustein textgrafik.js (Pfad als erstes Argument) und playwright:
-  uv run --with playwright python web/szene.py ~/.claude/skills/textgrafik/textgrafik.js
+  uv run --with playwright python web/szene.py <Pfad>/textgrafik.js
 """
 import os, sys, tempfile
 from playwright.sync_api import sync_playwright
