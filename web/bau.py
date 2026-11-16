@@ -322,8 +322,8 @@ def seite(sp):
 
     kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
     A(bild(D.versionen, sp))
-    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Bis 0.2.13 wurde nichts langsamer. <b>0.2.14</b>, getestet am 15.11.2026 und noch nicht in Betrieb, liest Prompts von 16K und 32K rund 15 % schneller. Im Agenten-Test dieses Laufs lag das Schreibtempo niedriger; im direkten Vergleich in derselben Sitzung schreiben 0.2.14 und 0.2.12 gleich schnell (59 gegen 61 Token je Sekunde).",
-        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Up to 0.2.13 nothing got slower. <b>0.2.14</b>, tested on 15 Nov 2026 and not in production yet, reads prompts of 16K and 32K about 15 % faster. In this run's agent test decode was lower; in the direct comparison within the same session 0.2.14 and 0.2.12 write equally fast (59 against 61 tokens per second).")
+    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Bis 0.2.13 wurde nichts langsamer. <b>0.2.14</b>, getestet am 15. und 16.11.2026 und noch nicht in Betrieb, liest Prompts von 16K und 32K rund 15 % schneller und schreibt gleich schnell: In drei Läufen im Wechsel mit 0.2.12 lag das Schreibtempo bei 73 gegen 73 Token je Sekunde. Mein Aufgabensatz besteht auf 0.2.14 98 von 102 Aufgaben, auf 0.2.12 waren es 96.",
+        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Up to 0.2.13 nothing got slower. <b>0.2.14</b>, tested on 15 and 16 Nov 2026 and not in production yet, reads prompts of 16K and 32K about 15 % faster and writes equally fast: in three runs alternating with 0.2.12, decode came to 73 against 73 tokens per second. My task set passes 98 of 102 tasks on 0.2.14, against 96 on 0.2.12.")
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 

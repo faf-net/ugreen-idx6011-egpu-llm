@@ -1,0 +1,130 @@
+{
+ "date": "2026-11-16",
+ "model": "Flash-Next IQ3_XXS native pack (faber)",
+ "tasks": 114,
+ "auto_graded": 102,
+ "note": "own German-language task set; temperature 0, thinking on, max 8000 tokens; german-writing (12) is not auto-graded; 0.2.12 run of 13 Nov, 0.2.14 run of 16 Nov (night after the release test), same run config. One facts task (a question with a false premise) is graded by hand where the automatic pattern misses a correct rejection; counted under manually_corrected. manually_corrected and failed are counts.",
+ "identical_answers_at_temperature_0": 41,
+ "runs": {
+  "0.2.12 MTP": {
+   "passed": 96,
+   "graded": 102,
+   "passed_before_manual_correction": 95,
+   "manually_corrected": 1,
+   "failed": 6,
+   "wall_s": 1622.0,
+   "output_tokens": 87007,
+   "decode_tok_s_median": 73.5,
+   "by_category": {
+    "code": {
+     "passed": 14,
+     "graded": 15,
+     "seconds": 650.9,
+     "tokens": 47048
+    },
+    "logic": {
+     "passed": 14,
+     "graded": 15,
+     "seconds": 82.0,
+     "tokens": 4703
+    },
+    "german-writing": {
+     "passed": 0,
+     "graded": 0,
+     "seconds": 142.6,
+     "tokens": 9503
+    },
+    "tool-calls": {
+     "passed": 20,
+     "graded": 20,
+     "seconds": 105.1,
+     "tokens": 2048
+    },
+    "agent-safety": {
+     "passed": 17,
+     "graded": 18,
+     "seconds": 158.6,
+     "tokens": 5878
+    },
+    "facts": {
+     "passed": 12,
+     "graded": 15,
+     "seconds": 206.6,
+     "tokens": 15078
+    },
+    "instruction": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 48.2,
+     "tokens": 2073
+    },
+    "long-context": {
+     "passed": 4,
+     "graded": 4,
+     "seconds": 227.9,
+     "tokens": 676
+    }
+   }
+  },
+  "0.2.14 MTP": {
+   "passed": 98,
+   "graded": 102,
+   "passed_before_manual_correction": 98,
+   "manually_corrected": 0,
+   "failed": 4,
+   "wall_s": 1489.3,
+   "output_tokens": 82901,
+   "decode_tok_s_median": 75.2,
+   "by_category": {
+    "code": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 592.3,
+     "tokens": 42975
+    },
+    "logic": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 89.5,
+     "tokens": 5323
+    },
+    "german-writing": {
+     "passed": 0,
+     "graded": 0,
+     "seconds": 115.5,
+     "tokens": 7207
+    },
+    "tool-calls": {
+     "passed": 20,
+     "graded": 20,
+     "seconds": 99.7,
+     "tokens": 2144
+    },
+    "agent-safety": {
+     "passed": 17,
+     "graded": 18,
+     "seconds": 130.3,
+     "tokens": 4759
+    },
+    "facts": {
+     "passed": 12,
+     "graded": 15,
+     "seconds": 218.2,
+     "tokens": 17588
+    },
+    "instruction": {
+     "passed": 15,
+     "graded": 15,
+     "seconds": 47.7,
+     "tokens": 2314
+    },
+    "long-context": {
+     "passed": 4,
+     "graded": 4,
+     "seconds": 196.1,
+     "tokens": 591
+    }
+   }
+  }
+ }
+}

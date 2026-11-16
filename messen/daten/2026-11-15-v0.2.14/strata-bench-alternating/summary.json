@@ -1,0 +1,186 @@
+{
+ "date": "2026-11-16",
+ "what": "tools/strata_bench.py --long, three rounds alternating between 0.2.12 and 0.2.14 in one session, fresh engine per run, order swapped each round (round 1 and 3: 0.2.12 first, round 2: 0.2.14 first)",
+ "fields": "agent_menge/chat_menge = generated tokens divided by decode time over all requests of the test (tok/s); *_median = median of the per-request decode tok/s; *_trefferquote = accepted / offered MTP draft tokens; sitzung1_64er / sitzung2_3_64er = decode tok/s of the 64-token turns of the first agent session and of the second and third",
+ "runs": {
+  "round1-0.2.14": {
+   "agent_menge": 72.9,
+   "agent_median": 72.7,
+   "agent_trefferquote": 0.584,
+   "chat_menge": 67.3,
+   "chat_median": 62.7,
+   "chat_trefferquote": 0.615,
+   "agent_token": 730,
+   "agent_n": 18,
+   "sitzung1_64er": [
+    61.8,
+    65.7
+   ],
+   "sitzung2_3_64er": [
+    82.3,
+    79.4,
+    72.2,
+    94.9,
+    88.8
+   ],
+   "prompt_4k": 789.1,
+   "prompt_16k": 1387.0,
+   "prompt_32k": 1379.6
+  },
+  "round1-0.2.12": {
+   "agent_menge": 66.2,
+   "agent_median": 72.5,
+   "agent_trefferquote": 0.584,
+   "chat_menge": 66.2,
+   "chat_median": 63.3,
+   "chat_trefferquote": 0.618,
+   "agent_token": 796,
+   "agent_n": 18,
+   "sitzung1_64er": [
+    75.2,
+    73.0,
+    72.1
+   ],
+   "sitzung2_3_64er": [
+    83.7,
+    87.2,
+    67.2,
+    92.5,
+    92.7,
+    74.4
+   ],
+   "prompt_4k": 731.7,
+   "prompt_16k": 1143.4,
+   "prompt_32k": 1215.7
+  },
+  "round2-0.2.14": {
+   "agent_menge": 75.5,
+   "agent_median": 72.9,
+   "agent_trefferquote": 0.613,
+   "chat_menge": 68.6,
+   "chat_median": 65.5,
+   "chat_trefferquote": 0.627,
+   "agent_token": 774,
+   "agent_n": 18,
+   "sitzung1_64er": [
+    77.4,
+    72.6,
+    66.9
+   ],
+   "sitzung2_3_64er": [
+    92.0,
+    80.8,
+    80.8,
+    99.3,
+    91.4,
+    69.3
+   ],
+   "prompt_4k": 794.2,
+   "prompt_16k": 1382.4,
+   "prompt_32k": 1363.6
+  },
+  "round2-0.2.12": {
+   "agent_menge": 74.0,
+   "agent_median": 69.3,
+   "agent_trefferquote": 0.592,
+   "chat_menge": 68.3,
+   "chat_median": 65.2,
+   "chat_trefferquote": 0.615,
+   "agent_token": 706,
+   "agent_n": 18,
+   "sitzung1_64er": [
+    67.2,
+    73.9
+   ],
+   "sitzung2_3_64er": [
+    89.4,
+    82.2,
+    80.4,
+    100.6,
+    90.5,
+    77.6
+   ],
+   "prompt_4k": 777.7,
+   "prompt_16k": 1206.6,
+   "prompt_32k": 1214.8
+  },
+  "round3-0.2.14": {
+   "agent_menge": 67.3,
+   "agent_median": 72.1,
+   "agent_trefferquote": 0.605,
+   "chat_menge": 67.9,
+   "chat_median": 65.9,
+   "chat_trefferquote": 0.606,
+   "agent_token": 770,
+   "agent_n": 18,
+   "sitzung1_64er": [
+    67.9,
+    76.2
+   ],
+   "sitzung2_3_64er": [
+    80.9,
+    80.4,
+    85.2,
+    93.2,
+    84.2
+   ],
+   "prompt_4k": 785.7,
+   "prompt_16k": 1390.0,
+   "prompt_32k": 1385.4
+  },
+  "round3-0.2.12": {
+   "agent_menge": 73.1,
+   "agent_median": 72.7,
+   "agent_trefferquote": 0.582,
+   "chat_menge": 67.2,
+   "chat_median": 63.7,
+   "chat_trefferquote": 0.609,
+   "agent_token": 798,
+   "agent_n": 18,
+   "sitzung1_64er": [
+    68.2,
+    66.4
+   ],
+   "sitzung2_3_64er": [
+    78.7,
+    79.9,
+    60.8,
+    93.2,
+    85.0
+   ],
+   "prompt_4k": 774.9,
+   "prompt_16k": 1196.0,
+   "prompt_32k": 1215.1
+  }
+ },
+ "median_per_version": {
+  "0.2.12": {
+   "agent_menge": 73.1,
+   "agent_median": 72.5,
+   "agent_trefferquote": 0.584,
+   "chat_menge": 67.2,
+   "chat_median": 63.7,
+   "chat_trefferquote": 0.615,
+   "prompt_4k": 774.9,
+   "prompt_16k": 1196.0,
+   "prompt_32k": 1215.1,
+   "sitzung1_64er_mittel": 70.9,
+   "sitzung2_3_64er_mittel": 83.3,
+   "laeufe": 3
+  },
+  "0.2.14": {
+   "agent_menge": 72.9,
+   "agent_median": 72.7,
+   "agent_trefferquote": 0.605,
+   "chat_menge": 67.9,
+   "chat_median": 65.5,
+   "chat_trefferquote": 0.615,
+   "prompt_4k": 789.1,
+   "prompt_16k": 1387.0,
+   "prompt_32k": 1379.6,
+   "sitzung1_64er_mittel": 69.8,
+   "sitzung2_3_64er_mittel": 84.7,
+   "laeufe": 3
+  }
+ }
+}

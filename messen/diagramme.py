@@ -342,12 +342,16 @@ VERSIONEN = [("0.2.0β", "2026-10-19/strata-0.2.0-beta/strata-bench-results.json
              ("0.2.11", "2026-11-05-v0.2.11/strata-bench/2026-11-05-community-unknown-t-neu/results.json"),
              ("0.2.12", "2026-11-08-v0.2.12/strata-bench/2026-11-08-community-unknown-t-neu/results.json"),
              ("0.2.13", "2026-11-09-v0.2.13/strata-bench/2026-11-09-community-unknown-t-neu/results.json"),
-             ("0.2.14", "2026-11-15-v0.2.14/strata-bench/2026-11-15-community-unknown-t-neu/results.json")]
+             ("0.2.14", ["2026-11-15-v0.2.14/strata-bench/2026-11-15-community-unknown-t-neu/results.json"]
+                        + [f"2026-11-15-v0.2.14/strata-bench-alternating/round{n}-0.2.14.json" for n in (1, 2, 3)])]   # vier Läufe, gezeigt wird der Median
 
 
 def versionen(d, sp):
     en = sp == "en"
-    werte = [strata_bench(os.path.join(d, p)) for _, p in VERSIONEN]
+    def lauf(p):                                   # ein Lauf oder der Median mehrerer Läufe derselben Version
+        ws = [strata_bench(os.path.join(d, q)) for q in ([p] if isinstance(p, str) else p)]
+        return {k: med([w[k] for w in ws]) for k in ws[0]}
+    werte = [lauf(p) for _, p in VERSIONEN]
     n = len(werte)
     s = Svg()
     zahlwort = {8: ("Eight", "Acht"), 9: ("Nine", "Neun"), 10: ("Ten", "Zehn")}.get(n, (str(n), str(n)))
@@ -376,8 +380,8 @@ def versionen(d, sp):
             marken.append((p.Y(ys[-1]), farbe, name, None if jeder else z(ys[-1], sp)))
         endmarken(s, X(n - 1) + 12, marken)
     s.text(L + 24, 344, "0.2.1's worker plan for hybrid CPUs lifted decode." if en else "Der Worker-Plan von 0.2.1 hob das Schreibtempo.", 15, INK, "serif", kursiv=True)
-    h = fuss(s, 424, None, "median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, 0.2.11–0.2.14 with them running · decode varies per request between about 40 and 100 tokens/s; in the direct pair comparison 0.2.14 and 0.2.12 write equally fast (59.3 against 60.5) · data: messen/daten/<date>-v<release>/strata-bench/" if en else
-             "Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, 0.2.11–0.2.14 mit laufenden · das Schreibtempo streut je Anfrage zwischen rund 40 und 100 Token/s; im direkten Paarvergleich schreiben 0.2.14 und 0.2.12 gleich schnell (59,3 gegen 60,5) · Daten: messen/daten/<Datum>-v<Version>/strata-bench/")
+    h = fuss(s, 424, None, "median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, 0.2.11–0.2.14 with them running · 0.2.14: median of four runs (one on 15 Nov, three alternating with 0.2.12 in the night to 16 Nov, where both decode equally fast) · data: messen/daten/<date>-v<release>/strata-bench/" if en else
+             "Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, 0.2.11–0.2.14 mit laufenden · 0.2.14: Median aus vier Läufen (einer am 15.11., drei im Wechsel mit 0.2.12 in der Nacht zum 16.11., dort schreiben beide gleich schnell) · Daten: messen/daten/<Datum>-v<Version>/strata-bench/")
     return "versionen", titel, ("Chat and agent decode speed and prompt reading speed at 4K, 16K and 32K for Strata releases 0.2.0-beta to 0.2.14 on one RX 7900 XTX; decode stays within its scatter, prompt reading at 16K and 32K rises with 0.2.14." if en else
                                 "Schreibtempo für Chat und Agent und Einlesetempo bei 4K, 16K und 32K für die Strata-Versionen 0.2.0-beta bis 0.2.14 auf einer RX 7900 XTX; das Schreibtempo bleibt in seiner Streuung, das Einlesen bei 16K und 32K steigt mit 0.2.14."), s, h
 

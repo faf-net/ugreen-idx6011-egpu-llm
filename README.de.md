@@ -247,7 +247,7 @@ Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit iden
 | 0.2.11 | 05.11. | **in Betrieb**; gleich wie 0.2.10 | [#5321](https://github.com/Niko1221/Strata/issues/5321) |
 | 0.2.12 | 08.11. | **in Betrieb, aktuell**; gleich wie 0.2.11; der getunte DFlash2-Drafter ist am Ende langsamer und bleibt aus | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 09.11. | mit abgestimmter Konfiguration gleich, nicht übernommen; das Linux-Docker-Image nutzt die gfx1100-Tabelle nicht mehr und liest 16K-Prompts 35 % langsamer | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
-| 0.2.14 | 15.11. | getestet, noch nicht in Betrieb; Schreiben gleich, Prompt-Einlesen bei 16K 17 % und bei 32K 14 % schneller; keine Treiberpausen auf dieser Karte; `standard-v1` Plausibilität 11 von 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
+| 0.2.14 | 15./16.11. | getestet, noch nicht in Betrieb; Schreiben gleich, Prompt-Einlesen in derselben Sitzung bei 16K 16 % und bei 32K 14 % schneller; eigener Aufgabensatz 98 von 102 (0.2.12: 96); keine Treiberpausen auf dieser Karte; `standard-v1` Plausibilität 11 von 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 
 ## Starten
 
