@@ -50,7 +50,7 @@ Das kleinere Modell mit niedrigerer Denkstufe erfindet schon ohne Regel nur halb
 nachgelesen; Antworten mit „nicht bekannt“, die trotzdem eine Vermutung lieferten („möglicherweise liegt sie in …“), zählen als erfunden.
 Grenzen: einzelne Fragen ohne Gesprächsverlauf und ein kurzer Systemprompt. In einem langen Agenten-Prompt ist die
 Wirkung nicht gemessen. Die Regeln nennen außerdem genau die Arten von Dingen, nach denen die Probe fragt
-(Bundesländer, Autoren, Optionen); ob sie bei anderen Fragen ebenso gut wirken, ist ebenfalls nicht gemessen.
+(Bundesländer, Autoren, Optionen); ob sie bei anderen Fragen ebenso gut wirken, prüft die Gegenprobe im nächsten Absatz.
 
 **Gegenprobe mit fremden Fragen (15./16.11.2026): Eine kurze Regel reicht gegen Erfundenes, eine strenge kostet richtige Antworten.**
 Die vier Sätze oben nennen genau die Arten von Dingen, nach denen meine Probe fragt. Ob eine allgemein formulierte Regel

@@ -48,7 +48,7 @@ mainly towns and command options. velox is the surprise: the smaller model with 
 as often as faber even without rules. Doubtful verdicts were re-read; "I don't know" answers that still offered a
 guess ("it may be in …") count as made up. Limits: single questions without a conversation, and a short system prompt. The effect inside a
 long agent prompt is not measured. The rules also name exactly the kinds of things the probe asks about (states, authors,
-options); whether they work as well on other questions is not measured either.
+options); whether they work as well on other questions is what the counter-check in the next paragraph looks at.
 
 **Counter-check with other people's questions (15/16 Nov 2026): a short rule is enough against made-up things, a strict one costs right answers.**
 The four rules above name exactly the kinds of things my probe asks about. Whether a generally worded rule works on other
