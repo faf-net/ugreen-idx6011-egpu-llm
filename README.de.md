@@ -15,17 +15,17 @@ Fotos, Medien und Backups.
 Alle Werte sind auf meiner Maschine gemessen, sofern nicht anders vermerkt. Das Repo enthält **keinen
 Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte und Messprogramme.
 
-**Stand 16.11.2026:** Strata 0.2.14 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS. `liber` ist die unzensierte Fassung von `faber`: dieselben Gewichte ohne die Ablehnungen, sie beantwortet also, was man sie fragt ([docs/steuervektor.de.md](docs/steuervektor.de.md)). Chat und Agent können jedes der drei nutzen.
+**Stand 16.11.2026:** Strata 0.2.14 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modells Kurznamen. `liber` ist Flash-Next 125B in der Quantisierung IQ3_XXS ohne die Ablehnungen, die unzensierte Fassung: dieselben Gewichte, sie beantwortet, was man sie fragt ([docs/steuervektor.de.md](docs/steuervektor.de.md)). Sie ist im täglichen Einsatz, für Chat und Agent. `faber` ist das Original, an dem zuerst gemessen wird und das als Rückfall bereitsteht. `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS und wird nur noch zum Vergleich gemessen.
 
 ## Auf einen Blick
 
 | | |
 |---|---|
-| Schreiben | 63–68 Token/s, bei 248K Token Kontext kaum langsamer |
-| Prompt einlesen | 1.300–1.400 Token/s ab 16K: 23 s für 32K Token, 3,4 min für 250K |
+| Schreiben | 63–68 Token/s, bei 248K Token Kontext rund 12 % langsamer |
+| Prompt einlesen | 1.200–1.400 Token/s ab 16K: 23 s für 32K Token, 3,4 min für 250K |
 | Kontext | 256K, die Nadel wurde bis 250K in 9 von 9 Fällen gefunden |
-| Speicher | rund 53 GiB der 64 GB RAM, die 24-GB-Karte ist voll |
-| Strom | 1,4 Wh je 1.000 geschriebene Token; NAS und Dock ziehen beim Schreiben 336 W, im Leerlauf 49 W |
+| Speicher | 54–58 GiB der 64 GB RAM belegt (unzensierte Fassung und Original), die 24-GB-Karte ist voll |
+| Strom | 1,4–1,5 Wh je 1.000 geschriebene Token (Original und unzensierte Fassung); NAS und Dock ziehen beim Schreiben rund 340 W, im Leerlauf 49 W |
 | Größtes Risiko | ein Dock-Abriss bei geladenem Modell startet das NAS neu (Kernel-Fehler, entschärft) |
 
 ## Was wo steht
@@ -53,7 +53,7 @@ Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte 
 **Warum ein 125B-Modell auf eine 24-GB-Karte passt:** Flash-Next ist ein Mixture-of-Experts-Modell, pro Token
 rechnen nur wenige Experten. Strata hält die häufig gebrauchten Experten im VRAM und den Rest im RAM. Fehlende
 Experten rechnet die CPU, statt sie über die x4-Strecke zu kopieren. Möglich macht das der schnell angebundene
-LPDDR5X der iDX: Das Modell belegt rund 53 GiB der 64 GB. Ein dichtes 70B-Modell wäre auf derselben Hardware
+LPDDR5X der iDX: Mit geladenem Modell sind 54–58 GiB der 64 GB belegt. Ein dichtes 70B-Modell wäre auf derselben Hardware
 langsam (gemessen: 2,7 T/s, siehe unten), weil es pro Token alle Gewichte lesen muss.
 
 **Zwei GPUs, sauber getrennt:** Die Arc-iGPU (`renderD128`) erledigt die Medien, die XTX (`renderD129`) rechnet
@@ -78,22 +78,25 @@ Karte im Leerlauf ohne geladenes Modell: rund 9 W, 44–51 °C.
 
 ### Tempo über die Kontexttiefe (1K bis 248K)
 
-Je Lauf ein frischer Prompt, danach 256 neue Token; Zeiten der Engine, Median aus 2–3 Läufen. „Ohne MTP-Kopf“ ist
+Je Lauf ein frischer Prompt, danach 256 neue Token; Zeiten der Engine, Median aus 2–3 Läufen, gemessen am 16.11.2026
+auf Strata 0.2.14 mit der Betriebskonfiguration (`messen/daten/tiefe-20261116.jsonl`). „Ohne MTP-Kopf“ ist
 dieselbe Konfiguration ohne `--mtp` (ein natives Pack braucht weiter `--spec`, bekommt aber kaum Vorschläge).
 
 ![Schreib- und Einlesetempo über die Kontexttiefe](bilder/tiefe-de.png)
 
 | Prompt-Token | Schreiben mit MTP | Schreiben ohne MTP-Kopf | Einlesen mit MTP | Einlesen ohne MTP-Kopf | MTP-Annahme |
 | ---: | ---: | ---: | ---: | ---: | ---: |
-| 993 | 62,0 | 48,9 | 362 | 391 | 49 % |
-| 4.075 | 60,6 | 50,2 | 745 | 782 | 49 % |
-| 16.252 | 63,0 | 50,5 | 1.164 | 1.253 | 48 % |
-| 65.023 | 61,1 | 49,3 | 1.185 | 1.265 | 53 % |
-| 130.024 | 61,0 | 47,2 | 1.175 | 1.220 | 57 % |
-| 248.052 | 56,1 | 44,9 | 1.079 | 1.117 | 50 % |
+| 993 | 58,3 | 43,3 | 468 | 486 | 41 % |
+| 4.075 | 59,4 | 45,1 | 803 | 841 | 45 % |
+| 16.252 | 58,5 | 44,2 | 1.365 | 1.468 | 47 % |
+| 65.023 | 57,2 | 45,4 | 1.362 | 1.431 | 50 % |
+| 130.024 | 54,9 | 45,0 | 1.324 | 1.373 | 52 % |
+| 248.052 | 51,2 | 42,6 | 1.216 | 1.234 | 41 % |
 
-Das Schreibtempo fällt mit der Tiefe kaum (mit MTP 62 → 56 T/s bis 248K), MTP bringt in jeder Tiefe 21–29 %, das
-Einlesen bleibt ab 16K bei 1.080–1.270 T/s, über die x4-Strecke. **Recall** (Stratas `needle_bench.py`): Das
+Das Schreibtempo fällt mit der Tiefe wenig (mit MTP 58 → 51 T/s bis 248K), MTP bringt in jeder Tiefe 20–35 %, das
+Einlesen bleibt ab 16K bei 1.210–1.470 T/s, über die x4-Strecke. Gegenüber dem ersten Lauf am 17.10. auf 0.1.44.1
+(`messen/daten/tiefe-20261017.jsonl`: mit MTP 62 → 56 T/s, Einlesen ab 16K 1.080–1.270 T/s) liest die Karte heute
+schneller und schreibt in jeder Tiefe 1–6 T/s langsamer, auch ohne MTP-Kopf. Woran das liegt, habe ich nicht geklärt. **Recall** (Stratas `needle_bench.py`): Das
 Codewort wurde bei 32K, 128K und 250K in 10, 50 und 90 % Tiefe 9 von 9 Mal gefunden.
 
 ![MTP-Annahmequote über die Kontexttiefe](bilder/mtp-annahme-de.png)
@@ -106,13 +109,13 @@ Das Einlesen wächst fast linear mit dem Prompt: 5,5 s bei 4K, 26 s bei 32K, 1,8
 
 ![RAM und VRAM mit geladenem 125B-Modell](bilder/speicher-de.png)
 
-Mit geladenem, ruhendem `faber` belegt die Engine 44,6 der 62,3 GiB RAM (die Experten-Gewichte, die nicht auf die Karte passen, die K/V von 32K Token in 3,1 GiB festgepinntem RAM und den Gesprächs-Cache, wie er sich füllt), NAS-Dienste und Kernel 10,2 GiB, 7,5 GiB bleiben verfügbar. Auf der Karte nimmt der Experten-Cache 17,3 von 24 GiB (10.644 Plätze), der MTP-Entwurf 1 GiB, alles Übrige 5,3 GiB, 0,4 GiB bleiben frei. Mit 64 GB RAM ist das ungefähr die Grenze: Ein zweiter großer Dienst daneben verlangt einen kleineren Gesprächs-Cache.
+Mit geladenem, ruhendem Original (`faber`) belegt die Engine 47,2 der 62,3 GiB RAM (die Experten-Gewichte, die nicht auf die Karte passen, die K/V von 32K Token in festgepinntem RAM und den Gesprächs-Cache, wie er sich füllt), NAS-Dienste und Kernel 10,7 GiB, 4,5 GiB bleiben verfügbar. Auf der Karte nimmt der Experten-Cache 17,0 von 24 GiB (10.490 Plätze), der MTP-Entwurf 1 GiB, alles Übrige 5,3 GiB, 0,7 GiB bleiben frei. Die unzensierte Fassung im täglichen Einsatz läuft mit Bildeingang, ohne festgepinnte K/V und mit einem Gesprächs-Cache von 4,5 statt 9 GiB: Die Engine belegt 42,8 GiB, 7,9 GiB bleiben verfügbar, und weil der Bildteil auf der Karte Platz braucht, hat der Experten-Cache 14,1 GiB. Gemessen am 16.11.2026 auf Strata 0.2.14 (`messen/daten/2026-11-16-speicher/`); am 23.10. auf 0.2.3.1 belegte die Engine mit dem Original 44,6 GiB, 7,5 GiB blieben verfügbar. Mit 64 GB RAM ist das ungefähr die Grenze: Ein zweiter großer Dienst daneben verlangt einen kleineren Gesprächs-Cache.
 
 ### Strom, Kaltstart, NAS-Betrieb, ein dichtes 70B und UGREENs eigenes Modell (15. und 16.11.2026)
 
 ![Leistung je Phase, und das MoE-Modell gegen ein dichtes 70B](bilder/betrieb-de.png)
 
-**Strom.** Gemessen an der USV, an der nur NAS und Dock hängen (über NUT gelesen, die ersten 45 s jeder Phase verworfen), daneben der Wert der Karte aus sysfs.
+**Strom.** Gemessen am Original (`faber`) an der USV, an der nur NAS und Dock hängen (über NUT gelesen, die ersten 45 s jeder Phase verworfen), daneben der Wert der Karte aus sysfs.
 
 | Phase | NAS und Dock | Karte allein |
 |---|---:|---:|
@@ -252,6 +255,7 @@ Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit iden
 | 0.2.12 | 08.11. | **in Betrieb** bis 16.11.; gleich wie 0.2.11; der getunte DFlash2-Drafter ist am Ende langsamer und bleibt aus | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 09.11. | mit abgestimmter Konfiguration gleich, nicht übernommen; das Linux-Docker-Image nutzt die gfx1100-Tabelle nicht mehr und liest 16K-Prompts 35 % langsamer | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
 | 0.2.14 | 15./16.11. | **in Betrieb, aktuell** seit 16.11.; Schreiben gleich, Prompt-Einlesen in derselben Sitzung bei 16K 16 % und bei 32K 14 % schneller; eigener Aufgabensatz 98 von 102 (0.2.12: 96); keine Treiberpausen auf dieser Karte; `standard-v1` Plausibilität 11 von 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
+| 0.2.15 | 16.11. | geprüft, nicht übernommen; neu ist nur das Steuerprogramm (Control 0.1.61), die Engine ist dieselbe wie in 0.2.14; in drei Läufen im Wechsel mit 0.2.14 gleich schnell; `standard-v1` Plausibilität 12 von 12; mein kleiner Aufgabensatz 34 von 35 (Werkzeuge 20 von 20, Code 14 von 15), eine Code-Aufgabe, die zwischen Läufen kippt | – |
 
 ## Starten
 
@@ -468,6 +472,9 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/daten/2026-11-15-betrieb/  Strom, Kaltstart, NAS-Betrieb, dichtes 70B, UGREENs eingebautes Modell
   messen/daten/2026-11-16-betrieb/  Nachmessung auf Strata 0.2.14: Strom und Tempo der drei Modelle, Kaltstart, Wartezeiten, zwei Personen, Aufgabensatz
   messen/daten/2026-11-16-cloud-vergleich/  derselbe Aufgabensatz gegen Sonnet 5.5 über die API: Zählwerte je Aufgabenart, keine Texte
+  messen/daten/2026-11-16-v0.2.15/  Rohdaten des Tests von 0.2.15: drei Läufe strata_bench im Wechsel mit 0.2.14, standard-v1, Paare (README darin)
+  messen/daten/2026-11-16-speicher/  Speicherbelegung von Original und unzensierter Fassung auf 0.2.14
+  messen/daten/tiefe-20261116.jsonl  Tempo über die Kontexttiefe auf 0.2.14, mit und ohne MTP-Kopf (Oktober: tiefe-20261017.jsonl)
 ```
 
 **Dokumentation und Diagramme**
@@ -482,7 +489,7 @@ Die Messskripte sprechen nur `/v1/chat/completions` an, laufen mit der Standardb
 VRAM, GPU-Last, Leistung und RAM aus sysfs mit (`KARTE` in `bench.py` auf die eigene Karte setzen). Die
 Code-Aufgaben laufen in einem Wegwerf-Container ohne Netz.
 
-`faber` und `velox` sind die Namen der beiden Modelle hier (IQ3_XXS und IQ2_XS; in Dateien bis 0.2.2 heißen sie `arbeit` und `schnell`).
+`liber`, `faber` und `velox` sind die Namen der drei Fassungen hier (unzensiert, Original IQ3_XXS, IQ2_XS; in Dateien bis 0.2.2 heißen faber und velox `arbeit` und `schnell`).
 
 ## Lizenz
 

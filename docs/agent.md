@@ -2,7 +2,7 @@
 
 **English** · [Deutsch](agent.de.md) · [← README](../README.md)
 
-In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization.
+In configs, scripts and file names the three versions of the model go by short names. `liber` is Flash-Next 125B in the IQ3_XXS quantization with the refusals removed, the uncensored version: the same weights, it answers whatever it is asked. It is the one in daily use, for chat and agent. `faber` is the original, which is measured first and kept as the fallback. `velox` is the same model in the smaller and faster IQ2_XS quantization, now measured only for comparison.
 
 Follow-up of 14 Nov 2026 to the section [Running an agent on top](../README.md#running-an-agent-hermes-on-top).
 

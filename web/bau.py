@@ -142,6 +142,7 @@ def seite(sp):
     T = (lambda de, en_: en_ if en else de)
     LB = lambda n: json.load(open(D.betriebsdatei(DATEN, n), encoding="utf-8"))   # Nachmessung auf Strata 0.2.14, wo es sie gibt
     strom = LB("strom-faber.json")["phasen"]
+    liber_tps = LB("strom-liber.json")["phasen"]["schreiben"]["tps"]   # die unzensierte Fassung im täglichen Einsatz
     kalt = [k["erste_antwort_s"] for k in LB("kaltstart-faber.json")["laeufe"]]
     werk = {s["stufe"]: s for s in L("2026-11-15-betrieb", "werksmodell.json")["stufen"]}
     neben = L("2026-11-15-betrieb", "nebenlast.json")
@@ -160,9 +161,9 @@ def seite(sp):
     doc = lambda name: f"{GH}/blob/main/docs/{name}{'' if en else '.de'}.md"
 
     zahlen = [
-        (z(s["tps"], sp, 0), T("Token je Sekunde", "tokens per second"), T("Schreiben, 125B-Modell", "writing, 125B model"), True),
+        (z(s["tps"], sp, 0), T("Token je Sekunde", "tokens per second"), T("Schreiben, 125B-Original", "writing, 125B original"), True),
         ("256K", T("Token Kontext", "tokens of context"), T("Nadel bis 250K in 9 von 9 Fällen gefunden", "needle found 9 of 9 times up to 250K"), False),
-        (z(s["wh_je_1000_token_gesamt"], sp), T("Wh je 1.000 Token", "Wh per 1,000 tokens"), T("NAS und Dock zusammen", "NAS and dock together"), False),
+        (z(s["wh_je_1000_token_gesamt"], sp), T("Wh je 1.000 Token", "Wh per 1,000 tokens"), T("NAS und Dock, am Original", "NAS and dock, original"), False),
         (z(statistics.median(kalt), sp, 0) + " s", T("Kaltstart", "cold start"), T("leere Karte bis erstes Wort", "empty card to first word"), False),
         (f"{faktor}×", T("schneller als ab Werk", "faster than as shipped"), T("UGREENs eigenes Modell auf der Karte", "UGREEN's own model on the card"), False),
     ]
@@ -238,8 +239,8 @@ def seite(sp):
     P(T(f"Während das Modell schrieb, kam eine 17,7-GB-Datei mit {z(neben['download']['waehrend_schreiben']['mb_s'], sp, 0)} MB/s vom NAS ({z(neben['download']['ohne_modell']['mb_s'], sp, 0)} MB/s ohne Modell; begrenzt hat beide Male der 5-Gbit/s-Anschluss des Arbeitsplatzes). Die Transkodierung von 4K nach 1080p auf der Arc-iGPU fiel von {tr['ohne_modell_bilder_s'][0]} auf {min(tr['waehrend_schreiben_bilder_s'])}–{max(tr['waehrend_schreiben_bilder_s'])} Bilder je Sekunde, das Fünf- bis Achtfache der Echtzeit. Das Schreibtempo des Modells blieb unverändert. Nicht gemessen: SMB und ein Arbeitsplatz mit 10 Gbit/s.",
         f"While the model was writing, a 17.7 GB file came off the NAS at {z(neben['download']['waehrend_schreiben']['mb_s'], sp, 0)} MB/s ({z(neben['download']['ohne_modell']['mb_s'], sp, 0)} MB/s without a model; both times the client's 5 Gbit/s port was the limit). Transcoding 4K to 1080p on the Arc iGPU dropped from {tr['ohne_modell_bilder_s'][0]} to {min(tr['waehrend_schreiben_bilder_s'])}–{max(tr['waehrend_schreiben_bilder_s'])} frames per second, five to eight times real time. The model's decode speed did not change. Not measured: SMB, and a 10 Gbit/s client."))
     A(bild(D.speicher, sp))
-    P(T("Der Preis ist Arbeitsspeicher: Mit geladenem 125B-Modell bleiben von 62 GiB rund 7,5 GiB verfügbar. Ein zweiter großer Dienst daneben passt nicht.",
-        "The price is memory: with the 125B model loaded, about 7.5 GiB of the 62 GiB stay available. A second large service does not fit next to it."))
+    P(T("Der Preis ist Arbeitsspeicher: Mit geladenem 125B-Modell bleiben von 62 GiB je nach Fassung 4,5 bis 8 GiB verfügbar. Ein zweiter großer Dienst daneben passt nicht.",
+        "The price is memory: with the 125B model loaded, 4.5 to 8 GiB of the 62 GiB stay available, depending on the version. A second large service does not fit next to it."))
     zu()
 
     kapitel(3, "dock", T("Lohnt sich die Karte im Dock?", "Is the card in the dock worth it?"),
@@ -257,14 +258,14 @@ def seite(sp):
     zu()
 
     kapitel(4, "modell", T("Ein 125B-Modell auf 24 GB", "A 125B model on 24 GB"),
-            T("Qwen3.8-Flash-Next ist ein Mixture-of-Experts-Modell: Je Token rechnen nur wenige Experten. Strata hält die häufig gebrauchten im VRAM und den Rest im schnellen RAM der iDX.",
-              "Qwen3.8-Flash-Next is a Mixture-of-Experts model: only a few experts run per token. Strata keeps the frequently used ones in VRAM and the rest in the iDX's fast RAM."))
+            T("Qwen3.8-Flash-Next ist ein Mixture-of-Experts-Modell: Je Token rechnen nur wenige Experten. Strata hält die häufig gebrauchten im VRAM und den Rest im schnellen RAM der iDX. Es läuft in drei Fassungen: unzensiert im täglichen Einsatz, das Original für die erste Messung und als Rückfall, eine kleinere Quantisierung nur zum Vergleich.",
+              "Qwen3.8-Flash-Next is a Mixture-of-Experts model: only a few experts run per token. Strata keeps the frequently used ones in VRAM and the rest in the iDX's fast RAM. It runs in three versions: uncensored in daily use, the original for the first measurement and as the fallback, and a smaller quantization only for comparison."))
     A(f'<div class="rahmen"><span class="schild">{T("VERDRAHTUNG", "WIRING")}</span><pre class="plan">{verdrahtung(sp)}</pre></div>')
     A(bild(D.tiefe, sp))
-    P(T("Das Schreibtempo fällt von 1K bis 248K Token Kontext nur von 62 auf 56 Token je Sekunde. Ab 16K liest das Modell über 1.000 Token je Sekunde, über eine PCIe-Anbindung mit nur vier Lanes.",
-        "Decode speed drops only from 62 to 56 tokens per second between 1K and 248K tokens of context. From 16K on the model reads more than 1,000 tokens per second, over a PCIe link with only four lanes."))
-    P(T(f"Das Schreibtempo hängt vom Text ab, deshalb stehen auf dieser Seite verschiedene Zahlen: Der Entwurfskopf (MTP) schlägt mehrere Token auf einmal vor und trifft bei vorhersehbarem Text öfter. Lange Antworten im Betrieb kommen mit {z(s['tps'], sp, 0)} Token je Sekunde, im Versionstest sind es 72 im Agenten- und 64 im Chat-Teil, bei sehr langem Kontext etwas weniger. Die Zahl im Seitenkopf ist die für lange Antworten.",
-        f"Decode speed depends on the text, which is why this page shows different numbers: the draft head (MTP) proposes several tokens at once and is right more often on predictable text. Long answers in daily use come at {z(s['tps'], sp, 0)} tokens per second, the release test gives 72 in its agent part and 64 in its chat part, and a very long context a little less. The number in the page header is the one for long answers."))
+    P(T("Das Schreibtempo fällt von 1K bis 248K Token Kontext nur von 58 auf 51 Token je Sekunde. Ab 16K liest das Modell über 1.200 Token je Sekunde, über eine PCIe-Anbindung mit nur vier Lanes.",
+        "Decode speed drops only from 58 to 51 tokens per second between 1K and 248K tokens of context. From 16K on the model reads more than 1,200 tokens per second, over a PCIe link with only four lanes."))
+    P(T(f"Das Schreibtempo hängt vom Text ab, deshalb stehen auf dieser Seite verschiedene Zahlen: Der Entwurfskopf (MTP) schlägt mehrere Token auf einmal vor und trifft bei vorhersehbarem Text öfter. Lange Antworten kommen beim Original mit {z(s['tps'], sp, 0)} Token je Sekunde, bei der unzensierten Fassung im täglichen Einsatz mit {z(liber_tps, sp, 0)}; im Versionstest sind es 72 im Agenten- und 64 im Chat-Teil, bei sehr langem Kontext etwas weniger. Die Zahl im Seitenkopf ist die des Originals für lange Antworten.",
+        f"Decode speed depends on the text, which is why this page shows different numbers: the draft head (MTP) proposes several tokens at once and is right more often on predictable text. Long answers come at {z(s['tps'], sp, 0)} tokens per second with the original and at {z(liber_tps, sp, 0)} with the uncensored version in daily use; the release test gives 72 in its agent part and 64 in its chat part, and a very long context a little less. The number in the page header is the original's, for long answers."))
     A(bild(D.betrieb, sp))
     P(T(f"Zum Vergleich ein dichtes 70B-Modell (Llama 3.3, Q4) auf derselben Karte: <b>{z(gpu['schreiben_tps_median'], sp, 1)} Token je Sekunde</b>, weil für jedes Token alle Gewichte gelesen werden und die Hälfte davon hinter der CPU liegt.",
         f"For comparison, a dense 70B model (Llama 3.3, Q4) on the same card: <b>{z(gpu['schreiben_tps_median'], sp, 1)} tokens per second</b>, because every token reads all weights and half of them sit behind the CPU."))
@@ -368,8 +369,8 @@ def seite(sp):
 
     kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
     A(bild(D.versionen, sp))
-    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Bis 0.2.13 wurde nichts langsamer. <b>0.2.14</b>, getestet am 15. und 16.11.2026 und seit dem 16.11. in Betrieb, liest Prompts von 16K und 32K rund 15 % schneller und schreibt gleich schnell: In drei Läufen im Wechsel mit 0.2.12 lag das Schreibtempo bei 73 gegen 73 Token je Sekunde. Mein Aufgabensatz besteht auf 0.2.14 98 von 102 Aufgaben, auf 0.2.12 waren es 96.",
-        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Up to 0.2.13 nothing got slower. <b>0.2.14</b>, tested on 15 and 16 Nov 2026 and in production since 16 Nov, reads prompts of 16K and 32K about 15 % faster and writes equally fast: in three runs alternating with 0.2.12, decode came to 73 against 73 tokens per second. My task set passes 98 of 102 tasks on 0.2.14, against 96 on 0.2.12.")
+    P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Bis 0.2.13 wurde nichts langsamer. <b>0.2.14</b>, getestet am 15. und 16.11.2026 und seit dem 16.11. in Betrieb, liest Prompts von 16K und 32K rund 15 % schneller und schreibt gleich schnell: In drei Läufen im Wechsel mit 0.2.12 lag das Schreibtempo bei 73 gegen 73 Token je Sekunde. Mein Aufgabensatz besteht auf 0.2.14 98 von 102 Aufgaben, auf 0.2.12 waren es 96. <b>0.2.15</b>, geprüft am 16.11., bringt nur ein neues Steuerprogramm, die Engine ist dieselbe; in drei Läufen im Wechsel mit 0.2.14 ist es gleich schnell. Dieses NAS bleibt bei 0.2.14.",
+        "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Up to 0.2.13 nothing got slower. <b>0.2.14</b>, tested on 15 and 16 Nov 2026 and in production since 16 Nov, reads prompts of 16K and 32K about 15 % faster and writes equally fast: in three runs alternating with 0.2.12, decode came to 73 against 73 tokens per second. My task set passes 98 of 102 tasks on 0.2.14, against 96 on 0.2.12. <b>0.2.15</b>, tested on 16 Nov, only brings a new control program, the engine is the same; in three runs alternating with 0.2.14 it is equally fast. This NAS stays on 0.2.14.")
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
@@ -399,8 +400,8 @@ def seite(sp):
          f"{GH}/tree/main/konfig/opencode", T("Beispielkonfiguration", "Example config")),
     ]
     A('<ol class="schritte">' + "".join(f'<li><h3>{e(t_)}</h3><p>{b_}</p><a href="{u}">{e(l_)}</a></li>' for t_, b_, u, l_ in schritte) + "</ol>")
-    P(T("<b>Der Engpass ist der Arbeitsspeicher.</b> Mit geladenem 125B-Modell bleiben auf 64 GB rund 7 GiB frei; das reicht für Chat, Suche und Agent, aber nicht für einen zweiten großen Dienst. Wer mehr Luft braucht, nimmt ein Modell, das ganz auf die Karte passt.",
-        "<b>The bottleneck is memory.</b> With the 125B model loaded, about 7 GiB of the 64 GB stay free; that is enough for chat, search and agent, but not for a second large service. If you need more room, pick a model that fits entirely on the card."))
+    P(T("<b>Der Engpass ist der Arbeitsspeicher.</b> Mit geladenem 125B-Modell bleiben auf 64 GB je nach Fassung 4,5 bis 8 GiB frei; das reicht für Chat, Suche und Agent, aber nicht für einen zweiten großen Dienst. Wer mehr Luft braucht, nimmt ein Modell, das ganz auf die Karte passt.",
+        "<b>The bottleneck is memory.</b> With the 125B model loaded, 4.5 to 8 GiB of the 64 GB stay free, depending on the version; that is enough for chat, search and agent, but not for a second large service. If you need more room, pick a model that fits entirely on the card."))
     P(T("Von unterwegs erreicht man den Aufbau am einfachsten über das VPN des eigenen Routers; ich nutze dafür einen eigenen Zugang mit Anmeldung auf einem kleinen Mietserver. Ins Netz gestellt wird nichts.",
         "From outside, the simplest way in is the VPN of your own router; I use an own gateway with login on a small rented server. Nothing is exposed to the internet.")
       + f' <a href="{doc("comfyui")}">{T("Bilder mit ComfyUI", "Pictures with ComfyUI")}</a> · <a href="{GH}/tree/main/messen">{T("Messskripte und Rohdaten", "Benchmark scripts and raw data")}</a> · <a href="{anker("bauen", "build")}">{T("Strata selbst bauen", "Building Strata yourself")}</a>')

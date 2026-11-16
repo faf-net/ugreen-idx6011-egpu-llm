@@ -14,17 +14,17 @@ dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
 Everything here was measured on my machine unless marked otherwise. This repository contains **no Strata code**,
 only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark tools.
 
-**As of 16 Nov 2026:** Strata 0.2.14 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization. `liber` is the uncensored version of `faber`: the same weights with the refusals removed, so it answers whatever it is asked ([docs/steuervektor.md](docs/steuervektor.md)). Chat and agent can use any of the three.
+**As of 16 Nov 2026:** Strata 0.2.14 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the three versions of the model go by short names. `liber` is Flash-Next 125B in the IQ3_XXS quantization with the refusals removed, the uncensored version: the same weights, it answers whatever it is asked ([docs/steuervektor.md](docs/steuervektor.md)). It is the one in daily use, for chat and agent. `faber` is the original, which is measured first and kept as the fallback. `velox` is the same model in the smaller and faster IQ2_XS quantization, now measured only for comparison.
 
 ## At a glance
 
 | | |
 |---|---|
-| Writing | 63–68 tokens/s, barely slower at 248K tokens of context |
-| Reading a prompt | 1,300–1,400 tokens/s from 16K on: 23 s for 32K tokens, 3.4 min for 250K |
+| Writing | 63–68 tokens/s, about 12 % slower at 248K tokens of context |
+| Reading a prompt | 1,200–1,400 tokens/s from 16K on: 23 s for 32K tokens, 3.4 min for 250K |
 | Context | 256K, the needle was found 9 of 9 times up to 250K |
-| Memory | about 53 GiB of the 64 GB RAM, the 24 GB card is full |
-| Power | 1.4 Wh per 1,000 written tokens; NAS and dock draw 336 W while writing, 49 W idle |
+| Memory | 54–58 GiB of the 64 GB RAM in use (uncensored version and original), the 24 GB card is full |
+| Power | 1.4–1.5 Wh per 1,000 tokens written (original and uncensored version); NAS and dock draw about 340 W while writing, 49 W idle |
 | Biggest risk | a dock dropout with a model loaded reboots the NAS (kernel bug, mitigated) |
 
 ## Where to find what
@@ -51,8 +51,8 @@ only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark 
 
 **Why a 125B model fits on a 24 GB card:** Flash-Next is a Mixture-of-Experts model; only a few experts run per
 token. Strata keeps the frequently used experts in VRAM and the rest in system RAM, and computes missing experts
-on the CPU instead of copying them over the x4 link. The iDX's fast LPDDR5X is what makes this work: the model
-uses about 53 GiB of the 64 GB. A dense 70B model on the same hardware is slow (measured: 2.7 T/s, see below), because
+on the CPU instead of copying them over the x4 link. The iDX's fast LPDDR5X is what makes this work: with the model
+loaded, 54–58 GiB of the 64 GB are in use. A dense 70B model on the same hardware is slow (measured: 2.7 T/s, see below), because
 it has to read all weights for every token.
 
 **Two GPUs, cleanly separated:** the Arc iGPU (`renderD128`) handles media, the XTX (`renderD129`) only runs
@@ -77,22 +77,25 @@ Card at idle with no model loaded: about 9 W, 44–51 °C.
 
 ### Throughput vs context depth (1K to 248K)
 
-One fresh prompt per run, then 256 new tokens; engine timings, median of 2–3 runs. "Without MTP head" is the same
+One fresh prompt per run, then 256 new tokens; engine timings, median of 2–3 runs, measured on 16 Nov 2026 on Strata
+0.2.14 with the production config (`messen/daten/tiefe-20261116.jsonl`). "Without MTP head" is the same
 configuration with `--mtp` removed (a native pack still needs `--spec`, but gets almost no drafts).
 
 ![Decode and prefill vs context depth](bilder/tiefe-en.png)
 
 | Prompt tokens | Decode with MTP | Decode without MTP head | Prefill with MTP | Prefill without MTP head | MTP acceptance |
 | ---: | ---: | ---: | ---: | ---: | ---: |
-| 993 | 62.0 | 48.9 | 362 | 391 | 49 % |
-| 4,075 | 60.6 | 50.2 | 745 | 782 | 49 % |
-| 16,252 | 63.0 | 50.5 | 1,164 | 1,253 | 48 % |
-| 65,023 | 61.1 | 49.3 | 1,185 | 1,265 | 53 % |
-| 130,024 | 61.0 | 47.2 | 1,175 | 1,220 | 57 % |
-| 248,052 | 56.1 | 44.9 | 1,079 | 1,117 | 50 % |
+| 993 | 58.3 | 43.3 | 468 | 486 | 41 % |
+| 4,075 | 59.4 | 45.1 | 803 | 841 | 45 % |
+| 16,252 | 58.5 | 44.2 | 1,365 | 1,468 | 47 % |
+| 65,023 | 57.2 | 45.4 | 1,362 | 1,431 | 50 % |
+| 130,024 | 54.9 | 45.0 | 1,324 | 1,373 | 52 % |
+| 248,052 | 51.2 | 42.6 | 1,216 | 1,234 | 41 % |
 
-Decode barely drops with depth (62 → 56 tok/s with MTP up to 248K), MTP adds 21–29 % at every depth, prefill stays
-at 1,080–1,270 tok/s from 16K on, over the x4 link. **Recall** (Strata's `needle_bench.py`): the code word was found
+Decode drops little with depth (58 → 51 tok/s with MTP up to 248K), MTP adds 20–35 % at every depth, prefill stays
+at 1,210–1,470 tok/s from 16K on, over the x4 link. Compared with the first run on 17 Oct on 0.1.44.1
+(`messen/daten/tiefe-20261017.jsonl`: 62 → 56 tok/s with MTP, prefill 1,080–1,270 tok/s from 16K on) the card reads
+faster today and decodes 1–6 tok/s slower at every depth, without the MTP head too. I have not found out why. **Recall** (Strata's `needle_bench.py`): the code word was found
 9 of 9 times at 32K, 128K and 250K, at depths of 10, 50 and 90 %.
 
 ![MTP acceptance vs context depth](bilder/mtp-annahme-en.png)
@@ -105,13 +108,13 @@ Reading grows almost linearly with the prompt: 5.5 s at 4K, 26 s at 32K, 1.8 min
 
 ![RAM and VRAM with the 125B model loaded](bilder/speicher-en.png)
 
-With the 125B model (`faber`) loaded and idle, the engine holds 44.6 GiB of the 62.3 GiB RAM (the expert weights that do not fit on the card, the K/V of 32K tokens in 3.1 GiB of pinned RAM, and the conversation cache as it fills), the NAS services and the kernel 10.2 GiB, and 7.5 GiB stay available. On the card the expert cache takes 17.3 GiB of 24 GiB (10,644 slots), the MTP draft 1 GiB, everything else 5.3 GiB, 0.4 GiB stay free. With 64 GB RAM this is about the limit: a second large service next to it needs the conversation cache made smaller.
+With the original (`faber`) loaded and idle, the engine holds 47.2 GiB of the 62.3 GiB RAM (the expert weights that do not fit on the card, the K/V of 32K tokens in pinned RAM, and the conversation cache as it fills), the NAS services and the kernel 10.7 GiB, and 4.5 GiB stay available. On the card the expert cache takes 17.0 GiB of 24 GiB (10,490 slots), the MTP draft 1 GiB, everything else 5.3 GiB, 0.7 GiB stay free. The uncensored version in daily use runs with image input, without pinned K/V and with a 4.5 instead of 9 GiB conversation cache: the engine holds 42.8 GiB, 7.9 GiB stay available, and because the image part needs room on the card, the expert cache gets 14.1 GiB. Measured on 16 Nov 2026 on Strata 0.2.14 (`messen/daten/2026-11-16-speicher/`); on 23 Oct on 0.2.3.1 the engine held 44.6 GiB with the original, and 7.5 GiB stayed available. With 64 GB RAM this is about the limit: a second large service next to it needs the conversation cache made smaller.
 
 ### Power, cold start, the NAS at work, a dense 70B and UGREEN's own model (15 and 16 Nov 2026)
 
 ![Power per phase, and the MoE model against a dense 70B](bilder/betrieb-en.png)
 
-**Power.** Measured at the UPS, which feeds only the NAS and the dock (read through NUT, the first 45 s of every phase discarded), next to the card's own reading from sysfs.
+**Power.** Measured with the original (`faber`) at the UPS, which feeds only the NAS and the dock (read through NUT, the first 45 s of every phase discarded), next to the card's own reading from sysfs.
 
 | Phase | NAS and dock | Card alone |
 |---|---:|---:|
@@ -251,6 +254,7 @@ Every release since 0.2.0-beta was measured here against the one before it, with
 | 0.2.12 | 8 Nov | **in production** until 16 Nov; equal to 0.2.11; the tuned DFlash2 drafter is slower end to end and stays off | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 9 Nov | equal with the tuned config, not adopted; the Linux Docker image no longer uses the gfx1100 table and reads 16K prompts 35 % slower | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
 | 0.2.14 | 15/16 Nov | **in production, current** since 16 Nov; decode equal, prompt reading 16 % faster at 16K and 14 % at 32K in the same session; own task set 98 of 102 (0.2.12: 96); no driver pauses on this card; `standard-v1` sanity 11 of 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
+| 0.2.15 | 16 Nov | tested, not adopted; only the control program is new (control 0.1.61), the engine is the same as in 0.2.14; equally fast in three runs alternating with 0.2.14; `standard-v1` sanity 12 of 12; my small task set 34 of 35 (tools 20 of 20, code 14 of 15), one code task that flips between runs | – |
 
 ## Run
 
@@ -465,6 +469,9 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/daten/2026-11-15-betrieb/  power, cold start, NAS at work, dense 70B, UGREEN's built-in model
   messen/daten/2026-11-16-betrieb/  re-measured on Strata 0.2.14: power and speed of the three models, cold start, waiting times, two people, task set
   messen/daten/2026-11-16-cloud-vergleich/  the same task set against Sonnet 5.5 over the API: counts per category, no texts
+  messen/daten/2026-11-16-v0.2.15/  raw data of the 0.2.15 test: three strata_bench runs alternating with 0.2.14, standard-v1, pairs (README inside)
+  messen/daten/2026-11-16-speicher/  memory use of the original and the uncensored version on 0.2.14
+  messen/daten/tiefe-20261116.jsonl  speed vs context depth on 0.2.14, with and without the MTP head (October: tiefe-20261017.jsonl)
 ```
 
 **Documentation and charts**
@@ -479,7 +486,7 @@ The benchmark scripts only talk to `/v1/chat/completions`, use Python's standard
 power and RAM from sysfs (set `KARTE` in `bench.py` to your card). Code tasks run in a throwaway container without
 network. File and folder names are German; the scripts' comments too.
 
-File and folder names are German, and so are the scripts' comments: `messen` = measuring, `konfig` = configs, `bilder` = pictures, `daten` = data, `tiefe` = depth, `erfinden` = making things up. `faber` and `velox` are the names of the two models here (`arbeit` and `schnell` in files up to 0.2.2).
+File and folder names are German, and so are the scripts' comments: `messen` = measuring, `konfig` = configs, `bilder` = pictures, `daten` = data, `tiefe` = depth, `erfinden` = making things up. `liber`, `faber` and `velox` are the names of the three versions here (uncensored, original IQ3_XXS, IQ2_XS; in files up to 0.2.2 faber and velox are called `arbeit` and `schnell`).
 
 ## License
 

@@ -2,9 +2,24 @@
 
 **English** · [Deutsch](releases.de.md) · [← README](../README.md)
 
-In configs, scripts and file names the two models go by short names: `faber` is Flash-Next 125B in the IQ3_XXS quantization, the one in daily use; `velox` is the same model in the smaller and faster IQ2_XS quantization.
+In configs, scripts and file names the three versions of the model go by short names. `liber` is Flash-Next 125B in the IQ3_XXS quantization with the refusals removed, the uncensored version: the same weights, it answers whatever it is asked. It is the one in daily use, for chat and agent. `faber` is the original, which is measured first and kept as the fallback. `velox` is the same model in the smaller and faster IQ2_XS quantization, now measured only for comparison.
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
+
+## Follow-up 16 Nov 2026: Strata 0.2.15 is equally fast here, this NAS stays on 0.2.14
+
+Control 0.1.61 with engine 0.1.60 `hip-rx7900`, the same engine as in 0.2.14; only the control program is new. Same run config (`konfig/strata-0.2.14/`), NAS services on, only my agent stopped.
+
+| Median | 0.2.15 | 0.2.14 |
+|---|---:|---:|
+| 3 interleaved pairs, same session: decode / 63-token prompt, tokens/s | 59.2 / 118.6 | 59.1 / 118.6 |
+| `strata_bench.py --long`, 3 alternating runs: decode chat / agent, tokens/s | 65.1 / 73.4 | 64.0 / 70.8 |
+| same runs: prompt 4K / 16K / 32K, tokens/s | 786 / 1,395 / 1,377 | 786 / 1,392 / 1,375 |
+| `standard-v1`, package: short decode / 4K / 16K prompt, tokens/s | 68.4 / 747 / 1,416 | |
+
+**Equally fast.** The pairs are 0.1 tokens/s apart. In the three alternating runs, each engine loaded fresh and the order swapped every round, prompt reading is equal to the token, and decode lies within the scatter this test shows for one and the same release. The pairs measure short answers with less predictable text, which is why they come to 59 rather than the 66 tokens/s of long answers. `standard-v1` is complete and passes 12 of 12 sanity checks; 4K came at 747 tokens/s in this one run and at 786 in the three `strata_bench.py` runs, as with 0.2.14. My small task set (35 tasks) passes 34, 0.2.14 on the same day 35: tools 20 of 20, code 14 of 15; the one that failed is a code task that flips between runs.
+
+Since the engine is the same and nothing gets faster, this NAS stays on 0.2.14. Raw data: `messen/daten/2026-11-16-v0.2.15/`. Reported to Strata: nothing.
 
 ## Follow-up 15/16 Nov 2026: Strata 0.2.14 reads long prompts faster, in production since 16 Nov
 

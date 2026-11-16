@@ -1,0 +1,20 @@
+{
+ "measured": "2026-11-16 12:59, faber (Strata 0.2.14) loaded and idle, 180 s after one request; NAS services running, agent stopped",
+ "ram_total_gib": 62.34,
+ "ram_available_gib": 4.49,
+ "strata_rss_gib": 47.16,
+ "strata_rss_anon_gib": 42.99,
+ "strata_rss_shmem_gib": 4.02,
+ "strata_rss_file_gib": 0.14,
+ "vram_total_gib": 23.98,
+ "vram_used_gib": 23.29,
+ "expert_cache_gib": 17.01,
+ "mtp_gib": 0.99,
+ "sources": [
+  "/proc/<pid>/status of the largest process in the engine container (VmRSS, RssAnon, RssShmem, RssFile)",
+  "/proc/meminfo (MemTotal, MemAvailable)",
+  "/sys/class/drm/card*/device/mem_info_vram_used and _total",
+  "engine log of the same run config: 'expert cache ... 17.01 GiB of VRAM', 'draft layer loaded, 835 MiB', 'draft head ... (178.4 MiB)'"
+ ],
+ "run_config": "--expert-profile /opt/strata/data/expert-profile.bin --expert-cache auto --prefill auto --spec 4 --spec-min-p 0.5 --mtp /strata/data/mtp/rt --max-context 262144 --kv int8 --vram-reserve-mib 832 --pcie-frac 0 --conversation-cache-slots 4 --conversation-cache-min-tokens 8192 --conversation-cache-mib 9216 --kv-resident 32768"
+}

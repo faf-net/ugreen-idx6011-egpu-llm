@@ -2,9 +2,24 @@
 
 [English](releases.md) · **Deutsch** · [← README](../README.de.md)
 
-In Konfigurationen, Skripten und Dateinamen tragen die beiden Modelle Kurznamen: `faber` ist Flash-Next 125B in der Quantisierung IQ3_XXS und im täglichen Einsatz; `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS.
+In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modells Kurznamen. `liber` ist Flash-Next 125B in der Quantisierung IQ3_XXS ohne die Ablehnungen, die unzensierte Fassung: dieselben Gewichte, sie beantwortet, was man sie fragt. Sie ist im täglichen Einsatz, für Chat und Agent. `faber` ist das Original, an dem zuerst gemessen wird und das als Rückfall bereitsteht. `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS und wird nur noch zum Vergleich gemessen.
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
+
+## Nachtrag 16.11.2026: Strata 0.2.15 ist hier gleich schnell, dieses NAS bleibt bei 0.2.14
+
+Control 0.1.61 mit der Engine 0.1.60 `hip-rx7900`, also derselben Engine wie in 0.2.14; neu ist nur das Steuerprogramm. Gleiche Laufkonfiguration (`konfig/strata-0.2.14/`), NAS-Dienste an, nur mein Agent angehalten.
+
+| Median | 0.2.15 | 0.2.14 |
+|---|---:|---:|
+| 3 verschränkte Paare, gleiche Sitzung: Schreiben / Prompt mit 63 Token, Token/s | 59,2 / 118,6 | 59,1 / 118,6 |
+| `strata_bench.py --long`, 3 Läufe im Wechsel: Schreiben Chat / Agent, Token/s | 65,1 / 73,4 | 64,0 / 70,8 |
+| dieselben Läufe: Prompt 4K / 16K / 32K, Token/s | 786 / 1.395 / 1.377 | 786 / 1.392 / 1.375 |
+| `standard-v1`, Paket: kurz Schreiben / 4K / 16K Prompt, Token/s | 68,4 / 747 / 1.416 | |
+
+**Gleich schnell.** Die Paare liegen 0,1 Token/s auseinander. In den drei Läufen im Wechsel, jede Engine frisch geladen und die Reihenfolge je Runde gewechselt, ist das Einlesen auf den Token genau gleich, und das Schreiben liegt in der Streuung, die dieser Test auch bei gleicher Version zeigt. Die Paare messen kurze Antworten mit wenig vorhersehbarem Text, deshalb liegen sie bei 59 und nicht bei den 66 Token/s langer Antworten. `standard-v1` ist vollständig und besteht 12 von 12 Plausibilitätsprüfungen; 4K kam in diesem einen Lauf mit 747 Token/s, in den drei Läufen von `strata_bench.py` mit 786 wie bei 0.2.14. Mein kleiner Aufgabensatz (35 Aufgaben) besteht 34, 0.2.14 am selben Tag 35: Werkzeuge 20 von 20, Code 14 von 15, durchgefallen ist eine Code-Aufgabe, die zwischen Läufen kippt.
+
+Weil die Engine dieselbe ist und nichts schneller wird, bleibt dieses NAS bei 0.2.14. Rohdaten: `messen/daten/2026-11-16-v0.2.15/`. An Strata gemeldet: nichts.
 
 ## Nachtrag 15./16.11.2026: Strata 0.2.14 liest lange Prompts schneller, seit 16.11. in Betrieb
 

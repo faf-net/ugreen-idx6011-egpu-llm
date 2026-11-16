@@ -1,0 +1,20 @@
+{
+ "measured": "2026-11-16 13:03, liber (Strata 0.2.14) loaded and idle, 180 s after one request; NAS services running, agent stopped",
+ "ram_total_gib": 62.34,
+ "ram_available_gib": 7.92,
+ "strata_rss_gib": 42.81,
+ "strata_rss_anon_gib": 42.01,
+ "strata_rss_shmem_gib": 0.67,
+ "strata_rss_file_gib": 0.13,
+ "vram_total_gib": 23.98,
+ "vram_used_gib": 23.29,
+ "expert_cache_gib": 14.05,
+ "mtp_gib": 1.25,
+ "sources": [
+  "/proc/<pid>/status of the largest process in the engine container (VmRSS, RssAnon, RssShmem, RssFile)",
+  "/proc/meminfo (MemTotal, MemAvailable)",
+  "/sys/class/drm/card*/device/mem_info_vram_used and _total",
+  "engine log of the same run config: 'expert cache ... 14.05 GiB of VRAM', 'draft layer loaded, 1098 MiB', 'draft head ... (178.4 MiB)'"
+ ],
+ "run_config": "--expert-profile /opt/strata/data/expert-profile.bin --expert-cache auto --prefill auto --spec 4 --spec-min-p 0.5 --mtp /strata/data/mtp/rt --max-context 262144 --kv int8 --vram-reserve-mib 832 --pcie-frac 0 --control-vector-scaled <steering vector, see docs/steuervektor.md> --control-vector-layer-range 4 44 --cvec-mode project --cvec-dir per-layer --conversation-cache-slots 2 --conversation-cache-min-tokens 8192 --conversation-cache-mib 4608 --vision --conversation-cache-min-free-mib 1536"
+}

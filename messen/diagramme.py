@@ -221,9 +221,12 @@ def standard(pfad):
     return {(x["case_id"], x["metric"]): x["median"] for x in su if x.get("concurrency") == 1}
 
 
-def tiefe_daten(d):
+TIEFE_DATEI = "tiefe-20261116.jsonl"   # 16.11.2026, Strata 0.2.14; Oktober (0.1.44.1): tiefe-20261017.jsonl
+
+
+def tiefe_daten(d, datei=TIEFE_DATEI):
     werte = defaultdict(lambda: defaultdict(list))
-    for zeile in open(os.path.join(d, "tiefe-20261017.jsonl"), encoding="utf-8"):
+    for zeile in open(os.path.join(d, datei), encoding="utf-8"):
         r = json.loads(zeile)
         werte[r["label"]][r["ziel"]].append(r)
     return werte
@@ -240,17 +243,21 @@ TIEFEN = [(1024, "1K"), (4096, "4K"), (16384, "16K"), (65536, "64K"), (131072, "
 def tiefe(d, sp):
     en = sp == "en"
     w = tiefe_daten(d)
+    m_ = lambda label, wert: {t: med([r[wert] for r in rs]) for t, rs in w[label].items()}
+    plus = [100 * (m_("mit-mtp", "decode_tps")[t] / m_("ohne-mtp", "decode_tps")[t] - 1) for t in w["mit-mtp"]]
+    lesen16 = min(v for t, v in list(m_("mit-mtp", "prompt_tps").items()) + list(m_("ohne-mtp", "prompt_tps").items()) if t >= 16384)
+    p_lo, p_hi, l16 = round(min(plus)), round(max(plus)), int(lesen16 // 100 * 100)
     s = Svg()
-    titel = "Throughput barely drops from 1K to 248K tokens of context" if en else "Das Tempo fällt von 1K bis 248K Token Kontext kaum"
-    kopf(s, "Strata 0.1.44.1 · Flash-Next 125B IQ3_XXS · RX 7900 XTX over OCuLink x4" if en else
-         "Strata 0.1.44.1 · Flash-Next 125B IQ3_XXS · RX 7900 XTX über OCuLink x4", titel)
+    titel = "Throughput drops little from 1K to 248K tokens of context" if en else "Das Tempo fällt von 1K bis 248K Token Kontext wenig"
+    kopf(s, "Strata 0.2.14 · Flash-Next 125B IQ3_XXS · RX 7900 XTX over OCuLink x4" if en else
+         "Strata 0.2.14 · Flash-Next 125B IQ3_XXS · RX 7900 XTX über OCuLink x4", titel)
     reihen = (("mit-mtp", ACC, False, "with MTP" if en else "mit MTP"), ("ohne-mtp", STAHL, True, "without MTP" if en else "ohne MTP"))
     felder = ((L, 456, "decode_tps", 80, 20, "A · Decode · tokens/s" if en else "A · Schreiben · Token/s",
                "256 new tokens after a fresh prompt · higher is faster" if en else "256 neue Token nach frischem Prompt · höher ist schneller",
-               "MTP adds 21–29 % at every depth." if en else "MTP bringt 21–29 % in jeder Tiefe.", 55),
-              (544, R, "prompt_tps", 1400, 200, "B · Prefill · tokens/s" if en else "B · Einlesen · Token/s",
+               f"MTP adds {p_lo}–{p_hi} % at every depth." if en else f"MTP bringt {p_lo}–{p_hi} % in jeder Tiefe.", 72),
+              (544, R, "prompt_tps", 1600, 200, "B · Prefill · tokens/s" if en else "B · Einlesen · Token/s",
                "reading the fresh prompt · higher is faster" if en else "Einlesen des frischen Prompts · höher ist schneller",
-               "From 16K on, reading stays above 1,000 tokens/s." if en else "Ab 16K bleibt das Einlesen über 1.000 Token/s.", 520))
+               f"From 16K on, reading stays above {z(l16, sp)} tokens/s." if en else f"Ab 16K bleibt das Einlesen über {z(l16, sp)} Token/s.", 520))
     for x0, x1, wert, vmax, schritt, was, hilfe, anm, anm_v in felder:
         feld(s, x0, 104, was, hilfe)
         p = Hoch(s, x0, x1, 144, 384, vmax)
@@ -275,8 +282,8 @@ def tiefe(d, sp):
             s.text(x0 + 24, p.Y(anm_v), anm, 15, INK, "serif", kursiv=True)
         else:
             s.text(x1, p.Y(anm_v), anm, 15, INK, "serif", "end", kursiv=True)
-    h = fuss(s, 444, None, "UGREEN iDX6011 Pro, 64 GB · one fresh prompt per run, then 256 new tokens · engine timings, median of 2–3 runs · messen/tiefe.py · data: messen/daten/tiefe-20261017.jsonl" if en else
-             "UGREEN iDX6011 Pro, 64 GB · je Lauf ein frischer Prompt, dann 256 neue Token · Zeiten der Engine, Median aus 2–3 Läufen · messen/tiefe.py · Daten: messen/daten/tiefe-20261017.jsonl")
+    h = fuss(s, 444, None, f"UGREEN iDX6011 Pro, 64 GB · measured 16 Nov 2026 · one fresh prompt per run, then 256 new tokens · engine timings, median of 2–3 runs · messen/tiefe.py · data: messen/daten/{TIEFE_DATEI}, October run on 0.1.44.1: tiefe-20261017.jsonl" if en else
+             f"UGREEN iDX6011 Pro, 64 GB · gemessen am 16.11.2026 · je Lauf ein frischer Prompt, dann 256 neue Token · Zeiten der Engine, Median aus 2–3 Läufen · messen/tiefe.py · Daten: messen/daten/{TIEFE_DATEI}, Oktober auf 0.1.44.1: tiefe-20261017.jsonl")
     return "tiefe", titel, ("Decode and prefill throughput with and without the MTP draft head at six context depths from 1K to 248K tokens." if en else
                             "Schreib- und Einlesetempo mit und ohne MTP-Kopf in sechs Kontexttiefen von 1K bis 248K Token."), s, h
 
@@ -285,8 +292,8 @@ def mtp_annahme(d, sp):
     en = sp == "en"
     w = tiefe_daten(d)["mit-mtp"]
     s = Svg()
-    titel = "About half of the MTP drafts are accepted, at every depth" if en else "Rund die Hälfte der MTP-Vorschläge wird angenommen, in jeder Tiefe"
-    kopf(s, "Strata 0.1.44.1 · Flash-Next 125B IQ3_XXS · RX 7900 XTX", titel)
+    titel = "Four to five in ten MTP drafts are accepted, at every depth" if en else "Vier bis fünf von zehn MTP-Vorschlägen werden angenommen, in jeder Tiefe"
+    kopf(s, "Strata 0.2.14 · Flash-Next 125B IQ3_XXS · RX 7900 XTX", titel)
     feld(s, L, 104, "Accepted draft tokens · %" if en else "Angenommene Vorschlagstoken · %",
          "share of the MTP head's draft tokens the model kept" if en else "Anteil der Vorschlagstoken des MTP-Kopfs, die das Modell übernommen hat")
     p = Hoch(s, L, R, 144, 344, 100)
@@ -306,10 +313,11 @@ def mtp_annahme(d, sp):
     for x, v in pts:
         s.punkt(x, p.Y(v), ACC)
         s.text(x, p.Y(v) - 10, f"{v:.0f} %", 9, ACC, "mono", "middle", 600)
-    h = fuss(s, 404, None, "median of 2–3 fresh prompts per depth, 256 new tokens each · messen/tiefe.py · data: messen/daten/tiefe-20261017.jsonl" if en else
-             "Median aus 2–3 frischen Prompts je Tiefe, je 256 neue Token · messen/tiefe.py · Daten: messen/daten/tiefe-20261017.jsonl")
-    return "mtp-annahme", titel, ("MTP draft acceptance between 48 and 57 percent at six context depths from 1K to 248K tokens." if en else
-                                  "MTP-Annahmequote zwischen 48 und 57 Prozent in sechs Kontexttiefen von 1K bis 248K Token."), s, h
+    h = fuss(s, 404, None, f"measured 16 Nov 2026 · 2–3 fresh prompts per depth, 256 new tokens each, drafts summed · messen/tiefe.py · data: messen/daten/{TIEFE_DATEI}" if en else
+             f"gemessen am 16.11.2026 · 2–3 frische Prompts je Tiefe, je 256 neue Token, Vorschläge summiert · messen/tiefe.py · Daten: messen/daten/{TIEFE_DATEI}")
+    lo, hi = round(min(v for _, v in pts)), round(max(v for _, v in pts))
+    return "mtp-annahme", titel, (f"MTP draft acceptance between {lo} and {hi} percent at six context depths from 1K to 248K tokens." if en else
+                                  f"MTP-Annahmequote zwischen {lo} und {hi} Prozent in sechs Kontexttiefen von 1K bis 248K Token."), s, h
 
 
 def pool_workers(d, sp):
@@ -343,7 +351,9 @@ VERSIONEN = [("0.2.0β", "2026-10-19/strata-0.2.0-beta/strata-bench-results.json
              ("0.2.12", "2026-11-08-v0.2.12/strata-bench/2026-11-08-community-unknown-t-neu/results.json"),
              ("0.2.13", "2026-11-09-v0.2.13/strata-bench/2026-11-09-community-unknown-t-neu/results.json"),
              ("0.2.14", ["2026-11-15-v0.2.14/strata-bench/2026-11-15-community-unknown-t-neu/results.json"]
-                        + [f"2026-11-15-v0.2.14/strata-bench-alternating/round{n}-0.2.14.json" for n in (1, 2, 3)])]   # vier Läufe, gezeigt wird der Median
+                        + [f"2026-11-15-v0.2.14/strata-bench-alternating/round{n}-0.2.14.json" for n in (1, 2, 3)]),   # vier Läufe, gezeigt wird der Median
+             ("0.2.15", [f"2026-11-16-v0.2.15/strata-bench-alternating/round{n}-0.2.15.json" for n in (1, 2, 3)])]   # geprüft, nicht im Betrieb
+IN_BETRIEB, GEPRUEFT = "0.2.14", "0.2.15"
 
 
 def versionen(d, sp):
@@ -355,7 +365,7 @@ def versionen(d, sp):
     n = len(werte)
     s = Svg()
     zahlwort = {8: ("Eight", "Acht"), 9: ("Nine", "Neun"), 10: ("Ten", "Zehn")}.get(n, (str(n), str(n)))
-    titel = f"{zahlwort[0]} Strata releases on the same card: 0.2.14 reads long prompts faster" if en else f"{zahlwort[1]} Strata-Versionen auf derselben Karte: 0.2.14 liest lange Prompts schneller"
+    titel = f"{zahlwort[0]} Strata releases on the same card: faster at reading long prompts since 0.2.14" if en else f"{zahlwort[1]} Strata-Versionen auf derselben Karte: seit 0.2.14 schneller beim Einlesen langer Prompts"
     kopf(s, "Flash-Next 125B IQ3_XXS · RX 7900 XTX · tools/strata_bench.py --long", titel)
     felder = ((L, 456, (("agent", STAHL, True, "agent" if en else "Agent"), ("chat", ACC, False, "chat" if en else "Chat")), 100, 20,
                "A · Decode · tokens/s" if en else "A · Schreiben · Token/s", "median per release · higher is faster" if en else "Median je Version · höher ist schneller", True),
@@ -368,7 +378,9 @@ def versionen(d, sp):
         X = lambda i: x0 + 24 + i * (x1 - x0 - 24 - 56) / (n - 1)
         for i, (name, _) in enumerate(VERSIONEN):
             s.line(X(i), 384, X(i), 388, ACHSE)
-            s.text(X(i), 400, name, 8, MUTED, "mono", "middle")
+            s.text(X(i), 400, name, 8, INK if name == IN_BETRIEB else MUTED, "mono", "middle", 600 if name == IN_BETRIEB else None)
+            if name in (IN_BETRIEB, GEPRUEFT):
+                s.text(X(i), 411, (("in use" if en else "Betrieb") if name == IN_BETRIEB else ("tested" if en else "geprüft")), 7.5, MUTED, "sans", "middle")
         marken = []
         for k, (schl, farbe, hohl, name) in enumerate(reihen):
             ys = [w[schl] for w in werte]
@@ -380,10 +392,10 @@ def versionen(d, sp):
             marken.append((p.Y(ys[-1]), farbe, name, None if jeder else z(ys[-1], sp)))
         endmarken(s, X(n - 1) + 12, marken)
     s.text(L + 24, 344, "0.2.1's worker plan for hybrid CPUs lifted decode." if en else "Der Worker-Plan von 0.2.1 hob das Schreibtempo.", 15, INK, "serif", kursiv=True)
-    h = fuss(s, 424, None, "median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, 0.2.11–0.2.14 with them running · 0.2.14: median of four runs (one on 15 Nov, three alternating with 0.2.12 in the night to 16 Nov, where both decode equally fast) · data: messen/daten/<date>-v<release>/strata-bench/" if en else
-             "Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, 0.2.11–0.2.14 mit laufenden · 0.2.14: Median aus vier Läufen (einer am 15.11., drei im Wechsel mit 0.2.12 in der Nacht zum 16.11., dort schreiben beide gleich schnell) · Daten: messen/daten/<Datum>-v<Version>/strata-bench/")
-    return "versionen", titel, ("Chat and agent decode speed and prompt reading speed at 4K, 16K and 32K for Strata releases 0.2.0-beta to 0.2.14 on one RX 7900 XTX; decode stays within its scatter, prompt reading at 16K and 32K rises with 0.2.14." if en else
-                                "Schreibtempo für Chat und Agent und Einlesetempo bei 4K, 16K und 32K für die Strata-Versionen 0.2.0-beta bis 0.2.14 auf einer RX 7900 XTX; das Schreibtempo bleibt in seiner Streuung, das Einlesen bei 16K und 32K steigt mit 0.2.14."), s, h
+    h = fuss(s, 424, None, "median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, 0.2.11–0.2.15 with them running · 0.2.14: median of four runs (one on 15 Nov, three alternating with 0.2.12 in the night to 16 Nov, where both decode equally fast) · 0.2.15: median of three runs alternating with 0.2.14 on 16 Nov, tested, not in use · data: messen/daten/<date>-v<release>/strata-bench*/" if en else
+             "Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, 0.2.11–0.2.15 mit laufenden · 0.2.14: Median aus vier Läufen (einer am 15.11., drei im Wechsel mit 0.2.12 in der Nacht zum 16.11., dort schreiben beide gleich schnell) · 0.2.15: Median aus drei Läufen im Wechsel mit 0.2.14 am 16.11., geprüft, nicht im Betrieb · Daten: messen/daten/<Datum>-v<Version>/strata-bench*/")
+    return "versionen", titel, ("Chat and agent decode speed and prompt reading speed at 4K, 16K and 32K for Strata releases 0.2.0-beta to 0.2.15 on one RX 7900 XTX; decode stays within its scatter, prompt reading at 16K and 32K rises with 0.2.14 and holds with 0.2.15." if en else
+                                "Schreibtempo für Chat und Agent und Einlesetempo bei 4K, 16K und 32K für die Strata-Versionen 0.2.0-beta bis 0.2.15 auf einer RX 7900 XTX; das Schreibtempo bleibt in seiner Streuung, das Einlesen bei 16K und 32K steigt mit 0.2.14 und hält mit 0.2.15."), s, h
 
 
 def docker_image(d, sp):
@@ -446,15 +458,18 @@ def kontext(d, sp):
 
 def speicher(d, sp):
     en = sp == "en"
-    m = json.load(open(os.path.join(d, "2026-10-23-v0.2.3.1/memory.json"), encoding="utf-8"))
+    m = json.load(open(os.path.join(d, "2026-11-16-speicher/memory-faber.json"), encoding="utf-8"))
+    lb = json.load(open(os.path.join(d, "2026-11-16-speicher/memory-liber.json"), encoding="utf-8"))
+    dienste = m["ram_total_gib"] - m["strata_rss_gib"] - m["ram_available_gib"]
+    rest = m["vram_used_gib"] - m["expert_cache_gib"] - m["mtp_gib"]
     ram = [("Strata engine" if en else "Strata-Engine", m["strata_rss_gib"], ACC), ("NAS services, kernel" if en else "NAS-Dienste, Kernel", m["ram_total_gib"] - m["strata_rss_gib"] - m["ram_available_gib"], STAHL),
            ("available" if en else "verfügbar", m["ram_available_gib"], None)]
     vram = [("expert cache" if en else "Experten-Cache", m["expert_cache_gib"], ACC), ("MTP draft" if en else "MTP-Entwurf", m["mtp_gib"], GOLD),
             ("dense, KV, work" if en else "dicht, KV, Arbeit", m["vram_used_gib"] - m["expert_cache_gib"] - m["mtp_gib"], PETROL),
             ("free" if en else "frei", m["vram_total_gib"] - m["vram_used_gib"], None)]
     s = Svg()
-    titel = "Where the memory goes with the 125B model loaded" if en else "Wohin der Speicher geht, wenn das 125B-Modell geladen ist"
-    kopf(s, "Flash-Next 125B IQ3_XXS loaded and idle · Strata 0.2.3.1 · 256K context" if en else "Flash-Next 125B IQ3_XXS geladen und ruhend · Strata 0.2.3.1 · 256K Kontext", titel)
+    titel = "Where the memory goes with the original 125B model loaded" if en else "Wohin der Speicher geht, wenn das 125B-Original geladen ist"
+    kopf(s, "Flash-Next 125B IQ3_XXS (faber) loaded and idle · Strata 0.2.14 · 256K context" if en else "Flash-Next 125B IQ3_XXS (faber) geladen und ruhend · Strata 0.2.14 · 256K Kontext", titel)
     X = lambda v: L + v / 64 * (R - L)
     for v in range(0, 61, 10):
         s.line(X(v), 132, X(v), 324, GITTER if v else ACHSE)
@@ -484,10 +499,11 @@ def speicher(d, sp):
                 s.text(x + 24, yy, name, 10, INK, "sans")
                 s.text(x + 150, yy, z(wert, sp), 9, MUTED, "mono", "end")
             s.text(R, yb + 34, "With 64 GB of RAM this is about the limit." if en else "Mit 64 GB RAM ist das etwa die Grenze.", 15, INK, "serif", "end", kursiv=True)
-    h = fuss(s, 384, None, "measured 23 Oct 2026 · /proc, amdgpu mem_info_vram_used, engine log · dense/KV/work = used − expert cache − draft · data: messen/daten/2026-10-23-v0.2.3.1/memory.json" if en else
-             "gemessen am 23.10.2026 · /proc, amdgpu mem_info_vram_used, Engine-Log · dicht/KV/Arbeit = belegt − Experten-Cache − Entwurf · Daten: messen/daten/2026-10-23-v0.2.3.1/memory.json")
-    return "speicher", titel, ("Of 62.3 GiB RAM the Strata engine holds 44.6, NAS services and kernel 10.2, and 7.5 stay available; of 24 GiB VRAM the expert cache takes 17.3, the MTP draft 1.0, everything else 5.3, and 0.4 stay free." if en else
-                               "Von 62,3 GiB RAM hält die Strata-Engine 44,6, NAS-Dienste und Kernel 10,2, verfügbar bleiben 7,5; von 24 GiB VRAM nimmt der Experten-Cache 17,3, der MTP-Entwurf 1,0, alles Übrige 5,3, frei bleiben 0,4."), s, h
+    h = fuss(s, 384, None, f"measured 16 Nov 2026 · /proc, amdgpu mem_info_vram_used, engine log · dense/KV/work = used − expert cache − draft · the uncensored version in daily use (with image input, without pinned K/V): engine {z(lb['strata_rss_gib'], sp)}, available {z(lb['ram_available_gib'], sp)}, expert cache {z(lb['expert_cache_gib'], sp)} GiB · data: messen/daten/2026-11-16-speicher/" if en else
+             f"gemessen am 16.11.2026 · /proc, amdgpu mem_info_vram_used, Engine-Log · dicht/KV/Arbeit = belegt − Experten-Cache − Entwurf · die unzensierte Fassung im täglichen Einsatz (mit Bildeingang, ohne festgepinnte K/V): Engine {z(lb['strata_rss_gib'], sp)}, verfügbar {z(lb['ram_available_gib'], sp)}, Experten-Cache {z(lb['expert_cache_gib'], sp)} GiB · Daten: messen/daten/2026-11-16-speicher/")
+    frei = m["vram_total_gib"] - m["vram_used_gib"]
+    return "speicher", titel, (f"Of {z(m['ram_total_gib'], sp)} GiB RAM the Strata engine holds {z(m['strata_rss_gib'], sp)}, NAS services and kernel {z(dienste, sp)}, and {z(m['ram_available_gib'], sp)} stay available; of 24 GiB VRAM the expert cache takes {z(m['expert_cache_gib'], sp)}, the MTP draft {z(m['mtp_gib'], sp)}, everything else {z(rest, sp)}, and {z(frei, sp)} stay free." if en else
+                               f"Von {z(m['ram_total_gib'], sp)} GiB RAM hält die Strata-Engine {z(m['strata_rss_gib'], sp)}, NAS-Dienste und Kernel {z(dienste, sp)}, verfügbar bleiben {z(m['ram_available_gib'], sp)}; von 24 GiB VRAM nimmt der Experten-Cache {z(m['expert_cache_gib'], sp)}, der MTP-Entwurf {z(m['mtp_gib'], sp)}, alles Übrige {z(rest, sp)}, frei bleiben {z(frei, sp)}."), s, h
 
 
 NAMEN = {"faber": "Flash-Next IQ3_XXS (MoE)", "liber": ("Flash-Next IQ3_XXS, uncensored", "Flash-Next IQ3_XXS, unzensiert"), "velox": "Flash-Next IQ2_XS (MoE)", "qwen27": ("Qwen3.8-27B (dense)", "Qwen3.8-27B (dicht)"), "gemma31": ("Gemma 4 31B (dense)", "Gemma 4 31B (dicht)"), "qwen35": ("Qwen3.5-35B-A3B (UGREEN stock model)", "Qwen3.5-35B-A3B (UGREEN-Werksmodell)")}

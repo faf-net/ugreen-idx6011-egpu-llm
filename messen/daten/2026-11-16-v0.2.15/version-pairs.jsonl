@@ -1,0 +1,12 @@
+{"variante": "t-neu", "paar": 1, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 117.3, "decode_tps": 57.8, "draft_n": 721, "draft_ok": 310, "sekunden": 16.1}
+{"variante": "t-neu", "paar": 1, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 119.9, "decode_tps": 58.7, "draft_n": 708, "draft_ok": 321, "sekunden": 15.9}
+{"variante": "t-prod", "paar": 1, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 111.4, "decode_tps": 59.3, "draft_n": 704, "draft_ok": 321, "sekunden": 15.7}
+{"variante": "t-prod", "paar": 1, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 122.8, "decode_tps": 58.1, "draft_n": 710, "draft_ok": 319, "sekunden": 16.0}
+{"variante": "t-neu", "paar": 2, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 120.4, "decode_tps": 59.8, "draft_n": 704, "draft_ok": 308, "sekunden": 15.6}
+{"variante": "t-neu", "paar": 2, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 113.4, "decode_tps": 59.4, "draft_n": 717, "draft_ok": 313, "sekunden": 15.7}
+{"variante": "t-prod", "paar": 2, "messung": 1, "prompt_token": 63, "neu_token": 888, "prompt_tps": 118.9, "decode_tps": 58.0, "draft_n": 755, "draft_ok": 311, "sekunden": 15.9}
+{"variante": "t-prod", "paar": 2, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 114.2, "decode_tps": 60.3, "draft_n": 702, "draft_ok": 309, "sekunden": 15.5}
+{"variante": "t-neu", "paar": 3, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 108.4, "decode_tps": 59.0, "draft_n": 694, "draft_ok": 315, "sekunden": 15.8}
+{"variante": "t-neu", "paar": 3, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 122.0, "decode_tps": 61.3, "draft_n": 733, "draft_ok": 344, "sekunden": 15.2}
+{"variante": "t-prod", "paar": 3, "messung": 1, "prompt_token": 63, "neu_token": 900, "prompt_tps": 118.4, "decode_tps": 61.6, "draft_n": 724, "draft_ok": 335, "sekunden": 15.1}
+{"variante": "t-prod", "paar": 3, "messung": 2, "prompt_token": 63, "neu_token": 900, "prompt_tps": 118.8, "decode_tps": 59.0, "draft_n": 718, "draft_ok": 304, "sekunden": 15.8}
