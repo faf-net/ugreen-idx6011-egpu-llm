@@ -19,6 +19,7 @@ import diagramme as D  # noqa: E402
 
 GH = "https://github.com/faf-net/ugreen-idx6011-egpu-llm"
 ORDNER = {"de": "lokale-ki", "en": "local-ai"}
+ERSCHIENEN = "2026-11-15"   # Tag, an dem beide Seiten zum ersten Mal auf faf.net standen (für die strukturierten Daten)
 FARBEN = json.load(open(os.path.join(HIER, "workbench-farben.json"), encoding="utf-8"))["farben"]
 HEX2TOK = {}
 for name, w in FARBEN.items():
@@ -409,11 +410,20 @@ def seite(sp):
 
     rumpf = "\n".join(teile)
     titel = T("Lokale KI auf dem NAS", "Local AI on a NAS")
-    beschr = T("UGREEN iDX6011 Pro mit Radeon RX 7900 XTX im OCuLink-Dock: Messwerte zu Tempo, Strom, Wartezeit und Risiken eines lokalen 125B-Modells. Skripte und Rohdaten auf GitHub.",
-               "UGREEN iDX6011 Pro with a Radeon RX 7900 XTX in the OCuLink dock: measurements of speed, power, waiting time and risks of a local 125B model. Scripts and raw data on GitHub.")
+    # Für Suchmaschinen: der Seitentitel nennt die Geräte, nach denen gesucht wird (höchstens 60 Zeichen), die Beschreibung bleibt unter 155 Zeichen.
+    seotitel = T("Lokale KI auf dem NAS: UGREEN iDX6011 Pro mit RX 7900 XTX", "Local AI on a NAS: UGREEN iDX6011 Pro with RX 7900 XTX eGPU")
+    beschr = T("Ein 125B-Sprachmodell auf dem UGREEN iDX6011 Pro mit Radeon RX 7900 XTX im eGPU-Dock. Gemessen: Tempo, Strom, Wartezeit und Risiken. Rohdaten auf GitHub.",
+               "A 125B language model on a UGREEN iDX6011 Pro with a Radeon RX 7900 XTX in an eGPU dock: measured speed, power, waiting time and risks. Raw data on GitHub.")
+    assert len(seotitel) <= 60 and len(beschr) <= 155, (len(seotitel), len(beschr))
     basis = ""
     ordner = ORDNER[sp]
     kanon = f"https://faf.net/{ordner}/"
+    ld = json.dumps({"@context": "https://schema.org", "@type": "TechArticle", "headline": seotitel, "description": beschr, "inLanguage": sp,
+                     "url": kanon, "mainEntityOfPage": kanon, "image": f"{kanon}og-{sp}.png", "datePublished": ERSCHIENEN, "dateModified": time.strftime("%Y-%m-%d"),
+                     "author": {"@type": "Person", "name": "Frank", "url": "https://faf.net/"}, "publisher": {"@type": "Person", "name": "Frank", "url": "https://faf.net/"},
+                     "isPartOf": {"@type": "WebSite", "name": "faf.net", "url": "https://faf.net/"}, "license": "https://opensource.org/license/mit",
+                     "about": ["UGREEN iDX6011 Pro", "Radeon RX 7900 XTX", "eGPU", "OCuLink", "llama.cpp", T("lokales Sprachmodell", "local language model")],
+                     "sameAs": GH}, ensure_ascii=False).replace("</", "<\\/")
     nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("vektor", T("Unzensiert", "Uncensored")), ("strom", T("Strom", "Power")),
            ("versionen", T("Versionen", "Releases")), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
@@ -421,7 +431,7 @@ def seite(sp):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{e(titel)} · faf.net/{ordner}</title>
+<title>{e(seotitel)}</title>
 <meta name="description" content="{e(beschr)}">
 <link rel="canonical" href="{kanon}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -433,6 +443,10 @@ def seite(sp):
 <meta property="og:type" content="article">
 <meta property="og:url" content="{kanon}">
 <meta property="og:image" content="{kanon}og-{sp}.png">
+<meta property="og:site_name" content="faf.net">
+<meta property="og:locale" content="{T('de_DE', 'en_US')}">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{ld}</script>
 <meta name="color-scheme" content="dark light">
 <link rel="preload" href="{basis}fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{basis}idx.css?v={hashlib.sha256(css().encode("utf-8")).hexdigest()[:8]}">
@@ -456,7 +470,7 @@ def seite(sp):
 {rumpf}
 </main>
 <footer>
-  <p><a href="{readme}">github.com/faf-net/ugreen-idx6011-egpu-llm</a> · MIT · {T("Stand", "build")} {time.strftime("%d.%m.%Y" if not en else "%d %b %Y")}{" · " + stand() if stand() else ""} · <a href="{'../../' if en else '../'}">faf.net</a></p>
+  <p><a href="{readme}">github.com/faf-net/ugreen-idx6011-egpu-llm</a> · MIT · {T("Stand", "build")} {time.strftime("%d.%m.%Y" if not en else "%d %b %Y")}{" · " + stand() if stand() else ""} · <a href="../">faf.net</a></p>
   <p class="eof">[ EOF ]</p>
 </footer>
 </body>
