@@ -25,7 +25,7 @@ p{max-width:72ch;margin:0 0 16px}
 section{padding:56px 0 8px;border-top:1px solid var(--linie);margin-top:40px}
 section.auftakt{border-top:0;margin-top:0}
 .nr{color:var(--bernstein)}
-.kacheln{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:12px;margin:32px 0}
+.kacheln{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:32px 0}
 .kachel{background:var(--panel);border:1px solid var(--linie);border-radius:6px;padding:16px}
 .kachel .wert{font:700 34px/1.1 "JetBrains Mono",ui-monospace,Consolas,monospace;color:var(--fett);letter-spacing:-.02em}
 .kachel.haupt .wert{color:var(--bernstein)}
@@ -54,6 +54,8 @@ td.zahl{font:14px/1.6 "JetBrains Mono",ui-monospace,Consolas,monospace;white-spa
 .pille{display:inline-block;font:700 12px/1 "Atkinson Hyperlegible Next",sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:5px 8px 5px 9px;border-radius:0 3px 3px 0;margin-right:8px;vertical-align:2px}
 .pille.rose{background:var(--pille-rose);color:var(--status-rose);border-left:3px solid var(--rose)}
 .pille.gold{background:var(--pille-gold);color:var(--status-gold);border-left:3px solid var(--gold)}
+.band.bernstein{background:var(--dezent-bernstein);border-left:3px solid var(--bernstein);border-radius:0 6px 6px 0;padding:12px 16px;margin:0 0 24px}
+.pille.bernstein{background:var(--pille-bernstein);color:var(--status-bernstein);border-left:3px solid var(--bernstein)}
 .wege{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(264px,1fr));gap:12px;margin:8px 0 24px}
 .wege li{background:var(--panel);border:1px solid var(--linie);border-radius:6px;padding:16px}
 .wege a{font-weight:600;display:block}

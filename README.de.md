@@ -15,14 +15,14 @@ Fotos, Medien und Backups.
 Alle Werte sind auf meiner Maschine gemessen, sofern nicht anders vermerkt. Das Repo enthält **keinen
 Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte und Messprogramme.
 
-**Stand 16.11.2026:** Strata 0.2.14 aus den Release-Paketen, UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modells Kurznamen. `liber` ist Flash-Next 125B in der Quantisierung IQ3_XXS ohne die Ablehnungen, die unzensierte Fassung: dieselben Gewichte, sie beantwortet, was man sie fragt ([docs/steuervektor.de.md](docs/steuervektor.de.md)). Sie ist im täglichen Einsatz, für Chat und Agent. `faber` ist das Original, an dem zuerst gemessen wird und das als Rückfall bereitsteht. `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS und wird nur noch zum Vergleich gemessen.
+**Stand 18.11.2026:** Strata 0.2.14 aus den Release-Paketen, seit dem 18.11. mit [28 Umgebungsschaltern](docs/schalter.de.md), UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modells Kurznamen. `liber` ist Flash-Next 125B in der Quantisierung IQ3_XXS ohne die Ablehnungen, die unzensierte Fassung: dieselben Gewichte, sie beantwortet, was man sie fragt ([docs/steuervektor.de.md](docs/steuervektor.de.md)). Sie ist im täglichen Einsatz, für Chat und Agent. `faber` ist das Original, an dem zuerst gemessen wird und das als Rückfall bereitsteht. `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS und wird nur noch zum Vergleich gemessen.
 
 ## Auf einen Blick
 
 | | |
 |---|---|
 | Schreiben | 63–68 Token/s, bei 248K Token Kontext rund 12 % langsamer |
-| Prompt einlesen | 1.200–1.400 Token/s ab 16K: 23 s für 32K Token, 3,4 min für 250K |
+| Prompt einlesen | 2.300–3.000 Token/s ab 16K mit den [28 Schaltern](docs/schalter.de.md): 11 s für 31K Token, 1,5 min für 250K (ohne Schalter 1.200–1.400 Token/s, 23 s und 3,4 min) |
 | Kontext | 256K, die Nadel wurde bis 250K in 9 von 9 Fällen gefunden |
 | Speicher | 54–58 GiB der 64 GB RAM belegt (unzensierte Fassung und Original), die 24-GB-Karte ist voll |
 | Strom | 1,4–1,5 Wh je 1.000 geschriebene Token (Original und unzensierte Fassung); NAS und Dock ziehen beim Schreiben rund 340 W, im Leerlauf 49 W |

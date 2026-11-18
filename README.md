@@ -14,14 +14,14 @@ dock, using [Strata](https://github.com/Niko1221/Strata) (ROCm/HIP) behind
 Everything here was measured on my machine unless marked otherwise. This repository contains **no Strata code**,
 only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark tools.
 
-**As of 16 Nov 2026:** Strata 0.2.14 from the release packages, UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the three versions of the model go by short names. `liber` is Flash-Next 125B in the IQ3_XXS quantization with the refusals removed, the uncensored version: the same weights, it answers whatever it is asked ([docs/steuervektor.md](docs/steuervektor.md)). It is the one in daily use, for chat and agent. `faber` is the original, which is measured first and kept as the fallback. `velox` is the same model in the smaller and faster IQ2_XS quantization, now measured only for comparison.
+**As of 18 Nov 2026:** Strata 0.2.14 from the release packages, since 18 Nov with [28 environment switches](docs/schalter.md), UGOS Pro 1.21, kernel 6.18.15. In configs, scripts and file names the three versions of the model go by short names. `liber` is Flash-Next 125B in the IQ3_XXS quantization with the refusals removed, the uncensored version: the same weights, it answers whatever it is asked ([docs/steuervektor.md](docs/steuervektor.md)). It is the one in daily use, for chat and agent. `faber` is the original, which is measured first and kept as the fallback. `velox` is the same model in the smaller and faster IQ2_XS quantization, now measured only for comparison.
 
 ## At a glance
 
 | | |
 |---|---|
 | Writing | 63–68 tokens/s, about 12 % slower at 248K tokens of context |
-| Reading a prompt | 1,200–1,400 tokens/s from 16K on: 23 s for 32K tokens, 3.4 min for 250K |
+| Reading a prompt | 2,300–3,000 tokens/s from 16K on with the [28 switches](docs/schalter.md): 11 s for 31K tokens, 1.5 min for 250K (without switches 1,200–1,400 tokens/s, 23 s and 3.4 min) |
 | Context | 256K, the needle was found 9 of 9 times up to 250K |
 | Memory | 54–58 GiB of the 64 GB RAM in use (uncensored version and original), the 24 GB card is full |
 | Power | 1.4–1.5 Wh per 1,000 tokens written (original and uncensored version); NAS and dock draw about 340 W while writing, 49 W idle |

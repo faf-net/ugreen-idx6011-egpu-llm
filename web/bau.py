@@ -161,12 +161,16 @@ def seite(sp):
     readme = GH + ("#readme" if en else "/blob/main/README.de.md")
     doc = lambda name: f"{GH}/blob/main/docs/{name}{'' if en else '.de'}.md"
 
+    sw = D.schalter_werte(DATEN)            # ohne und mit den 28 Schaltern (Kapitel 9)
+    sw58, sw16 = sw["lesen"][-1], sw["lesen"][1]
+    seit = lambda de, en_: A(f'<p class="band bernstein"><span class="pille bernstein">{T("seit 18.11.2026", "since 18 Nov 2026")}</span>{T(de, en_)} <a href="#schalter">{T("Kapitel 9", "Chapter 9")}</a></p>')
     zahlen = [
         (z(s["tps"], sp, 0), T("Token je Sekunde", "tokens per second"), T("Schreiben, 125B-Original", "writing, 125B original"), True),
         ("256K", T("Token Kontext", "tokens of context"), T("Nadel bis 250K in 9 von 9 Fällen gefunden", "needle found 9 of 9 times up to 250K"), False),
         (z(s["wh_je_1000_token_gesamt"], sp), T("Wh je 1.000 Token", "Wh per 1,000 tokens"), T("NAS und Dock, am Original", "NAS and dock, original"), False),
         (z(statistics.median(kalt), sp, 0) + " s", T("Kaltstart", "cold start"), T("leere Karte bis erstes Wort", "empty card to first word"), False),
         (f"{faktor}×", T("schneller als ab Werk", "faster than as shipped"), T("UGREENs eigenes Modell auf der Karte", "UGREEN's own model on the card"), False),
+        (z(sw58[2] / sw58[1], sp, 1) + "×", T("schneller einlesen", "faster prompt reading"), T(f"seit 18.11.2026 mit 28 Schaltern: {z(sw58[2], sp, 0)} statt {z(sw58[1], sp, 0)} Token/s bei 58K", f"since 18 Nov 2026 with 28 switches: {z(sw58[2], sp, 0)} instead of {z(sw58[1], sp, 0)} tokens/s at 58K"), True),
     ]
     kacheln = "".join(f'<div class="kachel{" haupt" if h else ""}"><div class="wert">{w}</div><div class="was">{e(a)}</div><div class="neben">{e(b)}</div></div>' for w, a, b, h in zahlen)
 
@@ -240,8 +244,8 @@ def seite(sp):
     P(T(f"Während das Modell schrieb, kam eine 17,7-GB-Datei mit {z(neben['download']['waehrend_schreiben']['mb_s'], sp, 0)} MB/s vom NAS ({z(neben['download']['ohne_modell']['mb_s'], sp, 0)} MB/s ohne Modell; begrenzt hat beide Male der 5-Gbit/s-Anschluss des Arbeitsplatzes). Die Transkodierung von 4K nach 1080p auf der Arc-iGPU fiel von {z(tr['ohne_modell_bilder_s'][0], sp, 0)} auf {z(min(tr['waehrend_schreiben_bilder_s']), sp, 0)}–{z(max(tr['waehrend_schreiben_bilder_s']), sp, 0)} Bilder je Sekunde, immer noch {round(min(tr['waehrend_schreiben_bilder_s']) / 30)}-mal so schnell wie die Wiedergabe. Das Schreibtempo des Modells blieb unverändert (gemessen am 16.11.2026 auf Strata 0.2.14). Nicht gemessen: SMB und ein Arbeitsplatz mit 10 Gbit/s.",
         f"While the model was writing, a 17.7 GB file came off the NAS at {z(neben['download']['waehrend_schreiben']['mb_s'], sp, 0)} MB/s ({z(neben['download']['ohne_modell']['mb_s'], sp, 0)} MB/s without a model; both times the client's 5 Gbit/s port was the limit). Transcoding 4K to 1080p on the Arc iGPU dropped from {z(tr['ohne_modell_bilder_s'][0], sp, 0)} to {z(min(tr['waehrend_schreiben_bilder_s']), sp, 0)}–{z(max(tr['waehrend_schreiben_bilder_s']), sp, 0)} frames per second, still {round(min(tr['waehrend_schreiben_bilder_s']) / 30)} times as fast as playback. The model's decode speed did not change (measured on 16 Nov 2026 on Strata 0.2.14). Not measured: SMB, and a 10 Gbit/s client."))
     A(bild(D.speicher, sp))
-    P(T("Der Preis ist Arbeitsspeicher: Mit geladenem 125B-Modell bleiben von 62 GiB je nach Fassung 4,5 bis 8 GiB verfügbar. Ein zweiter großer Dienst daneben passt nicht.",
-        "The price is memory: with the 125B model loaded, 4.5 to 8 GiB of the 62 GiB stay available, depending on the version. A second large service does not fit next to it."))
+    P(T("Der Preis ist Arbeitsspeicher: Mit geladenem 125B-Modell bleiben von 62 GiB je nach Fassung 3,8 bis 7,3 GiB verfügbar (gemessen am 18.11.2026 mit den Schaltern aus Kapitel 9). Ein zweiter großer Dienst daneben passt nicht.",
+        "The price is memory: with the 125B model loaded, 3.8 to 7.3 GiB of the 62 GiB stay available, depending on the version (measured on 18 Nov 2026 with the switches from chapter 9). A second large service does not fit next to it."))
     zu()
 
     kapitel(3, "dock", T("Lohnt sich die Karte im Dock?", "Is the card in the dock worth it?"),
@@ -265,6 +269,8 @@ def seite(sp):
     A(bild(D.tiefe, sp))
     P(T("Das Schreibtempo fällt von 1K bis 248K Token Kontext nur von 58 auf 51 Token je Sekunde. Ab 16K liest das Modell über 1.200 Token je Sekunde, über eine PCIe-Anbindung mit nur vier Lanes.",
         "Decode speed drops only from 58 to 51 tokens per second between 1K and 248K tokens of context. From 16K on the model reads more than 1,200 tokens per second, over a PCIe link with only four lanes."))
+    seit(f"Mit den 28 Schaltern liest das Modell einen 16K-Prompt mit {z(sw16[2], sp, 0)} statt {z(sw16[1], sp, 0)} Token je Sekunde und einen 58K-Prompt mit {z(sw58[2], sp, 0)} statt {z(sw58[1], sp, 0)}. Das Schreiben ist rund 10 % schneller. Das Diagramm oben und die Schreibtempi in diesem Kapitel sind ohne die Schalter gemessen.",
+         f"With the 28 switches the model reads a 16K prompt at {z(sw16[2], sp, 0)} instead of {z(sw16[1], sp, 0)} tokens per second and a 58K prompt at {z(sw58[2], sp, 0)} instead of {z(sw58[1], sp, 0)}. Decode is about 10 % faster. The chart above and the decode speeds in this chapter were measured without the switches.")
     P(T(f"Das Schreibtempo hängt vom Text ab, deshalb stehen auf dieser Seite verschiedene Zahlen: Der Entwurfskopf (MTP) schlägt mehrere Token auf einmal vor und trifft bei vorhersehbarem Text öfter. Lange Antworten kommen beim Original mit {z(s['tps'], sp, 0)} Token je Sekunde, bei der unzensierten Fassung im täglichen Einsatz mit {z(liber_tps, sp, 0)}; im Versionstest sind es 72 im Agenten- und 64 im Chat-Teil, bei sehr langem Kontext etwas weniger. Die Zahl im Seitenkopf ist die des Originals für lange Antworten.",
         f"Decode speed depends on the text, which is why this page shows different numbers: the draft head (MTP) proposes several tokens at once and is right more often on predictable text. Long answers come at {z(s['tps'], sp, 0)} tokens per second with the original and at {z(liber_tps, sp, 0)} with the uncensored version in daily use; the release test gives 72 in its agent part and 64 in its chat part, and a very long context a little less. The number in the page header is the original's, for long answers."))
     A(bild(D.betrieb, sp))
@@ -366,6 +372,8 @@ def seite(sp):
               else T(f"Ein geladenes Modell kostet rund {z(mehr, sp, 0)} W mehr als eine leere Karte.", f"A loaded model costs about {z(mehr, sp, 0)} W more than an empty card."))
     P(T(f"Das sind <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh je 1.000 geschriebene Token</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh über Leerlauf). {ruhend} Gemessen ist an der USV, an der nur NAS und Dock hängen; im Leerlauf ziehen beide zusammen {z(strom['leer']['usv_w']['mittel'], sp, 0)} W.",
         f"That is <b>{z(s['wh_je_1000_token_gesamt'], sp)} Wh per 1,000 written tokens</b> ({z(s['wh_je_1000_token_ueber_leerlauf'], sp)} Wh above idle). {ruhend} The measurement is taken at the UPS, which feeds only the NAS and the dock; idle, both together draw {z(strom['leer']['usv_w']['mittel'], sp, 0)} W."))
+    seit("Diese Messung an der USV stammt vom 16.11.2026, ohne die 28 Schalter. Mit ihnen liest das Modell gut doppelt so schnell, und die Karte zog im Tempotest im Mittel 201 statt 207 W. An der USV ist das nicht neu gemessen.",
+         "This measurement at the UPS is from 16 Nov 2026, without the 28 switches. With them the model reads more than twice as fast, and the card drew 201 instead of 207 W on average in the speed test. This has not been measured again at the UPS.")
     zu()
 
     kapitel(8, "versionen", T("Hält es über Versionen?", "Does it hold across releases?"))
@@ -373,6 +381,8 @@ def seite(sp):
     P(T("Jede Strata-Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Konfiguration. Bis 0.2.13 wurde nichts langsamer. <b>0.2.14</b>, getestet am 15. und 16.11.2026 und seit dem 16.11. in Betrieb, liest Prompts von 16K und 32K rund 15 % schneller und schreibt gleich schnell: In drei Läufen im Wechsel mit 0.2.12 lag das Schreibtempo bei 73 gegen 73 Token je Sekunde. Mein Aufgabensatz besteht auf 0.2.14 98 von 102 Aufgaben, auf 0.2.12 waren es 96. <b>0.2.15</b>, geprüft am 16.11., bringt nur ein neues Steuerprogramm, die Engine ist dieselbe; in drei Läufen im Wechsel mit 0.2.14 ist es gleich schnell. Dieses NAS bleibt bei 0.2.14.",
         "Every Strata release since 0.2.0-beta was measured here against the one before it, with the identical configuration. Up to 0.2.13 nothing got slower. <b>0.2.14</b>, tested on 15 and 16 Nov 2026 and in production since 16 Nov, reads prompts of 16K and 32K about 15 % faster and writes equally fast: in three runs alternating with 0.2.12, decode came to 73 against 73 tokens per second. My task set passes 98 of 102 tasks on 0.2.14, against 96 on 0.2.12. <b>0.2.15</b>, tested on 16 Nov, only brings a new control program, the engine is the same; in three runs alternating with 0.2.14 it is equally fast. This NAS stays on 0.2.14.")
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
+    seit("0.2.14 läuft hier mit 28 Schaltern, die das Einlesen gut verdoppeln. Das Diagramm zeigt alle Versionen ohne sie, mit identischer Konfiguration, damit sie vergleichbar bleiben. Jede neue Version wird künftig auch mit den Schaltern und am Arbeitsmodell geprüft.",
+         "0.2.14 runs here with 28 switches that more than double prompt reading. The chart shows every release without them, with the identical configuration, so they stay comparable. From now on every new release is also checked with the switches and on the working model.")
     zu()
 
     kapitel(9, "schalter", T("28 Schalter: dieselbe Engine liest doppelt so schnell", "28 switches: the same engine reads twice as fast"),
@@ -415,8 +425,8 @@ def seite(sp):
          f"{GH}/tree/main/konfig/opencode", T("Beispielkonfiguration", "Example config")),
     ]
     A('<ol class="schritte">' + "".join(f'<li><h3>{e(t_)}</h3><p>{b_}</p><a href="{u}">{e(l_)}</a></li>' for t_, b_, u, l_ in schritte) + "</ol>")
-    P(T("<b>Der Engpass ist der Arbeitsspeicher.</b> Mit geladenem 125B-Modell bleiben auf 64 GB je nach Fassung 4,5 bis 8 GiB frei; das reicht für Chat, Suche und Agent, aber nicht für einen zweiten großen Dienst. Wer mehr Luft braucht, nimmt ein Modell, das ganz auf die Karte passt.",
-        "<b>The bottleneck is memory.</b> With the 125B model loaded, 4.5 to 8 GiB of the 64 GB stay free, depending on the version; that is enough for chat, search and agent, but not for a second large service. If you need more room, pick a model that fits entirely on the card."))
+    P(T("<b>Der Engpass ist der Arbeitsspeicher.</b> Mit geladenem 125B-Modell bleiben auf 64 GB je nach Fassung 3,8 bis 7,3 GiB frei; das reicht für Chat, Suche und Agent, aber nicht für einen zweiten großen Dienst. Wer mehr Luft braucht, nimmt ein Modell, das ganz auf die Karte passt.",
+        "<b>The bottleneck is memory.</b> With the 125B model loaded, 3.8 to 7.3 GiB of the 64 GB stay free, depending on the version; that is enough for chat, search and agent, but not for a second large service. If you need more room, pick a model that fits entirely on the card."))
     P(T("Von unterwegs erreicht man den Aufbau am einfachsten über das VPN des eigenen Routers; ich nutze dafür einen eigenen Zugang mit Anmeldung auf einem kleinen Mietserver. Ins Netz gestellt wird nichts.",
         "From outside, the simplest way in is the VPN of your own router; I use an own gateway with login on a small rented server. Nothing is exposed to the internet.")
       + f' <a href="{doc("comfyui")}">{T("Bilder mit ComfyUI", "Pictures with ComfyUI")}</a> · <a href="{GH}/tree/main/messen">{T("Messskripte und Rohdaten", "Benchmark scripts and raw data")}</a> · <a href="{anker("bauen", "build")}">{T("Strata selbst bauen", "Building Strata yourself")}</a>')
@@ -478,7 +488,7 @@ def seite(sp):
   <p class="vorspann">{T("Chat im Browser, ein Agent und Bilder, gerechnet auf einem UGREEN iDX6011 Pro mit einer Radeon RX 7900 XTX im Dock. Das Sprachmodell hat 125 Milliarden Parameter, das NAS liefert nebenbei weiter Fotos, Medien und Backups, und die Daten bleiben im Haus. Alles hier ist auf meiner Maschine gemessen. Skripte, Konfigurationen und Rohdaten liegen auf", "Chat in the browser, an agent and pictures, computed on a UGREEN iDX6011 Pro with a Radeon RX 7900 XTX in the dock. The language model has 125 billion parameters, the NAS keeps serving photos, media and backups, and the data stays at home. Everything here was measured on my machine. Scripts, configs and raw data are on")} <a href="{readme}">GitHub</a>.</p>
   <figure class="szene"><img src="{basis}bilder/anlage.png?v={stempel("bilder/anlage.png")}" srcset="{basis}bilder/anlage.png?v={stempel("bilder/anlage.png")} 1x, {basis}bilder/anlage@2x.png?v={stempel("bilder/anlage@2x.png")} 2x" width="1032" height="336" alt="{T("Textgrafik: links das NAS mit sechs Einschüben, rechts das Dock mit der Grafikkarte und drei Lüftern, dazwischen das leuchtende OCuLink-Kabel.", "Text graphic: the NAS with six drive bays on the left, the dock with the graphics card and three fans on the right, the glowing OCuLink cable between them.")}"><figcaption><span class="name">{T("Die Anlage", "The setup")}</span><span class="teile">{T("NAS · Kabel · Dock mit Karte", "NAS · cable · dock with card")}</span></figcaption></figure>
   <div class="kacheln">{kacheln}</div>
-  <p class="status"><span class="konsole">[ {T("GEMESSEN", "MEASURED")} ]</span> {T("Stand 16.11.2026 · Strata 0.2.14 · UGOS Pro 1.21.1 · Schätzungen sind als solche bezeichnet", "as of 16 Nov 2026 · Strata 0.2.14 · UGOS Pro 1.21.1 · estimates are marked as such")}</p>
+  <p class="status"><span class="konsole">[ {T("GEMESSEN", "MEASURED")} ]</span> {T("Stand 18.11.2026 · Strata 0.2.14 mit 28 Schaltern · UGOS Pro 1.21.1 · Schätzungen sind als solche bezeichnet", "as of 18 Nov 2026 · Strata 0.2.14 with 28 switches · UGOS Pro 1.21.1 · estimates are marked as such")}</p>
   <p class="status"><span class="konsole">[ {T("PARALLEL", "IN PARALLEL")} ]</span> {T("Fotos, Video, Dateifreigaben und USV-Überwachung von UGOS laufen weiter, auch bei geladenem Modell", "photos, video, file shares and UPS monitoring of UGOS keep running, even with the model loaded")}</p>
 </section>
 {rumpf}
