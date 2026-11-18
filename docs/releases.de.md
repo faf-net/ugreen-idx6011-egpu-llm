@@ -6,6 +6,20 @@ In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modell
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
+## Nachtrag 18.11.2026: 0.2.14 mit 28 Umgebungsschaltern, Prompts doppelt so schnell eingelesen
+
+Keine neue Version, aber eine andere Laufkonfiguration: 28 Umgebungsvariablen aus der Konfiguration des Forks `nicejunjie/Strata-rdna3`, gesetzt auf der unveränderten Engine 0.1.60. `liber` und `faber` laufen seit dem 18.11.2026 damit, `velox` nicht.
+
+| Median, gedrosseltes Kartenprofil | ohne | mit Schaltern |
+|---|---|---|
+| Einlesen 4K / 16K / 58K | 789 / 1.406 / 1.341 | 1.632 / 2.365 / 3.048 tok/s |
+| Schreiben Chat / Agent | 65,6 / 75,8 | 72,5 / 82,4 tok/s |
+| 250.000 Token einlesen, `liber` / `faber` | 201 s / 205 s | 90 s / 87 s |
+| Aufgabensatz, bestanden von 102 (zwei Läufe) | 98 / 97 | 98 / 97 |
+| 90 Minuten Dauerlast | – | 1.232 Anfragen, kein Fehler |
+
+Die Schalter sind nicht dokumentiert. Ab jetzt prüft der Test jeder neuen Version zusätzlich, ob die Engine die 28 Namen noch kennt (`messen/schalter_pruefen.py`), und er prüft `liber` auf der neuen Engine. Messwerte, Grenzen und der Rückweg: [schalter.de.md](schalter.de.md). Rohdaten: `messen/daten/2026-11-18-rdna3-switches/`.
+
 ## Nachtrag 16.11.2026: Strata 0.2.15 ist hier gleich schnell, dieses NAS bleibt bei 0.2.14
 
 Control 0.1.61 mit der Engine 0.1.60 `hip-rx7900`, also derselben Engine wie in 0.2.14; neu ist nur das Steuerprogramm. Gleiche Laufkonfiguration (`konfig/strata-0.2.14/`), NAS-Dienste an, nur mein Agent angehalten.

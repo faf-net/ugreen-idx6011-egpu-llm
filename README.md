@@ -32,7 +32,7 @@ only the build recipe, launch configs, UGOS fixes, helper scripts and benchmark 
 - **Is it worth it?** [Measured](#measured) and [Strata releases on this card](#strata-releases-on-this-card)
 - **How do I rebuild it?** [Run](#run), [Docker image](#full-speed-in-the-docker-image), [What I had to change on UGOS](#what-i-had-to-change-on-ugos), [Build](#build)
 - **What can go wrong?** [Dock and link](#dock-and-link-what-you-need-to-know) and [the biggest open risk](#the-biggest-open-risk-a-dock-dropout-reboots-the-nas)
-- **Going deeper:** [every release in detail](docs/releases.md) · [the dock disturbances and their two weekly clocks](docs/dock.md) · [making the agent invent less](docs/agent.md) · [pictures with ComfyUI](docs/comfyui.md)
+- **Going deeper:** [every release in detail](docs/releases.md) · [the dock disturbances and their two weekly clocks](docs/dock.md) · [making the agent invent less](docs/agent.md) · [pictures with ComfyUI](docs/comfyui.md) · [28 environment switches: reading prompts twice as fast](docs/schalter.md)
 
 ## The combination
 
@@ -232,8 +232,21 @@ drafts, so the effect of int8 K/V is not covered; one text set.
 | `--conversation-cache-mib` | 4608 | parks a session of up to ~120,000 tokens while another request runs (parked in 0.16 s, restored in 0.06 s) |
 | `STRATA_HIPBLASLT_TUNING` | `tools/hip/gfx1100-hipblaslt-100200.txt` | must match the hipBLASLt version, otherwise prompt reading is ~45 % slower |
 | Quantization | IQ3_XXS instead of IQ3_S | 53 instead of 60 GiB RAM; IQ3_S leaves no room for other NAS services |
+| 28 environment switches (`env`) | [`rdna3-schalter.json`](konfig/strata-0.2.14/rdna3-schalter.json) | since 18 Nov 2026: reading 68 to 127 % faster, decode about 10 %, at the same card power and the same score; undocumented, hence a name check per release and a way back ([docs/schalter.md](docs/schalter.md)) |
 
 ![--pool-workers on a hybrid CPU](bilder/pool-workers-en.png)
+
+### 28 environment switches: the same engine reads prompts twice as fast
+
+The fork `nicejunjie/Strata-rdna3` mostly sets environment variables for RDNA3 cards. The stock engine of Strata 0.2.14 knows 28 of them too. Since 18 Nov 2026 the working model and the original run with them here. Steel blue is before, amber is after:
+
+![Reading and decode without and with 28 environment switches](bilder/schalter-en.png)
+
+![Long prompts from 70K to 250K tokens, working model and original](bilder/schalter-lang-en.png)
+
+- A prompt of 250,000 tokens is read in 90 instead of 201 seconds, one of 16K at 2,365 instead of 1,406 tok/s. Decode gets about 10 % faster.
+- My task set scores 98 and 97 of 102 with and without the switches. 90 minutes of continuous load ran without an error (1,232 requests).
+- The switches are undocumented and may vanish with any release. How I check that on every release and how I get back in a minute is in [docs/schalter.md](docs/schalter.md).
 
 ## Strata releases on this card
 
@@ -254,6 +267,7 @@ Every release since 0.2.0-beta was measured here against the one before it, with
 | 0.2.12 | 8 Nov | **in production** until 16 Nov; equal to 0.2.11; the tuned DFlash2 drafter is slower end to end and stays off | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 9 Nov | equal with the tuned config, not adopted; the Linux Docker image no longer uses the gfx1100 table and reads 16K prompts 35 % slower | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
 | 0.2.14 | 15/16 Nov | **in production, current** since 16 Nov; decode equal, prompt reading 16 % faster at 16K and 14 % at 32K in the same session; own task set 98 of 102 (0.2.12: 96); no driver pauses on this card; `standard-v1` sanity 11 of 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
+| 0.2.14 with 28 environment switches | 18 Nov | **in production, current** since 18 Nov; the same engine, 28 environment variables from the rdna3 fork: reading 68 to 127 % faster, decode about 10 %, task set unchanged (98 and 97 of 102), working model and original measured up to 250,000 tokens ([docs/schalter.md](docs/schalter.md)) | – |
 | 0.2.15 | 16 Nov | tested, not adopted; only the control program is new (control 0.1.61), the engine is the same as in 0.2.14; equally fast in three runs alternating with 0.2.14; `standard-v1` sanity 12 of 12; my small task set 34 of 35 (tools 20 of 20, code 14 of 15), one code task that flips between runs | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 
 ## Run
@@ -404,7 +418,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   konfig/strata-0.2.8/          launch configs and llama-swap macro for 0.2.8 (configs unchanged from 0.2.3.1)
   konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
   konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config, and liber.json (the uncensored model)
-  konfig/strata-0.2.14/         launch configs and llama-swap macro for 0.2.14, what runs today (configs unchanged, only engine and control swapped)
+  konfig/strata-0.2.14/         launch configs and llama-swap macro for 0.2.14, what runs today (configs unchanged, only engine and control swapped; since 18 Nov 2026 with the 28 environment switches from rdna3-schalter.json)
   konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
   konfig/stack/                 chat and web search: Compose file for Open WebUI and SearXNG, tested on the NAS (EN/DE)
   konfig/opencode/              OpenCode 2 in the terminal with the local models: example config and what I learned (EN/DE)
@@ -470,6 +484,10 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/daten/2026-11-16-betrieb/  re-measured on Strata 0.2.14: power and speed of the three models, cold start, waiting times, two people, task set
   messen/daten/2026-11-16-cloud-vergleich/  the same task set against Sonnet 5.5 over the API: counts per category, no texts
   messen/daten/2026-11-16-v0.2.15/  raw data of the 0.2.15 test: three strata_bench runs alternating with 0.2.14, standard-v1, pairs (README inside)
+  messen/daten/2026-11-18-rdna3-switches/  28 environment switches: speed, task set, idle, 90 minutes of load, long prompts up to 250K on working model and original, acceptance run after adoption (README inside)
+  messen/daten/2026-11-18-unsloth-ud-iq2xs/  Unsloth UD-IQ2_XS v3.1 against the IQ3_XXS file: perplexity, speed without and with the switches (README inside)
+  messen/schalter.py            write the 28 switches into a run config, remove them (plan B), check
+  messen/schalter_pruefen.py    does an engine still know the 28 names? check for every release, without the card
   messen/daten/2026-11-16-speicher/  memory use of the original and the uncensored version on 0.2.14
   messen/daten/tiefe-20261116.jsonl  speed vs context depth on 0.2.14, with and without the MTP head (October: tiefe-20261017.jsonl)
 ```

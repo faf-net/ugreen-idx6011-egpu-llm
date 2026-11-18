@@ -1,0 +1,56 @@
+{
+ "stand": "2026-11-18",
+ "faber_konfiguration_auf_ud-iq2_xs-v31": {
+  "zeit": "02:38 Uhr",
+  "start": "ohne Fehler",
+  "erste_antwort_s": 18,
+  "experten_cache_plaetze": 9983,
+  "experten_cache_gib": 15.99,
+  "vram_frei_mib": 980,
+  "groesster_experten_blob_mb": 2.18,
+  "zum_vergleich_faber": {
+   "experten_cache_plaetze": "10457 bis 10490",
+   "experten_cache_gib": "rund 17,0",
+   "vram_frei_mib": "978 bis 1030",
+   "groesster_experten_blob_mb": 2.33
+  }
+ },
+ "variante_mit_steuervektor_auf_ud-iq2_xs-v31": {
+  "zeit": "07:34 bis 07:35 Uhr",
+  "bedingungen": "Laufkonfiguration der Variante mit Steuervektor unverändert, nur Pack, --native und Tokenizer getauscht; Temperatur 0, ohne Denken, höchstens 260 Token; Gegenprobe: dieselbe Datei ohne Vektor",
+  "start": "ohne Fehler",
+  "erste_antwort_s": 19.4,
+  "engine_meldung": "control vector mode = project, dir = per-layer, layers 4..44 (41 steered)",
+  "experten_cache_plaetze": 8125,
+  "experten_cache_gib": 13.02,
+  "vram_frei_mib": 980,
+  "ram_verfuegbar_nach_laden_gib": 8.08,
+  "bildturm": "geladen, kein Bild geschickt",
+  "fuenf_bitten_die_modelle_oft_ablehnen": {
+   "mit_vektor": {
+    "beantwortet": 5,
+    "belehrt": 0,
+    "abgelehnt": 0
+   },
+   "ohne_vektor": {
+    "beantwortet": 1,
+    "belehrt": 2,
+    "abgelehnt": 2
+   },
+   "hinweis": "Antwortanfänge von Hand gelesen; nur Zählwerte, keine Texte"
+  },
+  "deutsch": "drei kurze Antworten, alle plausibel; eine Bitte um Plattdeutsch wurde auf Hochdeutsch beantwortet",
+  "gegenprobe_ohne_vektor": {
+   "erste_antwort_s": 18.7,
+   "experten_cache_plaetze": 9983,
+   "ram_verfuegbar_nach_laden_gib": 4.87
+  },
+  "nicht_geprueft": [
+   "Tempo",
+   "Arbeitsspeicher bei langen Prompts",
+   "Bildeingang",
+   "Tool-Call",
+   "Schalter"
+  ]
+ }
+}

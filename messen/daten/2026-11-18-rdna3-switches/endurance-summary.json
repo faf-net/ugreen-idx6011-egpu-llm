@@ -1,0 +1,272 @@
+{
+ "endurance_with_switches": {
+  "start": "2026-11-18 04:14:22",
+  "end": "2026-11-18 05:44:23",
+  "rounds": 176,
+  "requests": 1232,
+  "http_200": 1232,
+  "http_503": 0,
+  "other_errors": 0,
+  "long_prompts": 176,
+  "needles_found": 176,
+  "model_evicted": 0,
+  "engine_log_non_finite_lines": 0,
+  "engine_log_nan_lines": 0,
+  "all_requests": {
+   "long 8000": {
+    "n": 44,
+    "prompt_tokens_min": 3972,
+    "prompt_tokens_max": 7763,
+    "read_tok_s_mean": 1464.5,
+    "wall_s_mean": 6.0,
+    "needles_found": 44
+   },
+   "long 16000": {
+    "n": 44,
+    "prompt_tokens_min": 10840,
+    "prompt_tokens_max": 15570,
+    "read_tok_s_mean": 2355.0,
+    "wall_s_mean": 6.8,
+    "needles_found": 44
+   },
+   "long 32000": {
+    "n": 44,
+    "prompt_tokens_min": 16428,
+    "prompt_tokens_max": 31087,
+    "read_tok_s_mean": 2820.7,
+    "wall_s_mean": 11.1,
+    "needles_found": 44
+   },
+   "long 64000": {
+    "n": 44,
+    "prompt_tokens_min": 30685,
+    "prompt_tokens_max": 58204,
+    "read_tok_s_mean": 3024.6,
+    "wall_s_mean": 19.3,
+    "needles_found": 44
+   },
+   "agent turns": {
+    "n": 1056,
+    "decode_tok_s_mean": 66.1,
+    "read_tok_s_mean": 291.0,
+    "wall_s_mean": 3.3,
+    "completion_tokens_mean": 134.2
+   }
+  },
+  "first_30_min": {
+   "long 8000": {
+    "n": 16,
+    "prompt_tokens_min": 3972,
+    "prompt_tokens_max": 7763,
+    "read_tok_s_mean": 1379.2,
+    "wall_s_mean": 7.1,
+    "needles_found": 16
+   },
+   "long 16000": {
+    "n": 16,
+    "prompt_tokens_min": 10840,
+    "prompt_tokens_max": 15570,
+    "read_tok_s_mean": 2299.4,
+    "wall_s_mean": 6.8,
+    "needles_found": 16
+   },
+   "long 32000": {
+    "n": 15,
+    "prompt_tokens_min": 16428,
+    "prompt_tokens_max": 31087,
+    "read_tok_s_mean": 2782.5,
+    "wall_s_mean": 10.9,
+    "needles_found": 15
+   },
+   "long 64000": {
+    "n": 15,
+    "prompt_tokens_min": 30685,
+    "prompt_tokens_max": 58204,
+    "read_tok_s_mean": 2994.4,
+    "wall_s_mean": 18.9,
+    "needles_found": 15
+   },
+   "agent turns": {
+    "n": 372,
+    "decode_tok_s_mean": 70.7,
+    "read_tok_s_mean": 302.2,
+    "wall_s_mean": 3.1,
+    "completion_tokens_mean": 132.9
+   }
+  },
+  "last_30_min": {
+   "long 8000": {
+    "n": 14,
+    "prompt_tokens_min": 7757,
+    "prompt_tokens_max": 7763,
+    "read_tok_s_mean": 1516.2,
+    "wall_s_mean": 5.3,
+    "needles_found": 14
+   },
+   "long 16000": {
+    "n": 14,
+    "prompt_tokens_min": 15517,
+    "prompt_tokens_max": 15522,
+    "read_tok_s_mean": 2411.2,
+    "wall_s_mean": 6.7,
+    "needles_found": 14
+   },
+   "long 32000": {
+    "n": 15,
+    "prompt_tokens_min": 31035,
+    "prompt_tokens_max": 31043,
+    "read_tok_s_mean": 2853.9,
+    "wall_s_mean": 11.1,
+    "needles_found": 15
+   },
+   "long 64000": {
+    "n": 15,
+    "prompt_tokens_min": 58197,
+    "prompt_tokens_max": 58203,
+    "read_tok_s_mean": 3048.0,
+    "wall_s_mean": 19.4,
+    "needles_found": 15
+   },
+   "agent turns": {
+    "n": 348,
+    "decode_tok_s_mean": 63.6,
+    "read_tok_s_mean": 284.6,
+    "wall_s_mean": 3.4,
+    "completion_tokens_mean": 134.8
+   }
+  },
+  "memory_per_request_one_second_samples": {
+   "long 8000": {
+    "requests_with_samples": 44,
+    "mem_available_min_gib": 2.64,
+    "mem_available_low_gib_mean": 3.06,
+    "mem_available_high_gib_mean": 4.15,
+    "swing_gib_mean": 1.08,
+    "seconds_below_0_5_gib": 0,
+    "seconds_below_0_25_gib": 0,
+    "swap_free_min_gib": 31.3
+   },
+   "long 16000": {
+    "requests_with_samples": 44,
+    "mem_available_min_gib": 2.63,
+    "mem_available_low_gib_mean": 3.06,
+    "mem_available_high_gib_mean": 3.16,
+    "swing_gib_mean": 0.11,
+    "seconds_below_0_5_gib": 0,
+    "seconds_below_0_25_gib": 0,
+    "swap_free_min_gib": 31.8
+   },
+   "long 32000": {
+    "requests_with_samples": 44,
+    "mem_available_min_gib": 2.6,
+    "mem_available_low_gib_mean": 2.86,
+    "mem_available_high_gib_mean": 3.06,
+    "swing_gib_mean": 0.2,
+    "seconds_below_0_5_gib": 0,
+    "seconds_below_0_25_gib": 0,
+    "swap_free_min_gib": 31.8
+   },
+   "long 64000": {
+    "requests_with_samples": 44,
+    "mem_available_min_gib": 2.34,
+    "mem_available_low_gib_mean": 2.67,
+    "mem_available_high_gib_mean": 3.04,
+    "swing_gib_mean": 0.37,
+    "seconds_below_0_5_gib": 0,
+    "seconds_below_0_25_gib": 0,
+    "swap_free_min_gib": 31.8
+   },
+   "agent turns": {
+    "requests_with_samples": 943,
+    "mem_available_min_gib": 2.17,
+    "mem_available_low_gib_mean": 2.98,
+    "mem_available_high_gib_mean": 3.05,
+    "swing_gib_mean": 0.07,
+    "seconds_below_0_5_gib": 0,
+    "seconds_below_0_25_gib": 0,
+    "swap_free_min_gib": 31.7
+   }
+  }
+ },
+ "control_without_switches": {
+  "start": "2026-11-18 05:45:25",
+  "end": "2026-11-18 05:47:49",
+  "requests": 8,
+  "http_200": 8,
+  "note": "long request 1 includes loading the model; use request 2 for memory and time",
+  "long_requests": [
+   {
+    "round": 1,
+    "prompt_tokens": 58199,
+    "wall_s": 65.1,
+    "needle_found": true,
+    "read_tok_s": 1306.4
+   },
+   {
+    "round": 2,
+    "prompt_tokens": 58197,
+    "wall_s": 43.7,
+    "needle_found": true,
+    "read_tok_s": 1340.7
+   }
+  ],
+  "all_requests": {
+   "long 64000": {
+    "n": 2,
+    "prompt_tokens_min": 58197,
+    "prompt_tokens_max": 58199,
+    "read_tok_s_mean": 1323.6,
+    "wall_s_mean": 54.4,
+    "needles_found": 2
+   },
+   "agent turns": {
+    "n": 6,
+    "decode_tok_s_mean": 60.1,
+    "read_tok_s_mean": 194.8,
+    "wall_s_mean": 5.6,
+    "completion_tokens_mean": 205.5
+   }
+  },
+  "memory_per_request_one_second_samples": {
+   "long 64000": {
+    "requests_with_samples": 2,
+    "mem_available_min_gib": 3.54,
+    "mem_available_low_gib_mean": 4.12,
+    "mem_available_high_gib_mean": 26.43,
+    "swing_gib_mean": 22.29,
+    "seconds_below_0_5_gib": 0,
+    "seconds_below_0_25_gib": 0,
+    "swap_free_min_gib": 32.2
+   },
+   "agent turns": {
+    "requests_with_samples": 6,
+    "mem_available_min_gib": 3.31,
+    "mem_available_low_gib_mean": 3.46,
+    "mem_available_high_gib_mean": 3.53,
+    "swing_gib_mean": 0.07,
+    "seconds_below_0_5_gib": 0,
+    "seconds_below_0_25_gib": 0,
+    "swap_free_min_gib": 32.2
+   }
+  }
+ },
+ "debug_run_with_switches": {
+  "start": "2026-11-18 03:32",
+  "end": "2026-11-18 04:10",
+  "requests": 70,
+  "http_200": 70,
+  "note": "same switches plus STRATA_DBG_NAN=1, prompts 8K to 128K; the engine prints one check line per prompt end. The debug switch slows prompt reading to about 240-290 tok/s, so this part is no speed figure.",
+  "check_lines": 70,
+  "non_finite_last_residual_row": 0,
+  "non_finite_ple_history": 0,
+  "non_finite_gdn_state": 0,
+  "max_abs_last_residual_row": 6.1,
+  "max_abs_ple_history": 15.2,
+  "max_abs_gdn_state": 3.8,
+  "needles": "8 found, 2 refused (the model took the question for a password as an injected instruction)",
+  "largest_prompt_tokens": 128496,
+  "mem_available_min_gib_at_largest_prompt": 0.0,
+  "seconds_below_0_25_gib_at_largest_prompt": 78,
+  "swap_used_additionally_gib_about": 0.8
+ }
+}

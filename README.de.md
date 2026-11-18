@@ -33,7 +33,7 @@ Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte 
 - **Lohnt sich das?** [Gemessen](#gemessen) und [Strata-Versionen auf dieser Karte](#strata-versionen-auf-dieser-karte)
 - **Wie baue ich es nach?** [Starten](#starten), [Docker-Image](#volle-geschwindigkeit-im-docker-image), [Was ich an UGOS ändern musste](#was-ich-an-ugos-ändern-musste), [Bauen](#bauen)
 - **Was kann schiefgehen?** [Dock und Anbindung](#dock-und-anbindung-was-man-wissen-muss) und [das größte offene Risiko](#das-größte-offene-risiko-ein-dock-abriss-startet-das-nas-neu)
-- **Zum Vertiefen:** [jede Version im Einzelnen](docs/releases.de.md) · [die Dock-Störungen und ihre zwei Wochenuhren](docs/dock.de.md) · [wie der Agent weniger erfindet](docs/agent.de.md) · [Bilder mit ComfyUI](docs/comfyui.de.md)
+- **Zum Vertiefen:** [jede Version im Einzelnen](docs/releases.de.md) · [die Dock-Störungen und ihre zwei Wochenuhren](docs/dock.de.md) · [wie der Agent weniger erfindet](docs/agent.de.md) · [Bilder mit ComfyUI](docs/comfyui.de.md) · [28 Umgebungsschalter: Prompts doppelt so schnell einlesen](docs/schalter.de.md)
 
 ## Die Kombination
 
@@ -233,8 +233,21 @@ mit FP16-KV ohne MTP-Vorschläge, der Einfluss von int8-KV ist also nicht erfass
 | `--conversation-cache-mib` | 4608 | parkt eine Sitzung bis ~120.000 Token, während eine andere Anfrage läuft (geparkt in 0,16 s, zurück in 0,06 s) |
 | `STRATA_HIPBLASLT_TUNING` | `tools/hip/gfx1100-hipblaslt-100200.txt` | muss zur hipBLASLt-Version passen, sonst ~45 % langsameres Einlesen |
 | Quantisierung | IQ3_XXS statt IQ3_S | 53 statt 60 GiB RAM; IQ3_S lässt neben den übrigen NAS-Diensten keinen Platz |
+| 28 Umgebungsschalter (`env`) | [`rdna3-schalter.json`](konfig/strata-0.2.14/rdna3-schalter.json) | seit 18.11.2026: Einlesen 68 bis 127 % schneller, Schreiben rund 10 %, bei gleicher Leistungsaufnahme und gleicher Punktzahl; nicht dokumentiert, deshalb mit Namensprüfung je Release und Rückweg ([docs/schalter.de.md](docs/schalter.de.md)) |
 
 ![--pool-workers auf einer Hybrid-CPU](bilder/pool-workers-de.png)
+
+### 28 Umgebungsschalter: dieselbe Engine liest Prompts doppelt so schnell
+
+Der Fork `nicejunjie/Strata-rdna3` setzt für RDNA3-Karten vor allem Umgebungsvariablen. 28 davon kennt auch die unveränderte Engine von Strata 0.2.14. Seit dem 18.11.2026 laufen das Arbeitsmodell und das Original hier damit. Stahlblau ist vorher, Bernstein nachher:
+
+![Einlesen und Schreiben ohne und mit 28 Umgebungsschaltern](bilder/schalter-de.png)
+
+![Lange Prompts von 70K bis 250K Token, Arbeitsmodell und Original](bilder/schalter-lang-de.png)
+
+- Ein Prompt von 250.000 Token ist in 90 statt 201 Sekunden eingelesen, einer von 16K mit 2.365 statt 1.406 Token/s. Das Schreiben wird rund 10 % schneller.
+- Mein Aufgabensatz kommt mit und ohne Schalter auf 98 und 97 von 102. 90 Minuten Dauerlast liefen ohne Fehler durch (1.232 Anfragen).
+- Die Schalter sind nicht dokumentiert und können mit jedem Release entfallen. Wie ich das bei jedem Release prüfe und wie ich in einer Minute zurückkomme, steht in [docs/schalter.de.md](docs/schalter.de.md).
 
 ## Strata-Versionen auf dieser Karte
 
@@ -255,6 +268,7 @@ Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit iden
 | 0.2.12 | 08.11. | **in Betrieb** bis 16.11.; gleich wie 0.2.11; der getunte DFlash2-Drafter ist am Ende langsamer und bleibt aus | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 09.11. | mit abgestimmter Konfiguration gleich, nicht übernommen; das Linux-Docker-Image nutzt die gfx1100-Tabelle nicht mehr und liest 16K-Prompts 35 % langsamer | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
 | 0.2.14 | 15./16.11. | **in Betrieb, aktuell** seit 16.11.; Schreiben gleich, Prompt-Einlesen in derselben Sitzung bei 16K 16 % und bei 32K 14 % schneller; eigener Aufgabensatz 98 von 102 (0.2.12: 96); keine Treiberpausen auf dieser Karte; `standard-v1` Plausibilität 11 von 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
+| 0.2.14 mit 28 Umgebungsschaltern | 18.11. | **in Betrieb, aktuell** seit 18.11.; dieselbe Engine, 28 Umgebungsvariablen aus dem rdna3-Fork: Einlesen 68 bis 127 % schneller, Schreiben rund 10 %, Aufgabensatz gleich (98 und 97 von 102), Arbeitsmodell und Original bis 250.000 Token gemessen ([docs/schalter.de.md](docs/schalter.de.md)) | – |
 | 0.2.15 | 16.11. | geprüft, nicht übernommen; neu ist nur das Steuerprogramm (Control 0.1.61), die Engine ist dieselbe wie in 0.2.14; in drei Läufen im Wechsel mit 0.2.14 gleich schnell; `standard-v1` Plausibilität 12 von 12; mein kleiner Aufgabensatz 34 von 35 (Werkzeuge 20 von 20, Code 14 von 15), eine Code-Aufgabe, die zwischen Läufen kippt | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 
 ## Starten
@@ -407,7 +421,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   konfig/strata-0.2.8/          Startkonfigurationen und llama-swap-Makro für 0.2.8 (Konfigurationen wie bei 0.2.3.1)
   konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
   konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration, dazu liber.json (das unzensierte Modell)
-  konfig/strata-0.2.14/         Startkonfigurationen und llama-swap-Makro für 0.2.14, was heute läuft (Konfigurationen unverändert, nur Engine und Control getauscht)
+  konfig/strata-0.2.14/         Startkonfigurationen und llama-swap-Makro für 0.2.14, was heute läuft (Konfigurationen unverändert, nur Engine und Control getauscht; seit 18.11.2026 mit den 28 Umgebungsschaltern aus rdna3-schalter.json)
   konfig/hermes-pruefer/        Plugin für Hermes Agent: prüft jede Antwort mit festen Regeln, ohne Sprachmodell
   konfig/stack/                 Chat und Websuche: Compose-Datei für Open WebUI und SearXNG, auf dem NAS getestet (EN/DE)
   konfig/opencode/              OpenCode 2 im Terminal mit den lokalen Modellen: Beispielkonfiguration und was ich gelernt habe (EN/DE)
@@ -473,6 +487,10 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/daten/2026-11-16-betrieb/  Nachmessung auf Strata 0.2.14: Strom und Tempo der drei Modelle, Kaltstart, Wartezeiten, zwei Personen, Aufgabensatz
   messen/daten/2026-11-16-cloud-vergleich/  derselbe Aufgabensatz gegen Sonnet 5.5 über die API: Zählwerte je Aufgabenart, keine Texte
   messen/daten/2026-11-16-v0.2.15/  Rohdaten des Tests von 0.2.15: drei Läufe strata_bench im Wechsel mit 0.2.14, standard-v1, Paare (README darin)
+  messen/daten/2026-11-18-rdna3-switches/  28 Umgebungsschalter: Tempo, Aufgabensatz, Leerlauf, 90 Minuten Dauerlast, lange Prompts bis 250K auf Arbeitsmodell und Original, Abnahme nach der Übernahme (README darin)
+  messen/daten/2026-11-18-unsloth-ud-iq2xs/  Unsloth UD-IQ2_XS v3.1 gegen die IQ3_XXS-Datei: Perplexität, Tempo ohne und mit Schaltern (README darin)
+  messen/schalter.py            die 28 Schalter in eine Laufkonfiguration eintragen, herausnehmen (Plan B), prüfen
+  messen/schalter_pruefen.py    kennt eine Engine die 28 Namen noch? Prüfung für jedes Release, ohne Karte
   messen/daten/2026-11-16-speicher/  Speicherbelegung von Original und unzensierter Fassung auf 0.2.14
   messen/daten/tiefe-20261116.jsonl  Tempo über die Kontexttiefe auf 0.2.14, mit und ohne MTP-Kopf (Oktober: tiefe-20261017.jsonl)
 ```

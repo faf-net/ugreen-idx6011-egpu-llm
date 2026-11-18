@@ -1208,7 +1208,98 @@ def steuervektor(d, sp):
                                     "The original model answers 11 of 15 tasks that models often refuse, is evasive on 3 and refuses 1; the uncensored one answers all 15. On tasks, German, speed and making things up it stays equal or a little better."), s, h
 
 
-ALLE = (tiefe, mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, cloud_vergleich, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
+SCHALTER_DATEN = "2026-11-18-rdna3-switches"
+
+
+def schalter_werte(d):
+    """Mit und ohne die 28 Umgebungsschalter: Einlesen bei 4K, 16K und 58K, Schreiben in Chat und Agent (gedrosseltes Kartenprofil)."""
+    o = os.path.join(d, SCHALTER_DATEN)
+    t = json.load(open(os.path.join(o, "speed-summary.json"), encoding="utf-8"))["medians"]
+    e = json.load(open(os.path.join(o, "endurance-summary.json"), encoding="utf-8"))
+    ohne, mit = t["baseline / quiet"], t["switches / quiet"]
+    lang_mit = e["endurance_with_switches"]["last_30_min"]["long 64000"]["read_tok_s_mean"]
+    lang_ohne = e["control_without_switches"]["long_requests"][1]["read_tok_s"]     # Anfrage 2: Modell schon geladen
+    return {"lesen": [("4K", ohne["prompt_4k_tok_s"], mit["prompt_4k_tok_s"]), ("16K", ohne["prompt_16k_tok_s"], mit["prompt_16k_tok_s"]), ("58K", lang_ohne, lang_mit)],
+            "schreiben": [("chat", ohne["chat_decode_tok_s"], mit["chat_decode_tok_s"]), ("agent", ohne["agent_decode_tok_s"], mit["agent_decode_tok_s"])]}
+
+
+def schalter(d, sp, modell="faber"):
+    """Dieselbe Engine ohne und mit den 28 Umgebungsschaltern aus dem rdna3-Fork: Stahl ist vorher, Bernstein nachher."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    w = schalter_werte(d)
+    s = Svg()
+    faktor = w["lesen"][-1][2] / w["lesen"][-1][1]
+    titel = T(f"28 Umgebungsschalter: lange Prompts werden bis {z(faktor, sp, 1)}-mal so schnell gelesen",
+              f"28 environment switches: long prompts are read up to {z(faktor, sp, 1)} times as fast")
+    kopf(s, T("Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.14, unveränderte Engine · 17./18.11.2026",
+              "Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.14, stock engine · 17/18 Nov 2026"), titel)
+    felder = ((L, 560, w["lesen"], 3200, 800, 56, T("A · Prompt einlesen · Token/s", "A · Prompt reading · tokens/s"),
+               T("nach Prompt-Länge · höher ist schneller", "by prompt length · higher is faster"),
+               {"4K": T("4K-Prompt", "4K prompt"), "16K": T("16K-Prompt", "16K prompt"), "58K": T("58K-Prompt", "58K prompt")}),
+              (640, R, w["schreiben"], 100, 20, 44, T("B · Schreiben · Token/s", "B · Decode · tokens/s"),
+               T("Median aus 3 Läufen · höher ist schneller", "median of 3 runs · higher is faster"),
+               {"chat": "Chat", "agent": T("Agent", "agent")}))
+    for x0, x1, gruppen, vmax, schritt, breite, was, hilfe, namen in felder:
+        feld(s, x0, 104, was, hilfe)
+        p = Hoch(s, x0, x1, 144, 384, vmax)
+        p.achse(schritt, sp)
+        for g, (schl, ohne, mit) in enumerate(gruppen):
+            gm = x0 + (g + 0.5) * (x1 - x0) / len(gruppen)
+            p.balken(gm - breite / 2 - 4, breite, ohne, STAHL, z(ohne, sp))
+            p.balken(gm + breite / 2 + 4, breite, mit, ACC, z(mit, sp), True, True)
+            s.text(gm, 404, namen[schl], 12, INK, "sans", "middle", 600)
+            s.text(gm, 420, f"+{z((mit / ohne - 1) * 100, sp, 0)} %", 9.5, ACC, "mono", "middle", 600)
+    s.text(L + 24, 172, T("Einlesen 68 bis 127 % schneller, Schreiben rund 10 %.", "Reading 68 to 127 % faster, decode about 10 %."), 15, INK, "serif", kursiv=True)
+    h = fuss(s, 444, (("balken", STAHL, T("Strata 0.2.14 wie ausgeliefert", "Strata 0.2.14 as shipped")),
+                      ("balken", ACC, T("dieselbe Engine mit 28 Umgebungsschaltern", "the same engine with 28 environment switches"))),
+             T("4K, 16K, Chat, Agent: tools/strata_bench.py, Median aus 3 Läufen im Wechsel, gedrosseltes Kartenprofil · 58K: derselbe Prompt mit 58.199 Token, mit Schaltern Mittel aus 15 Anfragen der letzten halben Stunde eines 90-Minuten-Laufs, ohne Schalter eine Anfrage direkt danach · gleiche Punktzahl im Aufgabensatz (98 und 97 von 102 in beiden Varianten), gleiche Leistungsaufnahme · die Schalter sind nicht dokumentiert und können mit jedem Release entfallen · Daten: messen/daten/2026-11-18-rdna3-switches/",
+               "4K, 16K, chat, agent: tools/strata_bench.py, median of 3 interleaved runs, capped card profile · 58K: the same 58,199-token prompt, with switches the mean of 15 requests in the last half hour of a 90-minute run, without switches one request right after it · same score on the task set (98 and 97 of 102 in both variants), same card power · the switches are undocumented and may vanish with any release · data: messen/daten/2026-11-18-rdna3-switches/"))
+    l = {k: (o, m) for k, o, m in w["lesen"]}
+    return "schalter", titel, T(f"Einlesetempo ohne und mit 28 Umgebungsschaltern: bei 4K {z(l['4K'][0], sp)} gegen {z(l['4K'][1], sp)} Token je Sekunde, bei 16K {z(l['16K'][0], sp)} gegen {z(l['16K'][1], sp)}, bei 58K {z(l['58K'][0], sp)} gegen {z(l['58K'][1], sp)}; das Schreibtempo steigt um rund zehn Prozent.",
+                                f"Prompt reading speed without and with 28 environment switches: at 4K {z(l['4K'][0], sp)} against {z(l['4K'][1], sp)} tokens per second, at 16K {z(l['16K'][0], sp)} against {z(l['16K'][1], sp)}, at 58K {z(l['58K'][0], sp)} against {z(l['58K'][1], sp)}; decode speed rises by about ten per cent."), s, h
+
+
+def schalter_lang(d, sp):
+    """Lange Prompts (70K bis 250K) ohne und mit den 28 Schaltern, Variante mit Steuervektor und Originalmodell."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    rows = json.load(open(os.path.join(d, SCHALTER_DATEN, "memory-summary.json"), encoding="utf-8"))["rows"]
+    w = {(r["model"], r["variant"], r["target_tokens"]): r for r in rows}
+    m = lambda werte: sum(werte) / len(werte)
+    stufen = sorted({r["target_tokens"] for r in rows})
+    gross = stufen[-1]
+    s_ohne, s_mit = m(w[("cvec", "baseline", gross)]["seconds"]), m(w[("cvec", "switches", gross)]["seconds"])
+    ram = min(min(r["min_available_gib"]) for r in rows if r["variant"] == "switches")
+    s = Svg()
+    titel = T(f"{z(gross / 1000, sp, 0)}K Token: {z(s_ohne, sp, 0)} Sekunden werden zu {z(s_mit, sp, 0)}, mit und ohne Steuervektor",
+              f"{z(gross / 1000, sp, 0)}K tokens: {z(s_ohne, sp, 0)} seconds become {z(s_mit, sp, 0)}, with and without control vector")
+    kopf(s, T("Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.14, unveränderte Engine · 18.11.2026",
+              "Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.14, stock engine · 18 Nov 2026"), titel)
+    felder = ((L, 472, "cvec", T("A · Variante mit Steuervektor · Token/s", "A · Variant with control vector · tokens/s"),
+               T("das Arbeitsmodell · Prompt einlesen", "the working model · prompt reading")),
+              (536, R, "plain", T("B · Originalmodell · Token/s", "B · Original model · tokens/s"),
+               T("Bezugsgröße und Rückfall · Prompt einlesen", "reference and fallback · prompt reading")))
+    for x0, x1, modell, was, hilfe in felder:
+        feld(s, x0, 104, was, hilfe)
+        p = Hoch(s, x0, x1, 144, 384, 3200)
+        p.achse(800, sp)
+        for g, st in enumerate(stufen):
+            gm = x0 + (g + 0.5) * (x1 - x0) / len(stufen)
+            o, mi = w[(modell, "baseline", st)], w[(modell, "switches", st)]
+            p.balken(gm - 19, 32, m(o["read_tps"]), STAHL, z(m(o["read_tps"]), sp, 0))
+            p.balken(gm + 19, 32, m(mi["read_tps"]), ACC, z(m(mi["read_tps"]), sp, 0), True, True)
+            s.text(gm, 404, f"{z(st / 1000, sp, 0)}K", 12, INK, "sans", "middle", 600)
+            s.text(gm, 420, f"{z(m(o['seconds']), sp, 0)} → {z(m(mi['seconds']), sp, 0)} s", 9.5, ACC, "mono", "middle", 600)
+    h = fuss(s, 444, (("balken", STAHL, T("Strata 0.2.14 wie ausgeliefert", "Strata 0.2.14 as shipped")),
+                      ("balken", ACC, T("dieselbe Engine mit 28 Umgebungsschaltern", "the same engine with 28 environment switches"))),
+             T(f"je Balken das Mittel aus 2 Anfragen auf frisch geladener Engine, gedrosseltes Kartenprofil · unter jeder Gruppe die Dauer der ganzen Anfrage ohne und mit Schaltern · alle 32 Anfragen fanden die im Prompt versteckte Zahl · kleinster verfügbarer Arbeitsspeicher des NAS mit Schaltern: {z(ram, sp, 2)} GiB von 62 · kein Dauerlauf mit der Steuervektor-Variante · Daten: messen/daten/2026-11-18-rdna3-switches/memory-summary.json",
+               f"each bar is the mean of 2 requests on a freshly loaded engine, capped card profile · below each group the duration of the whole request without and with switches · all 32 requests found the number hidden in the prompt · lowest available memory of the NAS with switches: {z(ram, sp, 2)} GiB of 62 · no endurance run with the control-vector variant · data: messen/daten/2026-11-18-rdna3-switches/memory-summary.json"))
+    return "schalter-lang", titel, T(f"Einlesetempo langer Prompts von 70.000 bis 250.000 Token ohne und mit 28 Umgebungsschaltern, für die Variante mit Steuervektor und das Originalmodell: in beiden gut doppelt so schnell, 250.000 Token dauern {z(s_mit, sp, 0)} statt {z(s_ohne, sp, 0)} Sekunden.",
+                                     f"Reading speed for long prompts from 70,000 to 250,000 tokens without and with 28 environment switches, for the variant with control vector and the original model: a good twice as fast in both, 250,000 tokens take {z(s_mit, sp, 0)} instead of {z(s_ohne, sp, 0)} seconds."), s, h
+
+
+ALLE = (schalter, schalter_lang, tiefe,mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, cloud_vergleich, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
 
 
 def main():

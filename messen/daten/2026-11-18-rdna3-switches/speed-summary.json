@@ -1,0 +1,65 @@
+{
+ "note": "median over the runs of each variant and card profile",
+ "medians": {
+  "baseline / quiet": {
+   "runs": 3,
+   "undisturbed": 3,
+   "prompt_16k_tok_s": 1405.6,
+   "prompt_4k_tok_s": 789.1,
+   "chat_decode_tok_s": 65.6,
+   "agent_decode_tok_s": 75.8,
+   "card_watt_mean": 207,
+   "card_watt_p90": 274
+  },
+  "baseline / max": {
+   "runs": 3,
+   "undisturbed": 3,
+   "prompt_16k_tok_s": 1396.1,
+   "prompt_4k_tok_s": 797.1,
+   "chat_decode_tok_s": 66.7,
+   "agent_decode_tok_s": 79.8,
+   "card_watt_mean": 225,
+   "card_watt_p90": 299
+  },
+  "switches / quiet": {
+   "runs": 3,
+   "undisturbed": 3,
+   "prompt_16k_tok_s": 2365.0,
+   "prompt_4k_tok_s": 1632.4,
+   "chat_decode_tok_s": 72.5,
+   "agent_decode_tok_s": 82.4,
+   "card_watt_mean": 201,
+   "card_watt_p90": 281
+  },
+  "switches / max": {
+   "runs": 3,
+   "undisturbed": 3,
+   "prompt_16k_tok_s": 2372.5,
+   "prompt_4k_tok_s": 1650.9,
+   "chat_decode_tok_s": 74.4,
+   "agent_decode_tok_s": 86.0,
+   "card_watt_mean": 235,
+   "card_watt_p90": 289
+  },
+  "switches+args / quiet": {
+   "runs": 3,
+   "undisturbed": 3,
+   "prompt_16k_tok_s": 2378.9,
+   "prompt_4k_tok_s": 1642.7,
+   "chat_decode_tok_s": 72.2,
+   "agent_decode_tok_s": 85.1,
+   "card_watt_mean": 209,
+   "card_watt_p90": 271
+  },
+  "switches+args / max": {
+   "runs": 3,
+   "undisturbed": 3,
+   "prompt_16k_tok_s": 2382.4,
+   "prompt_4k_tok_s": 1658.8,
+   "chat_decode_tok_s": 74.6,
+   "agent_decode_tok_s": 88.8,
+   "card_watt_mean": 233,
+   "card_watt_p90": 298
+  }
+ }
+}

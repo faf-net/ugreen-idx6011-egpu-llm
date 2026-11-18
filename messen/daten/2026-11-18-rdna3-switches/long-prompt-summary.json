@@ -1,0 +1,387 @@
+{
+ "requests": 32,
+ "http_200": 32,
+ "notes_found": 32,
+ "disturbed": 0,
+ "guard_rule_fired": 0,
+ "non_finite_or_503_lines_in_engine_logs": 0,
+ "card_profile": "quiet",
+ "per_variant_and_size": {
+  "plain/baseline": {
+   "70000": {
+    "prompt_tokens": [
+     69992,
+     69990
+    ],
+    "prompt_tok_s": [
+     1338.9,
+     1336.9
+    ],
+    "wall_s": [
+     52.6,
+     52.8
+    ],
+    "mem_available_min_gib_per_second_log": [
+     3.81,
+     3.43
+    ],
+    "mem_available_after_load_min_gib": 4.45,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "100000": {
+    "prompt_tokens": [
+     99983,
+     99979
+    ],
+    "prompt_tok_s": [
+     1303.2,
+     1317.6
+    ],
+    "wall_s": [
+     77.0,
+     76.1
+    ],
+    "mem_available_min_gib_per_second_log": [
+     3.52,
+     3.48
+    ],
+    "mem_available_after_load_min_gib": 4.46,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "128000": {
+    "prompt_tokens": [
+     127971,
+     127969
+    ],
+    "prompt_tok_s": [
+     1318.0,
+     1318.7
+    ],
+    "wall_s": [
+     97.4,
+     97.3
+    ],
+    "mem_available_min_gib_per_second_log": [
+     3.55,
+     3.23
+    ],
+    "mem_available_after_load_min_gib": 4.43,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "250000": {
+    "prompt_tokens": [
+     249976,
+     249980
+    ],
+    "prompt_tok_s": [
+     1225.0,
+     1222.0
+    ],
+    "wall_s": [
+     204.5,
+     205.0
+    ],
+    "mem_available_min_gib_per_second_log": [
+     3.53,
+     3.51
+    ],
+    "mem_available_after_load_min_gib": 4.48,
+    "swap_free_drop_gib": [
+     0.12,
+     0.0
+    ]
+   }
+  },
+  "plain/switches": {
+   "70000": {
+    "prompt_tokens": [
+     69990,
+     69990
+    ],
+    "prompt_tok_s": [
+     2678.5,
+     2856.3
+    ],
+    "wall_s": [
+     26.5,
+     24.7
+    ],
+    "mem_available_min_gib_per_second_log": [
+     3.52,
+     3.23
+    ],
+    "mem_available_after_load_min_gib": 3.74,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "100000": {
+    "prompt_tokens": [
+     99979,
+     99982
+    ],
+    "prompt_tok_s": [
+     2870.1,
+     2911.6
+    ],
+    "wall_s": [
+     35.2,
+     34.6
+    ],
+    "mem_available_min_gib_per_second_log": [
+     3.57,
+     3.51
+    ],
+    "mem_available_after_load_min_gib": 3.86,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "128000": {
+    "prompt_tokens": [
+     127968,
+     127968
+    ],
+    "prompt_tok_s": [
+     3002.7,
+     3035.6
+    ],
+    "wall_s": [
+     43.9,
+     42.5
+    ],
+    "mem_available_min_gib_per_second_log": [
+     3.51,
+     3.06
+    ],
+    "mem_available_after_load_min_gib": 3.83,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "250000": {
+    "prompt_tokens": [
+     249975,
+     249977
+    ],
+    "prompt_tok_s": [
+     2852.4,
+     2940.7
+    ],
+    "wall_s": [
+     88.0,
+     85.4
+    ],
+    "mem_available_min_gib_per_second_log": [
+     3.18,
+     3.49
+    ],
+    "mem_available_after_load_min_gib": 3.79,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "cvec/baseline": {
+   "70000": {
+    "prompt_tokens": [
+     69993,
+     69990
+    ],
+    "prompt_tok_s": [
+     1326.4,
+     1349.0
+    ],
+    "wall_s": [
+     53.1,
+     52.1
+    ],
+    "mem_available_min_gib_per_second_log": [
+     7.12,
+     6.6
+    ],
+    "mem_available_after_load_min_gib": 7.58,
+    "swap_free_drop_gib": [
+     0.0,
+     0.01
+    ]
+   },
+   "100000": {
+    "prompt_tokens": [
+     99980,
+     99979
+    ],
+    "prompt_tok_s": [
+     1307.1,
+     1320.0
+    ],
+    "wall_s": [
+     76.9,
+     76.0
+    ],
+    "mem_available_min_gib_per_second_log": [
+     7.07,
+     5.99
+    ],
+    "mem_available_after_load_min_gib": 7.92,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "128000": {
+    "prompt_tokens": [
+     127968,
+     127965
+    ],
+    "prompt_tok_s": [
+     1321.3,
+     1326.0
+    ],
+    "wall_s": [
+     97.2,
+     96.8
+    ],
+    "mem_available_min_gib_per_second_log": [
+     6.93,
+     5.47
+    ],
+    "mem_available_after_load_min_gib": 7.95,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "250000": {
+    "prompt_tokens": [
+     249977,
+     249973
+    ],
+    "prompt_tok_s": [
+     1252.8,
+     1244.4
+    ],
+    "wall_s": [
+     200.0,
+     201.2
+    ],
+    "mem_available_min_gib_per_second_log": [
+     6.85,
+     3.72
+    ],
+    "mem_available_after_load_min_gib": 7.95,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "cvec/switches": {
+   "70000": {
+    "prompt_tokens": [
+     69993,
+     69990
+    ],
+    "prompt_tok_s": [
+     2699.1,
+     2806.4
+    ],
+    "wall_s": [
+     26.2,
+     25.2
+    ],
+    "mem_available_min_gib_per_second_log": [
+     6.7,
+     6.34
+    ],
+    "mem_available_after_load_min_gib": 7.22,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "100000": {
+    "prompt_tokens": [
+     99982,
+     99982
+    ],
+    "prompt_tok_s": [
+     2762.0,
+     2815.8
+    ],
+    "wall_s": [
+     36.6,
+     35.7
+    ],
+    "mem_available_min_gib_per_second_log": [
+     6.54,
+     5.64
+    ],
+    "mem_available_after_load_min_gib": 7.33,
+    "swap_free_drop_gib": [
+     0.0,
+     0.0
+    ]
+   },
+   "128000": {
+    "prompt_tokens": [
+     127970,
+     127968
+    ],
+    "prompt_tok_s": [
+     2861.8,
+     2944.4
+    ],
+    "wall_s": [
+     45.2,
+     43.8
+    ],
+    "mem_available_min_gib_per_second_log": [
+     6.62,
+     5.25
+    ],
+    "mem_available_after_load_min_gib": 7.35,
+    "swap_free_drop_gib": [
+     0.0,
+     0.01
+    ]
+   },
+   "250000": {
+    "prompt_tokens": [
+     249979,
+     249976
+    ],
+    "prompt_tok_s": [
+     2815.4,
+     2777.2
+    ],
+    "wall_s": [
+     89.2,
+     90.3
+    ],
+    "mem_available_min_gib_per_second_log": [
+     6.27,
+     3.34
+    ],
+    "mem_available_after_load_min_gib": 7.35,
+    "swap_free_drop_gib": [
+     0.0,
+     0.29
+    ]
+   }
+  }
+ }
+}

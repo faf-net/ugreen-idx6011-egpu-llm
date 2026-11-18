@@ -1,0 +1,248 @@
+{
+ "stand": "2026-11-18",
+ "werkzeug": "tools/quant_quality.py run/compare --segments",
+ "bedingungen": "Experten auf der CPU, FP16-K/V, Textsatz data/quant_quality/v1, 5 x 999 Positionen, Strata 0.2.14",
+ "dateien": {
+  "faber": "ISTA Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS",
+  "ud-iq2_xs-v31": "unsloth/Qwen3.8-Flash-Next-GGUF, UD-IQ2_XS, Repo-Stand f5d175d, Quants vom 2026-11-04",
+  "velox": "IQ2_XS"
+ },
+ "vergleiche": [
+  {
+   "vergleich": "faber gegen faber vom Vorabend (Gegenprobe)",
+   "abschnitte": [
+    {
+     "abschnitt": "code",
+     "positionen": 999,
+     "gleiches_token_pct": 100.0,
+     "kl": 0.0,
+     "kl_p99": null,
+     "perplexitaet": 2.091,
+     "perplexitaet_referenz": 2.091
+    },
+    {
+     "abschnitt": "docs",
+     "positionen": 999,
+     "gleiches_token_pct": 100.0,
+     "kl": 0.0,
+     "kl_p99": null,
+     "perplexitaet": 10.297,
+     "perplexitaet_referenz": 10.297
+    },
+    {
+     "abschnitt": "english",
+     "positionen": 999,
+     "gleiches_token_pct": 100.0,
+     "kl": 0.0,
+     "kl_p99": null,
+     "perplexitaet": 4.299,
+     "perplexitaet_referenz": 4.299
+    },
+    {
+     "abschnitt": "multilingual",
+     "positionen": 999,
+     "gleiches_token_pct": 100.0,
+     "kl": 0.0,
+     "kl_p99": null,
+     "perplexitaet": 2.71,
+     "perplexitaet_referenz": 2.71
+    },
+    {
+     "abschnitt": "agent",
+     "positionen": 999,
+     "gleiches_token_pct": 100.0,
+     "kl": 0.0,
+     "kl_p99": null,
+     "perplexitaet": 4.927,
+     "perplexitaet_referenz": 4.927
+    },
+    {
+     "abschnitt": "all",
+     "positionen": 4995,
+     "gleiches_token_pct": 100.0,
+     "kl": 0.0,
+     "kl_p99": 0.0,
+     "perplexitaet": 4.153,
+     "perplexitaet_referenz": 4.153
+    }
+   ]
+  },
+  {
+   "vergleich": "faber (Referenz) gegen UD-IQ2_XS v3.1",
+   "abschnitte": [
+    {
+     "abschnitt": "code",
+     "positionen": 999,
+     "gleiches_token_pct": 91.39,
+     "kl": 0.12512,
+     "kl_p99": null,
+     "perplexitaet": 1.959,
+     "perplexitaet_referenz": 2.091
+    },
+    {
+     "abschnitt": "docs",
+     "positionen": 999,
+     "gleiches_token_pct": 74.87,
+     "kl": 0.23153,
+     "kl_p99": null,
+     "perplexitaet": 9.211,
+     "perplexitaet_referenz": 10.297
+    },
+    {
+     "abschnitt": "english",
+     "positionen": 999,
+     "gleiches_token_pct": 82.18,
+     "kl": 0.14219,
+     "kl_p99": null,
+     "perplexitaet": 4.259,
+     "perplexitaet_referenz": 4.299
+    },
+    {
+     "abschnitt": "multilingual",
+     "positionen": 999,
+     "gleiches_token_pct": 91.09,
+     "kl": 0.0794,
+     "kl_p99": null,
+     "perplexitaet": 2.686,
+     "perplexitaet_referenz": 2.71
+    },
+    {
+     "abschnitt": "agent",
+     "positionen": 999,
+     "gleiches_token_pct": 81.68,
+     "kl": 0.4742,
+     "kl_p99": null,
+     "perplexitaet": 4.119,
+     "perplexitaet_referenz": 4.927
+    },
+    {
+     "abschnitt": "all",
+     "positionen": 4995,
+     "gleiches_token_pct": 84.24,
+     "kl": 0.21049,
+     "kl_p99": 2.726,
+     "perplexitaet": 3.854,
+     "perplexitaet_referenz": 4.153
+    }
+   ]
+  },
+  {
+   "vergleich": "UD-IQ3_XXS v3.1 (Referenz) gegen UD-IQ2_XS v3.1",
+   "abschnitte": [
+    {
+     "abschnitt": "code",
+     "positionen": 999,
+     "gleiches_token_pct": 94.19,
+     "kl": 0.0796,
+     "kl_p99": null,
+     "perplexitaet": 1.959,
+     "perplexitaet_referenz": 1.993
+    },
+    {
+     "abschnitt": "docs",
+     "positionen": 999,
+     "gleiches_token_pct": 79.48,
+     "kl": 0.1535,
+     "kl_p99": null,
+     "perplexitaet": 9.211,
+     "perplexitaet_referenz": 9.668
+    },
+    {
+     "abschnitt": "english",
+     "positionen": 999,
+     "gleiches_token_pct": 85.79,
+     "kl": 0.0984,
+     "kl_p99": null,
+     "perplexitaet": 4.259,
+     "perplexitaet_referenz": 4.126
+    },
+    {
+     "abschnitt": "multilingual",
+     "positionen": 999,
+     "gleiches_token_pct": 93.29,
+     "kl": 0.0557,
+     "kl_p99": null,
+     "perplexitaet": 2.686,
+     "perplexitaet_referenz": 2.68
+    },
+    {
+     "abschnitt": "agent",
+     "positionen": 999,
+     "gleiches_token_pct": 85.99,
+     "kl": 0.28679,
+     "kl_p99": null,
+     "perplexitaet": 4.119,
+     "perplexitaet_referenz": 4.392
+    },
+    {
+     "abschnitt": "all",
+     "positionen": 4995,
+     "gleiches_token_pct": 87.75,
+     "kl": 0.1348,
+     "kl_p99": 1.7443,
+     "perplexitaet": 3.854,
+     "perplexitaet_referenz": 3.929
+    }
+   ]
+  },
+  {
+   "vergleich": "faber (Referenz) gegen velox, 14.11.2026",
+   "abschnitte": [
+    {
+     "abschnitt": "code",
+     "positionen": 999,
+     "gleiches_token_pct": 91.29,
+     "kl": 0.17535,
+     "kl_p99": null,
+     "perplexitaet": 2.08,
+     "perplexitaet_referenz": 2.091
+    },
+    {
+     "abschnitt": "docs",
+     "positionen": 999,
+     "gleiches_token_pct": 72.67,
+     "kl": 0.29315,
+     "kl_p99": null,
+     "perplexitaet": 10.606,
+     "perplexitaet_referenz": 10.297
+    },
+    {
+     "abschnitt": "english",
+     "positionen": 999,
+     "gleiches_token_pct": 77.88,
+     "kl": 0.21454,
+     "kl_p99": null,
+     "perplexitaet": 4.623,
+     "perplexitaet_referenz": 4.299
+    },
+    {
+     "abschnitt": "multilingual",
+     "positionen": 999,
+     "gleiches_token_pct": 88.99,
+     "kl": 0.09548,
+     "kl_p99": null,
+     "perplexitaet": 2.781,
+     "perplexitaet_referenz": 2.71
+    },
+    {
+     "abschnitt": "agent",
+     "positionen": 999,
+     "gleiches_token_pct": 80.48,
+     "kl": 0.46998,
+     "kl_p99": null,
+     "perplexitaet": 6.516,
+     "perplexitaet_referenz": 4.927
+    },
+    {
+     "abschnitt": "all",
+     "positionen": 4995,
+     "gleiches_token_pct": 82.26,
+     "kl": 0.2497,
+     "kl_p99": 2.9768,
+     "perplexitaet": 4.502,
+     "perplexitaet_referenz": 4.153
+    }
+   ]
+  }
+ ]
+}

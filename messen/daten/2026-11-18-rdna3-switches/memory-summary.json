@@ -1,0 +1,425 @@
+{
+ "note": "two runs per cell, quiet card profile, fresh engine per size; min_available_gib is the lowest MemAvailable of the NAS in the per-second log during the request",
+ "models": {
+  "plain": "Flash-Next IQ3_XXS native pack",
+  "cvec": "the same pack with a control vector and image input"
+ },
+ "rows": [
+  {
+   "model": "plain",
+   "variant": "baseline",
+   "target_tokens": 70000,
+   "prompt_tokens": [
+    69992,
+    69990
+   ],
+   "read_tps": [
+    1338.9,
+    1336.9
+   ],
+   "seconds": [
+    52.6,
+    52.8
+   ],
+   "min_available_gib": [
+    3.81,
+    3.43
+   ],
+   "available_after_load_gib": 4.45,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "plain",
+   "variant": "baseline",
+   "target_tokens": 100000,
+   "prompt_tokens": [
+    99983,
+    99979
+   ],
+   "read_tps": [
+    1303.2,
+    1317.6
+   ],
+   "seconds": [
+    77.0,
+    76.1
+   ],
+   "min_available_gib": [
+    3.52,
+    3.48
+   ],
+   "available_after_load_gib": 4.46,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "plain",
+   "variant": "baseline",
+   "target_tokens": 128000,
+   "prompt_tokens": [
+    127971,
+    127969
+   ],
+   "read_tps": [
+    1318.0,
+    1318.7
+   ],
+   "seconds": [
+    97.4,
+    97.3
+   ],
+   "min_available_gib": [
+    3.55,
+    3.23
+   ],
+   "available_after_load_gib": 4.43,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "plain",
+   "variant": "baseline",
+   "target_tokens": 250000,
+   "prompt_tokens": [
+    249976,
+    249980
+   ],
+   "read_tps": [
+    1225.0,
+    1222.0
+   ],
+   "seconds": [
+    204.5,
+    205.0
+   ],
+   "min_available_gib": [
+    3.53,
+    3.51
+   ],
+   "available_after_load_gib": 4.48,
+   "swap_free_drop_gib": [
+    0.12,
+    0.0
+   ]
+  },
+  {
+   "model": "plain",
+   "variant": "switches",
+   "target_tokens": 70000,
+   "prompt_tokens": [
+    69990,
+    69990
+   ],
+   "read_tps": [
+    2678.5,
+    2856.3
+   ],
+   "seconds": [
+    26.5,
+    24.7
+   ],
+   "min_available_gib": [
+    3.52,
+    3.23
+   ],
+   "available_after_load_gib": 3.74,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "plain",
+   "variant": "switches",
+   "target_tokens": 100000,
+   "prompt_tokens": [
+    99979,
+    99982
+   ],
+   "read_tps": [
+    2870.1,
+    2911.6
+   ],
+   "seconds": [
+    35.2,
+    34.6
+   ],
+   "min_available_gib": [
+    3.57,
+    3.51
+   ],
+   "available_after_load_gib": 3.86,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "plain",
+   "variant": "switches",
+   "target_tokens": 128000,
+   "prompt_tokens": [
+    127968,
+    127968
+   ],
+   "read_tps": [
+    3002.7,
+    3035.6
+   ],
+   "seconds": [
+    43.9,
+    42.5
+   ],
+   "min_available_gib": [
+    3.51,
+    3.06
+   ],
+   "available_after_load_gib": 3.83,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "plain",
+   "variant": "switches",
+   "target_tokens": 250000,
+   "prompt_tokens": [
+    249975,
+    249977
+   ],
+   "read_tps": [
+    2852.4,
+    2940.7
+   ],
+   "seconds": [
+    88.0,
+    85.4
+   ],
+   "min_available_gib": [
+    3.18,
+    3.49
+   ],
+   "available_after_load_gib": 3.79,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "cvec",
+   "variant": "baseline",
+   "target_tokens": 70000,
+   "prompt_tokens": [
+    69993,
+    69990
+   ],
+   "read_tps": [
+    1326.4,
+    1349.0
+   ],
+   "seconds": [
+    53.1,
+    52.1
+   ],
+   "min_available_gib": [
+    7.12,
+    6.6
+   ],
+   "available_after_load_gib": 7.58,
+   "swap_free_drop_gib": [
+    0.0,
+    0.01
+   ]
+  },
+  {
+   "model": "cvec",
+   "variant": "baseline",
+   "target_tokens": 100000,
+   "prompt_tokens": [
+    99980,
+    99979
+   ],
+   "read_tps": [
+    1307.1,
+    1320.0
+   ],
+   "seconds": [
+    76.9,
+    76.0
+   ],
+   "min_available_gib": [
+    7.07,
+    5.99
+   ],
+   "available_after_load_gib": 7.92,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "cvec",
+   "variant": "baseline",
+   "target_tokens": 128000,
+   "prompt_tokens": [
+    127968,
+    127965
+   ],
+   "read_tps": [
+    1321.3,
+    1326.0
+   ],
+   "seconds": [
+    97.2,
+    96.8
+   ],
+   "min_available_gib": [
+    6.93,
+    5.47
+   ],
+   "available_after_load_gib": 7.95,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "cvec",
+   "variant": "baseline",
+   "target_tokens": 250000,
+   "prompt_tokens": [
+    249977,
+    249973
+   ],
+   "read_tps": [
+    1252.8,
+    1244.4
+   ],
+   "seconds": [
+    200.0,
+    201.2
+   ],
+   "min_available_gib": [
+    6.85,
+    3.72
+   ],
+   "available_after_load_gib": 7.95,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "cvec",
+   "variant": "switches",
+   "target_tokens": 70000,
+   "prompt_tokens": [
+    69993,
+    69990
+   ],
+   "read_tps": [
+    2699.1,
+    2806.4
+   ],
+   "seconds": [
+    26.2,
+    25.2
+   ],
+   "min_available_gib": [
+    6.7,
+    6.34
+   ],
+   "available_after_load_gib": 7.22,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "cvec",
+   "variant": "switches",
+   "target_tokens": 100000,
+   "prompt_tokens": [
+    99982,
+    99982
+   ],
+   "read_tps": [
+    2762.0,
+    2815.8
+   ],
+   "seconds": [
+    36.6,
+    35.7
+   ],
+   "min_available_gib": [
+    6.54,
+    5.64
+   ],
+   "available_after_load_gib": 7.33,
+   "swap_free_drop_gib": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "model": "cvec",
+   "variant": "switches",
+   "target_tokens": 128000,
+   "prompt_tokens": [
+    127970,
+    127968
+   ],
+   "read_tps": [
+    2861.8,
+    2944.4
+   ],
+   "seconds": [
+    45.2,
+    43.8
+   ],
+   "min_available_gib": [
+    6.62,
+    5.25
+   ],
+   "available_after_load_gib": 7.35,
+   "swap_free_drop_gib": [
+    0.0,
+    0.01
+   ]
+  },
+  {
+   "model": "cvec",
+   "variant": "switches",
+   "target_tokens": 250000,
+   "prompt_tokens": [
+    249979,
+    249976
+   ],
+   "read_tps": [
+    2815.4,
+    2777.2
+   ],
+   "seconds": [
+    89.2,
+    90.3
+   ],
+   "min_available_gib": [
+    6.27,
+    3.34
+   ],
+   "available_after_load_gib": 7.35,
+   "swap_free_drop_gib": [
+    0.0,
+    0.29
+   ]
+  }
+ ]
+}

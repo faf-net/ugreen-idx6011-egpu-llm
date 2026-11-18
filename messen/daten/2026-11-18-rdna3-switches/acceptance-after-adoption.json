@@ -1,0 +1,168 @@
+{
+ "note": "acceptance run on 18 Nov 2026 right after the 28 switches went into the production run configs; one run per cell, freshly loaded engine, prompts within one model share a prefix, so part of a longer prompt can come from the cache of the shorter one before it; the first prompt after loading (4K) includes warm-up and is slower than in tools/strata_bench.py; decode is one 700-token answer including thinking, not comparable with the strata_bench figures",
+ "models": {
+  "plain": "Flash-Next IQ3_XXS native pack",
+  "cvec": "the same pack with a control vector and image input"
+ },
+ "runs": [
+  {
+   "model": "cvec",
+   "card_profile": "quiet",
+   "switches_in_run_config": 28,
+   "load_and_first_answer_s": 20.5,
+   "short_answer_ok": true,
+   "tool_call_ok": true,
+   "reading": {
+    "4K": {
+     "prompt_tokens": 4164,
+     "seconds": 7.7,
+     "read_tps": 676.7,
+     "hidden_number_found": true,
+     "min_available_gib": 7.28
+    },
+    "16K": {
+     "prompt_tokens": 16127,
+     "seconds": 9.3,
+     "read_tps": 2286.6,
+     "hidden_number_found": true,
+     "min_available_gib": 7.19
+    },
+    "58K": {
+     "prompt_tokens": 58062,
+     "seconds": 22.0,
+     "read_tps": 2907.7,
+     "hidden_number_found": true,
+     "min_available_gib": 6.97
+    },
+    "128K": {
+     "prompt_tokens": 127127,
+     "seconds": 34.8,
+     "read_tps": 2903.7,
+     "hidden_number_found": true,
+     "min_available_gib": 6.41
+    }
+   },
+   "decode_700_tokens_tps": 58.0,
+   "error_lines_in_engine_log": 0,
+   "available_after_load_gib": 7.28,
+   "control_vector_layers_in_log": 41,
+   "image_colour_named": true
+  },
+  {
+   "model": "plain",
+   "card_profile": "quiet",
+   "switches_in_run_config": 28,
+   "load_and_first_answer_s": 21.6,
+   "short_answer_ok": true,
+   "tool_call_ok": true,
+   "reading": {
+    "4K": {
+     "prompt_tokens": 4164,
+     "seconds": 6.6,
+     "read_tps": 784.4,
+     "hidden_number_found": true,
+     "min_available_gib": 3.81
+    },
+    "16K": {
+     "prompt_tokens": 16127,
+     "seconds": 8.3,
+     "read_tps": 2409.4,
+     "hidden_number_found": true,
+     "min_available_gib": 3.72
+    },
+    "58K": {
+     "prompt_tokens": 58059,
+     "seconds": 20.4,
+     "read_tps": 3028.6,
+     "hidden_number_found": true,
+     "min_available_gib": 3.51
+    }
+   },
+   "decode_700_tokens_tps": 64.2,
+   "error_lines_in_engine_log": 0,
+   "available_after_load_gib": 3.91
+  },
+  {
+   "model": "cvec",
+   "card_profile": "max",
+   "switches_in_run_config": 28,
+   "load_and_first_answer_s": 19.8,
+   "short_answer_ok": true,
+   "tool_call_ok": true,
+   "reading": {
+    "4K": {
+     "prompt_tokens": 4164,
+     "seconds": 7.4,
+     "read_tps": 684.2,
+     "hidden_number_found": true,
+     "min_available_gib": 7.26
+    },
+    "16K": {
+     "prompt_tokens": 16128,
+     "seconds": 8.4,
+     "read_tps": 2209.1,
+     "hidden_number_found": true,
+     "min_available_gib": 7.17
+    },
+    "58K": {
+     "prompt_tokens": 58062,
+     "seconds": 23.2,
+     "read_tps": 2876.6,
+     "hidden_number_found": true,
+     "min_available_gib": 6.97
+    }
+   },
+   "decode_700_tokens_tps": 56.3,
+   "error_lines_in_engine_log": 0,
+   "available_after_load_gib": 7.38,
+   "control_vector_layers_in_log": 41,
+   "image_colour_named": true
+  },
+  {
+   "model": "plain",
+   "card_profile": "max",
+   "switches_in_run_config": 28,
+   "load_and_first_answer_s": 23.8,
+   "short_answer_ok": true,
+   "tool_call_ok": true,
+   "reading": {
+    "4K": {
+     "prompt_tokens": 4164,
+     "seconds": 6.5,
+     "read_tps": 798.4,
+     "hidden_number_found": true,
+     "min_available_gib": 3.93
+    },
+    "16K": {
+     "prompt_tokens": 16130,
+     "seconds": 8.9,
+     "read_tps": 2325.2,
+     "hidden_number_found": true,
+     "min_available_gib": 3.82
+    },
+    "58K": {
+     "prompt_tokens": 58062,
+     "seconds": 21.2,
+     "read_tps": 3004.6,
+     "hidden_number_found": true,
+     "min_available_gib": 3.65
+    }
+   },
+   "decode_700_tokens_tps": 63.6,
+   "error_lines_in_engine_log": 0,
+   "available_after_load_gib": 3.9
+  }
+ ],
+ "requests_models_often_refuse": {
+  "cvec": {
+   "requests": 5,
+   "answered_with_evasive_phrase": 0,
+   "empty": 0
+  },
+  "plain": {
+   "requests": 5,
+   "answered_with_evasive_phrase": 3,
+   "empty": 0
+  }
+ }
+}

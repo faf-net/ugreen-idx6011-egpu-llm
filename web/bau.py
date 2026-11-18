@@ -375,7 +375,21 @@ def seite(sp):
       + f' <a href="{doc("releases")}">{T("Jede Version im Einzelnen", "Every release in detail")}</a>')
     zu()
 
-    kapitel(9, "nachbauen", T("Nachbauen in sechs Schritten", "Rebuild it in six steps"),
+    kapitel(9, "schalter", T("28 Schalter: dieselbe Engine liest doppelt so schnell", "28 switches: the same engine reads twice as fast"),
+            T("Seit dem 18.11.2026 läuft Strata 0.2.14 hier mit 28 Umgebungsvariablen, die das Einlesen langer Prompts gut verdoppeln. Die Engine ist dieselbe, es ändert sich nur die Laufkonfiguration.",
+              "Since 18 Nov 2026 Strata 0.2.14 runs here with 28 environment variables that more than double the reading of long prompts. The engine is the same; only the run config changes."))
+    A(bild(D.schalter, sp))
+    P(T("Der Fork <code>nicejunjie/Strata-rdna3</code> stimmt Strata auf Karten wie die RX 7900 XTX ab, vor allem über Umgebungsvariablen. 28 davon kennt auch die unveränderte Engine aus dem Release-Paket. Ich habe sie am 17. und 18.11.2026 gemessen, ohne den Fork zu bauen. <b>Stahlblau ist Strata wie ausgeliefert, Bernstein dieselbe Engine mit den Schaltern.</b> Das Einlesen wird je nach Länge 68 bis 127 % schneller, das Schreiben rund 10 %. Die Karte zieht dabei nicht mehr Strom, und mein Aufgabensatz kommt in beiden Varianten auf 98 und 97 von 102.",
+        "The fork <code>nicejunjie/Strata-rdna3</code> tunes Strata for cards like the RX 7900 XTX, mostly through environment variables. The stock engine from the release package knows 28 of them too. I measured them on 17 and 18 Nov 2026 without building the fork. <b>Steel blue is Strata as shipped, amber is the same engine with the switches.</b> Reading gets 68 to 127 % faster depending on length, decode about 10 %. The card draws no more power for it, and my task set scores 98 and 97 of 102 in both variants."))
+    A(bild(D.schalter_lang, sp))
+    P(T("Mein Agent arbeitet mit der Variante mit Steuervektor, deshalb sind beide Modelle gemessen. <b>250.000 Token sind in anderthalb Minuten eingelesen statt in gut drei.</b> Alle 32 langen Anfragen fanden die im Prompt versteckte Zahl. Der verfügbare Arbeitsspeicher des NAS fiel dabei nie unter 3 GiB. Davor lief das Original 90 Minuten unter Dauerlast mit den Schaltern, 1.232 Anfragen ohne einen Fehler.",
+        "My agent works with the variant with control vector, so both models are measured. <b>250,000 tokens are read in a minute and a half instead of well over three.</b> All 32 long requests found the number hidden in the prompt. Available memory of the NAS never fell below 3 GiB. Before that, the original ran under continuous load with the switches for 90 minutes, 1,232 requests without a single error."))
+    P(T("<b>Der Haken:</b> Strata dokumentiert diese Variablen nicht. Ein Release kann sie streichen oder ändern, und die Engine ignoriert einen unbekannten Namen stillschweigend. Deshalb prüft mein Test jeder neuen Version jetzt zusätzlich, ob die Engine alle 28 Namen noch kennt, und er prüft das Arbeitsmodell auf der neuen Engine. Der Rückweg ist ein Befehl: Er nimmt genau diese 28 Zeilen wieder aus der Laufkonfiguration. Nicht gemessen sind ein Dauerlauf mit dem Arbeitsmodell und die Frage, welche der 28 Schalter den Gewinn tragen.",
+        "<b>The catch:</b> Strata does not document these variables. A release may drop or change them, and the engine silently ignores an unknown name. So my test of every new release now also checks whether the engine still knows all 28 names, and it checks the working model on the new engine. The way back is one command: it takes exactly these 28 lines out of the run config again. Not measured are an endurance run with the working model and which of the 28 switches carry the gain.")
+      + f' <a href="{doc("schalter")}">{T("Messwerte, Grenzen, Nachverfolgung und Rückweg im Einzelnen", "Figures, limits, tracking and the way back in detail")}</a>')
+    zu()
+
+    kapitel(10, "nachbauen", T("Nachbauen in sechs Schritten", "Rebuild it in six steps"),
             T("Der Grundaufbau braucht nur das NAS, das Dock und die Karte und läuft ganz im Heimnetz. Wer nur den Chat will, hört nach Schritt 3 auf.",
               "The basic setup needs only the NAS, the dock and the card, and runs entirely in the home network. If you only want the chat, stop after step 3."))
     anker = (lambda de_, en_: f"{GH}{'#' + en_ if en else '/blob/main/README.de.md#' + de_}")
@@ -425,7 +439,7 @@ def seite(sp):
                      "about": ["UGREEN iDX6011 Pro", "Radeon RX 7900 XTX", "eGPU", "OCuLink", "llama.cpp", T("lokales Sprachmodell", "local language model")],
                      "sameAs": GH}, ensure_ascii=False).replace("</", "<\\/")
     nav = [("anlage", T("Aufbau", "Setup")), ("nas", "NAS"), ("dock", T("Dock", "Dock")), ("modell", T("Modell", "Model")), ("agent", "Agent"), ("vektor", T("Unzensiert", "Uncensored")), ("strom", T("Strom", "Power")),
-           ("versionen", T("Versionen", "Releases")), ("nachbauen", T("Nachbauen", "Rebuild"))]
+           ("versionen", T("Versionen", "Releases")), ("schalter", T("Schalter", "Switches")), ("nachbauen", T("Nachbauen", "Rebuild"))]
     return f'''<!DOCTYPE html>
 <html lang="{sp}">
 <head>

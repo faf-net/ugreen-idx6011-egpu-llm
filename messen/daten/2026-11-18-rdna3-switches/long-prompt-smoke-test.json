@@ -1,0 +1,104 @@
+[
+ {
+  "variant": "cvec/baseline",
+  "loads": true,
+  "load_time_s": 19.7,
+  "control_vector_layers_in_log": 41,
+  "image_encoder_loaded_in_log": true,
+  "image_request": {
+   "status": 200,
+   "prompt_tokens_reported": 36,
+   "colour_named_correctly": true
+  },
+  "tool_call": {
+   "status": 200,
+   "calls": 1,
+   "name_correct": true,
+   "argument_correct": true
+  },
+  "short_answer": {
+   "output_tokens": 93,
+   "decode_tok_s": 45.1
+  },
+  "prompt_reading": {
+   "4000": {
+    "prompt_tokens": [
+     3909,
+     3902,
+     3910
+    ],
+    "tok_s": [
+     669.7,
+     722.4,
+     723.2
+    ],
+    "tok_s_median": 722.4
+   },
+   "16000": {
+    "prompt_tokens": [
+     15923,
+     15899,
+     15922
+    ],
+    "tok_s": [
+     1306.3,
+     1329.8,
+     1350.6
+    ],
+    "tok_s_median": 1329.8
+   }
+  },
+  "error_lines_in_engine_log": 0
+ },
+ {
+  "variant": "cvec/switches",
+  "loads": true,
+  "load_time_s": 24.6,
+  "control_vector_layers_in_log": 41,
+  "image_encoder_loaded_in_log": true,
+  "image_request": {
+   "status": 200,
+   "prompt_tokens_reported": 36,
+   "colour_named_correctly": true
+  },
+  "tool_call": {
+   "status": 200,
+   "calls": 1,
+   "name_correct": true,
+   "argument_correct": true
+  },
+  "short_answer": {
+   "output_tokens": 93,
+   "decode_tok_s": 46.4
+  },
+  "prompt_reading": {
+   "4000": {
+    "prompt_tokens": [
+     3909,
+     3902,
+     3910
+    ],
+    "tok_s": [
+     809.6,
+     829.5,
+     881.6
+    ],
+    "tok_s_median": 829.5
+   },
+   "16000": {
+    "prompt_tokens": [
+     15923,
+     15899,
+     15922
+    ],
+    "tok_s": [
+     1847.7,
+     2032.5,
+     2070.3
+    ],
+    "tok_s_median": 2032.5
+   }
+  },
+  "error_lines_in_engine_log": 0
+ }
+]

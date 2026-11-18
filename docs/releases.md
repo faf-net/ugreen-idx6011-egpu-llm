@@ -6,6 +6,20 @@ In configs, scripts and file names the three versions of the model go by short n
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
 
+## Follow-up 18 Nov 2026: 0.2.14 with 28 environment switches, prompts read twice as fast
+
+Not a new release but a different run config: 28 environment variables from the config of the fork `nicejunjie/Strata-rdna3`, set on the stock 0.1.60 engine. `liber` and `faber` have run with them since 18 Nov 2026, `velox` does not.
+
+| Median, capped card profile | without | with switches |
+|---|---|---|
+| reading 4K / 16K / 58K | 789 / 1,406 / 1,341 | 1,632 / 2,365 / 3,048 tok/s |
+| decode chat / agent | 65.6 / 75.8 | 72.5 / 82.4 tok/s |
+| reading 250,000 tokens, `liber` / `faber` | 201 s / 205 s | 90 s / 87 s |
+| task set, passed of 102 (two runs) | 98 / 97 | 98 / 97 |
+| 90 minutes of continuous load | – | 1,232 requests, no error |
+
+The switches are undocumented. From now on the test of every new release also checks whether the engine still knows the 28 names (`messen/schalter_pruefen.py`), and it checks `liber` on the new engine. Figures, limits and the way back: [schalter.md](schalter.md). Raw data: `messen/daten/2026-11-18-rdna3-switches/`.
+
 ## Follow-up 16 Nov 2026: Strata 0.2.15 is equally fast here, this NAS stays on 0.2.14
 
 Control 0.1.61 with engine 0.1.60 `hip-rx7900`, the same engine as in 0.2.14; only the control program is new. Same run config (`konfig/strata-0.2.14/`), NAS services on, only my agent stopped.

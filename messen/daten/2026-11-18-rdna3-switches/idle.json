@@ -1,0 +1,29 @@
+{
+ "note": "card sensors once per second, quiet card profile; model loaded, no request",
+ "states": {
+  "no model loaded": {
+   "samples": 20,
+   "watt_mean": 17.4,
+   "watt_max": 21.0,
+   "gpu_busy_pct_mean": 0.0,
+   "gpu_busy_pct_max": 0,
+   "core_clock_mhz_mean": 0.0
+  },
+  "baseline, loaded and idle": {
+   "samples": 60,
+   "watt_mean": 16.0,
+   "watt_max": 22.0,
+   "gpu_busy_pct_mean": 0.1,
+   "gpu_busy_pct_max": 2,
+   "core_clock_mhz_mean": 0.7
+  },
+  "switches, loaded and idle": {
+   "samples": 60,
+   "watt_mean": 16.2,
+   "watt_max": 21.0,
+   "gpu_busy_pct_mean": 0.1,
+   "gpu_busy_pct_max": 1,
+   "core_clock_mhz_mean": 0.9
+  }
+ }
+}
