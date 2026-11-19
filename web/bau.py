@@ -80,7 +80,7 @@ def terminal_strom(strom, sp):
         n, nk = round(w / 600 * 28), round(k / 600 * 28)
         balken = f'<span class="a">{"█" * nk}</span><span class="s">{"█" * (n - nk)}</span><span class="r">{"░" * (28 - n)}</span>'
         tps = strom[ph].get("tps")
-        tempo = f'{z(tps, sp, 0 if tps >= 100 else 1)} {"tokens/s" if en else "Token/s"}' if tps else ""
+        tempo = (("about 70 tokens/s" if en else "rund 70 Token/s") if ph == "schreiben" else f'{z(tps, sp, 0)} {"tokens/s" if en else "Token/s"}') if tps else ""   # Schreiben als runde Zahl (Frank, 19.11.2026); gemessen sind hier 68,3
         zeilen.append(f'{namen[ph][1 if en else 0]:<11}{z(w, sp, 0) + " W":>7}  {z(k, sp, 0) + " W":>7}   {balken}   {tempo}')
     s = strom["schreiben"]
     zeilen.append(f'<b>→ {z(s["wh_je_1000_token_gesamt"], sp)} Wh {"per 1,000 written tokens" if en else "je 1.000 geschriebene Token"}</b> '
@@ -219,7 +219,7 @@ def seite(sp):
         (T("Chat im Browser", "Chat in the browser"), "Open WebUI",
          T("Wie ein Chat-Dienst aus der Cloud, nur kommen die Antworten von der eigenen Karte: ein Konto je Person, Verlauf, Dateien hochladen, Websuche über ein eigenes SearXNG.",
            "Like a chat service from the cloud, except that the answers come from your own card: one account per person, history, file upload, web search through an own SearXNG."),
-         T(f"erstes Wort nach einer Pause: <b>{z(statistics.median(kalt), sp, 0)} s</b> · danach {z(s['tps'], sp, 0)} Token/s", f"first word after a break: <b>{z(statistics.median(kalt), sp, 0)} s</b> · then {z(s['tps'], sp, 0)} tokens/s")),
+         T(f"erstes Wort nach einer Pause: <b>{z(statistics.median(kalt), sp, 0)} s</b> · danach rund 70 Token/s", f"first word after a break: <b>{z(statistics.median(kalt), sp, 0)} s</b> · then about 70 tokens/s")),
         ("Agent", "Hermes Agent",
          T("Ein Agent, den man im Browser oder über den Messenger erreicht, der eigene Werkzeuge bedient und Aufgaben nach Zeitplan erledigt, mit bis zu 256K Token Kontext. Regeln im Systemprompt und ein kleiner Prüfer halten ihn vom Erfinden ab.",
            "An agent you reach in the browser or through a messenger, that uses its own tools and runs tasks on a schedule, with up to 256K tokens of context. Rules in the system prompt and a small checker keep it from making things up."),
@@ -239,7 +239,7 @@ def seite(sp):
         (T("Eigene Programme", "Your own programs"), T("API im OpenAI-Format", "API in the OpenAI format"),
          T("Jedes Programm, das einen Cloud-Dienst im OpenAI-Format ansprechen kann, lässt sich auf die Adresse im Heimnetz umstellen: Skripte, Editor-Erweiterungen, Automationen. Ein Konto bei einem Anbieter ist nicht nötig.",
            "Any program that can talk to a cloud service in the OpenAI format can be pointed at the address in the home network instead: scripts, editor extensions, automations. No account with a provider is needed."),
-         T(f"<b>{z(s['tps'], sp, 0)} Token/s</b> · eine Adresse, das Modell wählt der Aufruf", f"<b>{z(s['tps'], sp, 0)} tokens/s</b> · one address, the call picks the model")),
+         T("<b>rund 70 Token/s</b> · eine Adresse, das Modell wählt der Aufruf", "<b>about 70 tokens/s</b> · one address, the call picks the model")),
     ]
     A('<div class="anwendungen">' + "".join(f'<div class="anwendung"><span class="dach">{e(a)}</span><h3>{e(b)}</h3><p>{c}</p><div class="mess">{m}</div></div>' for a, b, c, m in karten) + "</div>")
     P(T("Drei Dinge verlassen dabei das Haus: die Suchanfragen der Websuche, die Adressen der Seiten, die der Agent liest, und die Nachrichten, die über den Messenger-Dienst zum Agenten laufen (bei Signal Ende-zu-Ende-verschlüsselt; bei Telegram und Discord kann der Dienst mitlesen). Die Suchanfragen gehen über ein VPN hinaus: Die Suchmaschinen sehen die Adresse des VPN-Anbieters, nicht den eigenen Anschluss. Die Seiten ruft ein Webleser ab, Crawl4AI auf einem kleinen Mietserver; die Zielseiten sehen dessen Adresse, nicht den eigenen Anschluss. Alles andere, auch jedes hochgeladene Dokument, bleibt auf den eigenen Geräten.",

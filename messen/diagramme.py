@@ -1171,7 +1171,7 @@ def parallel(d, sp):
     GUT, OFFEN = TON["salbei"][2], TON["gold"][2]
     bahnen = [
         (T("Karte im Dock", "Card in the dock"), "RX 7900 XTX · 24 GB", ACC, [
-            (T("Sprachmodell", "Language model"), f"{z(st['tps'], sp)} {T('Token/s', 'tokens/s')}", T("gemessen", "measured"), GUT, True),
+            (T("Sprachmodell", "Language model"), T("rund 70 Token/s", "about 70 tokens/s"), T("gemessen", "measured"), GUT, True),
             (T("Bildmodelle", "Picture models"), T("8–66 s je Bild, im Wechsel", "8–66 s per picture, in turn"), T("gemessen", "measured"), GUT, False)]),
         (T("Eingebaute iGPU", "Built-in iGPU"), "Intel Arc", STAHL, [
             (T("Video: Transkodierung", "Video: transcoding"), f"{z(min(tr['waehrend_schreiben_bilder_s']), sp, 0)}–{z(max(tr['waehrend_schreiben_bilder_s']), sp, 0)} {T('Bilder/s', 'frames/s')} ({T('ohne Last', 'idle')} {z(tr['ohne_modell_bilder_s'][0], sp, 0)})", T("gemessen", "measured"), GUT, False),
