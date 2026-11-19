@@ -16,7 +16,7 @@ derselbe 16K-Prompt mit und ohne Schalter (schalter.py pruefen, strata_bench.py)
 import json, os, sys
 
 HIER = os.path.dirname(os.path.abspath(__file__))
-LISTE = os.path.join(os.path.dirname(HIER), "konfig", "strata-0.2.14", "rdna3-schalter.json")
+LISTE = os.path.join(os.path.dirname(HIER), "konfig", "strata-0.2.14", "prompt-schalter.json")
 
 
 def namen_in(ordner, namen):

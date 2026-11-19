@@ -18,7 +18,7 @@ I checked whether the Unsloth quants in version 3.1 (since 4 Nov 2026) would be 
 | reading a 16K prompt with 28 switches, quiet (tok/s) | 2,361.3 | 2,106.2 | −10.8 % |
 
 - On the yardstick the Unsloth file is better than mine in all five sections.
-- Speed is mixed: faster in chat, a little slower in the agent test, and it reads long prompts about 10 % slower. That disadvantage remains with the switches from the rdna3 measurement; they lift both files by about two thirds.
+- Speed is mixed: faster in chat, a little slower in the agent test, and it reads long prompts about 10 % slower. That disadvantage remains with the switches from the switch measurement of 17/18 Nov 2026; they lift both files by about two thirds.
 - Memory and power draw are the same.
 - The variant with control vector loads on the Unsloth file, and the vector takes effect (five requests that models often refuse: 5 answered instead of 1).
 

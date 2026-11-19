@@ -1,7 +1,7 @@
 {
  "stand": "2026-11-18, 07:36 bis 08:03 Uhr",
  "bedingungen": "strata_bench ohne --long, 3 Runden in wechselnder Reihenfolge, je Ladung ein Lauf im Modus leise und einer in max, Agent im Hintergrund blieb an, jeder Lauf auf Störung geprüft; Strata 0.2.14, RX 7900 XTX im Dock, 62 GB RAM",
- "konfiguration": "wie ohne Schalter, dazu bei beiden dieselben 28 Umgebungsschalter aus der rdna3-Messung vom 17./18.11.2026",
+ "konfiguration": "wie ohne Schalter, dazu bei beiden dieselben 28 Umgebungsschalter aus der Schalter-Messung vom 17./18.11.2026",
  "vorbehalt": "ohne und mit Schaltern zu verschiedenen Zeiten gemessen; sauber vergleichbar sind die Paare innerhalb einer Datei. Die Variante mit Steuervektor ist mit Schaltern auf dieser Datei nicht gemessen.",
  "laeufe": [
   {

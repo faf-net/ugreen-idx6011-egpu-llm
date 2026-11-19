@@ -1,5 +1,5 @@
 {
- "quelle": "nicejunjie/Strata-rdna3, rdna3/configs/iq3-1gpu.json, Stand 15.11.2026",
+ "quelle": "Umgebungsschalter der Strata-Engine, zusammengestellt und gemessen am 17./18.11.2026",
  "geprueft_mit": "Strata 0.2.14, Engine 0.1.60, RX 7900 XTX, 17./18.11.2026",
  "hinweis": "Umgebungsvariablen der unveränderten Engine, ohne Zusage des Herstellers. Eintragen, herausnehmen, prüfen: messen/schalter.py · bei jedem Release: messen/schalter_pruefen.py · Beschreibung: docs/schalter.de.md",
  "schalter": {

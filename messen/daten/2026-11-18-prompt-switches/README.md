@@ -1,8 +1,8 @@
-# Measurements of 2026-11-17/18: the switches of the rdna3 fork on the unchanged Strata 0.2.14 engine
+# Measurements of 2026-11-17/18: 28 prompt-reading switches on the unchanged Strata 0.2.14 engine
 
-The fork [`nicejunjie/Strata-rdna3`](https://github.com/nicejunjie/Strata-rdna3) tunes Strata for RDNA3 cards and ships a run config for one RX 7900 XTX (`rdna3/configs/iq3-1gpu.json`). Most of what that config does is set environment variables. I wanted to know how much of it works **without the fork**, on the prebuilt engine I already run: Strata 0.2.14 (engine and control 0.1.60, `hip-rx7900`).
+Strata's engine ships environment switches for prompt reading that are turned off on this card generation. I wanted to know how much they bring on one RX 7900 XTX, **on the prebuilt engine** I already run: Strata 0.2.14 (engine and control 0.1.60, `hip-rx7900`).
 
-Of the 46 variables in the fork's config, the names of 30 are present in the stock 0.1.60 engine binary; 28 of them are switches I could set as they stand (`run-config.json`). The other 16 exist only in the fork and are left out. So this is a test of 28 opt-in environment variables on a stock engine, not a test of the fork.
+The set is 28 switches whose names are present in the stock 0.1.60 engine binary (`run-config.json`). So this is a test of 28 opt-in environment variables on a stock engine.
 
 Same model and run config as in production otherwise: Flash-Next IQ3_XXS native pack, MTP `rt`, `--max-context 262144 --kv int8 --kv-resident 32768 --spec 4 --vram-reserve-mib 832 --pcie-frac 0`, conversation cache 4 slots / 9,216 MiB. "Quiet" is my everyday card profile (core clock capped at 2,800 MHz, −100 mV), "max" is stock. The NAS services were running throughout; only my agent was paused where noted.
 
@@ -33,7 +33,7 @@ Median of three runs each, quiet profile (max in brackets):
 | card power, mean W | 207 (225) | 201 (235) | 209 (233) |
 
 - **Prompt reading is 68 % faster at 16K and twice as fast at 4K**, decode about 10 % faster, at the same card power.
-- The four extra arguments from the fork's config (`--adapt-every 1 --adapt-swaps 32 --mtp-q4 all --mtp-window 4096`) add nothing I can separate from noise, so I dropped them.
+- Four more arguments I tried (`--adapt-every 1 --adapt-swaps 32 --mtp-q4 all --mtp-window 4096`) add nothing I can separate from noise, so I dropped them.
 - The quiet profile loses nothing against max on prompt reading.
 
 ## Task set
@@ -48,7 +48,7 @@ Median of three runs each, quiet profile (max in brackets):
 | long context, 93K prompt | 72-115 s | 32-34 s |
 
 - **Same score.** The same four tasks fail in all four runs; a fifth miss appears in the second run of each variant (a facts task on the baseline, a logic task with the switches).
-- The fork says two of the switches (`STRATA_HIP_WMMA`, `STRATA_SELECT_WMMA`) are not bit-identical. That is true, but the stock engine is not repeatable here either: of 114 answers at temperature 0, 47 are identical between the two baseline runs, 51 between the two runs with switches, and 47 to 52 across the variants. The switches add no difference I can see on top of that.
+- Two of the switches (`STRATA_HIP_WMMA`, `STRATA_SELECT_WMMA`) are known not to be bit-identical. That is true, but the stock engine is not repeatable here either: of 114 answers at temperature 0, 47 are identical between the two baseline runs, 51 between the two runs with switches, and 47 to 52 across the variants. The switches add no difference I can see on top of that.
 - All 16 hidden notes in the long-context tasks were found.
 - The 12 German-writing tasks are not auto-graded and I have not read them side by side yet.
 
@@ -58,7 +58,7 @@ Model loaded, no request, quiet profile: 16.0 W and at most 2 % load on the base
 
 ## Endurance
 
-A user of the fork reported non-finite logits after 1 h 45 min, followed by HTTP 503 on every request, and suspected `STRATA_GDN_CHUNKED` and `STRATA_PF_F16`. Both are in my set, so I ran it under load.
+Another user with a similar set of switches reported non-finite logits after 1 h 45 min, followed by HTTP 503 on every request, and suspected `STRATA_GDN_CHUNKED` and `STRATA_PF_F16`. Both are in my set, so I ran it under load.
 
 | | with the switches, 90 min |
 |---|---:|

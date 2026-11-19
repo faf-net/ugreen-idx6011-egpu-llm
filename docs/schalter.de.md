@@ -10,9 +10,9 @@ In Konfigurationen und Skripten heißen die Fassungen des Modells `liber` (die V
 
 ## Worum es geht
 
-Der Fork [`nicejunjie/Strata-rdna3`](https://github.com/nicejunjie/Strata-rdna3) stimmt Strata auf RDNA3-Karten ab. Seine Laufkonfiguration für eine einzelne RX 7900 XTX setzt vor allem Umgebungsvariablen. Ich wollte wissen, wie viel davon **ohne den Fork** wirkt, auf der fertigen Engine, die hier ohnehin läuft.
+Stratas Engine bringt Umgebungsschalter für das Einlesen des Prompts mit, die auf dieser Kartengeneration ausgeschaltet sind. Ich wollte wissen, wie viel sie auf einer einzelnen RX 7900 XTX bringen, **auf der fertigen Engine**, die hier ohnehin läuft.
 
-Von den 46 Variablen der Fork-Konfiguration stehen 30 Namen auch in der Engine 0.1.60 von Strata 0.2.14. 28 davon sind Schalter, die ich so setzen konnte, wie sie dort stehen. Diese 28 stehen in [`konfig/strata-0.2.14/rdna3-schalter.json`](../konfig/strata-0.2.14/rdna3-schalter.json). Ich habe weder den Fork gebaut noch die Engine verändert, es kommen nur 28 Zeilen im Abschnitt `env` der Laufkonfiguration dazu.
+Gemessen habe ich einen Satz von 28 Schaltern, die die Engine 0.1.60 von Strata 0.2.14 kennt. Diese 28 stehen in [`konfig/strata-0.2.14/prompt-schalter.json`](../konfig/strata-0.2.14/prompt-schalter.json). Ich habe die Engine nicht verändert, es kommen nur 28 Zeilen im Abschnitt `env` der Laufkonfiguration dazu.
 
 Am 18.11.2026 liefen `liber` und `faber` hier mit diesen Schaltern in der Laufkonfiguration; am Abend desselben Tages hat der Eigenbau sie abgelöst.
 
@@ -36,8 +36,8 @@ Stahlblau ist Strata 0.2.14 wie ausgeliefert, Bernstein dieselbe Engine mit den 
 - **Das Einlesen wird je nach Länge 68 bis 127 % schneller, das Schreiben rund 10 %.**
 - **Strom: im Mittel gleich, beim Einlesen selbst mehr.** Über den ganzen Testlauf gemittelt zieht die Karte gleich viel. Während des Einlesens sind es mit den Schaltern 25 bis 30 W mehr (267 bis 270 W ohne, 292 bis 300 W mit, am 18.11.2026 im Wechsel gemessen). Weil das Einlesen nur halb so lange dauert, ist die Energie je gelesenem Token trotzdem rund halb so hoch: 0,037 bis 0,047 gegen 0,070 bis 0,087 Wh je 1.000 Token. An der Steckdose schwankt die Leistung beim Einlesen zwischen den Läufen so stark, dass ich dafür keine feste Zahl nenne.
 - **Die Qualität bleibt gleich.** Mein Aufgabensatz (114 Aufgaben auf Deutsch, 102 automatisch bewertet) kommt in beiden Varianten auf 98 und 97. Dieselben vier Aufgaben scheitern in allen vier Läufen.
-- **Nicht bitgleich, aber das ist die Engine ohnehin nicht.** Der Fork nennt zwei Schalter (`STRATA_HIP_WMMA`, `STRATA_SELECT_WMMA`) als nicht bitgleich. Bei Temperatur 0 sind zwischen zwei Läufen ohne Schalter 47 von 114 Antworten identisch, zwischen zwei Läufen mit Schaltern 51.
-- Die vier zusätzlichen Argumente aus der Fork-Konfiguration (`--adapt-every 1 --adapt-swaps 32 --mtp-q4 all --mtp-window 4096`) bringen nichts, was sich vom Rauschen trennen lässt. Ich habe sie weggelassen.
+- **Nicht bitgleich, aber das ist die Engine ohnehin nicht.** Zwei der Schalter (`STRATA_HIP_WMMA`, `STRATA_SELECT_WMMA`) gelten als nicht bitgleich. Bei Temperatur 0 sind zwischen zwei Läufen ohne Schalter 47 von 114 Antworten identisch, zwischen zwei Läufen mit Schaltern 51.
+- Vier weitere Argumente, die ich probiert habe (`--adapt-every 1 --adapt-swaps 32 --mtp-q4 all --mtp-window 4096`), bringen nichts, was sich vom Rauschen trennen lässt. Ich habe sie weggelassen.
 
 ### Lange Prompts, Arbeitsmodell und Original
 
@@ -59,7 +59,7 @@ Mein Agent arbeitet mit der Variante mit Steuervektor, nicht mit dem Original. D
 
 ### 90 Minuten unter Last
 
-Ein Nutzer des Forks hatte nach 1 h 45 min nicht-endliche Werte gemeldet, danach HTTP 503 auf jede Anfrage. Er verdächtigte `STRATA_GDN_CHUNKED` und `STRATA_PF_F16`. Beide sind in meinem Satz, deshalb lief er 90 Minuten unter Dauerlast (Original): 1.232 Anfragen, 1.232-mal HTTP 200, 176 von 176 versteckten Zahlen gefunden, keine nicht-endlichen Werte. Davor liefen dieselben Schalter 38 Minuten mit `STRATA_DBG_NAN=1`, ebenfalls ohne Befund.
+Ein anderer Nutzer mit einem ähnlichen Satz Schalter hatte nach 1 h 45 min nicht-endliche Werte gemeldet, danach HTTP 503 auf jede Anfrage. Er verdächtigte `STRATA_GDN_CHUNKED` und `STRATA_PF_F16`. Beide sind in meinem Satz, deshalb lief er 90 Minuten unter Dauerlast (Original): 1.232 Anfragen, 1.232-mal HTTP 200, 176 von 176 versteckten Zahlen gefunden, keine nicht-endlichen Werte. Davor liefen dieselben Schalter 38 Minuten mit `STRATA_DBG_NAN=1`, ebenfalls ohne Befund.
 
 ### Abnahme nach der Übernahme (18.11.2026)
 
@@ -81,7 +81,7 @@ Direkt nach dem Eintragen in die Laufkonfigurationen des Betriebs habe ich beide
 - **Der Steuervektor wirkt mit den Schaltern weiter.** Von fünf Bitten, die Modelle oft ablehnen, beantwortet die Variante mit Steuervektor alle fünf ohne Ausweichformel, das Original weicht bei drei aus.
 - Das volle Kartenprofil bringt beim Einlesen nichts gegenüber dem gedrosselten.
 - Der erste Prompt nach dem Laden (4K) wurde mit 677 bis 798 Token/s gelesen, also langsamer als in `strata_bench.py` (1.632). Dort ist die Engine schon warm. Ich habe das nicht weiter zerlegt.
-- Je Zelle ein Lauf. Werte: `messen/daten/2026-11-18-rdna3-switches/acceptance-after-adoption.json`.
+- Je Zelle ein Lauf. Werte: `messen/daten/2026-11-18-prompt-switches/acceptance-after-adoption.json`.
 
 ## Was das nicht zeigt
 
@@ -100,7 +100,7 @@ Die Schalter sind Umgebungsvariablen. Strata beschreibt 16 der 28 in der eigenen
 
 Dagegen stehen drei Dinge:
 
-1. **Eine Liste, eine Stelle.** Die 28 Schalter stehen mit Quelle und Prüfstand in `konfig/strata-0.2.14/rdna3-schalter.json`. `messen/schalter.py` trägt genau diese Schlüssel in die Laufkonfiguration ein und nimmt genau diese wieder heraus. Jede Umstellung landet mit Zeitstempel in einem Protokoll neben den Konfigurationen.
+1. **Eine Liste, eine Stelle.** Die 28 Schalter stehen mit Quelle und Prüfstand in `konfig/strata-0.2.14/prompt-schalter.json`. `messen/schalter.py` trägt genau diese Schlüssel in die Laufkonfiguration ein und nimmt genau diese wieder heraus. Jede Umstellung landet mit Zeitstempel in einem Protokoll neben den Konfigurationen.
 2. **Namensprüfung bei jedem Release, ohne Karte.** `messen/schalter_pruefen.py <engine-ordner> --alt <engine-ordner-in-betrieb>` sucht die 28 Namen in den Dateien der neuen Engine und meldet, welche fehlen. Auf 0.2.12 und 0.2.14 sind alle 28 vorhanden.
 3. **Messung bei jedem Release, auf beiden Modellen.** Mein nächtlicher Release-Test lädt jede neue Version mit der Laufkonfiguration aus dem Betrieb, also mit den Schaltern. Er misst Tempo und Aufgabensatz gegen die laufende Version und prüft zusätzlich das Arbeitsmodell auf der neuen Engine: Laden, Steuervektor im Log, Tool-Call, Bild, langer Prompt mit versteckter Zahl. Fehlt ein Name oder besteht das Arbeitsmodell nicht, steht das als Warnung im Urteil, und die Version geht nicht in Betrieb.
 
@@ -122,12 +122,12 @@ python3 messen/schalter.py pruefen liber      # Kurzantwort, Tool-Call, langer P
 
 ## Selbst nachmachen
 
-1. `konfig/strata-0.2.14/rdna3-schalter.json` neben die eigene Laufkonfiguration legen (`SCHALTER_LISTE` zeigt auf die Datei, `STRATA_KONFIG` auf den Ordner mit `<modell>.json`).
+1. `konfig/strata-0.2.14/prompt-schalter.json` neben die eigene Laufkonfiguration legen (`SCHALTER_LISTE` zeigt auf die Datei, `STRATA_KONFIG` auf den Ordner mit `<modell>.json`).
 2. `python3 messen/schalter_pruefen.py <engine-ordner>`: Kennt die eigene Engine die Namen?
 3. `python3 messen/schalter.py ein <modell>`, dann `pruefen <modell>`.
 4. Vorher und nachher `tools/strata_bench.py` laufen lassen. Die Werte hier gelten für gfx1100 an OCuLink x4; auf anderer Hardware kann es anders aussehen.
 
-Die Laufkonfigurationen mit Schaltern, wie sie am 18.11.2026 liefen: [`konfig/strata-0.2.14/liber.json`](../konfig/strata-0.2.14/liber.json) und [`faber.json`](../konfig/strata-0.2.14/faber.json). Rohdaten und Messbedingungen: [`messen/daten/2026-11-18-rdna3-switches/`](../messen/daten/2026-11-18-rdna3-switches/).
+Die Laufkonfigurationen mit Schaltern, wie sie am 18.11.2026 liefen: [`konfig/strata-0.2.14/liber.json`](../konfig/strata-0.2.14/liber.json) und [`faber.json`](../konfig/strata-0.2.14/faber.json). Rohdaten und Messbedingungen: [`messen/daten/2026-11-18-prompt-switches/`](../messen/daten/2026-11-18-prompt-switches/).
 
 ## Nebenbei geprüft: ein anderer Quant
 

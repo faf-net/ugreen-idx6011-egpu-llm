@@ -1250,7 +1250,7 @@ def steuervektor(d, sp):
                                     "The original model answers 11 of 15 tasks that models often refuse, is evasive on 3 and refuses 1; the uncensored one answers all 15. On tasks, German, speed and making things up it stays equal or a little better."), s, h
 
 
-SCHALTER_DATEN = "2026-11-18-rdna3-switches"
+SCHALTER_DATEN = "2026-11-18-prompt-switches"
 
 
 def schalter_werte(d):
@@ -1266,7 +1266,7 @@ def schalter_werte(d):
 
 
 def schalter(d, sp, modell="faber"):
-    """Dieselbe Engine ohne und mit den 28 Umgebungsschaltern aus dem rdna3-Fork: Stahl ist vorher, Bernstein nachher."""
+    """Dieselbe Engine ohne und mit 28 Umgebungsschaltern für das Einlesen: Stahl ist vorher, Bernstein nachher."""
     en = sp == "en"
     T = lambda de, en_: en_ if en else de
     w = schalter_werte(d)
@@ -1295,8 +1295,8 @@ def schalter(d, sp, modell="faber"):
     s.text(L + 24, 172, T("Einlesen 68 bis 127 % schneller, Schreiben rund 10 %.", "Reading 68 to 127 % faster, decode about 10 %."), 15, INK, "serif", kursiv=True)
     h = fuss(s, 444, (("balken", STAHL, T("Strata 0.2.14 wie ausgeliefert", "Strata 0.2.14 as shipped")),
                       ("balken", ACC, T("dieselbe Engine mit 28 Umgebungsschaltern", "the same engine with 28 environment switches"))),
-             T("4K, 16K, Chat, Agent: tools/strata_bench.py, Median aus 3 Läufen im Wechsel, gedrosseltes Kartenprofil · 58K: derselbe Prompt mit 58.199 Token, mit Schaltern Mittel aus 15 Anfragen der letzten halben Stunde eines 90-Minuten-Laufs, ohne Schalter eine Anfrage direkt danach · gleiche Punktzahl im Aufgabensatz (98 und 97 von 102 in beiden Varianten) · Karte beim Einlesen 25 bis 30 W mehr, beim Schreiben gleich · 12 der 28 Schalter sind nicht dokumentiert, zugesichert ist keiner; jeder kann mit einem Release entfallen · Daten: messen/daten/2026-11-18-rdna3-switches/",
-               "4K, 16K, chat, agent: tools/strata_bench.py, median of 3 interleaved runs, capped card profile · 58K: the same 58,199-token prompt, with switches the mean of 15 requests in the last half hour of a 90-minute run, without switches one request right after it · same score on the task set (98 and 97 of 102 in both variants) · card draws 25 to 30 W more while reading, the same while writing · 12 of the 28 switches are undocumented, none is guaranteed; any of them may vanish with a release · data: messen/daten/2026-11-18-rdna3-switches/"))
+             T("4K, 16K, Chat, Agent: tools/strata_bench.py, Median aus 3 Läufen im Wechsel, gedrosseltes Kartenprofil · 58K: derselbe Prompt mit 58.199 Token, mit Schaltern Mittel aus 15 Anfragen der letzten halben Stunde eines 90-Minuten-Laufs, ohne Schalter eine Anfrage direkt danach · gleiche Punktzahl im Aufgabensatz (98 und 97 von 102 in beiden Varianten) · Karte beim Einlesen 25 bis 30 W mehr, beim Schreiben gleich · 12 der 28 Schalter sind nicht dokumentiert, zugesichert ist keiner; jeder kann mit einem Release entfallen · Daten: messen/daten/2026-11-18-prompt-switches/",
+               "4K, 16K, chat, agent: tools/strata_bench.py, median of 3 interleaved runs, capped card profile · 58K: the same 58,199-token prompt, with switches the mean of 15 requests in the last half hour of a 90-minute run, without switches one request right after it · same score on the task set (98 and 97 of 102 in both variants) · card draws 25 to 30 W more while reading, the same while writing · 12 of the 28 switches are undocumented, none is guaranteed; any of them may vanish with a release · data: messen/daten/2026-11-18-prompt-switches/"))
     l = {k: (o, m) for k, o, m in w["lesen"]}
     return "schalter", titel, T(f"Einlesetempo ohne und mit 28 Umgebungsschaltern: bei 4K {z(l['4K'][0], sp)} gegen {z(l['4K'][1], sp)} Token je Sekunde, bei 16K {z(l['16K'][0], sp)} gegen {z(l['16K'][1], sp)}, bei 58K {z(l['58K'][0], sp)} gegen {z(l['58K'][1], sp)}; das Schreibtempo steigt um rund zehn Prozent.",
                                 f"Prompt reading speed without and with 28 environment switches: at 4K {z(l['4K'][0], sp)} against {z(l['4K'][1], sp)} tokens per second, at 16K {z(l['16K'][0], sp)} against {z(l['16K'][1], sp)}, at 58K {z(l['58K'][0], sp)} against {z(l['58K'][1], sp)}; decode speed rises by about ten per cent."), s, h
@@ -1335,8 +1335,8 @@ def schalter_lang(d, sp):
             s.text(gm, 420, f"{z(m(o['seconds']), sp, 0)} → {z(m(mi['seconds']), sp, 0)} s", 9.5, ACC, "mono", "middle", 600)
     h = fuss(s, 444, (("balken", STAHL, T("Strata 0.2.14 wie ausgeliefert", "Strata 0.2.14 as shipped")),
                       ("balken", ACC, T("dieselbe Engine mit 28 Umgebungsschaltern", "the same engine with 28 environment switches"))),
-             T(f"je Balken das Mittel aus 2 Anfragen auf frisch geladener Engine, gedrosseltes Kartenprofil · unter jeder Gruppe die Dauer der ganzen Anfrage ohne und mit Schaltern · alle 32 Anfragen fanden die im Prompt versteckte Zahl · kleinster verfügbarer Arbeitsspeicher des NAS mit Schaltern: {z(ram, sp, 2)} GiB von 62 · kein Dauerlauf mit der Steuervektor-Variante · Daten: messen/daten/2026-11-18-rdna3-switches/memory-summary.json",
-               f"each bar is the mean of 2 requests on a freshly loaded engine, capped card profile · below each group the duration of the whole request without and with switches · all 32 requests found the number hidden in the prompt · lowest available memory of the NAS with switches: {z(ram, sp, 2)} GiB of 62 · no endurance run with the control-vector variant · data: messen/daten/2026-11-18-rdna3-switches/memory-summary.json"))
+             T(f"je Balken das Mittel aus 2 Anfragen auf frisch geladener Engine, gedrosseltes Kartenprofil · unter jeder Gruppe die Dauer der ganzen Anfrage ohne und mit Schaltern · alle 32 Anfragen fanden die im Prompt versteckte Zahl · kleinster verfügbarer Arbeitsspeicher des NAS mit Schaltern: {z(ram, sp, 2)} GiB von 62 · kein Dauerlauf mit der Steuervektor-Variante · Daten: messen/daten/2026-11-18-prompt-switches/memory-summary.json",
+               f"each bar is the mean of 2 requests on a freshly loaded engine, capped card profile · below each group the duration of the whole request without and with switches · all 32 requests found the number hidden in the prompt · lowest available memory of the NAS with switches: {z(ram, sp, 2)} GiB of 62 · no endurance run with the control-vector variant · data: messen/daten/2026-11-18-prompt-switches/memory-summary.json"))
     return "schalter-lang", titel, T(f"Einlesetempo langer Prompts von 70.000 bis 250.000 Token ohne und mit 28 Umgebungsschaltern, für die Variante mit Steuervektor und das Originalmodell: in beiden gut doppelt so schnell, 250.000 Token dauern {z(s_mit, sp, 0)} statt {z(s_ohne, sp, 0)} Sekunden.",
                                      f"Reading speed for long prompts from 70,000 to 250,000 tokens without and with 28 environment switches, for the variant with control vector and the original model: a good twice as fast in both, 250,000 tokens take {z(s_mit, sp, 0)} instead of {z(s_ohne, sp, 0)} seconds."), s, h
 

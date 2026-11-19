@@ -31,7 +31,7 @@ Rohdaten: `messen/daten/2026-11-19-strata-xtx-0.2.16/` (das Release unter `relea
 
 ## Nachtrag 18.11.2026: 0.2.14 mit 28 Umgebungsschaltern, Prompts doppelt so schnell eingelesen
 
-Keine neue Version, aber eine andere Laufkonfiguration: 28 Umgebungsvariablen aus der Konfiguration des Forks `nicejunjie/Strata-rdna3`, gesetzt auf der unveränderten Engine 0.1.60. `liber` und `faber` liefen am 18.11.2026 damit, `velox` nicht. Seit dem Abend desselben Tages stecken die Schalter im Eigenbau strata-xtx, und in der Laufkonfiguration steht keiner mehr (Nachtrag vom 19.11.).
+Keine neue Version, aber eine andere Laufkonfiguration: 28 Umgebungsschalter, die die unveränderte Engine 0.1.60 mitbringt und die auf dieser Kartengeneration aus sind. `liber` und `faber` liefen am 18.11.2026 damit, `velox` nicht. Seit dem Abend desselben Tages stecken die Schalter im Eigenbau strata-xtx, und in der Laufkonfiguration steht keiner mehr (Nachtrag vom 19.11.).
 
 | Median, gedrosseltes Kartenprofil | ohne | mit Schaltern |
 |---|---|---|
@@ -41,7 +41,7 @@ Keine neue Version, aber eine andere Laufkonfiguration: 28 Umgebungsvariablen au
 | Aufgabensatz, bestanden von 102 (zwei Läufe) | 98 / 97 | 98 / 97 |
 | 90 Minuten Dauerlast | – | 1.232 Anfragen, kein Fehler |
 
-Strata beschreibt 16 der 28 Schalter in der eigenen Dokumentation und lässt sie auf dieser Kartengeneration bewusst ausgeschaltet, weil sich die Rundung ändert; 12 sind nicht beschrieben. Seitdem prüft der Test jeder neuen Version zusätzlich `liber` auf der neuen Engine; ob eine Engine die 28 Namen noch kennt, sagt `messen/schalter_pruefen.py`. Messwerte, Grenzen und der Rückweg: [schalter.de.md](schalter.de.md). Rohdaten: `messen/daten/2026-11-18-rdna3-switches/`.
+Strata beschreibt 16 der 28 Schalter in der eigenen Dokumentation und lässt sie auf dieser Kartengeneration bewusst ausgeschaltet, weil sich die Rundung ändert; 12 sind nicht beschrieben. Seitdem prüft der Test jeder neuen Version zusätzlich `liber` auf der neuen Engine; ob eine Engine die 28 Namen noch kennt, sagt `messen/schalter_pruefen.py`. Messwerte, Grenzen und der Rückweg: [schalter.de.md](schalter.de.md). Rohdaten: `messen/daten/2026-11-18-prompt-switches/`.
 
 ## Nachtrag 16.11.2026: Strata 0.2.15 ist hier gleich schnell, dieses NAS bleibt bei 0.2.14
 

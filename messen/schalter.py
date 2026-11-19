@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Die 28 Schalter aus dem rdna3-Fork in eine Laufkonfiguration eintragen, prüfen und wieder herausnehmen.
+"""Die 28 Schalter für das Einlesen in eine Laufkonfiguration eintragen, prüfen und wieder herausnehmen.
 
 Die Schalter sind Umgebungsvariablen der unveränderten Strata-Engine (Abschnitt "env" der Laufkonfiguration).
-Die Liste steht in konfig/strata-0.2.14/rdna3-schalter.json; dieses Skript trägt sie ein oder nimmt sie heraus.
+Die Liste steht in konfig/strata-0.2.14/prompt-schalter.json; dieses Skript trägt sie ein oder nimmt sie heraus.
 Hintergrund, Messwerte und Grenzen: docs/schalter.de.md.
 
   python3 schalter.py stand              welche Modelle die Schalter tragen, Abweichungen von der Liste
@@ -20,8 +20,8 @@ import json, os, shutil, sys, time, urllib.request
 
 HIER = os.path.dirname(os.path.abspath(__file__))
 PROD = os.environ.get("STRATA_KONFIG", "/strata/konfig")
-LISTE = os.environ.get("SCHALTER_LISTE", os.path.join(os.path.dirname(HIER), "konfig", "strata-0.2.14", "rdna3-schalter.json"))
-PROTOKOLL = f"{PROD}/rdna3-schalter.log"
+LISTE = os.environ.get("SCHALTER_LISTE", os.path.join(os.path.dirname(HIER), "konfig", "strata-0.2.14", "prompt-schalter.json"))
+PROTOKOLL = f"{PROD}/prompt-schalter.log"
 LS = os.environ.get("LS_URL", "http://localhost:8090")
 MODELLE = ("faber", "liber", "velox")
 WOERTER = ("Haus Garten Fluss Rechner Netz Strom Licht Wolke Brücke Straße Fenster Lampe Buch Seite Karte Zug Hafen "
@@ -83,7 +83,7 @@ def stand():
 
 def ein(m):
     s, k = liste(), lies(m)
-    sich = konf(m) + ".vor-rdna3-" + time.strftime("%Y%m%d")
+    sich = konf(m) + ".vor-schalter-" + time.strftime("%Y%m%d")
     if not os.path.exists(sich):
         shutil.copy2(konf(m), sich)
     env = k.setdefault("env", {})

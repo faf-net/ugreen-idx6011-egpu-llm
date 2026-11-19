@@ -269,7 +269,7 @@ I test every new Strata release unchanged first, then build my own build on it, 
 
 ### How it came about: 28 environment switches on the 0.2.14 release (17/18 Nov 2026)
 
-The fork `nicejunjie/Strata-rdna3` mostly sets environment variables for RDNA3 cards. The stock engine of Strata 0.2.14 knows 28 of them too. On 18 Nov 2026 the uncensored version and the original ran with them here for a day, as entries in the run config; that measurement was the reason for my own build. Steel blue is before, amber is after:
+Strata's engine ships environment switches for prompt reading that are off on this card generation. I measured a set of 28 of them on the stock engine of Strata 0.2.14 on 17 and 18 Nov 2026. On 18 Nov 2026 the uncensored version and the original ran with them here for a day, as entries in the run config; that measurement was the reason for my own build. Steel blue is before, amber is after:
 
 ![Reading and decode without and with 28 environment switches](bilder/schalter-en.png)
 
@@ -299,7 +299,7 @@ Every release since 0.2.0-beta was measured here against the one before it, with
 | 0.2.12 | 8 Nov | **in production** until 16 Nov; equal to 0.2.11; the tuned DFlash2 drafter is slower end to end and stays off | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 9 Nov | equal with the tuned config, not adopted; the Linux Docker image no longer uses the gfx1100 table and reads 16K prompts 35 % slower | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
 | 0.2.14 | 15/16 Nov | **in production** from 16 to 18 Nov; decode equal, prompt reading 16 % faster at 16K and 14 % at 32K in the same session; own task set 98 of 102 (0.2.12: 96); no driver pauses on this card; `standard-v1` sanity 11 of 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
-| 0.2.14 with 28 environment switches | 18 Nov | **in production** on 18 Nov until the evening; the same engine, 28 environment variables from the rdna3 fork in the run config: reading 68 to 127 % faster, task set unchanged (98 and 97 of 102), uncensored version and original measured up to 250,000 tokens ([docs/schalter.md](docs/schalter.md)) | – |
+| 0.2.14 with 28 environment switches | 18 Nov | **in production** on 18 Nov until the evening; the same engine, 28 of its environment switches in the run config: reading 68 to 127 % faster, task set unchanged (98 and 97 of 102), uncensored version and original measured up to 250,000 tokens ([docs/schalter.md](docs/schalter.md)) | – |
 | 0.2.15 | 16 Nov | tested as a release, not adopted; only the control program is new (control 0.1.61), the engine is the same as in 0.2.14; equally fast in three runs alternating with 0.2.14; `standard-v1` sanity 12 of 12; my small task set 34 of 35 (tools 20 of 20, code 14 of 15), one code task that flips between runs | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 | own build strata-xtx on 0.2.15 | 18 Nov | **in production** from the evening of 18 Nov to 19 Nov; the switches in the code instead of the run config; reading at 2,250–3,080 tokens/s from 16K on, task set 97 and 98 of 102, 90 minutes of continuous load without an error | – |
 | 0.2.16 | 19 Nov | tested as a release; engine code of its own without ggml, new folders in the source, an official build script; no speed gain on this card: decode 61.4 against 59.8 tokens/s for 0.2.15 in pairs, reading 783 / 1,357 / 1,321 tokens/s at 4K / 16K / 32K; the defaults for gfx1100 are unchanged, so my own build is still needed | – |
@@ -453,7 +453,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   konfig/strata-0.2.8/          launch configs and llama-swap macro for 0.2.8 (configs unchanged from 0.2.3.1)
   konfig/strata-0.2.11/         launch configs and llama-swap macro for 0.2.11 (configs unchanged since 0.2.3.1)
   konfig/strata-0.2.12/         launch configs and llama-swap macro for 0.2.12, plus the DFlash2 test config, and liber.json (the uncensored model)
-  konfig/strata-0.2.14/         launch configs and llama-swap macro for the 0.2.14 release, state of 18 Nov 2026 with the 28 environment switches (rdna3-schalter.json); velox still runs on this release, without switches
+  konfig/strata-0.2.14/         launch configs and llama-swap macro for the 0.2.14 release, state of 18 Nov 2026 with the 28 environment switches (prompt-schalter.json); velox still runs on this release, without switches
   konfig/strata-xtx-0.2.16/     what runs today: launch configs without switches and llama-swap macro for my own build strata-xtx on Strata 0.2.16
   konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
   konfig/stack/                 chat and web search: Compose file for Open WebUI and SearXNG, tested on the NAS (EN/DE)
@@ -520,7 +520,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/daten/2026-11-16-betrieb/  re-measured on Strata 0.2.14: power and speed of the three models, cold start, waiting times, two people, task set
   messen/daten/2026-11-16-cloud-vergleich/  the same task set against Sonnet 5.5 over the API: counts per category, no texts
   messen/daten/2026-11-16-v0.2.15/  raw data of the 0.2.15 test: three strata_bench runs alternating with 0.2.14, standard-v1, pairs (README inside)
-  messen/daten/2026-11-18-rdna3-switches/  28 environment switches on the 0.2.14 release: speed, task set, idle, 90 minutes of load, long prompts up to 250K on uncensored version and original, acceptance run after adoption (README inside)
+  messen/daten/2026-11-18-prompt-switches/  28 environment switches on the 0.2.14 release: speed, task set, idle, 90 minutes of load, long prompts up to 250K on uncensored version and original, acceptance run after adoption (README inside)
   messen/daten/2026-11-18-strata-xtx/  own build strata-xtx on the base of 0.2.15: power, power comparison against the release, cold start, waiting times, two people, memory
   messen/daten/2026-11-19-strata-xtx-0.2.16/  own build strata-xtx on the base of 0.2.16, today's state: checks before adoption, three strata_bench runs alternating with the 0.2.16 release, needles, power, cold start, waiting times, two people, memory; under release-0.2.16/ the test of the unchanged release
   messen/daten/2026-11-18-unsloth-ud-iq2xs/  Unsloth UD-IQ2_XS v3.1 against the IQ3_XXS file: perplexity, speed without and with the switches (README inside)

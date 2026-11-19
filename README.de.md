@@ -270,7 +270,7 @@ Jedes neue Strata-Release prüfe ich zuerst unverändert, baue dann den Eigenbau
 
 ### Wie er entstand: 28 Umgebungsschalter auf dem Release 0.2.14 (17./18.11.2026)
 
-Der Fork `nicejunjie/Strata-rdna3` setzt für RDNA3-Karten vor allem Umgebungsvariablen. 28 davon kennt auch die unveränderte Engine von Strata 0.2.14. Am 18.11.2026 liefen die unzensierte Fassung und das Original hier einen Tag lang damit, als Einträge in der Laufkonfiguration; diese Messung war der Anlass für den Eigenbau. Stahlblau ist vorher, Bernstein nachher:
+Stratas Engine bringt Umgebungsschalter für das Einlesen mit, die auf dieser Kartengeneration aus sind. Einen Satz von 28 davon habe ich am 17. und 18.11.2026 auf der unveränderten Engine von Strata 0.2.14 gemessen. Am 18.11.2026 liefen die unzensierte Fassung und das Original hier einen Tag lang damit, als Einträge in der Laufkonfiguration; diese Messung war der Anlass für den Eigenbau. Stahlblau ist vorher, Bernstein nachher:
 
 ![Einlesen und Schreiben ohne und mit 28 Umgebungsschaltern](bilder/schalter-de.png)
 
@@ -300,7 +300,7 @@ Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit iden
 | 0.2.12 | 08.11. | **in Betrieb** bis 16.11.; gleich wie 0.2.11; der getunte DFlash2-Drafter ist am Ende langsamer und bleibt aus | [#5615](https://github.com/Niko1221/Strata/issues/5615) |
 | 0.2.13 | 09.11. | mit abgestimmter Konfiguration gleich, nicht übernommen; das Linux-Docker-Image nutzt die gfx1100-Tabelle nicht mehr und liest 16K-Prompts 35 % langsamer | [#5666](https://github.com/Niko1221/Strata/issues/5666) |
 | 0.2.14 | 15./16.11. | **in Betrieb** vom 16. bis 18.11.; Schreiben gleich, Prompt-Einlesen in derselben Sitzung bei 16K 16 % und bei 32K 14 % schneller; eigener Aufgabensatz 98 von 102 (0.2.12: 96); keine Treiberpausen auf dieser Karte; `standard-v1` Plausibilität 11 von 12 | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
-| 0.2.14 mit 28 Umgebungsschaltern | 18.11. | **in Betrieb** am 18.11. bis zum Abend; dieselbe Engine, 28 Umgebungsvariablen aus dem rdna3-Fork in der Laufkonfiguration: Einlesen 68 bis 127 % schneller, Aufgabensatz gleich (98 und 97 von 102), unzensierte Fassung und Original bis 250.000 Token gemessen ([docs/schalter.de.md](docs/schalter.de.md)) | – |
+| 0.2.14 mit 28 Umgebungsschaltern | 18.11. | **in Betrieb** am 18.11. bis zum Abend; dieselbe Engine, 28 ihrer Umgebungsschalter in der Laufkonfiguration: Einlesen 68 bis 127 % schneller, Aufgabensatz gleich (98 und 97 von 102), unzensierte Fassung und Original bis 250.000 Token gemessen ([docs/schalter.de.md](docs/schalter.de.md)) | – |
 | 0.2.15 | 16.11. | als Release geprüft, nicht übernommen; neu ist nur das Steuerprogramm (Control 0.1.61), die Engine ist dieselbe wie in 0.2.14; in drei Läufen im Wechsel mit 0.2.14 gleich schnell; `standard-v1` Plausibilität 12 von 12; mein kleiner Aufgabensatz 34 von 35 (Werkzeuge 20 von 20, Code 14 von 15), eine Code-Aufgabe, die zwischen Läufen kippt | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 | Eigenbau strata-xtx auf 0.2.15 | 18.11. | **in Betrieb** vom 18.11. abends bis 19.11.; die Schalter im Code statt in der Laufkonfiguration; Einlesen ab 16K 2.250–3.080 Token/s, Aufgabensatz 97 und 98 von 102, 90 Minuten Dauerlast ohne Fehler | – |
 | 0.2.16 | 19.11. | als Release geprüft; eigener Engine-Code ohne ggml, neue Ordner im Quelltext, ein offizielles Bauskript; auf dieser Karte kein Tempogewinn: Schreiben in Paaren 61,4 gegen 59,8 Token/s bei 0.2.15, Einlesen 783 / 1.357 / 1.321 Token/s bei 4K / 16K / 32K; die Voreinstellungen für gfx1100 sind unverändert, der Eigenbau bleibt also nötig | – |
@@ -456,7 +456,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   konfig/strata-0.2.8/          Startkonfigurationen und llama-swap-Makro für 0.2.8 (Konfigurationen wie bei 0.2.3.1)
   konfig/strata-0.2.11/         Startkonfigurationen und llama-swap-Makro für 0.2.11 (Konfigurationen wie seit 0.2.3.1)
   konfig/strata-0.2.12/         Startkonfigurationen und llama-swap-Makro für 0.2.12, dazu die DFlash2-Testkonfiguration, dazu liber.json (das unzensierte Modell)
-  konfig/strata-0.2.14/         Startkonfigurationen und llama-swap-Makro für das Release 0.2.14, Stand vom 18.11.2026 mit den 28 Umgebungsschaltern (rdna3-schalter.json); velox läuft weiter auf diesem Release, ohne Schalter
+  konfig/strata-0.2.14/         Startkonfigurationen und llama-swap-Makro für das Release 0.2.14, Stand vom 18.11.2026 mit den 28 Umgebungsschaltern (prompt-schalter.json); velox läuft weiter auf diesem Release, ohne Schalter
   konfig/strata-xtx-0.2.16/     was heute läuft: Startkonfigurationen ohne Schalter und llama-swap-Makro für den Eigenbau strata-xtx auf Strata 0.2.16
   konfig/hermes-pruefer/        Plugin für Hermes Agent: prüft jede Antwort mit festen Regeln, ohne Sprachmodell
   konfig/stack/                 Chat und Websuche: Compose-Datei für Open WebUI und SearXNG, auf dem NAS getestet (EN/DE)
@@ -523,7 +523,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/daten/2026-11-16-betrieb/  Nachmessung auf Strata 0.2.14: Strom und Tempo der drei Modelle, Kaltstart, Wartezeiten, zwei Personen, Aufgabensatz
   messen/daten/2026-11-16-cloud-vergleich/  derselbe Aufgabensatz gegen Sonnet 5.5 über die API: Zählwerte je Aufgabenart, keine Texte
   messen/daten/2026-11-16-v0.2.15/  Rohdaten des Tests von 0.2.15: drei Läufe strata_bench im Wechsel mit 0.2.14, standard-v1, Paare (README darin)
-  messen/daten/2026-11-18-rdna3-switches/  28 Umgebungsschalter auf dem Release 0.2.14: Tempo, Aufgabensatz, Leerlauf, 90 Minuten Dauerlast, lange Prompts bis 250K auf unzensierter Fassung und Original, Abnahme nach der Übernahme (README darin)
+  messen/daten/2026-11-18-prompt-switches/  28 Umgebungsschalter auf dem Release 0.2.14: Tempo, Aufgabensatz, Leerlauf, 90 Minuten Dauerlast, lange Prompts bis 250K auf unzensierter Fassung und Original, Abnahme nach der Übernahme (README darin)
   messen/daten/2026-11-18-strata-xtx/  Eigenbau strata-xtx auf der Basis 0.2.15: Strom, Stromvergleich gegen das Release, Kaltstart, Wartezeiten, zwei Personen, Speicher
   messen/daten/2026-11-19-strata-xtx-0.2.16/  Eigenbau strata-xtx auf der Basis 0.2.16, der heutige Stand: Prüfungen vor der Übernahme, drei Läufe strata_bench im Wechsel mit dem Release 0.2.16, Nadeln, Strom, Kaltstart, Wartezeiten, zwei Personen, Speicher; unter release-0.2.16/ der Test des unveränderten Release
   messen/daten/2026-11-18-unsloth-ud-iq2xs/  Unsloth UD-IQ2_XS v3.1 gegen die IQ3_XXS-Datei: Perplexität, Tempo ohne und mit Schaltern (README darin)

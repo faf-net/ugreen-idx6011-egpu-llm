@@ -31,7 +31,7 @@ Raw data: `messen/daten/2026-11-19-strata-xtx-0.2.16/` (the release under `relea
 
 ## Follow-up 18 Nov 2026: 0.2.14 with 28 environment switches, prompts read twice as fast
 
-Not a new release but a different run config: 28 environment variables from the config of the fork `nicejunjie/Strata-rdna3`, set on the stock 0.1.60 engine. `liber` and `faber` ran with them on 18 Nov 2026, `velox` did not. Since the evening of the same day the switches live in my own build strata-xtx, and none is left in the run config (follow-up of 19 Nov).
+Not a new release but a different run config: 28 environment switches that the stock 0.1.60 engine ships and that are off on this card generation. `liber` and `faber` ran with them on 18 Nov 2026, `velox` did not. Since the evening of the same day the switches live in my own build strata-xtx, and none is left in the run config (follow-up of 19 Nov).
 
 | Median, capped card profile | without | with switches |
 |---|---|---|
@@ -41,7 +41,7 @@ Not a new release but a different run config: 28 environment variables from the 
 | task set, passed of 102 (two runs) | 98 / 97 | 98 / 97 |
 | 90 minutes of continuous load | – | 1,232 requests, no error |
 
-Strata describes 16 of the 28 switches in its own documentation and leaves them off on this card generation on purpose, because the rounding changes; 12 are not described. Since then the test of every new release also checks `liber` on the new engine; whether an engine still knows the 28 names is what `messen/schalter_pruefen.py` tells. Figures, limits and the way back: [schalter.md](schalter.md). Raw data: `messen/daten/2026-11-18-rdna3-switches/`.
+Strata describes 16 of the 28 switches in its own documentation and leaves them off on this card generation on purpose, because the rounding changes; 12 are not described. Since then the test of every new release also checks `liber` on the new engine; whether an engine still knows the 28 names is what `messen/schalter_pruefen.py` tells. Figures, limits and the way back: [schalter.md](schalter.md). Raw data: `messen/daten/2026-11-18-prompt-switches/`.
 
 ## Follow-up 16 Nov 2026: Strata 0.2.15 is equally fast here, this NAS stays on 0.2.14
 

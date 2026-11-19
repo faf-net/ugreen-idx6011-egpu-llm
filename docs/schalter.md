@@ -10,9 +10,9 @@ In configs and scripts the versions of the model are called `liber` (the variant
 
 ## What this is about
 
-The fork [`nicejunjie/Strata-rdna3`](https://github.com/nicejunjie/Strata-rdna3) tunes Strata for RDNA3 cards. Its run config for a single RX 7900 XTX mostly sets environment variables. I wanted to know how much of that works **without the fork**, on the prebuilt engine that runs here anyway.
+Strata's engine ships environment switches for prompt reading that are turned off on this card generation. I wanted to know how much they bring on a single RX 7900 XTX, **on the prebuilt engine** that runs here anyway.
 
-Of the 46 variables in the fork's config, 30 names are also present in the 0.1.60 engine of Strata 0.2.14. 28 of them are switches I could set as they stand. Those 28 are in [`konfig/strata-0.2.14/rdna3-schalter.json`](../konfig/strata-0.2.14/rdna3-schalter.json). I neither built the fork nor changed the engine; the only change is 28 lines in the `env` section of the run config.
+I measured a set of 28 switches that the 0.1.60 engine of Strata 0.2.14 knows. Those 28 are in [`konfig/strata-0.2.14/prompt-schalter.json`](../konfig/strata-0.2.14/prompt-schalter.json). I did not change the engine; the only change is 28 lines in the `env` section of the run config.
 
 On 18 Nov 2026 `liber` and `faber` ran here with these switches in the run config; in the evening of the same day the own build replaced them.
 
@@ -36,8 +36,8 @@ Steel blue is Strata 0.2.14 as shipped, amber is the same engine with the 28 swi
 - **Reading gets 68 to 127 % faster depending on length, decode about 10 %.**
 - **Power: the same on average, more while reading.** Averaged over the whole test run the card draws the same. While it reads, it draws 25 to 30 W more with the switches (267 to 270 W without, 292 to 300 W with, measured alternating on 18 Nov 2026). Because reading takes only half as long, the energy per token read is still about half: 0.037 to 0.047 against 0.070 to 0.087 Wh per 1,000 tokens. At the wall the power while reading varies so much between runs that I give no fixed number for it.
 - **Quality stays the same.** My task set (114 tasks in German, 102 auto-graded) scores 98 and 97 in both variants. The same four tasks fail in all four runs.
-- **Not bit-identical, but neither is the engine.** The fork names two switches (`STRATA_HIP_WMMA`, `STRATA_SELECT_WMMA`) as not bit-identical. At temperature 0, 47 of 114 answers are identical between two runs without switches and 51 between two runs with them.
-- The four extra arguments from the fork's config (`--adapt-every 1 --adapt-swaps 32 --mtp-q4 all --mtp-window 4096`) add nothing I can separate from noise. I left them out.
+- **Not bit-identical, but neither is the engine.** Two of the switches (`STRATA_HIP_WMMA`, `STRATA_SELECT_WMMA`) are known not to be bit-identical. At temperature 0, 47 of 114 answers are identical between two runs without switches and 51 between two runs with them.
+- Four more arguments I tried (`--adapt-every 1 --adapt-swaps 32 --mtp-q4 all --mtp-window 4096`) add nothing I can separate from noise. I left them out.
 
 ### Long prompts, working model and original
 
@@ -59,7 +59,7 @@ My agent works with the variant with control vector, not with the original. So b
 
 ### 90 minutes under load
 
-A user of the fork had reported non-finite values after 1 h 45 min, followed by HTTP 503 on every request. He suspected `STRATA_GDN_CHUNKED` and `STRATA_PF_F16`. Both are in my set, so it ran under continuous load for 90 minutes (original): 1,232 requests, 1,232 times HTTP 200, 176 of 176 hidden numbers found, no non-finite values. Before that, the same switches ran for 38 minutes with `STRATA_DBG_NAN=1`, also without a finding.
+Another user with a similar set of switches had reported non-finite values after 1 h 45 min, followed by HTTP 503 on every request. He suspected `STRATA_GDN_CHUNKED` and `STRATA_PF_F16`. Both are in my set, so it ran under continuous load for 90 minutes (original): 1,232 requests, 1,232 times HTTP 200, 176 of 176 hidden numbers found, no non-finite values. Before that, the same switches ran for 38 minutes with `STRATA_DBG_NAN=1`, also without a finding.
 
 ### Acceptance run after adoption (18 Nov 2026)
 
@@ -81,7 +81,7 @@ Right after writing the switches into the production run configs I checked both 
 - **The control vector keeps working with the switches.** Of five requests that models often refuse, the variant with control vector answers all five without an evasive phrase; the original is evasive on three.
 - The full card profile gains nothing over the capped one on reading.
 - The first prompt after loading (4K) was read at 677 to 798 tok/s, slower than in `strata_bench.py` (1,632). There the engine is already warm. I have not taken that apart further.
-- One run per cell. Values: `messen/daten/2026-11-18-rdna3-switches/acceptance-after-adoption.json`.
+- One run per cell. Values: `messen/daten/2026-11-18-prompt-switches/acceptance-after-adoption.json`.
 
 ## What this does not show
 
@@ -100,7 +100,7 @@ The switches are environment variables. Strata describes 16 of the 28 in its own
 
 Three things stand against that:
 
-1. **One list, one place.** The 28 switches, with source and test status, are in `konfig/strata-0.2.14/rdna3-schalter.json`. `messen/schalter.py` writes exactly these keys into the run config and removes exactly these again. Every change is logged with a timestamp next to the configs.
+1. **One list, one place.** The 28 switches, with source and test status, are in `konfig/strata-0.2.14/prompt-schalter.json`. `messen/schalter.py` writes exactly these keys into the run config and removes exactly these again. Every change is logged with a timestamp next to the configs.
 2. **A name check on every release, without the card.** `messen/schalter_pruefen.py <engine-dir> --alt <engine-dir-in-production>` searches the files of the new engine for the 28 names and reports which are missing. On 0.2.12 and 0.2.14 all 28 are present.
 3. **A measurement on every release, on both models.** My nightly release test loads every new version with the run config from production, that is, with the switches. It measures speed and the task set against the running version and also checks the working model on the new engine: loading, control vector in the log, tool call, image, long prompt with a hidden number. If a name is missing or the working model fails, the verdict carries a warning and the version does not go into production.
 
@@ -122,12 +122,12 @@ python3 messen/schalter.py pruefen liber      # short answer, tool call, long pr
 
 ## Do it yourself
 
-1. Put `konfig/strata-0.2.14/rdna3-schalter.json` next to your own run config (`SCHALTER_LISTE` points to the file, `STRATA_KONFIG` to the directory with `<model>.json`).
+1. Put `konfig/strata-0.2.14/prompt-schalter.json` next to your own run config (`SCHALTER_LISTE` points to the file, `STRATA_KONFIG` to the directory with `<model>.json`).
 2. `python3 messen/schalter_pruefen.py <engine-dir>`: does your engine know the names?
 3. `python3 messen/schalter.py ein <model>`, then `pruefen <model>`.
 4. Run `tools/strata_bench.py` before and after. The figures here are for gfx1100 on OCuLink x4; other hardware may behave differently.
 
-The run configs with switches, as they ran on 18 Nov 2026: [`konfig/strata-0.2.14/liber.json`](../konfig/strata-0.2.14/liber.json) and [`faber.json`](../konfig/strata-0.2.14/faber.json). Raw data and conditions: [`messen/daten/2026-11-18-rdna3-switches/`](../messen/daten/2026-11-18-rdna3-switches/).
+The run configs with switches, as they ran on 18 Nov 2026: [`konfig/strata-0.2.14/liber.json`](../konfig/strata-0.2.14/liber.json) and [`faber.json`](../konfig/strata-0.2.14/faber.json). Raw data and conditions: [`messen/daten/2026-11-18-prompt-switches/`](../messen/daten/2026-11-18-prompt-switches/).
 
 ## Checked on the side: another quant
 

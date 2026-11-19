@@ -18,7 +18,7 @@ Ich habe geprüft, ob die Unsloth-Quants in Fassung 3.1 (seit 04.11.2026) für m
 | Einlesen 16K-Prompt mit 28 Schaltern, leise (T/s) | 2.361,3 | 2.106,2 | −10,8 % |
 
 - Im Maßstab ist die Unsloth-Datei in allen fünf Abschnitten besser als meine.
-- Beim Tempo ist das Bild gemischt: im Chat schneller, im Agent-Test etwas langsamer, lange Prompts liest sie rund 10 % langsamer. Der Nachteil bleibt mit den Schaltern aus der rdna3-Messung bestehen; sie heben beide Dateien um rund zwei Drittel.
+- Beim Tempo ist das Bild gemischt: im Chat schneller, im Agent-Test etwas langsamer, lange Prompts liest sie rund 10 % langsamer. Der Nachteil bleibt mit den Schaltern aus der Schalter-Messung vom 17./18.11.2026 bestehen; sie heben beide Dateien um rund zwei Drittel.
 - Speicher und Stromaufnahme sind gleich.
 - Die Variante mit Steuervektor lädt auf der Unsloth-Datei, und der Vektor wirkt (fünf Bitten, die Modelle oft ablehnen: 5 beantwortet statt 1).
 
