@@ -44,7 +44,7 @@ What my own build does differently, how it is checked and how it came about: [se
 
 | | |
 |---|---|
-| Writing | 63–68 tokens/s; 54–59 right after a fresh long prompt (measured with strata-xtx; the release writes equally fast) |
+| Writing | about 70 tokens/s: 72.5 with short chat answers, 63–68 with long ones; 54–59 right after a fresh long prompt (measured with strata-xtx; the release writes equally fast) |
 | Reading a prompt | **2,300–3,000 tokens/s from 16K on with strata-xtx**: 22 s for 65K tokens, 1.4 min for 248K (release 0.2.16: 1,300–1,400 tokens/s, 3.4 min for 250K) |
 | Context | 256K, the needle was found 7 of 7 times up to 250K with both versions |
 | Memory | 55–58 GiB of the 64 GB RAM in use (uncensored version and original), the 24 GB card is full; with strata-xtx as with the release |

@@ -45,7 +45,7 @@ Was der Eigenbau anders macht, wie er geprüft ist und wie er entstand: [Abschni
 
 | | |
 |---|---|
-| Schreiben | 63–68 Token/s; direkt nach einem frischen langen Prompt 54–59 (mit strata-xtx gemessen; das Release schreibt gleich schnell) |
+| Schreiben | rund 70 Token/s: 72,5 bei kurzen Chat-Antworten, 63–68 bei langen; direkt nach einem frischen langen Prompt 54–59 (mit strata-xtx gemessen; das Release schreibt gleich schnell) |
 | Prompt einlesen | **2.300–3.000 Token/s ab 16K mit strata-xtx**: 22 s für 65K Token, 1,4 min für 248K (Release 0.2.16: 1.300–1.400 Token/s, 3,4 min für 250K) |
 | Kontext | 256K, die Nadel wurde bis 250K mit beiden Fassungen in 7 von 7 Fällen gefunden |
 | Speicher | 55–58 GiB der 64 GB RAM belegt (unzensierte Fassung und Original), die 24-GB-Karte ist voll; mit strata-xtx wie mit dem Release |
