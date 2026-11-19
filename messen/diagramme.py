@@ -1114,33 +1114,36 @@ def aufbau(d, sp):
         s.text(x + 12, y + 33, name, 12, INK, "sans", weight=600)
         s.text(x + 12, y + 47, sub, 8.5, MUTED, "mono")
 
-    zone(240, 104, 688, 404, T("im Heimnetz", "in the home network"), 96 if not en else 150)
-    zone(728, 124, 184, 280, T("RX 7900 XTX im Dock", "RX 7900 XTX in the dock"), 152 if not en else 176)
+    # Raster: Spalte A Geräte, B Oberflächen mit ihren Netz-Werkzeugen, C Weiche, D Karte; vier Zeilen. So kreuzt keine Linie eine andere.
+    A_, B_, C_, D_ = 72, 272, 512, 744
+    r1, r2, r3, r4 = 132, 224, 316, 408
+    zone(254, 104, 674, 392, T("im Heimnetz", "in the home network"), 96 if not en else 150)
+    zone(728, 124, 184, 264, T("RX 7900 XTX im Dock", "RX 7900 XTX in the dock"), 152 if not en else 158)
     # Pfeile zuerst, dann die Knoten
-    pfeil("M 200,160 H 270")                                                     # Geräte -> Open WebUI
-    pfeil("M 136,188 V 338", gestrichelt=True)                                   # Geräte -> Messenger-Dienst
-    pfeil("M 200,176 H 212 Q 220,176 220,184 V 348 Q 220,356 228,356 H 270")     # Geräte -> Hermes direkt (Browser, im Heimnetz)
-    pfeil("M 200,368 H 270", gestrichelt=True)                                   # Messenger-Dienst -> Hermes
-    pfeil("M 432,148 H 510")                                                     # Open WebUI -> SearXNG (die Anfrage bleibt im Heimnetz, SearXNG fragt nach außen)
-    pfeil("M 400,340 V 236 Q 400,228 408,228 H 464 a 8,8 0 0,1 16,0 H 552 Q 560,228 560,220 V 190")  # Hermes -> SearXNG, mit Brücke über die Linie Open WebUI -> llama-swap
-    pfeil("M 432,172 H 464 Q 472,172 472,180 V 348 Q 472,356 480,356 H 510")     # Open WebUI -> llama-swap
-    pfeil("M 432,380 H 510")                                                     # Hermes -> llama-swap
-    pfeil("M 672,356 H 696 Q 704,356 704,348 V 184 Q 704,176 712,176 H 742", fokus=True)  # llama-swap -> Sprachmodell
-    pfeil("M 672,380 H 742")                                                     # llama-swap -> ComfyUI
-    pfeil("M 72,160 H 60 Q 52,160 52,168 V 456 Q 52,464 60,464 H 70")                # Geräte -> OpenCode 2, links am Messenger-Dienst vorbei
-    pfeil("M 200,464 H 584 Q 592,464 592,456 V 398")                             # OpenCode 2 -> llama-swap, unter dem Agenten hindurch
+    pfeil(f"M 200,{r1 + 28} H 270")                                                                     # Geräte -> Open WebUI
+    pfeil(f"M 200,{r1 + 44} H 228 Q 236,{r1 + 44} 236,{r1 + 52} V {r3 + 8} Q 236,{r3 + 16} 244,{r3 + 16} H 270")   # Geräte -> Hermes direkt (Browser, im Heimnetz)
+    pfeil(f"M 136,{r1 + 56} V {r3 - 2}", gestrichelt=True)                                              # Geräte -> Messenger-Dienst
+    pfeil(f"M 200,{r3 + 38} H 270", gestrichelt=True)                                                   # Messenger-Dienst -> Hermes
+    pfeil(f"M 72,{r1 + 28} H 60 Q 52,{r1 + 28} 52,{r1 + 36} V {r4 + 20} Q 52,{r4 + 28} 60,{r4 + 28} H 70")         # Geräte -> OpenCode 2, links außen
+    pfeil(f"M 352,{r1 + 56} V {r2 - 2}")                                                                # Open WebUI -> SearXNG
+    pfeil(f"M 352,{r3} V {r2 + 58}")                                                                    # Hermes -> SearXNG
+    pfeil(f"M 352,{r3 + 56} V {r4 - 2}")                                                                # Hermes -> Crawl4AI, direkt darunter
+    pfeil(f"M 432,{r1 + 28} H 464 Q 472,{r1 + 28} 472,{r1 + 36} V {r2 + 8} Q 472,{r2 + 16} 480,{r2 + 16} H 510")   # Open WebUI -> llama-swap
+    pfeil(f"M 432,{r3 + 28} H 464 Q 472,{r3 + 28} 472,{r3 + 20} V {r2 + 48} Q 472,{r2 + 40} 480,{r2 + 40} H 510")  # Hermes -> llama-swap
+    pfeil(f"M 136,{r4 + 56} V {r4 + 64} Q 136,{r4 + 72} 144,{r4 + 72} H 584 Q 592,{r4 + 72} 592,{r4 + 64} V {r2 + 58}")  # OpenCode 2 -> llama-swap, unten herum
+    pfeil(f"M 672,{r2 + 16} H 696 Q 704,{r2 + 16} 704,{r2 + 8} V 184 Q 704,176 712,176 H 742", fokus=True)        # llama-swap -> Sprachmodell
+    pfeil(f"M 672,{r2 + 40} H 696 Q 704,{r2 + 40} 704,{r2 + 48} V {r3 + 20} Q 704,{r3 + 28} 712,{r3 + 28} H 742")  # llama-swap -> ComfyUI
+    knoten(A_, r1, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
+    knoten(A_, r3, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
+    knoten(A_, r4, "Terminal", "OpenCode 2", T("am eigenen Rechner", "on your own computer"), w=128)
+    knoten(B_, r1, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
+    knoten(B_, r2, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches through a VPN"), "extern")
+    knoten(B_, r3, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
     # Webleser: seit 19.11.2026 im Heimnetz, nur der Agent ruft ihn; er holt die Seiten über ein VPN (wie SearXNG).
-    pfeil("M 352,396 V 432 Q 352,440 360,440 H 584 a 8,8 0 0,1 16,0 H 704 Q 712,440 712,448 V 460 Q 712,468 720,468 H 742")  # Hermes -> Crawl4AI, Brücke über OpenCode -> llama-swap
-    knoten(72, 132, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
-    knoten(72, 340, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
-    knoten(72, 436, "Terminal", "OpenCode 2", T("am eigenen Rechner", "on your own computer"), w=128)
-    knoten(272, 132, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
-    knoten(512, 132, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches through a VPN"), "extern")
-    knoten(272, 340, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
-    knoten(512, 340, T("Weiche", "Switch"), "llama-swap", T("ein Modell zur Zeit", "one model at a time"))
-    knoten(744, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 70 Token/s · 256K", "Strata · 70 tokens/s · 256K"), "fokus", w=152)
-    knoten(744, 340, T("Bilder", "Pictures"), "ComfyUI", T("8–66 s je Bild", "8–66 s per picture"), w=152)
-    knoten(744, 440, T("Seiten lesen", "Read pages"), "Crawl4AI", T("liest über ein VPN im Netz", "reads through a VPN"), "extern", w=168)
+    knoten(B_, r4, T("Seiten lesen", "Read pages"), "Crawl4AI", T("liest über ein VPN im Netz", "reads through a VPN"), "extern")
+    knoten(C_, r2, T("Weiche", "Switch"), "llama-swap", T("ein Modell zur Zeit", "one model at a time"))
+    knoten(D_, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 70 Token/s · 256K", "Strata · 70 tok/s · 256K"), "fokus", w=152)
+    knoten(D_, r3, T("Bilder", "Pictures"), "ComfyUI", T("8–66 s je Bild", "8–66 s per picture"), w=152)
     y = 536
     s.line(40, y, W - 40, y, 'stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"')
     s.roh(f'<path d="M 72,{y + 22} H 104" fill="none" stroke="{MUTED}" stroke-width="1.2" marker-end="url(#{pf})"/>')
