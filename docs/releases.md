@@ -6,9 +6,32 @@ In configs, scripts and file names the three versions of the model go by short n
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
 
+## Follow-up 19 Nov 2026: Strata 0.2.16 brings no speed here, my own build now runs on it
+
+Engine and control 0.1.62. The release brings Strata's own engine code (without ggml), a new folder layout (`engine/`, `terminal/`, `tools/`) and an official build script (`tools/packaging/build_hip_linux.sh`). The gfx1100 defaults are unchanged in the release: the switches for prompt reading stay off on this card. So I measured two things, the unchanged release and my own build [strata-xtx](https://github.com/faf-net/strata-xtx) on the same base.
+
+| Median | Release 0.2.16 | Comparison |
+|---|---:|---:|
+| interleaved pairs, same session: decode, tokens/s | 61.4 | 59.8 (release 0.2.15) |
+| `strata_bench.py --long`, 3 alternating runs: prompt 4K / 16K / 32K, tokens/s | 783 / 1,357 / 1,321 | 1,645 / 2,295 / 2,650 (own build on 0.2.16) |
+| same runs: decode chat / agent, tokens/s | 69.6 / 72.3 | 72.5 / 81.7 (own build on 0.2.16) |
+| 250,000-token prompt, hidden number in the middle | 204.5 s | 87.6 s (own build, `faber`), 88.7 s (`liber`) |
+| task set `liber`, passed of 102 | 96 | 96 (own build on 0.2.16) |
+
+- **On this card the release is as fast as 0.2.15.** The pairs are 1.6 tokens/s apart in decode, which is the scatter of this test. Prompt reading sits where it has been since 0.2.14.
+- **On the new base my own build still reads about twice as fast.** Measured in the same three alternating runs, each engine loaded fresh and the order swapped every round. The full card profile (one round) shows the same picture: 783 / 1,392 / 1,382 against 1,639 / 2,352 / 2,639 tokens/s.
+- **Decode is equal to slightly faster.** In `strata_bench.py` the own build came out a little above the release in all three rounds in the chat part, and in two of three in the agent part. In the other series (decode after a long prompt, continuous writing) I see no difference.
+- **Needles:** at 32K and 128K in 10, 50 and 90 % depth and at 250K in the middle the hidden number was found every time, on the own build with both models.
+- **Task set:** `liber` passes 96 of 102 on the release and on the own build alike, `faber` 97 on the own build. I repeated six tasks five times each, with the same picture on both: two the model passes sometimes, four never. Depending on the run that makes 96 to 98 (on 0.2.15 it was 98).
+- `standard-v1` ran for the package and for the Docker image and is part of the raw data.
+
+**The own build.** Since the evening of 18 Nov 2026 the switches from the follow-up below are no longer in the run config but in the code: on a single RX 7900 XTX under Linux strata-xtx sets them by itself (a table of 27 switches; the engine newly sets 26 of them, one is already on in the release). It first ran on the base of 0.2.15 and has run on 0.2.16 since 19 Nov 2026, for `liber` and `faber`. Before moving to the new base I checked again: speed with and without the table, tool call, image input and control vector, the task set, a 90-minute endurance run with `liber` (1,232 requests, no error, 176 of 176 hidden numbers found) and the self-rescue with both models (after non-finite values from Strata's fault injection the request that triggers it ends with an error itself, HTTP 503; the server starts the engine once more without the table and answers the following requests). For the build the new folder layout and the build options of the official script had to be followed. Prompt reading is equally fast on both bases.
+
+Raw data: `messen/daten/2026-11-19-strata-xtx-0.2.16/` (the release under `release-0.2.16/`, the alternating runs under `strata-bench-alternating/`).
+
 ## Follow-up 18 Nov 2026: 0.2.14 with 28 environment switches, prompts read twice as fast
 
-Not a new release but a different run config: 28 environment variables from the config of the fork `nicejunjie/Strata-rdna3`, set on the stock 0.1.60 engine. `liber` and `faber` have run with them since 18 Nov 2026, `velox` does not.
+Not a new release but a different run config: 28 environment variables from the config of the fork `nicejunjie/Strata-rdna3`, set on the stock 0.1.60 engine. `liber` and `faber` ran with them on 18 Nov 2026, `velox` did not. Since the evening of the same day the switches live in my own build strata-xtx, and none is left in the run config (follow-up of 19 Nov).
 
 | Median, capped card profile | without | with switches |
 |---|---|---|
@@ -18,7 +41,7 @@ Not a new release but a different run config: 28 environment variables from the 
 | task set, passed of 102 (two runs) | 98 / 97 | 98 / 97 |
 | 90 minutes of continuous load | – | 1,232 requests, no error |
 
-The switches are undocumented. From now on the test of every new release also checks whether the engine still knows the 28 names (`messen/schalter_pruefen.py`), and it checks `liber` on the new engine. Figures, limits and the way back: [schalter.md](schalter.md). Raw data: `messen/daten/2026-11-18-rdna3-switches/`.
+Strata describes 16 of the 28 switches in its own documentation and leaves them off on this card generation on purpose, because the rounding changes; 12 are not described. Since then the test of every new release also checks `liber` on the new engine; whether an engine still knows the 28 names is what `messen/schalter_pruefen.py` tells. Figures, limits and the way back: [schalter.md](schalter.md). Raw data: `messen/daten/2026-11-18-rdna3-switches/`.
 
 ## Follow-up 16 Nov 2026: Strata 0.2.15 is equally fast here, this NAS stays on 0.2.14
 
@@ -33,7 +56,7 @@ Control 0.1.61 with engine 0.1.60 `hip-rx7900`, the same engine as in 0.2.14; on
 
 **Equally fast.** The pairs are 0.1 tokens/s apart. In the three alternating runs, each engine loaded fresh and the order swapped every round, prompt reading is equal to the token, and decode lies within the scatter this test shows for one and the same release. The pairs measure short answers with less predictable text, which is why they come to 59 rather than the 66 tokens/s of long answers. `standard-v1` is complete and passes 12 of 12 sanity checks; 4K came at 747 tokens/s in this one run and at 786 in the three `strata_bench.py` runs, as with 0.2.14. My small task set (35 tasks) passes 34, 0.2.14 on the same day 35: tools 20 of 20, code 14 of 15; the one that failed is a code task that flips between runs.
 
-Since the engine is the same and nothing gets faster, this NAS stays on 0.2.14. Raw data: `messen/daten/2026-11-16-v0.2.15/`. Reported to Strata as a comment in [#6056](https://github.com/Niko1221/Strata/issues/6056).
+Since the engine is the same and nothing gets faster, this NAS stayed on 0.2.14. As a release 0.2.15 never ran here; from 18 to 19 Nov 2026 it was the base of my own build strata-xtx (follow-up of 19 Nov). Raw data: `messen/daten/2026-11-16-v0.2.15/`. Reported to Strata as a comment in [#6056](https://github.com/Niko1221/Strata/issues/6056).
 
 ## Follow-up 15/16 Nov 2026: Strata 0.2.14 reads long prompts faster, in production since 16 Nov
 

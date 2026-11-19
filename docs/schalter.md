@@ -2,7 +2,9 @@
 
 **English** · [Deutsch](schalter.de.md) · [← README](../README.md)
 
-As of 18 Nov 2026. Every number was measured on this NAS: UGREEN iDX6011 Pro, 62 GB RAM, RX 7900 XTX in the dock, Strata 0.2.14 (engine and control 0.1.60, `hip-rx7900`), Flash-Next 125B IQ3_XXS.
+**As of 19 Nov 2026:** this page is the derivation, no longer what runs. It describes the measurements of 17 and 18 Nov 2026, when the switches were environment variables in the run config of the 0.2.14 release. Since the evening of 18 Nov 2026 they live in the code of my own build [strata-xtx](https://github.com/faf-net/strata-xtx), since 19 Nov 2026 on the base of Strata 0.2.16, and none is left in the run config (`env` only holds the hipBLASLt table). The 28 became 27 in my own build: `STRATA_PREFILL_AUTO_MAX` is a fixed rule for the chunk size of `--prefill auto` there, `GPU_MAX_HW_QUEUES` brought nothing and was dropped, `STRATA_CVEC_FUSE` was added. The own build reads as fast as measured here with the switches. The roughly 10 % in decode from that night did not stay in the own build: there decode is equal to slightly faster than on the release. I have not checked name by name whether the 0.2.16 release still knows each of them; the own build reads as fast on it as on 0.2.15. Its figures are in the [README](../README.md) and in the [follow-up of 19 Nov](releases.md).
+
+Every number on this page was measured on this NAS: UGREEN iDX6011 Pro, 62 GB RAM, RX 7900 XTX in the dock, Strata 0.2.14 (engine and control 0.1.60, `hip-rx7900`), Flash-Next 125B IQ3_XXS.
 
 In configs and scripts the versions of the model are called `liber` (the variant with control vector, my working model for chat and agent), `faber` (the original, reference for measurements and fallback) and `velox` (smaller quantisation, for measuring only).
 
@@ -12,7 +14,7 @@ The fork [`nicejunjie/Strata-rdna3`](https://github.com/nicejunjie/Strata-rdna3)
 
 Of the 46 variables in the fork's config, 30 names are also present in the 0.1.60 engine of Strata 0.2.14. 28 of them are switches I could set as they stand. Those 28 are in [`konfig/strata-0.2.14/rdna3-schalter.json`](../konfig/strata-0.2.14/rdna3-schalter.json). I neither built the fork nor changed the engine; the only change is 28 lines in the `env` section of the run config.
 
-Since 18 Nov 2026 `liber` and `faber` run with these switches here.
+On 18 Nov 2026 `liber` and `faber` ran here with these switches in the run config; in the evening of the same day the own build replaced them.
 
 ## What they bring
 
@@ -27,11 +29,12 @@ Steel blue is Strata 0.2.14 as shipped, amber is the same engine with the 28 swi
 | reading a 58K prompt, tok/s | 1,341 | 3,048 | +127 % |
 | chat decode, tok/s | 65.6 | 72.5 | +11 % |
 | agent decode, tok/s | 75.8 | 82.4 | +9 % |
-| card power, mean | 207 W | 201 W | same |
+| card power, mean over the whole test run | 207 W | 201 W | same |
 | task set, passed of 102 (two runs) | 98 / 97 | 98 / 97 | same |
 | card idle, model loaded | 16.0 W | 16.2 W | same |
 
-- **Reading gets 68 to 127 % faster depending on length, decode about 10 %.** The card draws no more power for it.
+- **Reading gets 68 to 127 % faster depending on length, decode about 10 %.**
+- **Power: the same on average, more while reading.** Averaged over the whole test run the card draws the same. While it reads, it draws 25 to 30 W more with the switches (267 to 270 W without, 292 to 300 W with, measured alternating on 18 Nov 2026). Because reading takes only half as long, the energy per token read is still about half: 0.037 to 0.047 against 0.070 to 0.087 Wh per 1,000 tokens. At the wall the power while reading varies so much between runs that I give no fixed number for it.
 - **Quality stays the same.** My task set (114 tasks in German, 102 auto-graded) scores 98 and 97 in both variants. The same four tasks fail in all four runs.
 - **Not bit-identical, but neither is the engine.** The fork names two switches (`STRATA_HIP_WMMA`, `STRATA_SELECT_WMMA`) as not bit-identical. At temperature 0, 47 of 114 answers are identical between two runs without switches and 51 between two runs with them.
 - The four extra arguments from the fork's config (`--adapt-every 1 --adapt-swaps 32 --mtp-q4 all --mtp-window 4096`) add nothing I can separate from noise. I left them out.
@@ -91,7 +94,9 @@ Right after writing the switches into the production run configs I checked both 
 
 ## The risk, and how I keep an eye on it
 
-The switches are environment variables that Strata does not document. A release may rename them, drop them or change what they do. The engine silently ignores an unknown name, and reading then falls back to the old speed without any error. A switch that does something different after a release would be worse.
+*This section and the next describe the state of 18 Nov 2026, when the switches were in the run config. The risk itself applies to the own build just the same, because it sets the same switches apart from the three differences named above; that is why I test it again on every new Strata version before it goes into use. Its way out is a single variable: `STRATA_GFX1100_DEFAULTS=0` turns the whole table off, and after non-finite values the server restarts the engine once without it by itself.*
+
+The switches are environment variables. Strata describes 16 of the 28 in its own documentation and leaves them off on this card generation on purpose, because the rounding changes and answers are no longer bit-identical; 12 are described nowhere. None of them is guaranteed. A release may rename them, drop them or change what they do. The engine silently ignores an unknown name, and reading then falls back to the old speed without any error. A switch that does something different after a release would be worse.
 
 Three things stand against that:
 
@@ -111,7 +116,7 @@ python3 messen/schalter.py pruefen liber      # short answer, tool call, long pr
 ```
 
 - `zurueck` (back) needs no backup: it removes only the keys from the list and leaves everything else in the run config as it is. `ein` (on) still puts a copy of the file next to it.
-- The way back is the config 0.2.14 ran with here from 16 to 18 Nov 2026, and against which every number above was measured.
+- The way back was the config 0.2.14 ran with here from 16 to 18 Nov 2026, and against which every number above was measured.
 - If only the working model has trouble, the original remains as fallback, with or without the switches. Each can be changed on its own.
 - If a new release no longer knows the switches, nothing is broken. Reading is then as fast as in the "without" column. In that case I take the switches out, so the config holds nothing that does nothing.
 
@@ -122,7 +127,7 @@ python3 messen/schalter.py pruefen liber      # short answer, tool call, long pr
 3. `python3 messen/schalter.py ein <model>`, then `pruefen <model>`.
 4. Run `tools/strata_bench.py` before and after. The figures here are for gfx1100 on OCuLink x4; other hardware may behave differently.
 
-The finished run configs with switches: [`konfig/strata-0.2.14/liber.json`](../konfig/strata-0.2.14/liber.json) and [`faber.json`](../konfig/strata-0.2.14/faber.json). Raw data and conditions: [`messen/daten/2026-11-18-rdna3-switches/`](../messen/daten/2026-11-18-rdna3-switches/).
+The run configs with switches, as they ran on 18 Nov 2026: [`konfig/strata-0.2.14/liber.json`](../konfig/strata-0.2.14/liber.json) and [`faber.json`](../konfig/strata-0.2.14/faber.json). Raw data and conditions: [`messen/daten/2026-11-18-rdna3-switches/`](../messen/daten/2026-11-18-rdna3-switches/).
 
 ## Checked on the side: another quant
 

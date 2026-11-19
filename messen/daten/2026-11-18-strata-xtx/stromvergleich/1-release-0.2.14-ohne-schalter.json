@@ -1,0 +1,2274 @@
+{
+ "model": "t-s-ohne",
+ "beginn": "2026-11-18T22:35:55",
+ "vorlauf_s": 45,
+ "phasen": {
+  "leer": {
+   "messpunkte": 40,
+   "usv_w": {
+    "mittel": 61.2,
+    "min": 59.0,
+    "max": 64.0
+   },
+   "karte_w": {
+    "mittel": 20.5,
+    "min": 20.0,
+    "max": 21.0
+   }
+  },
+  "geladen": {
+   "messpunkte": 40,
+   "usv_w": {
+    "mittel": 59.6,
+    "min": 58.0,
+    "max": 63.0
+   },
+   "karte_w": {
+    "mittel": 18.6,
+    "min": 17.0,
+    "max": 21.0
+   }
+  },
+  "schreiben": {
+   "messpunkte": 82,
+   "usv_w": {
+    "mittel": 396.2,
+    "min": 378.0,
+    "max": 409.0
+   },
+   "karte_w": {
+    "mittel": 235.2,
+    "min": 154.0,
+    "max": 277.0
+   },
+   "anfragen": 9,
+   "neu_token": 13500,
+   "schreib_s": 204.9,
+   "tps": 65.9,
+   "tps_je_anfrage": [
+    63.5,
+    64.8,
+    65.9,
+    66.5,
+    64.4,
+    66.0,
+    68.9,
+    67.0,
+    66.3
+   ],
+   "wh_je_1000_token_gesamt": 1.67,
+   "wh_je_1000_token_ueber_leerlauf": 1.412
+  },
+  "lesen": {
+   "messpunkte": 105,
+   "usv_w": {
+    "mittel": 413.3,
+    "min": 363.0,
+    "max": 496.0
+   },
+   "karte_w": {
+    "mittel": 269.6,
+    "min": 73.0,
+    "max": 326.0
+   },
+   "anfragen": 4,
+   "prompt_token": 335238,
+   "lese_s": 255.1,
+   "tps": 1314.2,
+   "wh_je_1000_token_gesamt": 0.087,
+   "wh_je_1000_token_ueber_leerlauf": 0.074
+  }
+ },
+ "messpunkte": [
+  {
+   "phase": "leer",
+   "t": 2.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 4.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 6.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 8.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 10.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 12.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 14.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 16.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 18.0,
+   "usv_w": 62.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 20.0,
+   "usv_w": 60.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 22.0,
+   "usv_w": 60.0,
+   "karte_w": 16.0
+  },
+  {
+   "phase": "leer",
+   "t": 24.0,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 26.0,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 28.0,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 30.0,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 32.0,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 34.0,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 36.0,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 38.0,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 40.1,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 42.1,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 44.1,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 46.1,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 48.1,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 50.1,
+   "usv_w": 60.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 52.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 54.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 56.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 58.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 60.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 62.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 64.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 66.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 68.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 70.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 72.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 74.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 76.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 78.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 80.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 82.1,
+   "usv_w": 64.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "leer",
+   "t": 84.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 86.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 88.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 90.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 92.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 94.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 96.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 98.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 100.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 102.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 104.1,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 106.2,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 108.2,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 110.2,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 112.2,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 114.2,
+   "usv_w": 59.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 116.2,
+   "usv_w": 60.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 118.2,
+   "usv_w": 60.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 120.2,
+   "usv_w": 60.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 122.2,
+   "usv_w": 60.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 124.2,
+   "usv_w": 60.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 126.2,
+   "usv_w": 60.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "leer",
+   "t": 128.2,
+   "usv_w": 60.0,
+   "karte_w": 33.0
+  },
+  {
+   "phase": "leer",
+   "t": 130.2,
+   "usv_w": 60.0,
+   "karte_w": 46.0
+  },
+  {
+   "phase": "leer",
+   "t": 132.2,
+   "usv_w": 60.0,
+   "karte_w": 39.0
+  },
+  {
+   "phase": "leer",
+   "t": 134.2,
+   "usv_w": 60.0,
+   "karte_w": 17.0
+  },
+  {
+   "phase": "leer",
+   "t": 136.2,
+   "usv_w": 60.0,
+   "karte_w": 42.0
+  },
+  {
+   "phase": "leer",
+   "t": 138.2,
+   "usv_w": 60.0,
+   "karte_w": 27.0
+  },
+  {
+   "phase": "leer",
+   "t": 140.2,
+   "usv_w": 60.0,
+   "karte_w": 87.0
+  },
+  {
+   "phase": "leer",
+   "t": 142.2,
+   "usv_w": 60.0,
+   "karte_w": 82.0
+  },
+  {
+   "phase": "leer",
+   "t": 144.2,
+   "usv_w": 60.0,
+   "karte_w": 101.0
+  },
+  {
+   "phase": "geladen",
+   "t": 2.2,
+   "usv_w": 91.0,
+   "karte_w": 48.0
+  },
+  {
+   "phase": "geladen",
+   "t": 4.2,
+   "usv_w": 91.0,
+   "karte_w": 31.0
+  },
+  {
+   "phase": "geladen",
+   "t": 6.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 8.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 10.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 12.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 14.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 16.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 18.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 20.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 22.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 24.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 26.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 28.2,
+   "usv_w": 91.0,
+   "karte_w": 20.0
+  },
+  {
+   "phase": "geladen",
+   "t": 30.2,
+   "usv_w": 91.0,
+   "karte_w": 23.0
+  },
+  {
+   "phase": "geladen",
+   "t": 32.2,
+   "usv_w": 91.0,
+   "karte_w": 23.0
+  },
+  {
+   "phase": "geladen",
+   "t": 34.2,
+   "usv_w": 63.0,
+   "karte_w": 23.0
+  },
+  {
+   "phase": "geladen",
+   "t": 36.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 38.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 40.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 42.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 44.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 46.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 48.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 50.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 52.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 54.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 56.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 58.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 60.3,
+   "usv_w": 63.0,
+   "karte_w": 21.0
+  },
+  {
+   "phase": "geladen",
+   "t": 62.3,
+   "usv_w": 63.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 64.3,
+   "usv_w": 63.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 66.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 68.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 70.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 72.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 74.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 76.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 78.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 80.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 82.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 84.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 86.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 88.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 90.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 92.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 94.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 96.3,
+   "usv_w": 58.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 98.3,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 100.3,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 102.3,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 104.3,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 106.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 108.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 110.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 112.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 114.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 116.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 118.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 120.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 122.4,
+   "usv_w": 59.0,
+   "karte_w": 18.0
+  },
+  {
+   "phase": "geladen",
+   "t": 124.4,
+   "usv_w": 59.0,
+   "karte_w": 17.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 1.4,
+   "usv_w": 59.0,
+   "karte_w": 193.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 3.4,
+   "usv_w": 59.0,
+   "karte_w": 211.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 5.4,
+   "usv_w": 375.0,
+   "karte_w": 220.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 7.4,
+   "usv_w": 375.0,
+   "karte_w": 233.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 9.4,
+   "usv_w": 375.0,
+   "karte_w": 230.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 11.4,
+   "usv_w": 375.0,
+   "karte_w": 225.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 13.4,
+   "usv_w": 375.0,
+   "karte_w": 229.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 15.4,
+   "usv_w": 375.0,
+   "karte_w": 239.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 17.4,
+   "usv_w": 375.0,
+   "karte_w": 238.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 19.4,
+   "usv_w": 375.0,
+   "karte_w": 225.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 21.4,
+   "usv_w": 375.0,
+   "karte_w": 231.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 23.4,
+   "usv_w": 375.0,
+   "karte_w": 238.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 25.4,
+   "usv_w": 375.0,
+   "karte_w": 216.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 27.4,
+   "usv_w": 375.0,
+   "karte_w": 221.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 29.4,
+   "usv_w": 375.0,
+   "karte_w": 237.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 31.5,
+   "usv_w": 375.0,
+   "karte_w": 237.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 33.5,
+   "usv_w": 375.0,
+   "karte_w": 248.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 35.5,
+   "usv_w": 375.0,
+   "karte_w": 228.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 37.5,
+   "usv_w": 406.0,
+   "karte_w": 234.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 39.5,
+   "usv_w": 406.0,
+   "karte_w": 225.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 41.5,
+   "usv_w": 406.0,
+   "karte_w": 234.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 43.5,
+   "usv_w": 406.0,
+   "karte_w": 249.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 45.5,
+   "usv_w": 406.0,
+   "karte_w": 235.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 47.5,
+   "usv_w": 406.0,
+   "karte_w": 236.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 49.5,
+   "usv_w": 406.0,
+   "karte_w": 230.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 51.5,
+   "usv_w": 406.0,
+   "karte_w": 230.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 53.5,
+   "usv_w": 406.0,
+   "karte_w": 227.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 55.5,
+   "usv_w": 406.0,
+   "karte_w": 239.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 57.5,
+   "usv_w": 406.0,
+   "karte_w": 232.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 59.5,
+   "usv_w": 406.0,
+   "karte_w": 227.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 61.5,
+   "usv_w": 406.0,
+   "karte_w": 226.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 63.5,
+   "usv_w": 406.0,
+   "karte_w": 241.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 65.6,
+   "usv_w": 406.0,
+   "karte_w": 236.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 67.6,
+   "usv_w": 406.0,
+   "karte_w": 234.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 69.6,
+   "usv_w": 409.0,
+   "karte_w": 234.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 71.6,
+   "usv_w": 409.0,
+   "karte_w": 205.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 73.6,
+   "usv_w": 409.0,
+   "karte_w": 235.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 75.6,
+   "usv_w": 409.0,
+   "karte_w": 234.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 77.6,
+   "usv_w": 409.0,
+   "karte_w": 230.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 79.6,
+   "usv_w": 409.0,
+   "karte_w": 246.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 81.6,
+   "usv_w": 409.0,
+   "karte_w": 235.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 83.6,
+   "usv_w": 409.0,
+   "karte_w": 237.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 85.6,
+   "usv_w": 409.0,
+   "karte_w": 245.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 87.6,
+   "usv_w": 409.0,
+   "karte_w": 236.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 89.6,
+   "usv_w": 409.0,
+   "karte_w": 240.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 91.6,
+   "usv_w": 409.0,
+   "karte_w": 228.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 93.6,
+   "usv_w": 409.0,
+   "karte_w": 237.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 95.6,
+   "usv_w": 409.0,
+   "karte_w": 233.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 97.6,
+   "usv_w": 409.0,
+   "karte_w": 219.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 99.6,
+   "usv_w": 409.0,
+   "karte_w": 238.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 101.6,
+   "usv_w": 395.0,
+   "karte_w": 240.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 103.6,
+   "usv_w": 395.0,
+   "karte_w": 230.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 105.6,
+   "usv_w": 395.0,
+   "karte_w": 239.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 107.6,
+   "usv_w": 395.0,
+   "karte_w": 245.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 109.7,
+   "usv_w": 395.0,
+   "karte_w": 234.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 111.7,
+   "usv_w": 395.0,
+   "karte_w": 241.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 113.7,
+   "usv_w": 395.0,
+   "karte_w": 237.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 115.7,
+   "usv_w": 395.0,
+   "karte_w": 241.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 117.7,
+   "usv_w": 395.0,
+   "karte_w": 154.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 119.7,
+   "usv_w": 395.0,
+   "karte_w": 247.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 121.7,
+   "usv_w": 395.0,
+   "karte_w": 208.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 123.7,
+   "usv_w": 395.0,
+   "karte_w": 207.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 125.7,
+   "usv_w": 395.0,
+   "karte_w": 277.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 127.7,
+   "usv_w": 395.0,
+   "karte_w": 246.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 129.7,
+   "usv_w": 395.0,
+   "karte_w": 250.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 131.7,
+   "usv_w": 395.0,
+   "karte_w": 257.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 133.7,
+   "usv_w": 393.0,
+   "karte_w": 255.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 135.7,
+   "usv_w": 393.0,
+   "karte_w": 260.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 137.7,
+   "usv_w": 393.0,
+   "karte_w": 254.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 139.7,
+   "usv_w": 393.0,
+   "karte_w": 246.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 141.7,
+   "usv_w": 393.0,
+   "karte_w": 256.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 143.7,
+   "usv_w": 393.0,
+   "karte_w": 243.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 145.7,
+   "usv_w": 393.0,
+   "karte_w": 253.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 147.7,
+   "usv_w": 393.0,
+   "karte_w": 260.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 149.7,
+   "usv_w": 393.0,
+   "karte_w": 261.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 151.8,
+   "usv_w": 393.0,
+   "karte_w": 243.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 153.8,
+   "usv_w": 393.0,
+   "karte_w": 193.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 155.8,
+   "usv_w": 393.0,
+   "karte_w": 228.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 157.8,
+   "usv_w": 393.0,
+   "karte_w": 244.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 159.8,
+   "usv_w": 393.0,
+   "karte_w": 247.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 161.8,
+   "usv_w": 393.0,
+   "karte_w": 259.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 163.8,
+   "usv_w": 393.0,
+   "karte_w": 178.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 165.8,
+   "usv_w": 378.0,
+   "karte_w": 239.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 167.8,
+   "usv_w": 378.0,
+   "karte_w": 221.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 169.8,
+   "usv_w": 378.0,
+   "karte_w": 256.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 171.8,
+   "usv_w": 378.0,
+   "karte_w": 196.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 173.8,
+   "usv_w": 378.0,
+   "karte_w": 191.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 175.8,
+   "usv_w": 378.0,
+   "karte_w": 255.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 177.8,
+   "usv_w": 378.0,
+   "karte_w": 249.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 179.8,
+   "usv_w": 378.0,
+   "karte_w": 237.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 181.8,
+   "usv_w": 378.0,
+   "karte_w": 250.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 183.9,
+   "usv_w": 378.0,
+   "karte_w": 214.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 185.9,
+   "usv_w": 378.0,
+   "karte_w": 255.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 187.9,
+   "usv_w": 378.0,
+   "karte_w": 217.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 189.9,
+   "usv_w": 378.0,
+   "karte_w": 251.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 191.9,
+   "usv_w": 378.0,
+   "karte_w": 236.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 193.9,
+   "usv_w": 378.0,
+   "karte_w": 261.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 195.9,
+   "usv_w": 378.0,
+   "karte_w": 220.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 197.9,
+   "usv_w": 403.0,
+   "karte_w": 257.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 199.9,
+   "usv_w": 403.0,
+   "karte_w": 209.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 201.9,
+   "usv_w": 403.0,
+   "karte_w": 245.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 203.9,
+   "usv_w": 403.0,
+   "karte_w": 218.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 205.9,
+   "usv_w": 403.0,
+   "karte_w": 215.0
+  },
+  {
+   "phase": "schreiben",
+   "t": 207.9,
+   "usv_w": 403.0,
+   "karte_w": 238.0
+  },
+  {
+   "phase": "lesen",
+   "t": 0.9,
+   "usv_w": 403.0,
+   "karte_w": 341.0
+  },
+  {
+   "phase": "lesen",
+   "t": 2.9,
+   "usv_w": 403.0,
+   "karte_w": 244.0
+  },
+  {
+   "phase": "lesen",
+   "t": 4.9,
+   "usv_w": 403.0,
+   "karte_w": 311.0
+  },
+  {
+   "phase": "lesen",
+   "t": 6.9,
+   "usv_w": 403.0,
+   "karte_w": 211.0
+  },
+  {
+   "phase": "lesen",
+   "t": 9.1,
+   "usv_w": 403.0,
+   "karte_w": 227.0
+  },
+  {
+   "phase": "lesen",
+   "t": 11.1,
+   "usv_w": 403.0,
+   "karte_w": 276.0
+  },
+  {
+   "phase": "lesen",
+   "t": 13.1,
+   "usv_w": 403.0,
+   "karte_w": 317.0
+  },
+  {
+   "phase": "lesen",
+   "t": 15.1,
+   "usv_w": 403.0,
+   "karte_w": 215.0
+  },
+  {
+   "phase": "lesen",
+   "t": 17.1,
+   "usv_w": 403.0,
+   "karte_w": 263.0
+  },
+  {
+   "phase": "lesen",
+   "t": 19.1,
+   "usv_w": 403.0,
+   "karte_w": 297.0
+  },
+  {
+   "phase": "lesen",
+   "t": 21.1,
+   "usv_w": 422.0,
+   "karte_w": 241.0
+  },
+  {
+   "phase": "lesen",
+   "t": 23.1,
+   "usv_w": 422.0,
+   "karte_w": 344.0
+  },
+  {
+   "phase": "lesen",
+   "t": 25.1,
+   "usv_w": 422.0,
+   "karte_w": 226.0
+  },
+  {
+   "phase": "lesen",
+   "t": 27.1,
+   "usv_w": 422.0,
+   "karte_w": 213.0
+  },
+  {
+   "phase": "lesen",
+   "t": 29.1,
+   "usv_w": 422.0,
+   "karte_w": 325.0
+  },
+  {
+   "phase": "lesen",
+   "t": 31.1,
+   "usv_w": 422.0,
+   "karte_w": 226.0
+  },
+  {
+   "phase": "lesen",
+   "t": 33.1,
+   "usv_w": 422.0,
+   "karte_w": 247.0
+  },
+  {
+   "phase": "lesen",
+   "t": 35.1,
+   "usv_w": 422.0,
+   "karte_w": 308.0
+  },
+  {
+   "phase": "lesen",
+   "t": 37.1,
+   "usv_w": 422.0,
+   "karte_w": 271.0
+  },
+  {
+   "phase": "lesen",
+   "t": 39.1,
+   "usv_w": 422.0,
+   "karte_w": 306.0
+  },
+  {
+   "phase": "lesen",
+   "t": 41.1,
+   "usv_w": 422.0,
+   "karte_w": 248.0
+  },
+  {
+   "phase": "lesen",
+   "t": 43.1,
+   "usv_w": 422.0,
+   "karte_w": 285.0
+  },
+  {
+   "phase": "lesen",
+   "t": 45.1,
+   "usv_w": 422.0,
+   "karte_w": 254.0
+  },
+  {
+   "phase": "lesen",
+   "t": 47.1,
+   "usv_w": 422.0,
+   "karte_w": 292.0
+  },
+  {
+   "phase": "lesen",
+   "t": 49.1,
+   "usv_w": 422.0,
+   "karte_w": 307.0
+  },
+  {
+   "phase": "lesen",
+   "t": 51.1,
+   "usv_w": 422.0,
+   "karte_w": 318.0
+  },
+  {
+   "phase": "lesen",
+   "t": 53.1,
+   "usv_w": 381.0,
+   "karte_w": 311.0
+  },
+  {
+   "phase": "lesen",
+   "t": 55.1,
+   "usv_w": 381.0,
+   "karte_w": 292.0
+  },
+  {
+   "phase": "lesen",
+   "t": 57.2,
+   "usv_w": 381.0,
+   "karte_w": 322.0
+  },
+  {
+   "phase": "lesen",
+   "t": 59.2,
+   "usv_w": 381.0,
+   "karte_w": 271.0
+  },
+  {
+   "phase": "lesen",
+   "t": 61.2,
+   "usv_w": 381.0,
+   "karte_w": 238.0
+  },
+  {
+   "phase": "lesen",
+   "t": 63.2,
+   "usv_w": 381.0,
+   "karte_w": 73.0
+  },
+  {
+   "phase": "lesen",
+   "t": 65.2,
+   "usv_w": 381.0,
+   "karte_w": 268.0
+  },
+  {
+   "phase": "lesen",
+   "t": 67.2,
+   "usv_w": 381.0,
+   "karte_w": 271.0
+  },
+  {
+   "phase": "lesen",
+   "t": 69.2,
+   "usv_w": 381.0,
+   "karte_w": 250.0
+  },
+  {
+   "phase": "lesen",
+   "t": 71.2,
+   "usv_w": 381.0,
+   "karte_w": 302.0
+  },
+  {
+   "phase": "lesen",
+   "t": 73.2,
+   "usv_w": 381.0,
+   "karte_w": 238.0
+  },
+  {
+   "phase": "lesen",
+   "t": 75.2,
+   "usv_w": 381.0,
+   "karte_w": 246.0
+  },
+  {
+   "phase": "lesen",
+   "t": 77.2,
+   "usv_w": 381.0,
+   "karte_w": 228.0
+  },
+  {
+   "phase": "lesen",
+   "t": 79.2,
+   "usv_w": 381.0,
+   "karte_w": 244.0
+  },
+  {
+   "phase": "lesen",
+   "t": 81.2,
+   "usv_w": 381.0,
+   "karte_w": 308.0
+  },
+  {
+   "phase": "lesen",
+   "t": 83.2,
+   "usv_w": 381.0,
+   "karte_w": 231.0
+  },
+  {
+   "phase": "lesen",
+   "t": 85.2,
+   "usv_w": 425.0,
+   "karte_w": 252.0
+  },
+  {
+   "phase": "lesen",
+   "t": 87.2,
+   "usv_w": 425.0,
+   "karte_w": 307.0
+  },
+  {
+   "phase": "lesen",
+   "t": 89.2,
+   "usv_w": 425.0,
+   "karte_w": 225.0
+  },
+  {
+   "phase": "lesen",
+   "t": 91.2,
+   "usv_w": 425.0,
+   "karte_w": 273.0
+  },
+  {
+   "phase": "lesen",
+   "t": 93.2,
+   "usv_w": 425.0,
+   "karte_w": 304.0
+  },
+  {
+   "phase": "lesen",
+   "t": 95.2,
+   "usv_w": 425.0,
+   "karte_w": 298.0
+  },
+  {
+   "phase": "lesen",
+   "t": 97.2,
+   "usv_w": 425.0,
+   "karte_w": 319.0
+  },
+  {
+   "phase": "lesen",
+   "t": 99.2,
+   "usv_w": 425.0,
+   "karte_w": 287.0
+  },
+  {
+   "phase": "lesen",
+   "t": 101.2,
+   "usv_w": 425.0,
+   "karte_w": 278.0
+  },
+  {
+   "phase": "lesen",
+   "t": 103.2,
+   "usv_w": 425.0,
+   "karte_w": 312.0
+  },
+  {
+   "phase": "lesen",
+   "t": 105.2,
+   "usv_w": 425.0,
+   "karte_w": 236.0
+  },
+  {
+   "phase": "lesen",
+   "t": 107.2,
+   "usv_w": 425.0,
+   "karte_w": 241.0
+  },
+  {
+   "phase": "lesen",
+   "t": 109.2,
+   "usv_w": 425.0,
+   "karte_w": 326.0
+  },
+  {
+   "phase": "lesen",
+   "t": 111.2,
+   "usv_w": 425.0,
+   "karte_w": 255.0
+  },
+  {
+   "phase": "lesen",
+   "t": 113.2,
+   "usv_w": 425.0,
+   "karte_w": 254.0
+  },
+  {
+   "phase": "lesen",
+   "t": 115.2,
+   "usv_w": 425.0,
+   "karte_w": 299.0
+  },
+  {
+   "phase": "lesen",
+   "t": 117.3,
+   "usv_w": 464.0,
+   "karte_w": 285.0
+  },
+  {
+   "phase": "lesen",
+   "t": 119.3,
+   "usv_w": 464.0,
+   "karte_w": 251.0
+  },
+  {
+   "phase": "lesen",
+   "t": 121.3,
+   "usv_w": 464.0,
+   "karte_w": 314.0
+  },
+  {
+   "phase": "lesen",
+   "t": 123.3,
+   "usv_w": 464.0,
+   "karte_w": 307.0
+  },
+  {
+   "phase": "lesen",
+   "t": 125.3,
+   "usv_w": 464.0,
+   "karte_w": 268.0
+  },
+  {
+   "phase": "lesen",
+   "t": 127.3,
+   "usv_w": 464.0,
+   "karte_w": 98.0
+  },
+  {
+   "phase": "lesen",
+   "t": 129.7,
+   "usv_w": 464.0,
+   "karte_w": 308.0
+  },
+  {
+   "phase": "lesen",
+   "t": 131.7,
+   "usv_w": 464.0,
+   "karte_w": 246.0
+  },
+  {
+   "phase": "lesen",
+   "t": 133.7,
+   "usv_w": 464.0,
+   "karte_w": 264.0
+  },
+  {
+   "phase": "lesen",
+   "t": 135.7,
+   "usv_w": 464.0,
+   "karte_w": 260.0
+  },
+  {
+   "phase": "lesen",
+   "t": 137.7,
+   "usv_w": 464.0,
+   "karte_w": 265.0
+  },
+  {
+   "phase": "lesen",
+   "t": 139.7,
+   "usv_w": 464.0,
+   "karte_w": 284.0
+  },
+  {
+   "phase": "lesen",
+   "t": 141.7,
+   "usv_w": 464.0,
+   "karte_w": 283.0
+  },
+  {
+   "phase": "lesen",
+   "t": 143.7,
+   "usv_w": 464.0,
+   "karte_w": 278.0
+  },
+  {
+   "phase": "lesen",
+   "t": 145.7,
+   "usv_w": 464.0,
+   "karte_w": 278.0
+  },
+  {
+   "phase": "lesen",
+   "t": 147.7,
+   "usv_w": 464.0,
+   "karte_w": 273.0
+  },
+  {
+   "phase": "lesen",
+   "t": 149.7,
+   "usv_w": 363.0,
+   "karte_w": 254.0
+  },
+  {
+   "phase": "lesen",
+   "t": 151.7,
+   "usv_w": 363.0,
+   "karte_w": 294.0
+  },
+  {
+   "phase": "lesen",
+   "t": 153.7,
+   "usv_w": 363.0,
+   "karte_w": 271.0
+  },
+  {
+   "phase": "lesen",
+   "t": 155.7,
+   "usv_w": 363.0,
+   "karte_w": 325.0
+  },
+  {
+   "phase": "lesen",
+   "t": 157.7,
+   "usv_w": 363.0,
+   "karte_w": 267.0
+  },
+  {
+   "phase": "lesen",
+   "t": 159.7,
+   "usv_w": 363.0,
+   "karte_w": 281.0
+  },
+  {
+   "phase": "lesen",
+   "t": 161.7,
+   "usv_w": 363.0,
+   "karte_w": 281.0
+  },
+  {
+   "phase": "lesen",
+   "t": 163.7,
+   "usv_w": 363.0,
+   "karte_w": 276.0
+  },
+  {
+   "phase": "lesen",
+   "t": 165.7,
+   "usv_w": 363.0,
+   "karte_w": 95.0
+  },
+  {
+   "phase": "lesen",
+   "t": 167.9,
+   "usv_w": 363.0,
+   "karte_w": 291.0
+  },
+  {
+   "phase": "lesen",
+   "t": 169.9,
+   "usv_w": 363.0,
+   "karte_w": 278.0
+  },
+  {
+   "phase": "lesen",
+   "t": 172.0,
+   "usv_w": 363.0,
+   "karte_w": 276.0
+  },
+  {
+   "phase": "lesen",
+   "t": 174.0,
+   "usv_w": 363.0,
+   "karte_w": 273.0
+  },
+  {
+   "phase": "lesen",
+   "t": 176.0,
+   "usv_w": 363.0,
+   "karte_w": 282.0
+  },
+  {
+   "phase": "lesen",
+   "t": 178.0,
+   "usv_w": 363.0,
+   "karte_w": 282.0
+  },
+  {
+   "phase": "lesen",
+   "t": 180.0,
+   "usv_w": 363.0,
+   "karte_w": 287.0
+  },
+  {
+   "phase": "lesen",
+   "t": 182.0,
+   "usv_w": 444.0,
+   "karte_w": 278.0
+  },
+  {
+   "phase": "lesen",
+   "t": 184.0,
+   "usv_w": 444.0,
+   "karte_w": 284.0
+  },
+  {
+   "phase": "lesen",
+   "t": 186.0,
+   "usv_w": 444.0,
+   "karte_w": 310.0
+  },
+  {
+   "phase": "lesen",
+   "t": 188.0,
+   "usv_w": 444.0,
+   "karte_w": 267.0
+  },
+  {
+   "phase": "lesen",
+   "t": 190.0,
+   "usv_w": 444.0,
+   "karte_w": 273.0
+  },
+  {
+   "phase": "lesen",
+   "t": 192.0,
+   "usv_w": 444.0,
+   "karte_w": 141.0
+  },
+  {
+   "phase": "lesen",
+   "t": 194.0,
+   "usv_w": 444.0,
+   "karte_w": 305.0
+  },
+  {
+   "phase": "lesen",
+   "t": 196.0,
+   "usv_w": 444.0,
+   "karte_w": 260.0
+  },
+  {
+   "phase": "lesen",
+   "t": 198.0,
+   "usv_w": 444.0,
+   "karte_w": 255.0
+  },
+  {
+   "phase": "lesen",
+   "t": 200.0,
+   "usv_w": 444.0,
+   "karte_w": 277.0
+  },
+  {
+   "phase": "lesen",
+   "t": 202.0,
+   "usv_w": 444.0,
+   "karte_w": 274.0
+  },
+  {
+   "phase": "lesen",
+   "t": 204.0,
+   "usv_w": 444.0,
+   "karte_w": 287.0
+  },
+  {
+   "phase": "lesen",
+   "t": 206.0,
+   "usv_w": 444.0,
+   "karte_w": 281.0
+  },
+  {
+   "phase": "lesen",
+   "t": 208.0,
+   "usv_w": 444.0,
+   "karte_w": 268.0
+  },
+  {
+   "phase": "lesen",
+   "t": 210.0,
+   "usv_w": 444.0,
+   "karte_w": 280.0
+  },
+  {
+   "phase": "lesen",
+   "t": 212.0,
+   "usv_w": 444.0,
+   "karte_w": 262.0
+  },
+  {
+   "phase": "lesen",
+   "t": 214.0,
+   "usv_w": 375.0,
+   "karte_w": 257.0
+  },
+  {
+   "phase": "lesen",
+   "t": 216.0,
+   "usv_w": 375.0,
+   "karte_w": 270.0
+  },
+  {
+   "phase": "lesen",
+   "t": 218.0,
+   "usv_w": 375.0,
+   "karte_w": 253.0
+  },
+  {
+   "phase": "lesen",
+   "t": 220.0,
+   "usv_w": 375.0,
+   "karte_w": 268.0
+  },
+  {
+   "phase": "lesen",
+   "t": 222.0,
+   "usv_w": 375.0,
+   "karte_w": 134.0
+  },
+  {
+   "phase": "lesen",
+   "t": 224.0,
+   "usv_w": 375.0,
+   "karte_w": 263.0
+  },
+  {
+   "phase": "lesen",
+   "t": 226.0,
+   "usv_w": 375.0,
+   "karte_w": 281.0
+  },
+  {
+   "phase": "lesen",
+   "t": 228.0,
+   "usv_w": 375.0,
+   "karte_w": 261.0
+  },
+  {
+   "phase": "lesen",
+   "t": 230.0,
+   "usv_w": 375.0,
+   "karte_w": 279.0
+  },
+  {
+   "phase": "lesen",
+   "t": 232.1,
+   "usv_w": 375.0,
+   "karte_w": 306.0
+  },
+  {
+   "phase": "lesen",
+   "t": 234.1,
+   "usv_w": 375.0,
+   "karte_w": 274.0
+  },
+  {
+   "phase": "lesen",
+   "t": 236.1,
+   "usv_w": 375.0,
+   "karte_w": 280.0
+  },
+  {
+   "phase": "lesen",
+   "t": 238.1,
+   "usv_w": 375.0,
+   "karte_w": 288.0
+  },
+  {
+   "phase": "lesen",
+   "t": 240.1,
+   "usv_w": 375.0,
+   "karte_w": 284.0
+  },
+  {
+   "phase": "lesen",
+   "t": 242.1,
+   "usv_w": 375.0,
+   "karte_w": 277.0
+  },
+  {
+   "phase": "lesen",
+   "t": 244.1,
+   "usv_w": 375.0,
+   "karte_w": 278.0
+  },
+  {
+   "phase": "lesen",
+   "t": 246.1,
+   "usv_w": 496.0,
+   "karte_w": 284.0
+  },
+  {
+   "phase": "lesen",
+   "t": 248.1,
+   "usv_w": 496.0,
+   "karte_w": 288.0
+  },
+  {
+   "phase": "lesen",
+   "t": 250.1,
+   "usv_w": 496.0,
+   "karte_w": 302.0
+  },
+  {
+   "phase": "lesen",
+   "t": 252.1,
+   "usv_w": 496.0,
+   "karte_w": 294.0
+  },
+  {
+   "phase": "lesen",
+   "t": 254.1,
+   "usv_w": 496.0,
+   "karte_w": 279.0
+  }
+ ]
+}

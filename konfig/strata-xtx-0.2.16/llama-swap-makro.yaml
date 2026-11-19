@@ -1,0 +1,36 @@
+# Eigenbau strata-xtx auf Strata 0.2.16 (so läuft es hier seit 19.11.2026; vom 18. bis 19.11. derselbe Eigenbau auf 0.2.15).
+# Engine und Server: mit xtx_bauen.py aus https://github.com/faf-net/strata-xtx gebaut, Ausgabe <ausgabe>/engine und <ausgabe>/control.
+# Die Laufkonfigurationen sind die seit 0.2.3.1 ohne die 28 Umgebungsschalter: im "env" steht nur noch die hipBLASLt-Tabelle.
+# Was das Einlesen beschleunigt, schaltet die Engine auf einer RX 7900 XTX / XT selbst ein (STRATA_GFX1100_DEFAULTS=0 schaltet es ab).
+# faber nutzt --kv-resident 32768 und einen Gesprächs-Cache von 4 Plätzen / 9.216 MiB; das braucht 64 GB RAM.
+
+macros:
+  strataxtx0216: >-
+    docker run --rm --name ls-${MODEL_ID} --network host
+    --device /dev/kfd --device /dev/dri --group-add 44 --group-add 105
+    --security-opt seccomp=unconfined --ipc host --ulimit memlock=-1 --ulimit stack=67108864
+    -v /pfad/zu/strata-data:/strata/data
+    -v /pfad/zu/konfig/strata-xtx-0.2.16:/strata/konfig
+    -v /pfad/zu/ausgabe/engine:/opt/engine -v /pfad/zu/ausgabe/control:/opt/strata
+    -e STRATA_ENGINE=/opt/engine/strata -w /opt/strata strata-hip:v0.1.45
+    /opt/strata/python/bin/python3 serve/server.py --engine strata --port ${PORT} --config
+
+models:
+  faber:
+    name: "Flash-Next 125B (strata-xtx auf Strata 0.2.16, IQ3_XXS)"
+    aliases: [arbeit]
+    cmd: ${strataxtx0216} /strata/konfig/faber.json
+    cmdStop: docker stop -t 80 ls-${MODEL_ID}
+    proxy: http://127.0.0.1:${PORT}
+    checkEndpoint: /health
+    ttl: 1800
+
+  # liber ist das unzensierte Modell: dieselben Gewichte wie faber, ein Steuervektor entfernt die Ablehnungen (siehe docs/steuervektor.de.md).
+  # Die Vektordatei ist nicht Teil dieses Repos; sie wird unter /strata/data/vektor/ erwartet.
+  liber:
+    name: "Flash-Next 125B unzensiert (strata-xtx auf Strata 0.2.16, IQ3_XXS)"
+    cmd: ${strataxtx0216} /strata/konfig/liber.json
+    cmdStop: docker stop -t 80 ls-${MODEL_ID}
+    proxy: http://127.0.0.1:${PORT}
+    checkEndpoint: /health
+    ttl: 1800

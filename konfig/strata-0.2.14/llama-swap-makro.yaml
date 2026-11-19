@@ -1,4 +1,4 @@
-# Strata 0.2.14 aus den fertigen Release-Paketen (so läuft es hier seit 16.11.2026; vorher 0.2.8 bis 0.2.12).
+# Strata 0.2.14 aus den fertigen Release-Paketen (so lief es hier vom 16. bis 18.11.2026, vorher 0.2.8 bis 0.2.12; velox läuft weiter so. Heutiger Stand für faber und liber: konfig/strata-xtx-0.2.16/).
 # Engine:  strata-engine-0.1.60-linux-x86_64-hip-rx7900.tar.gz   → /pfad/zu/0.2.14/engine
 # Server:  strata-control-0.1.60-linux-x86_64.tar.gz            → /pfad/zu/0.2.14/control
 # Beide Archive gegen SHA256SUMS.txt des Releases prüfen (sha256sum -c --ignore-missing) und ohne --strip-components entpacken.

@@ -2,7 +2,7 @@
 
 The fork [`nicejunjie/Strata-rdna3`](https://github.com/nicejunjie/Strata-rdna3) tunes Strata for RDNA3 cards and ships a run config for one RX 7900 XTX (`rdna3/configs/iq3-1gpu.json`). Most of what that config does is set environment variables. I wanted to know how much of it works **without the fork**, on the prebuilt engine I already run: Strata 0.2.14 (engine and control 0.1.60, `hip-rx7900`).
 
-Of the 46 variables in the fork's config, the names of 30 are present in the stock 0.1.60 engine binary; 28 of them are switches I could set as they stand (`run-config.json`). The other 16 exist only in the fork and are left out. So this is a test of 28 undocumented environment variables on a stock engine, not a test of the fork.
+Of the 46 variables in the fork's config, the names of 30 are present in the stock 0.1.60 engine binary; 28 of them are switches I could set as they stand (`run-config.json`). The other 16 exist only in the fork and are left out. So this is a test of 28 opt-in environment variables on a stock engine, not a test of the fork.
 
 Same model and run config as in production otherwise: Flash-Next IQ3_XXS native pack, MTP `rt`, `--max-context 262144 --kv int8 --kv-resident 32768 --spec 4 --vram-reserve-mib 832 --pcie-frac 0`, conversation cache 4 slots / 9,216 MiB. "Quiet" is my everyday card profile (core clock capped at 2,800 MHz, −100 mV), "max" is stock. The NAS services were running throughout; only my agent was paused where noted.
 
@@ -134,4 +134,4 @@ Both models run with the 28 switches since 18 Nov 2026. The acceptance run right
 - With the debug switch, a 128,496-token prompt drove the NAS's available memory to zero for over a minute (78 s below 0.25 GiB, about 0.8 GiB swapped, nothing killed). Without the debug switch that does not happen up to 250,000 tokens (section above).
 - The endurance run, the task set and the idle figures are from the plain model only. One card. Which of the 28 switches carry the gain, I have not taken apart.
 
-These are environment variables of a stock engine that Strata does not document. A later release may drop or change any of them without notice.
+These are environment variables of a stock engine. Strata's own documentation describes 16 of them and keeps them off on this card generation on purpose (the rounding changes); 12 are described nowhere. A later release may drop or change any of them without notice.

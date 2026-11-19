@@ -6,19 +6,42 @@ In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modell
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
+## Nachtrag 19.11.2026: Strata 0.2.16 bringt hier kein Tempo, der Eigenbau läuft jetzt darauf
+
+Engine und Control 0.1.62. Die Version bringt Stratas eigenen Engine-Code (ohne ggml), eine neue Ordnerstruktur (`engine/`, `terminal/`, `tools/`) und ein offizielles Bauskript (`tools/packaging/build_hip_linux.sh`). Die Voreinstellungen für gfx1100 sind im Release unverändert: Die Schalter für das Einlesen bleiben auf dieser Karte ausgeschaltet. Deshalb habe ich zweierlei gemessen, das unveränderte Release und meinen Eigenbau [strata-xtx](https://github.com/faf-net/strata-xtx) auf derselben Basis.
+
+| Median | Release 0.2.16 | Vergleich |
+|---|---:|---:|
+| verschränkte Paare, gleiche Sitzung: Schreiben, Token/s | 61,4 | 59,8 (Release 0.2.15) |
+| `strata_bench.py --long`, 3 Läufe im Wechsel: Prompt 4K / 16K / 32K, Token/s | 783 / 1.357 / 1.321 | 1.645 / 2.295 / 2.650 (Eigenbau auf 0.2.16) |
+| dieselben Läufe: Schreiben Chat / Agent, Token/s | 69,6 / 72,3 | 72,5 / 81,7 (Eigenbau auf 0.2.16) |
+| Prompt mit 250.000 Token, versteckte Zahl in der Mitte | 204,5 s | 87,6 s (Eigenbau, `faber`), 88,7 s (`liber`) |
+| Aufgabensatz `liber`, bestanden von 102 | 96 | 96 (Eigenbau auf 0.2.16) |
+
+- **Das Release ist auf dieser Karte so schnell wie 0.2.15.** Die Paare liegen beim Schreiben 1,6 Token/s auseinander, das ist die Streuung dieses Tests. Das Einlesen liegt dort, wo es seit 0.2.14 liegt.
+- **Der Eigenbau liest auf der neuen Basis weiter etwa doppelt so schnell.** Gemessen in denselben drei Läufen im Wechsel, jede Engine frisch geladen, die Reihenfolge je Runde gewechselt. Im vollen Kartenprofil (eine Runde) dasselbe Bild: 783 / 1.392 / 1.382 gegen 1.639 / 2.352 / 2.639 Token/s.
+- **Schreiben gleich bis leicht schneller.** In `strata_bench.py` lag der Eigenbau im Chat-Teil in allen drei Runden etwas über dem Release, im Agenten-Teil in zwei von drei. In den anderen Messreihen (Schreiben nach langem Prompt, Dauerschreiben) sehe ich keinen Unterschied.
+- **Nadeln:** Bei 32K und 128K in 10, 50 und 90 % Tiefe und bei 250K in der Mitte wurde die versteckte Zahl jedes Mal gefunden, auf dem Eigenbau mit beiden Modellen.
+- **Aufgabensatz:** `liber` besteht auf dem Release und auf dem Eigenbau je 96 von 102, `faber` auf dem Eigenbau 97. Sechs Aufgaben habe ich je fünfmal wiederholt, auf beiden Fassungen mit demselben Bild: Zwei besteht das Modell mal ja, mal nein, vier nie. Je nach Lauf sind es also 96 bis 98 (auf 0.2.15 waren es 98).
+- `standard-v1` ist für das Paket und für das Docker-Image gelaufen und liegt bei den Rohdaten.
+
+**Der Eigenbau.** Seit dem Abend des 18.11.2026 stehen die Schalter aus dem Nachtrag darunter nicht mehr in der Laufkonfiguration, sondern im Code: strata-xtx setzt sie auf einer einzelnen RX 7900 XTX unter Linux selbst (eine Tabelle mit 27 Schaltern; 26 davon setzt die Engine neu, einer ist im Release schon an). Zuerst lief er auf der Basis von 0.2.15, seit dem 19.11.2026 auf 0.2.16, für `liber` und `faber`. Vor der Umstellung auf die neue Basis habe ich neu geprüft: Tempo mit und ohne Tabelle, Tool-Call, Bildeingang und Steuervektor, den Aufgabensatz, einen Dauerlauf von 90 Minuten mit `liber` (1.232 Anfragen, kein Fehler, 176 von 176 versteckten Zahlen gefunden) und die Selbstrettung mit beiden Modellen (nach nicht-endlichen Werten aus Stratas Fehlerinjektion endet die auslösende Anfrage selbst mit einem Fehler, HTTP 503; der Server startet die Engine einmal ohne die Tabelle neu und beantwortet die folgenden Anfragen). Für den Bau waren die neue Ordnerstruktur und die Bauoptionen des offiziellen Skripts nachzuziehen. Das Einlesen ist auf beiden Basen gleich schnell.
+
+Rohdaten: `messen/daten/2026-11-19-strata-xtx-0.2.16/` (das Release unter `release-0.2.16/`, die Läufe im Wechsel unter `strata-bench-alternating/`).
+
 ## Nachtrag 18.11.2026: 0.2.14 mit 28 Umgebungsschaltern, Prompts doppelt so schnell eingelesen
 
-Keine neue Version, aber eine andere Laufkonfiguration: 28 Umgebungsvariablen aus der Konfiguration des Forks `nicejunjie/Strata-rdna3`, gesetzt auf der unveränderten Engine 0.1.60. `liber` und `faber` laufen seit dem 18.11.2026 damit, `velox` nicht.
+Keine neue Version, aber eine andere Laufkonfiguration: 28 Umgebungsvariablen aus der Konfiguration des Forks `nicejunjie/Strata-rdna3`, gesetzt auf der unveränderten Engine 0.1.60. `liber` und `faber` liefen am 18.11.2026 damit, `velox` nicht. Seit dem Abend desselben Tages stecken die Schalter im Eigenbau strata-xtx, und in der Laufkonfiguration steht keiner mehr (Nachtrag vom 19.11.).
 
 | Median, gedrosseltes Kartenprofil | ohne | mit Schaltern |
 |---|---|---|
-| Einlesen 4K / 16K / 58K | 789 / 1.406 / 1.341 | 1.632 / 2.365 / 3.048 tok/s |
-| Schreiben Chat / Agent | 65,6 / 75,8 | 72,5 / 82,4 tok/s |
+| Einlesen 4K / 16K / 58K | 789 / 1.406 / 1.341 | 1.632 / 2.365 / 3.048 T/s |
+| Schreiben Chat / Agent | 65,6 / 75,8 | 72,5 / 82,4 T/s |
 | 250.000 Token einlesen, `liber` / `faber` | 201 s / 205 s | 90 s / 87 s |
 | Aufgabensatz, bestanden von 102 (zwei Läufe) | 98 / 97 | 98 / 97 |
 | 90 Minuten Dauerlast | – | 1.232 Anfragen, kein Fehler |
 
-Die Schalter sind nicht dokumentiert. Ab jetzt prüft der Test jeder neuen Version zusätzlich, ob die Engine die 28 Namen noch kennt (`messen/schalter_pruefen.py`), und er prüft `liber` auf der neuen Engine. Messwerte, Grenzen und der Rückweg: [schalter.de.md](schalter.de.md). Rohdaten: `messen/daten/2026-11-18-rdna3-switches/`.
+Strata beschreibt 16 der 28 Schalter in der eigenen Dokumentation und lässt sie auf dieser Kartengeneration bewusst ausgeschaltet, weil sich die Rundung ändert; 12 sind nicht beschrieben. Seitdem prüft der Test jeder neuen Version zusätzlich `liber` auf der neuen Engine; ob eine Engine die 28 Namen noch kennt, sagt `messen/schalter_pruefen.py`. Messwerte, Grenzen und der Rückweg: [schalter.de.md](schalter.de.md). Rohdaten: `messen/daten/2026-11-18-rdna3-switches/`.
 
 ## Nachtrag 16.11.2026: Strata 0.2.15 ist hier gleich schnell, dieses NAS bleibt bei 0.2.14
 
@@ -33,7 +56,7 @@ Control 0.1.61 mit der Engine 0.1.60 `hip-rx7900`, also derselben Engine wie in 
 
 **Gleich schnell.** Die Paare liegen 0,1 Token/s auseinander. In den drei Läufen im Wechsel, jede Engine frisch geladen und die Reihenfolge je Runde gewechselt, ist das Einlesen auf den Token genau gleich, und das Schreiben liegt in der Streuung, die dieser Test auch bei gleicher Version zeigt. Die Paare messen kurze Antworten mit wenig vorhersehbarem Text, deshalb liegen sie bei 59 und nicht bei den 66 Token/s langer Antworten. `standard-v1` ist vollständig und besteht 12 von 12 Plausibilitätsprüfungen; 4K kam in diesem einen Lauf mit 747 Token/s, in den drei Läufen von `strata_bench.py` mit 786 wie bei 0.2.14. Mein kleiner Aufgabensatz (35 Aufgaben) besteht 34, 0.2.14 am selben Tag 35: Werkzeuge 20 von 20, Code 14 von 15, durchgefallen ist eine Code-Aufgabe, die zwischen Läufen kippt.
 
-Weil die Engine dieselbe ist und nichts schneller wird, bleibt dieses NAS bei 0.2.14. Rohdaten: `messen/daten/2026-11-16-v0.2.15/`. An Strata gemeldet als Kommentar in [#6056](https://github.com/Niko1221/Strata/issues/6056).
+Weil die Engine dieselbe ist und nichts schneller wird, blieb dieses NAS bei 0.2.14. Als Release lief 0.2.15 hier nie; vom 18. bis 19.11.2026 war es die Basis meines Eigenbaus strata-xtx (Nachtrag vom 19.11.). Rohdaten: `messen/daten/2026-11-16-v0.2.15/`. An Strata gemeldet als Kommentar in [#6056](https://github.com/Niko1221/Strata/issues/6056).
 
 ## Nachtrag 15./16.11.2026: Strata 0.2.14 liest lange Prompts schneller, seit 16.11. in Betrieb
 

@@ -2,7 +2,9 @@
 
 [English](schalter.md) · **Deutsch** · [← README](../README.de.md)
 
-Stand: 18.11.2026. Alle Zahlen sind auf diesem NAS gemessen: UGREEN iDX6011 Pro, 62 GB RAM, RX 7900 XTX im Dock, Strata 0.2.14 (Engine und Control 0.1.60, `hip-rx7900`), Flash-Next 125B IQ3_XXS.
+**Stand 19.11.2026:** Diese Seite ist die Herleitung, nicht mehr der Betrieb. Sie beschreibt die Messungen vom 17. und 18.11.2026, bei denen die Schalter als Umgebungsvariablen in der Laufkonfiguration des Release 0.2.14 standen. Seit dem Abend des 18.11.2026 stecken sie im Code meines Eigenbaus [strata-xtx](https://github.com/faf-net/strata-xtx), seit dem 19.11.2026 auf der Basis von Strata 0.2.16, und in der Laufkonfiguration steht keiner mehr (im `env` nur noch die hipBLASLt-Tabelle). Aus den 28 wurden im Eigenbau 27: `STRATA_PREFILL_AUTO_MAX` ist dort eine feste Regel für die Stückgröße bei `--prefill auto`, `GPU_MAX_HW_QUEUES` brachte nichts und entfiel, `STRATA_CVEC_FUSE` kam dazu. Der Eigenbau liest so schnell wie hier mit den Schaltern gemessen. Die rund 10 % beim Schreiben aus dieser Messnacht sind im Eigenbau nicht geblieben: Dort ist das Schreiben gleich bis leicht schneller als auf dem Release. Ob das Release 0.2.16 jeden der Namen noch kennt, habe ich nicht einzeln nachgeprüft; der Eigenbau liest darauf so schnell wie auf 0.2.15. Die Werte dazu stehen im [README](../README.de.md) und im [Nachtrag vom 19.11.](releases.de.md).
+
+Alle Zahlen auf dieser Seite sind auf diesem NAS gemessen: UGREEN iDX6011 Pro, 62 GB RAM, RX 7900 XTX im Dock, Strata 0.2.14 (Engine und Control 0.1.60, `hip-rx7900`), Flash-Next 125B IQ3_XXS.
 
 In Konfigurationen und Skripten heißen die Fassungen des Modells `liber` (die Variante mit Steuervektor, mein Arbeitsmodell für Chat und Agent), `faber` (das Original, Bezugsgröße für Messungen und Rückfall) und `velox` (kleinere Quantisierung, nur zum Messen).
 
@@ -12,7 +14,7 @@ Der Fork [`nicejunjie/Strata-rdna3`](https://github.com/nicejunjie/Strata-rdna3)
 
 Von den 46 Variablen der Fork-Konfiguration stehen 30 Namen auch in der Engine 0.1.60 von Strata 0.2.14. 28 davon sind Schalter, die ich so setzen konnte, wie sie dort stehen. Diese 28 stehen in [`konfig/strata-0.2.14/rdna3-schalter.json`](../konfig/strata-0.2.14/rdna3-schalter.json). Ich habe weder den Fork gebaut noch die Engine verändert, es kommen nur 28 Zeilen im Abschnitt `env` der Laufkonfiguration dazu.
 
-Seit dem 18.11.2026 laufen `liber` und `faber` hier mit diesen Schaltern.
+Am 18.11.2026 liefen `liber` und `faber` hier mit diesen Schaltern in der Laufkonfiguration; am Abend desselben Tages hat der Eigenbau sie abgelöst.
 
 ## Was sie bringen
 
@@ -27,11 +29,12 @@ Stahlblau ist Strata 0.2.14 wie ausgeliefert, Bernstein dieselbe Engine mit den 
 | Einlesen 58K-Prompt, Token/s | 1.341 | 3.048 | +127 % |
 | Schreiben im Chat, Token/s | 65,6 | 72,5 | +11 % |
 | Schreiben im Agent-Test, Token/s | 75,8 | 82,4 | +9 % |
-| Leistungsaufnahme der Karte, Mittel | 207 W | 201 W | gleich |
+| Leistungsaufnahme der Karte, Mittel über den ganzen Testlauf | 207 W | 201 W | gleich |
 | Aufgabensatz, bestanden von 102 (zwei Läufe) | 98 / 97 | 98 / 97 | gleich |
 | Karte im Leerlauf, Modell geladen | 16,0 W | 16,2 W | gleich |
 
-- **Das Einlesen wird je nach Länge 68 bis 127 % schneller, das Schreiben rund 10 %.** Die Karte zieht dabei nicht mehr Strom.
+- **Das Einlesen wird je nach Länge 68 bis 127 % schneller, das Schreiben rund 10 %.**
+- **Strom: im Mittel gleich, beim Einlesen selbst mehr.** Über den ganzen Testlauf gemittelt zieht die Karte gleich viel. Während des Einlesens sind es mit den Schaltern 25 bis 30 W mehr (267 bis 270 W ohne, 292 bis 300 W mit, am 18.11.2026 im Wechsel gemessen). Weil das Einlesen nur halb so lange dauert, ist die Energie je gelesenem Token trotzdem rund halb so hoch: 0,037 bis 0,047 gegen 0,070 bis 0,087 Wh je 1.000 Token. An der Steckdose schwankt die Leistung beim Einlesen zwischen den Läufen so stark, dass ich dafür keine feste Zahl nenne.
 - **Die Qualität bleibt gleich.** Mein Aufgabensatz (114 Aufgaben auf Deutsch, 102 automatisch bewertet) kommt in beiden Varianten auf 98 und 97. Dieselben vier Aufgaben scheitern in allen vier Läufen.
 - **Nicht bitgleich, aber das ist die Engine ohnehin nicht.** Der Fork nennt zwei Schalter (`STRATA_HIP_WMMA`, `STRATA_SELECT_WMMA`) als nicht bitgleich. Bei Temperatur 0 sind zwischen zwei Läufen ohne Schalter 47 von 114 Antworten identisch, zwischen zwei Läufen mit Schaltern 51.
 - Die vier zusätzlichen Argumente aus der Fork-Konfiguration (`--adapt-every 1 --adapt-swaps 32 --mtp-q4 all --mtp-window 4096`) bringen nichts, was sich vom Rauschen trennen lässt. Ich habe sie weggelassen.
@@ -91,7 +94,9 @@ Direkt nach dem Eintragen in die Laufkonfigurationen des Betriebs habe ich beide
 
 ## Das Risiko, und wie ich es im Blick behalte
 
-Die Schalter sind Umgebungsvariablen, die Strata nicht dokumentiert. Ein Release kann sie umbenennen, streichen oder ihre Wirkung ändern. Einen unbekannten Namen ignoriert die Engine stillschweigend, dann fällt das Einlesen ohne Fehlermeldung auf das alte Tempo zurück. Schlimmer wäre ein Schalter, der nach einem Release etwas anderes tut.
+*Dieser und der nächste Abschnitt beschreiben den Stand vom 18.11.2026, als die Schalter in der Laufkonfiguration standen. Das Risiko selbst gilt für den Eigenbau genauso, weil er bis auf die drei genannten Unterschiede dieselben Schalter setzt; deshalb prüfe ich ihn bei jeder neuen Strata-Version neu, bevor er in Betrieb geht. Sein Ausweg ist eine einzige Variable: `STRATA_GFX1100_DEFAULTS=0` schaltet die ganze Tabelle ab, und nach nicht-endlichen Werten startet der Server die Engine von selbst einmal ohne sie neu.*
+
+Die Schalter sind Umgebungsvariablen. Strata beschreibt 16 der 28 in der eigenen Dokumentation und lässt sie auf dieser Kartengeneration bewusst ausgeschaltet, weil sich die Rundung ändert und die Antworten nicht mehr Bit für Bit gleich sind; 12 sind nirgends beschrieben. Zugesichert ist keiner davon. Ein Release kann sie umbenennen, streichen oder ihre Wirkung ändern. Einen unbekannten Namen ignoriert die Engine stillschweigend, dann fällt das Einlesen ohne Fehlermeldung auf das alte Tempo zurück. Schlimmer wäre ein Schalter, der nach einem Release etwas anderes tut.
 
 Dagegen stehen drei Dinge:
 
@@ -111,7 +116,7 @@ python3 messen/schalter.py pruefen liber      # Kurzantwort, Tool-Call, langer P
 ```
 
 - `zurueck` braucht keine Sicherung: Es entfernt nur die Schlüssel aus der Liste und lässt alles andere in der Laufkonfiguration, wie es ist. Beim Eintragen legt `ein` trotzdem eine Kopie der Datei daneben.
-- Der Weg zurück ist die Konfiguration, mit der 0.2.14 hier vom 16. bis 18.11.2026 lief und gegen die alle Zahlen oben gemessen sind.
+- Der Weg zurück war die Konfiguration, mit der 0.2.14 hier vom 16. bis 18.11.2026 lief und gegen die alle Zahlen oben gemessen sind.
 - Wenn nur das Arbeitsmodell Schwierigkeiten macht, bleibt das Original mit oder ohne Schalter als Rückfall. Beide lassen sich einzeln umstellen.
 - Wenn ein neues Release die Schalter nicht mehr kennt, ist nichts kaputt. Das Einlesen ist dann so schnell wie in der Spalte „ohne“. Ich nehme die Schalter in dem Fall heraus, damit in der Konfiguration nichts steht, was nichts tut.
 
@@ -122,7 +127,7 @@ python3 messen/schalter.py pruefen liber      # Kurzantwort, Tool-Call, langer P
 3. `python3 messen/schalter.py ein <modell>`, dann `pruefen <modell>`.
 4. Vorher und nachher `tools/strata_bench.py` laufen lassen. Die Werte hier gelten für gfx1100 an OCuLink x4; auf anderer Hardware kann es anders aussehen.
 
-Die fertigen Laufkonfigurationen mit Schaltern: [`konfig/strata-0.2.14/liber.json`](../konfig/strata-0.2.14/liber.json) und [`faber.json`](../konfig/strata-0.2.14/faber.json). Rohdaten und Messbedingungen: [`messen/daten/2026-11-18-rdna3-switches/`](../messen/daten/2026-11-18-rdna3-switches/).
+Die Laufkonfigurationen mit Schaltern, wie sie am 18.11.2026 liefen: [`konfig/strata-0.2.14/liber.json`](../konfig/strata-0.2.14/liber.json) und [`faber.json`](../konfig/strata-0.2.14/faber.json). Rohdaten und Messbedingungen: [`messen/daten/2026-11-18-rdna3-switches/`](../messen/daten/2026-11-18-rdna3-switches/).
 
 ## Nebenbei geprüft: ein anderer Quant
 
