@@ -1302,6 +1302,64 @@ def schalter(d, sp, modell="faber"):
                                 f"Prompt reading speed without and with 28 environment switches: at 4K {z(l['4K'][0], sp)} against {z(l['4K'][1], sp)} tokens per second, at 16K {z(l['16K'][0], sp)} against {z(l['16K'][1], sp)}, at 58K {z(l['58K'][0], sp)} against {z(l['58K'][1], sp)}; decode speed rises by about ten per cent."), s, h
 
 
+def eigenbau_werte(d):
+    """Unverändertes Release und Eigenbau derselben Strata-Version: Einlesen (strata_bench, im Wechsel) und Dauer langer Prompts (needle_bench)."""
+    lauf = lambda ps: {k: med([strata_bench(os.path.join(d, q))[k] for q in ps]) for k in ("4K", "16K", "32K", "chat", "agent")}
+    rel, xtx = lauf(VERSIONEN[-1][1]), lauf(XTX_BENCH)
+    o = os.path.join(d, XTX_DATEN)
+    nadel = lambda datei, laenge: next(r["seconds"] for r in json.load(open(os.path.join(o, datei), encoding="utf-8")) if r["length"] == laenge and r["depth"] == 50)
+    return {"rel": rel, "xtx": xtx,
+            "dauer": [("128K", nadel("release-0.2.16/needles-32k-128k.json", "128k"), nadel("needles-32k-128k-faber.json", "128k")),
+                      ("250K", nadel("release-0.2.16/needles-250k.json", "250k"), nadel("needles-250k-faber.json", "250k"))]}
+
+
+def eigenbau(d, sp):
+    """Der Eigenbau gegen das unveränderte Release derselben Version: Stahl ist das Release, Bernstein der Eigenbau."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    w = eigenbau_werte(d)
+    rel, xtx = w["rel"], w["xtx"]
+    lang = json.load(open(os.path.join(d, XTX_DATEN, "strom-faber.json"), encoding="utf-8"))["phasen"]["schreiben"]["tps"]
+    s = Svg()
+    faktor = xtx["32K"] / rel["32K"]
+    titel = T(f"strata-xtx liest lange Prompts {z(faktor, sp, 1)}-mal so schnell wie das Release", f"strata-xtx reads long prompts {z(faktor, sp, 1)} times as fast as the release")
+    kopf(s, T(f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata {XTX_VER}: Release gegen Eigenbau · {XTX_TAG['de']}",
+              f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata {XTX_VER}: release against my own build · {XTX_TAG['en']}"), titel)
+    feld(s, L, 104, T("A · Prompt einlesen · Token/s", "A · Prompt reading · tokens/s"), T("nach Prompt-Länge · höher ist schneller", "by prompt length · higher is faster"))
+    p = Hoch(s, L, 430, 144, 384, 3200)
+    p.achse(800, sp)
+    for g, k in enumerate(("4K", "16K", "32K")):
+        gm = L + (g + 0.5) * (430 - L) / 3
+        p.balken(gm - 24, 40, rel[k], STAHL, z(rel[k], sp))
+        p.balken(gm + 24, 40, xtx[k], ACC, z(xtx[k], sp), True, True)
+        s.text(gm, 404, T(f"{k}-Prompt", f"{k} prompt"), 12, INK, "sans", "middle", 600)
+        s.text(gm, 420, f"+{z((xtx[k] / rel[k] - 1) * 100, sp, 0)} %", 9.5, ACC, "mono", "middle", 600)
+    feld(s, 490, 104, T("B · Warten · Sekunden", "B · Waiting · seconds"), T("frischer Prompt · niedriger ist schneller", "fresh prompt · lower is faster"))
+    p = Hoch(s, 490, 700, 144, 384, 240)
+    p.achse(60, sp)
+    for g, (k, a, b) in enumerate(w["dauer"]):
+        gm = 490 + (g + 0.5) * (700 - 490) / 2
+        p.balken(gm - 24, 40, a, STAHL, z(a, sp, 0))
+        p.balken(gm + 24, 40, b, ACC, z(b, sp, 0), True, True)
+        s.text(gm, 404, T(f"{k} Token", f"{k} tokens"), 12, INK, "sans", "middle", 600)
+        s.text(gm, 420, f"−{z((1 - b / a) * 100, sp, 0)} %", 9.5, ACC, "mono", "middle", 600)
+    feld(s, 760, 104, T("C · Schreiben · Token/s", "C · Decode · tokens/s"), T("kurze Chat-Antworten · höher ist schneller", "short chat answers · higher is faster"))
+    p = Hoch(s, 760, R, 144, 384, 100)
+    p.achse(20, sp)
+    gm = (760 + R) / 2
+    p.balken(gm - 24, 40, rel["chat"], STAHL, z(rel["chat"], sp))
+    p.balken(gm + 24, 40, xtx["chat"], ACC, z(xtx["chat"], sp), True, True)
+    s.text(gm, 404, "Chat", 12, INK, "sans", "middle", 600)
+    s.text(gm, 420, T("gleich bis leicht schneller", "equal to slightly faster"), 9, MUTED, "mono", "middle")
+    s.text(L + 20, 168, T("Dieselbe Karte, kein Schalter gesetzt.", "The same card, no switch set."), 15, INK, "serif", kursiv=True)
+    h = fuss(s, 444, (("balken", STAHL, T(f"Strata {XTX_VER}, unverändertes Release", f"Strata {XTX_VER}, unchanged release")), ("balken", ACC, T(f"Eigenbau strata-xtx auf {XTX_VER}", f"my own build strata-xtx on {XTX_VER}"))),
+             T(f"A und C: tools/strata_bench.py --long, Median aus 3 Läufen im Wechsel, jede Engine frisch geladen, leise Karteneinstellung · B: tools/needle_bench.py, eine versteckte Zahl in der Mitte des Prompts, jedes Mal gefunden · C misst kurze, gut vorhersehbare Antworten; lange Antworten (1.500 Token) schreibt der Eigenbau mit {z(lang, sp)} Token/s, nach einem frischen langen Prompt mit 54 bis 59 · Aufgabensatz: 97 von 102 beim Original, 96 bis 98 bei der unzensierten Fassung; diese auf dem Release nachgemessen, mit demselben Ergebnis · Preis: Antworten nicht Bit für Bit gleich, Karte beim Einlesen 25 bis 30 W mehr · Daten: messen/daten/{XTX_DATEN}/",
+               f"A and C: tools/strata_bench.py --long, median of 3 alternating runs, each engine freshly loaded, quiet card setting · B: tools/needle_bench.py, one hidden number in the middle of the prompt, found every time · C measures short, easily predicted answers; long answers (1,500 tokens) my own build writes at {z(lang, sp)} tokens/s, after a fresh long prompt at 54 to 59 · task set: 97 of 102 with the original, 96 to 98 with the uncensored version; the latter re-measured on the release, with the same result · price: answers not bit for bit the same, card draws 25 to 30 W more while reading · data: messen/daten/{XTX_DATEN}/"))
+    da = {k: (a, b) for k, a, b in w["dauer"]}
+    return "eigenbau", titel, T(f"Release {XTX_VER} gegen den Eigenbau strata-xtx: Einlesen bei 4K {z(rel['4K'], sp)} gegen {z(xtx['4K'], sp)} Token je Sekunde, bei 16K {z(rel['16K'], sp)} gegen {z(xtx['16K'], sp)}, bei 32K {z(rel['32K'], sp)} gegen {z(xtx['32K'], sp)}; ein Prompt von 250.000 Token braucht {z(da['250K'][0], sp, 0)} gegen {z(da['250K'][1], sp, 0)} Sekunden; Schreiben im Chat {z(rel['chat'], sp)} gegen {z(xtx['chat'], sp)} Token je Sekunde.",
+                                f"Release {XTX_VER} against my own build strata-xtx: reading at 4K {z(rel['4K'], sp)} against {z(xtx['4K'], sp)} tokens per second, at 16K {z(rel['16K'], sp)} against {z(xtx['16K'], sp)}, at 32K {z(rel['32K'], sp)} against {z(xtx['32K'], sp)}; a prompt of 250,000 tokens takes {z(da['250K'][0], sp, 0)} against {z(da['250K'][1], sp, 0)} seconds; decode in chat {z(rel['chat'], sp)} against {z(xtx['chat'], sp)} tokens per second."), s, h
+
+
 def schalter_lang(d, sp):
     """Lange Prompts (70K bis 250K) ohne und mit den 28 Schaltern, Variante mit Steuervektor und Originalmodell."""
     en = sp == "en"
@@ -1341,7 +1399,7 @@ def schalter_lang(d, sp):
                                      f"Reading speed for long prompts from 70,000 to 250,000 tokens without and with 28 environment switches, for the variant with control vector and the original model: a good twice as fast in both, 250,000 tokens take {z(s_mit, sp, 0)} instead of {z(s_ohne, sp, 0)} seconds."), s, h
 
 
-ALLE = (schalter, schalter_lang, tiefe,mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, cloud_vergleich, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
+ALLE = (eigenbau, schalter, schalter_lang, tiefe,mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, cloud_vergleich, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
 
 
 def main():

@@ -17,21 +17,45 @@ Strata-Code**, nur Bauweg, Startkonfigurationen, UGOS-Anpassungen, Hilfsskripte 
 
 **Stand 19.11.2026:** [strata-xtx](https://github.com/faf-net/strata-xtx), mein eigener Bau von Strata 0.2.16, der die [Schalter für das Einlesen](docs/schalter.de.md) schon im Code trägt (in Betrieb seit dem 19.11.; vom 18.11. an derselbe Eigenbau auf der Basis 0.2.15, davor Strata 0.2.14 aus den Release-Paketen), UGOS Pro 1.21, Kernel 6.18.15. In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modells Kurznamen. `liber` ist Flash-Next 125B in der Quantisierung IQ3_XXS ohne die Ablehnungen, die unzensierte Fassung: dieselben Gewichte, sie beantwortet, was man sie fragt ([docs/steuervektor.de.md](docs/steuervektor.de.md)). Sie ist im täglichen Einsatz, für Chat und Agent. `faber` ist das Original, an dem zuerst gemessen wird und das als Rückfall bereitsteht. `velox` ist dasselbe Modell in der kleineren und schnelleren Quantisierung IQ2_XS und wird nur noch zum Vergleich gemessen. „Eigenbau“ heißt in diesem Bericht immer strata-xtx, „Release“ das unveränderte Strata.
 
+## strata-xtx gegen das Standard-Release
+
+Hier läuft nicht das Strata-Release, sondern mein Eigenbau [strata-xtx](https://github.com/faf-net/strata-xtx): dasselbe Strata mit einem kleinen Patch, der auf dieser Karte von selbst einschaltet, was das Einlesen beschleunigt. Was das gegenüber dem unveränderten Release bringt, beide auf Strata 0.2.16 und am 19.11.2026 auf derselben Maschine gemessen:
+
+| | Release 0.2.16 | **strata-xtx** auf 0.2.16 |
+|---|---:|---:|
+| Prompt einlesen, 4K | 783 Token/s | **1.645 Token/s** |
+| Prompt einlesen, 16K | 1.357 Token/s | **2.295 Token/s** |
+| Prompt einlesen, 32K | 1.321 Token/s | **2.650 Token/s** |
+| Warten auf das erste Wort, Prompt mit 128.000 Token | 83 s | **39 s** |
+| Warten auf das erste Wort, Prompt mit 250.000 Token | 204 s | **88 s** |
+| Schreiben im Chat | 69,6 Token/s | 72,5 Token/s |
+| Qualität, eigener Aufgabensatz (102 Aufgaben) | gleich | gleich |
+| Arbeitsspeicher, Kaltstart | gleich | gleich |
+
+- **Einlesen:** `tools/strata_bench.py --long`, Median aus drei Läufen im Wechsel. **Warten:** `tools/needle_bench.py` mit dem Original, die versteckte Zahl jedes Mal gefunden.
+- **Qualität:** 97 von 102 mit dem Original; die unzensierte Fassung 96 bis 98 je nach Lauf, auf dem Release nachgemessen mit demselben Ergebnis.
+- **Arbeitsspeicher und Kaltstart** sind gegen das Release 0.2.14 vom 16.11. verglichen; für das Release 0.2.16 habe ich beides nicht eigens gemessen.
+- **Der Preis:** Die Antworten sind nicht Bit für Bit dieselben, und die Karte zieht beim Einlesen 25 bis 30 W mehr. Weil das Einlesen halb so lange dauert, ist die Energie je gelesenem Token trotzdem rund halb so hoch.
+
+![Release 0.2.16 gegen strata-xtx: Einlesen bei 4K, 16K und 32K, Wartezeit bei 128K und 250K Token, Schreiben im Chat](bilder/eigenbau-de.png)
+
+Was der Eigenbau anders macht, wie er geprüft ist und wie er entstand: [Abschnitt unten](#der-eigenbau-strata-xtx-die-schalter-fürs-einlesen-im-code). Weiter unten steht bei jedem Tempowert dabei, ob er mit strata-xtx oder mit einem Release gemessen ist.
+
 ## Auf einen Blick
 
 | | |
 |---|---|
-| Schreiben | 63–68 Token/s; direkt nach einem frischen langen Prompt 54–59 |
-| Prompt einlesen | 2.300–3.000 Token/s ab 16K mit dem [Eigenbau](#der-eigenbau-strata-xtx-die-schalter-fürs-einlesen-im-code): 22 s für 65K Token, 1,4 min für 248K (Release 0.2.16: 1.200–1.400 Token/s, 3,4 min für 248K) |
+| Schreiben | 63–68 Token/s; direkt nach einem frischen langen Prompt 54–59 (mit strata-xtx gemessen; das Release schreibt gleich schnell) |
+| Prompt einlesen | **2.300–3.000 Token/s ab 16K mit strata-xtx**: 22 s für 65K Token, 1,4 min für 248K (Release 0.2.16: 1.300–1.400 Token/s, 3,4 min für 250K) |
 | Kontext | 256K, die Nadel wurde bis 250K mit beiden Fassungen in 7 von 7 Fällen gefunden |
-| Speicher | 55–58 GiB der 64 GB RAM belegt (unzensierte Fassung und Original), die 24-GB-Karte ist voll |
-| Strom | 1,6 Wh je 1.000 geschriebene Token (Original und unzensierte Fassung); NAS und Dock ziehen beim Schreiben rund 390 W, im Leerlauf 61 W |
+| Speicher | 55–58 GiB der 64 GB RAM belegt (unzensierte Fassung und Original), die 24-GB-Karte ist voll; mit strata-xtx wie mit dem Release |
+| Strom | 1,6 Wh je 1.000 geschriebene Token (Original und unzensierte Fassung); NAS und Dock ziehen beim Schreiben rund 390 W, im Leerlauf 61 W; beim Einlesen zieht die Karte mit strata-xtx 25 bis 30 W mehr als mit dem Release |
 | Größtes Risiko | ein Dock-Abriss bei geladenem Modell startet das NAS neu (Kernel-Fehler, entschärft) |
 
 ## Was wo steht
 
 - **Lohnt sich das?** [Gemessen](#gemessen) und [Strata-Versionen auf dieser Karte](#strata-versionen-auf-dieser-karte)
-- **Was läuft heute?** [Der Eigenbau strata-xtx auf Strata 0.2.16](#der-eigenbau-strata-xtx-die-schalter-fürs-einlesen-im-code): was er anders macht als das Release und wie er geprüft ist
+- **Was läuft heute?** [strata-xtx gegen das Standard-Release](#strata-xtx-gegen-das-standard-release) in Zahlen, und [der Eigenbau strata-xtx auf Strata 0.2.16](#der-eigenbau-strata-xtx-die-schalter-fürs-einlesen-im-code): was er anders macht als das Release und wie er geprüft ist
 - **Wie baue ich es nach?** [Starten](#starten), [Docker-Image](#volle-geschwindigkeit-im-docker-image), [Was ich an UGOS ändern musste](#was-ich-an-ugos-ändern-musste), [Bauen](#bauen)
 - **Was kann schiefgehen?** [Dock und Anbindung](#dock-und-anbindung-was-man-wissen-muss) und [das größte offene Risiko](#das-größte-offene-risiko-ein-dock-abriss-startet-das-nas-neu)
 - **Zum Vertiefen:** [jede Version im Einzelnen](docs/releases.de.md) · [der Eigenbau strata-xtx und die Schalter, aus denen er entstand](docs/schalter.de.md) · [die Dock-Störungen und ihre zwei Wochenuhren](docs/dock.de.md) · [wie der Agent weniger erfindet](docs/agent.de.md) · [Bilder mit ComfyUI](docs/comfyui.de.md)
@@ -86,7 +110,7 @@ Betriebskonfiguration (`messen/daten/tiefe-20261116.jsonl`). „Ohne MTP-Kopf“
 
 ![Schreib- und Einlesetempo über die Kontexttiefe](bilder/tiefe-de.png)
 
-| Prompt-Token | Schreiben Eigenbau | Schreiben Release 0.2.14 | Schreiben Release 0.2.14 ohne MTP-Kopf | Einlesen Eigenbau | Einlesen Release 0.2.14 | Einlesen Release 0.2.14 ohne MTP-Kopf | MTP-Annahme (Release 0.2.14) |
+| Prompt-Token | Schreiben **strata-xtx** | Schreiben Release 0.2.14 | Schreiben Release 0.2.14 ohne MTP-Kopf | Einlesen **strata-xtx** | Einlesen Release 0.2.14 | Einlesen Release 0.2.14 ohne MTP-Kopf | MTP-Annahme (Release 0.2.14) |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 995 | 53,7 | 58,3 | 43,3 | 742 | 468 | 486 | 41 % |
 | 4.077 | 56,2 | 59,4 | 45,1 | 1.470 | 803 | 841 | 45 % |
@@ -95,7 +119,7 @@ Betriebskonfiguration (`messen/daten/tiefe-20261116.jsonl`). „Ohne MTP-Kopf“
 | 130.026 | 59,0 | 54,9 | 45,0 | 2.968 | 1.324 | 1.373 | 52 % |
 | 248.054 | 53,5 | 51,2 | 42,6 | 2.907 | 1.216 | 1.234 | 41 % |
 
-Die Prompt-Token nennen den Lauf des Eigenbaus; die Prompts des Release waren je zwei Token kürzer. Die unzensierte Fassung (`liber`) liest auf dem Eigenbau 658 / 1.438 / 2.290 / 2.925 / 2.933 / 2.890 Token/s und schreibt 56,9 / 50,9 / 56,2 / 52,6 / 55,4 / 55,6 Token/s in denselben sechs Tiefen. Ohne MTP-Kopf liest der Eigenbau gleich schnell (760 bis 3.087 Token/s) und schreibt 32,6 / 35,2 / 42,2 / 44,7 / 45,6 / 42,7 Token/s; der Kopf bringt auf dem Eigenbau also 20 bis 65 % beim Schreiben, seine Vorschläge werden zu 50–56 % angenommen.
+strata-xtx ist auf der Basis 0.2.16 am 19.11. gemessen, das Release ist hier 0.2.14 vom 16.11.: Eine Tiefenreihe mit dem Release 0.2.16 gibt es nicht, den Vergleich auf derselben Basis und am selben Tag zeigt die [Tabelle oben](#strata-xtx-gegen-das-standard-release). Die Prompt-Token nennen den Lauf des Eigenbaus; die Prompts des Release waren je zwei Token kürzer. Die unzensierte Fassung (`liber`) liest auf dem Eigenbau 658 / 1.438 / 2.290 / 2.925 / 2.933 / 2.890 Token/s und schreibt 56,9 / 50,9 / 56,2 / 52,6 / 55,4 / 55,6 Token/s in denselben sechs Tiefen. Ohne MTP-Kopf liest der Eigenbau gleich schnell (760 bis 3.087 Token/s) und schreibt 32,6 / 35,2 / 42,2 / 44,7 / 45,6 / 42,7 Token/s; der Kopf bringt auf dem Eigenbau also 20 bis 65 % beim Schreiben, seine Vorschläge werden zu 50–56 % angenommen.
 
 Der Eigenbau liest in jeder Tiefe 1,6- bis 2,4-mal so schnell wie das Release, ab 16K mit 2.300–3.000 T/s. Beim
 Schreiben liegt er in dieser Reihe bei 54–59 T/s, das Release am 16.11. bei 51–59 T/s; derselbe Eigenbau auf der Basis 0.2.15
@@ -112,7 +136,7 @@ Codewort wurde bei 32K und 128K in 10, 50 und 90 % Tiefe und bei 250K in 50 % Ti
 
 ![Zeit bis zum ersten Token von 4K bis 250K](bilder/kontext-de.png)
 
-Das Einlesen wächst fast linear mit dem Prompt. Im Oktober 2026 (Strata 0.2.2) waren es 5,5 s bei 4K, 26 s bei 32K, 1,8 min bei 128K und 3,6 min bei 250K. Auf dem Eigenbau sind es am 19.11.2026 2,8 s bei 4K, 6,8 s bei 16K, 22 s bei 65K, 44 s bei 130K und 85 s bei 248K; die Nadel wurde jedes Mal gefunden. Das unveränderte Release 0.2.16 braucht für denselben 250K-Prompt 204 s. Der Gesprächs-Cache von Strata erspart einer Agenten-Sitzung, das in jeder Runde neu zu bezahlen: Im Agentenlauf von `strata_bench.py` werden je Sitzung nur 5 Token doppelt gelesen.
+Das Einlesen wächst fast linear mit dem Prompt. Im Oktober 2026 (Strata 0.2.2) waren es 5,5 s bei 4K, 26 s bei 32K, 1,8 min bei 128K und 3,6 min bei 250K. **Mit strata-xtx** sind es am 19.11.2026 2,8 s bei 4K, 6,8 s bei 16K, 22 s bei 65K, 44 s bei 130K und 85 s bei 248K; die Nadel wurde jedes Mal gefunden. Im direkten Vergleich mit dem unveränderten Release 0.2.16 (Nadeltest, derselbe Prompt): 39 gegen 83 s bei 128.000 Token und 88 gegen 204 s bei 250.000 Token. Der Gesprächs-Cache von Strata erspart einer Agenten-Sitzung, das in jeder Runde neu zu bezahlen: Im Agentenlauf von `strata_bench.py` werden je Sitzung nur 5 Token doppelt gelesen.
 
 ![RAM und VRAM mit geladenem 125B-Modell](bilder/speicher-de.png)
 
@@ -124,14 +148,14 @@ Mit geladenem, ruhendem Original (`faber`) belegt die Engine 47,6 der 62,3 GiB R
 
 **Strom.** Gemessen am Original (`faber`) auf dem Eigenbau am 19.11.2026, an der USV, an der nur NAS und Dock hängen (über NUT gelesen, die ersten 45 s jeder Phase verworfen), daneben der Wert der Karte aus sysfs.
 
-| Phase | NAS und Dock | Karte allein |
+| Phase (strata-xtx auf 0.2.16) | NAS und Dock | Karte allein |
 |---|---:|---:|
 | Leerlauf, kein Modell geladen | 61 W | 18 W |
 | Modell geladen, ruhend | 59 W | 15 W |
 | Schreiben, 68,3 Token/s | 393 W | 241 W |
 | frische 82K-Prompts einlesen, 2.894 Token/s | 390 W | 294 W |
 
-Das sind **1,6 Wh je 1.000 geschriebene Token** für NAS und Dock (1,3 Wh über Leerlauf) und 0,04 Wh je 1.000 gelesene Token. Ein geladenes, ruhendes Modell kostet nichts Messbares gegenüber der leeren Karte.
+Das sind **1,6 Wh je 1.000 geschriebene Token** für NAS und Dock (1,3 Wh über Leerlauf) und 0,04 Wh je 1.000 gelesene Token (das Release ohne die Schalter: 0,07 bis 0,09 Wh, siehe die Vergleichstabelle unten). Ein geladenes, ruhendes Modell kostet nichts Messbares gegenüber der leeren Karte.
 
 | Fassung des 125B-Modells | Stand | Schreiben T/s | NAS und Dock | je 1.000 geschriebene Token |
 |---|---|---:|---:|---:|
@@ -247,12 +271,12 @@ mit FP16-KV ohne MTP-Vorschläge, der Einfluss von int8-KV ist also nicht erfass
 | `--pool-workers` | 9 bis 0.2.0, **ab 0.2.1 weglassen** | bis 0.2.0: 76,8 statt 56,1 T/s gegenüber der Automatik (gemessen mit IQ2_XS); 0.2.1 plant selbst 10 Worker und lässt die LP-E-Kerne frei |
 | `--pcie-frac` | 0 | fehlende Experten rechnet die CPU, statt sie über x4 zu kopieren; kein Tempoverlust, schont den Link |
 | `--kv` | int8 | halbiert den KV-Cache, 256k Kontext passen |
-| `--max-context` | 262144 | trainiertes Maximum; 248.000 Token liest der Eigenbau in 85 s (das Release in 3,4 min) |
+| `--max-context` | 262144 | trainiertes Maximum; 250.000 Token liest **strata-xtx in 88 s**, das Release 0.2.16 in 204 s |
 | `--mtp` | MTP-Kopf | Vorschlagstoken beschleunigen das Schreiben |
 | `--conversation-cache-mib` | 4608 | parkt eine Sitzung bis ~120.000 Token, während eine andere Anfrage läuft (geparkt in 0,16 s, zurück in 0,06 s) |
 | `STRATA_HIPBLASLT_TUNING` | `tools/hip/gfx1100-hipblaslt-100200.txt` | muss zur hipBLASLt-Version passen, sonst ~45 % langsameres Einlesen |
 | Quantisierung | IQ3_XXS statt IQ3_S | 53 statt 60 GiB RAM für die Engine (gemessen im Oktober 2026); IQ3_S lässt neben den übrigen NAS-Diensten keinen Platz |
-| Eigenbau [strata-xtx](https://github.com/faf-net/strata-xtx) statt Release-Engine | keine Einstellung: die Engine schaltet ihre Schalter für das Einlesen selbst ein | Einlesen 1,6- bis 2,4-mal so schnell, Schreiben gleich bis leicht schneller, gleiche Punktzahl im Aufgabensatz; in der Laufkonfiguration steht dafür kein Schalter mehr ([Abschnitt unten](#der-eigenbau-strata-xtx-die-schalter-fürs-einlesen-im-code)) |
+| Eigenbau [strata-xtx](https://github.com/faf-net/strata-xtx) statt Release-Engine | keine Einstellung: die Engine schaltet ihre Schalter für das Einlesen selbst ein | Einlesen bei 4K / 16K / 32K **1.645 / 2.295 / 2.650** statt 783 / 1.357 / 1.321 Token/s (Release 0.2.16), Schreiben gleich bis leicht schneller, gleiche Punktzahl im Aufgabensatz; in der Laufkonfiguration steht dafür kein Schalter mehr ([Abschnitt unten](#der-eigenbau-strata-xtx-die-schalter-fürs-einlesen-im-code)) |
 
 ![--pool-workers auf einer Hybrid-CPU](bilder/pool-workers-de.png)
 
@@ -263,7 +287,7 @@ Stratas Engine bringt Schalter (Umgebungsvariablen) für das Einlesen des Prompt
 - **Was er einschaltet:** eine Tabelle mit 27 Schaltern. 26 davon setzt die Engine neu, einer ist im Release schon an. Dazu darf ein bloßes `--prefill auto` Stücke bis 32.768 Token nehmen. In der Laufkonfiguration steht im `env` nur noch die hipBLASLt-Tabelle (`STRATA_HIPBLASLT_TUNING`), kein Schalter für das Einlesen mehr.
 - **Wer gewinnt:** Ein Schalter, den ich selbst setze, wird nie überschrieben. `STRATA_GFX1100_DEFAULTS=0` schaltet die ganze Tabelle ab; dann liest die Engine wie das Release (gemessen: 1.392 statt 2.386 Token/s bei 16K).
 - **Selbstrettung:** Meldet die Engine nicht-endliche Werte und hilft Stratas eigener zweiter Versuch nicht, startet der Server sie einmal ohne die Tabelle neu und läuft im langsameren Modus weiter. Mit Stratas Fehlerinjektion geprüft, mit beiden Fassungen: Die auslösende Anfrage selbst endet mit einem Fehler (HTTP 503), dann ein Neustart, die folgenden Anfragen beantwortet, ein 16K-Prompt danach mit rund 1.300 Token/s gelesen, die Zahl gefunden.
-- **Was ich vor der Übernahme geprüft habe (0.2.16, 19.11.2026):** Im Wechsel mit dem unveränderten Release 0.2.16 liest der Eigenbau 1.645 / 2.295 / 2.650 Token/s bei 4K / 16K / 32K, das Release 783 / 1.357 / 1.321. Einen Prompt von 248.000 Token liest er in 85 bis 87 s, das Release in 204 s. Der Aufgabensatz ergibt 97 von 102 mit dem Original und 96 mit der unzensierten Fassung, auf dem unveränderten Release ebenfalls 96. Zwei der Aufgaben besteht das Modell in je fünf Wiederholungen auf Eigenbau und Release mal ja, mal nein, die unzensierte Fassung liegt deshalb je nach Lauf bei 96 bis 98. 90 Minuten Dauerlast liefen ohne Fehler durch (1.232 Anfragen, 176 von 176 versteckten Zahlen gefunden). Werkzeugaufruf, Bildeingang und Steuervektor arbeiten wie auf dem Release.
+- **Was ich vor der Übernahme geprüft habe (0.2.16, 19.11.2026):** Tempo im Wechsel mit dem unveränderten Release 0.2.16; die Zahlen stehen in der [Tabelle oben](#strata-xtx-gegen-das-standard-release). Der Aufgabensatz ergibt 97 von 102 mit dem Original und 96 mit der unzensierten Fassung, auf dem unveränderten Release ebenfalls 96. Zwei der Aufgaben besteht das Modell in je fünf Wiederholungen auf Eigenbau und Release mal ja, mal nein, die unzensierte Fassung liegt deshalb je nach Lauf bei 96 bis 98. 90 Minuten Dauerlast liefen ohne Fehler durch (1.232 Anfragen, 176 von 176 versteckten Zahlen gefunden). Werkzeugaufruf, Bildeingang und Steuervektor arbeiten wie auf dem Release.
 - **Preis:** Die Antworten sind nicht Bit für Bit dieselben wie ohne die Tabelle, und die Karte zieht beim Einlesen 25 bis 30 W mehr (siehe [Strom](#strom-kaltstart-nas-betrieb-ein-dichtes-70b-und-ugreens-eigenes-modell-15-bis-19112026)).
 
 Jedes neue Strata-Release prüfe ich zuerst unverändert, baue dann den Eigenbau darauf und stelle erst um, wenn die Prüfungen mit beiden Fassungen bestanden sind. Bauweg, Patch und der gepatchte Quelltext je Version liegen im Repository [strata-xtx](https://github.com/faf-net/strata-xtx); die Herleitung steht in [docs/schalter.de.md](docs/schalter.de.md).
@@ -304,7 +328,7 @@ Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit iden
 | 0.2.15 | 16.11. | als Release geprüft, nicht übernommen; neu ist nur das Steuerprogramm (Control 0.1.61), die Engine ist dieselbe wie in 0.2.14; in drei Läufen im Wechsel mit 0.2.14 gleich schnell; `standard-v1` Plausibilität 12 von 12; mein kleiner Aufgabensatz 34 von 35 (Werkzeuge 20 von 20, Code 14 von 15), eine Code-Aufgabe, die zwischen Läufen kippt | [#6056](https://github.com/Niko1221/Strata/issues/6056) |
 | Eigenbau strata-xtx auf 0.2.15 | 18.11. | **in Betrieb** vom 18.11. abends bis 19.11.; die Schalter im Code statt in der Laufkonfiguration; Einlesen ab 16K 2.250–3.080 Token/s, Aufgabensatz 97 und 98 von 102, 90 Minuten Dauerlast ohne Fehler | – |
 | 0.2.16 | 19.11. | als Release geprüft; eigener Engine-Code ohne ggml, neue Ordner im Quelltext, ein offizielles Bauskript; auf dieser Karte kein Tempogewinn: Schreiben in Paaren 61,4 gegen 59,8 Token/s bei 0.2.15, Einlesen 783 / 1.357 / 1.321 Token/s bei 4K / 16K / 32K; die Voreinstellungen für gfx1100 sind unverändert, der Eigenbau bleibt also nötig | – |
-| Eigenbau strata-xtx auf 0.2.16 | 19.11. | **in Betrieb, aktuell** seit 19.11.; liest 1.645 / 2.295 / 2.650 Token/s bei 4K / 16K / 32K im Wechsel mit dem Release, 248.000 Token in 85 s; Schreiben, Speicher und Kaltstart wie auf 0.2.15; Aufgabensatz 97 (Original) und 96 bis 98 (unzensierte Fassung); Selbstrettung mit beiden Fassungen geprüft | – |
+| Eigenbau strata-xtx auf 0.2.16 | 19.11. | **in Betrieb, aktuell** seit 19.11.; liest **1.645 / 2.295 / 2.650** Token/s bei 4K / 16K / 32K (Release 0.2.16 in denselben Läufen: 783 / 1.357 / 1.321), 250.000 Token in 88 statt 204 s; Schreiben, Speicher und Kaltstart wie auf 0.2.15; Aufgabensatz 97 (Original) und 96 bis 98 (unzensierte Fassung); Selbstrettung mit beiden Fassungen geprüft | – |
 
 ## Starten
 
