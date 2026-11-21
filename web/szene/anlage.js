@@ -108,9 +108,9 @@ function Anlage(canvas, s) {
   function marke(text, x, y, farbe) { C.fillStyle = farbe; C.fillText(text, Math.round(x * m), Math.round(y * m)); }
   marke('iDX6011 PRO · 64 GB LPDDR5X', NX, NY - 12, '#a49c90'); marke('RX 7900 XTX · 24 GB GDDR6', DX0, 50, '#a49c90');
   C.textAlign = 'center'; marke('OCULINK · PCIE 4.0 X4', (K[0][0] + K[3][0]) / 2, 144, '#cc9166');   // mittig über dem Kabel
-  // FAF.NET schlicht und gut lesbar rechts im Sockel, Mono wie die übrigen Beschriftungen
-  C.font = '500 ' + Math.round(10 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'end';
-  marke('FAF.NET', DR - 14, 167, '#e9e3d8');
+  // FAF.NET schlicht rechts im Sockel, Mono wie die übrigen Beschriftungen, dezent in Bernstein
+  C.font = '500 ' + Math.round(9 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'end';
+  marke('FAF.NET', DR - 14, 167, '#a8774f');                                                         // gedämpftes Bernstein
   C.font = '700 ' + Math.round(12 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'center';
   for (var z = 0; z < 6; z++) marke('0' + (z + 1), TX + z * TA + TB / 2, NY + 40, '#0d0c0b');
   C.font = '700 ' + Math.round(8 * k) + 'px "JetBrains Mono", Consolas, monospace';
