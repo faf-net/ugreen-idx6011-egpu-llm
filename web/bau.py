@@ -257,6 +257,16 @@ def seite(sp):
     A(bild(D.speicher, sp))
     P(T(f"Der Preis ist Arbeitsspeicher: Mit geladenem 125B-Modell bleiben von 62 GiB je nach Fassung {z(r1(frei[0]), sp, 1)} bis {z(r1(frei[1]), sp, 1)} GiB verfügbar (gemessen am {XD}). Ein zweiter großer Dienst daneben passt nicht.",
         f"The price is memory: with the 125B model loaded, {z(r1(frei[0]), sp, 1)} to {z(r1(frei[1]), sp, 1)} GiB of the 62 GiB stay available, depending on the version (measured on {XE}). A second large service does not fit next to it."))
+    # 20./21.11.2026: größere Quants mit Experten von der NVMe (messen/daten/2026-11-21-nvme-streaming)
+    nv = json.load(open(os.path.join(DATEN, "2026-11-21-nvme-streaming", "speed.json"), encoding="utf-8"))
+    nt = json.load(open(os.path.join(DATEN, "2026-11-21-nvme-streaming", "task-set-summary.json"), encoding="utf-8"))["runs"]
+    nl = [r for r in nv["runs"] if r["mode"] == "quiet" and r["resident_budget_gib_asked"] in (None, 45)]
+    nd = lambda f: [r["decode_tok_s_median"] for r in nl if r["file"] == f]
+    nram = min(r["ram_available_after_load_gib"] for r in nl if r["file"] != "IQ3_XXS (in use)")
+    nq4 = [w["nvme_read_gb"] for r in nl if r["file"] == "UD-Q4_K_XL" for w in r["decode_900_tokens"]]
+    npk = lambda k: nt[k]["passed"]
+    P(T(f"Ein größeres, genaueres Quant desselben Modells, dessen Experten Strata teils von der NVMe nachlädt, lohnt sich nicht (gemessen am 20. und 21.11.2026). UD-IQ4_XS (93,7 GB) schreibt mit {z(min(nd('UD-IQ4_XS')), sp, 0)} bis {z(max(nd('UD-IQ4_XS')), sp, 0)} statt {z(min(nd('IQ3_XXS (in use)')), sp, 0)} Token je Sekunde und besteht im Aufgabensatz gleich viele Aufgaben ({npk('original, UD-IQ4_XS from the NVMe')} und {npk('uncensored, UD-IQ4_XS from the NVMe')} gegen {npk('original, IQ3_XXS (in use)')} und {npk('uncensored, IQ3_XXS (in use)')} von 102). UD-Q4_K_XL (111 GB) liest für jede Antwort mit 900 Token {z(min(nq4), sp, 0)} bis {z(max(nq4), sp, 0)} GB von der NVMe und schreibt mit {z(round(sum(nd('UD-Q4_K_XL')) / 2), sp, 0)} Token je Sekunde. Mit beiden bleiben nur {z(r1(nram), sp, 1)} GiB RAM verfügbar. <a href=\"{GH}/tree/main/messen/daten/2026-11-21-nvme-streaming\">Messdaten</a>",
+        f"A bigger, more exact quant of the same model, with part of its experts streamed from the NVMe by Strata, does not pay off (measured on 20 and 21 Nov 2026). UD-IQ4_XS (93.7 GB) writes at {z(min(nd('UD-IQ4_XS')), sp, 0)} to {z(max(nd('UD-IQ4_XS')), sp, 0)} instead of {z(min(nd('IQ3_XXS (in use)')), sp, 0)} tokens per second and passes as many tasks of the task set ({npk('original, UD-IQ4_XS from the NVMe')} and {npk('uncensored, UD-IQ4_XS from the NVMe')} against {npk('original, IQ3_XXS (in use)')} and {npk('uncensored, IQ3_XXS (in use)')} of 102). UD-Q4_K_XL (111 GB) reads {z(min(nq4), sp, 0)} to {z(max(nq4), sp, 0)} GB from the NVMe for every answer of 900 tokens and writes at {z(round(sum(nd('UD-Q4_K_XL')) / 2), sp, 0)} tokens per second. With either, only {z(r1(nram), sp, 1)} GiB of RAM stay available. <a href=\"{GH}/tree/main/messen/daten/2026-11-21-nvme-streaming\">Measurements</a>"))
     zu()
 
     kapitel(3, "dock", T("Lohnt sich die Karte im Dock?", "Is the card in the dock worth it?"),

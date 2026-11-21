@@ -1,0 +1,719 @@
+{
+ "date": "2026-11-20",
+ "engine": "own build strata-xtx xtx-2 on Strata 0.2.17 (engine 0.1.63)",
+ "card": "RX 7900 XTX in the dock, modes quiet (2,800 MHz, -100 mV) and max",
+ "ram_gib": 62.3,
+ "context": 131072,
+ "files": {
+  "IQ3_XXS (in use)": "my own ISTA GSQ-RCO IQ3_XXS file, 75.8 GB, fits into VRAM + RAM",
+  "UD-IQ4_XS": "Unsloth UD-IQ4_XS, 93.7 GB (55 GiB of experts)",
+  "UD-Q4_K_XL": "Unsloth UD-Q4_K_XL, 111 GB (72 GiB of experts)"
+ },
+ "method": "per version: load, short answer, tool call, 2 x 900 tokens decode after warm-up, prompts of 4K/16K/58K tokens with a hidden number, a follow-up question after the 58K text, image input for the uncensored version. NVMe bytes read and the lowest available RAM sampled per step. The engine streams what the GPU cache and the RAM budget (--resident-budget-gib) do not hold from the pack on the NVMe pool (2 x 2 TB, RAID 1).",
+ "control_vector_check": {
+  "versions": [
+   "UD-IQ4_XS",
+   "UD-Q4_K_XL"
+  ],
+  "requests_models_often_refuse": 5,
+  "answered_without_refusal": [
+   5,
+   5
+  ],
+  "note": "counts only, no texts"
+ },
+ "runs": [
+  {
+   "mode": "quiet",
+   "version": "uncensored",
+   "file": "IQ3_XXS (in use)",
+   "resident_budget_gib_asked": null,
+   "load": {
+    "seconds": 19.7,
+    "nvme_read_gb": 49.93,
+    "ram_available_min_gib": 7.67
+   },
+   "ram_available_after_load_gib": 7.65,
+   "ram_available_before_load_gib": 51.9,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 62.3,
+     "nvme_read_gb": 0.15,
+     "ram_available_min_gib": 7.44
+    },
+    {
+     "tok_s": 59.7,
+     "nvme_read_gb": 0.31,
+     "ram_available_min_gib": 7.38
+    }
+   ],
+   "decode_tok_s_median": 61.0,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 604.8,
+     "needle_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 7.55
+    },
+    "16K": {
+     "tokens": 16089,
+     "tok_s": 2381.1,
+     "needle_found": true,
+     "nvme_read_gb": 0.0,
+     "ram_available_min_gib": 7.45
+    },
+    "58K": {
+     "tokens": 58022,
+     "tok_s": 3237.4,
+     "needle_found": true,
+     "nvme_read_gb": 0.04,
+     "ram_available_min_gib": 7.29
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 55.6,
+    "nvme_read_gb": 0.05
+   },
+   "swap_gib_before_after": [
+    5.0,
+    5.0
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "strata generate: expert cache auto: 15.29 GiB free, 832 MiB reserved (+184 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 6475 slots",
+    "strata generate: expert cache 8673 slots, 14.05 GiB of VRAM; policy is",
+    "strata generate: pre-filled 8673 of 8673 slots from the profile in 3.5 s (4331 MB/s); slot 0 verified",
+    "strata serve: the prompt path borrows 6358 CUDA0 cache slots (10.25 GiB)"
+   ]
+  },
+  {
+   "mode": "quiet",
+   "version": "uncensored",
+   "file": "UD-IQ4_XS",
+   "resident_budget_gib_asked": 45,
+   "load": {
+    "seconds": 36.8,
+    "nvme_read_gb": 72.68,
+    "ram_available_min_gib": 2.43
+   },
+   "ram_available_after_load_gib": 2.39,
+   "ram_available_before_load_gib": 51.49,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 43.4,
+     "nvme_read_gb": 0.17,
+     "ram_available_min_gib": 2.17
+    },
+    {
+     "tok_s": 43.8,
+     "nvme_read_gb": 0.11,
+     "ram_available_min_gib": 2.17
+    }
+   ],
+   "decode_tok_s_median": 43.6,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 496.9,
+     "needle_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 2.44
+    },
+    "16K": {
+     "tokens": 16088,
+     "tok_s": 1661.1,
+     "needle_found": true,
+     "nvme_read_gb": 5.51,
+     "ram_available_min_gib": 1.67
+    },
+    "58K": {
+     "tokens": 58023,
+     "tok_s": 2604.8,
+     "needle_found": true,
+     "nvme_read_gb": 19.62,
+     "ram_available_min_gib": 1.44
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 35.1,
+    "nvme_read_gb": 0.05
+   },
+   "swap_gib_before_after": [
+    5.0,
+    5.02
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "engine started (command line omitted)",
+    "FileExpertSource: --resident-budget-gib 45.00 exceeds available RAM (48.27 GiB minus 4 GiB headroom and a 0.25 GiB margin): 44.02 GiB",
+    "FileExpertSource: RAM budget 44.02 GiB: 18011 of the 40.64 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 1498 of its 4665 slots keep their experts in RAM too (3.39 GiB of the budget's remaining 3.39 GiB)",
+    "FileExpertSource: WARNING: 3167 of 4665 lendable slots (68%) will read their experts from the pack during a long prompt; expect a slower prompt read on 50K+ token prompts (one measurement: 18% uncovered cost 26%). Raise --resident-budget-gib (the lend region comes after the ranked experts) and resta",
+    "strata generate: WARNING: a prompt chunk of 32768 tokens lends 4665 cache slots to the prompt path, but only 1498 of their experts fit in RAM: the others are read from the SSD on every chunk, and prompts can read ~3x slower than with --prefill auto (#669). A larger --resident-budget-gib (the lend re",
+    "strata generate: expert cache auto: 16.07 GiB free, 832 MiB reserved (+218 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 4563 slots",
+    "strata generate: expert cache 6565 slots, 14.79 GiB of VRAM; policy is",
+    "strata generate: pre-filled 6565 of 6565 slots from the profile in 16.1 s (986 MB/s); slot 0 verified"
+   ]
+  },
+  {
+   "mode": "quiet",
+   "version": "uncensored",
+   "file": "UD-Q4_K_XL",
+   "resident_budget_gib_asked": 45,
+   "load": {
+    "seconds": 35.2,
+    "nvme_read_gb": 74.15,
+    "ram_available_min_gib": 2.33
+   },
+   "ram_available_after_load_gib": 2.29,
+   "ram_available_before_load_gib": 51.41,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 23.9,
+     "nvme_read_gb": 23.29,
+     "ram_available_min_gib": 1.17
+    },
+    {
+     "tok_s": 24.5,
+     "nvme_read_gb": 22.8,
+     "ram_available_min_gib": 1.14
+    }
+   ],
+   "decode_tok_s_median": 24.2,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 302.0,
+     "needle_found": true,
+     "nvme_read_gb": 22.13,
+     "ram_available_min_gib": 0.94
+    },
+    "16K": {
+     "tokens": 16092,
+     "tok_s": 1050.7,
+     "needle_found": true,
+     "nvme_read_gb": 29.04,
+     "ram_available_min_gib": 0.6
+    },
+    "58K": {
+     "tokens": 58024,
+     "tok_s": 2049.7,
+     "needle_found": true,
+     "nvme_read_gb": 61.34,
+     "ram_available_min_gib": 1.63
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 21.3,
+    "nvme_read_gb": 16.65
+   },
+   "swap_gib_before_after": [
+    5.02,
+    5.06
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "engine started (command line omitted)",
+    "FileExpertSource: --resident-budget-gib 45.00 exceeds available RAM (48.03 GiB minus 4 GiB headroom and a 0.25 GiB margin): 43.78 GiB",
+    "FileExpertSource: RAM budget 43.78 GiB: 15000 of the 57.14 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 0 of its 3668 slots keep their experts in RAM too (0.00 GiB of the budget's remaining 0.00 GiB)",
+    "FileExpertSource: WARNING: 3668 of 3668 lendable slots (100%) will read their experts from the pack during a long prompt; expect a slower prompt read on 50K+ token prompts (one measurement: 18% uncovered cost 26%). Raise --resident-budget-gib (the lend region comes after the ranked experts) and rest",
+    "strata generate: WARNING: a prompt chunk of 32768 tokens lends 3668 cache slots to the prompt path, but only 0 of their experts fit in RAM: the others are read from the SSD on every chunk, and prompts can read ~3x slower than with --prefill auto (#669). A larger --resident-budget-gib (the lend regio",
+    "strata generate: expert cache auto: 15.93 GiB free, 832 MiB reserved (+281 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 3922 slots",
+    "strata generate: expert cache 5002 slots, 14.59 GiB of VRAM; policy is",
+    "strata generate: pre-filled 5002 of 5002 slots from the profile in 12.8 s (1223 MB/s); slot 0 verified"
+   ]
+  },
+  {
+   "mode": "quiet",
+   "version": "original",
+   "file": "IQ3_XXS (in use)",
+   "resident_budget_gib_asked": null,
+   "load": {
+    "seconds": 20.7,
+    "nvme_read_gb": 48.98,
+    "ram_available_min_gib": 4.21
+   },
+   "ram_available_after_load_gib": 4.13,
+   "ram_available_before_load_gib": 51.34,
+   "tool_call_ok": true,
+   "image_ok": null,
+   "decode_900_tokens": [
+    {
+     "tok_s": 60.6,
+     "nvme_read_gb": 0.1,
+     "ram_available_min_gib": 4.04
+    },
+    {
+     "tok_s": 62.6,
+     "nvme_read_gb": 0.08,
+     "ram_available_min_gib": 3.99
+    }
+   ],
+   "decode_tok_s_median": 61.6,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 656.3,
+     "needle_found": true,
+     "nvme_read_gb": 0.04,
+     "ram_available_min_gib": 3.92
+    },
+    "16K": {
+     "tokens": 16089,
+     "tok_s": 2505.2,
+     "needle_found": true,
+     "nvme_read_gb": 0.0,
+     "ram_available_min_gib": 3.86
+    },
+    "58K": {
+     "tokens": 58022,
+     "tok_s": 3238.1,
+     "needle_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 3.69
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 56.4,
+    "nvme_read_gb": 0.05
+   },
+   "swap_gib_before_after": [
+    5.05,
+    5.07
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "strata generate: expert cache auto: 18.26 GiB free, 832 MiB reserved (+184 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 7841 slots",
+    "strata generate: expert cache 10490 slots, 17.01 GiB of VRAM; policy is",
+    "strata generate: pre-filled 10490 of 10490 slots from the profile in 4.2 s (4373 MB/s); slot 0 verified",
+    "strata serve: the prompt path borrows 6498 CUDA0 cache slots (10.51 GiB)"
+   ]
+  },
+  {
+   "mode": "quiet",
+   "version": "original",
+   "file": "UD-IQ4_XS",
+   "resident_budget_gib_asked": 45,
+   "load": {
+    "seconds": 35.8,
+    "nvme_read_gb": 72.46,
+    "ram_available_min_gib": 2.5
+   },
+   "ram_available_after_load_gib": 2.48,
+   "ram_available_before_load_gib": 51.47,
+   "tool_call_ok": true,
+   "image_ok": null,
+   "decode_900_tokens": [
+    {
+     "tok_s": 46.0,
+     "nvme_read_gb": 0.1,
+     "ram_available_min_gib": 2.32
+    },
+    {
+     "tok_s": 45.5,
+     "nvme_read_gb": 0.08,
+     "ram_available_min_gib": 2.24
+    }
+   ],
+   "decode_tok_s_median": 45.8,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 469.1,
+     "needle_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 2.63
+    },
+    "16K": {
+     "tokens": 16088,
+     "tok_s": 1741.1,
+     "needle_found": true,
+     "nvme_read_gb": 3.45,
+     "ram_available_min_gib": 1.79
+    },
+    "58K": {
+     "tokens": 58023,
+     "tok_s": 2703.3,
+     "needle_found": true,
+     "nvme_read_gb": 16.33,
+     "ram_available_min_gib": 1.54
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 34.8,
+    "nvme_read_gb": 0.05
+   },
+   "swap_gib_before_after": [
+    5.07,
+    5.08
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "engine started (command line omitted)",
+    "FileExpertSource: RAM budget 45.00 GiB: 18011 of the 40.64 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 1933 of its 4665 slots keep their experts in RAM too (4.36 GiB of the budget's remaining 4.36 GiB)",
+    "FileExpertSource: WARNING: 2732 of 4665 lendable slots (59%) will read their experts from the pack during a long prompt; expect a slower prompt read on 50K+ token prompts (one measurement: 18% uncovered cost 26%). Raise --resident-budget-gib (the lend region comes after the ranked experts) and resta",
+    "strata generate: WARNING: a prompt chunk of 32768 tokens lends 4665 cache slots to the prompt path, but only 1933 of their experts fit in RAM: the others are read from the SSD on every chunk, and prompts can read ~3x slower than with --prefill auto (#669). A larger --resident-budget-gib (the lend re",
+    "strata generate: expert cache auto: 16.07 GiB free, 832 MiB reserved (+218 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 4563 slots",
+    "strata generate: expert cache 6565 slots, 14.79 GiB of VRAM; policy is",
+    "strata generate: pre-filled 6565 of 6565 slots from the profile in 15.9 s (997 MB/s); slot 0 verified"
+   ]
+  },
+  {
+   "mode": "quiet",
+   "version": "original",
+   "file": "UD-Q4_K_XL",
+   "resident_budget_gib_asked": 45,
+   "load": {
+    "seconds": 32.2,
+    "nvme_read_gb": 74.06,
+    "ram_available_min_gib": 2.4
+   },
+   "ram_available_after_load_gib": 2.26,
+   "ram_available_before_load_gib": 51.55,
+   "tool_call_ok": true,
+   "image_ok": null,
+   "decode_900_tokens": [
+    {
+     "tok_s": 23.6,
+     "nvme_read_gb": 21.01,
+     "ram_available_min_gib": 1.45
+    },
+    {
+     "tok_s": 23.6,
+     "nvme_read_gb": 22.8,
+     "ram_available_min_gib": 1.34
+    }
+   ],
+   "decode_tok_s_median": 23.6,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 283.0,
+     "needle_found": true,
+     "nvme_read_gb": 20.74,
+     "ram_available_min_gib": 1.25
+    },
+    "16K": {
+     "tokens": 16092,
+     "tok_s": 947.5,
+     "needle_found": true,
+     "nvme_read_gb": 27.5,
+     "ram_available_min_gib": 1.14
+    },
+    "58K": {
+     "tokens": 58024,
+     "tok_s": 2091.3,
+     "needle_found": true,
+     "nvme_read_gb": 58.47,
+     "ram_available_min_gib": 1.09
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 21.3,
+    "nvme_read_gb": 15.48
+   },
+   "swap_gib_before_after": [
+    5.08,
+    5.08
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "engine started (command line omitted)",
+    "FileExpertSource: RAM budget 45.00 GiB: 15416 of the 57.14 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 0 of its 3668 slots keep their experts in RAM too (0.00 GiB of the budget's remaining 0.00 GiB)",
+    "FileExpertSource: WARNING: 3668 of 3668 lendable slots (100%) will read their experts from the pack during a long prompt; expect a slower prompt read on 50K+ token prompts (one measurement: 18% uncovered cost 26%). Raise --resident-budget-gib (the lend region comes after the ranked experts) and rest",
+    "strata generate: WARNING: a prompt chunk of 32768 tokens lends 3668 cache slots to the prompt path, but only 0 of their experts fit in RAM: the others are read from the SSD on every chunk, and prompts can read ~3x slower than with --prefill auto (#669). A larger --resident-budget-gib (the lend regio",
+    "strata generate: expert cache auto: 15.93 GiB free, 832 MiB reserved (+281 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 3923 slots",
+    "strata generate: expert cache 5003 slots, 14.59 GiB of VRAM; policy is",
+    "strata generate: pre-filled 5003 of 5003 slots from the profile in 12.6 s (1239 MB/s); slot 0 verified"
+   ]
+  },
+  {
+   "mode": "quiet",
+   "version": "uncensored",
+   "file": "UD-Q4_K_XL",
+   "resident_budget_gib_asked": 35,
+   "load": {
+    "seconds": 29.8,
+    "nvme_read_gb": 66.81,
+    "ram_available_min_gib": 10.09
+   },
+   "ram_available_after_load_gib": 10.15,
+   "ram_available_before_load_gib": 51.2,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 20.5,
+     "nvme_read_gb": 40.73,
+     "ram_available_min_gib": 8.9
+    },
+    {
+     "tok_s": 22.1,
+     "nvme_read_gb": 42.95,
+     "ram_available_min_gib": 8.89
+    }
+   ],
+   "decode_tok_s_median": 21.3,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 349.7,
+     "needle_found": true,
+     "nvme_read_gb": 33.15,
+     "ram_available_min_gib": 8.37
+    },
+    "16K": {
+     "tokens": 16089,
+     "tok_s": 1147.3,
+     "needle_found": true,
+     "nvme_read_gb": 39.53,
+     "ram_available_min_gib": 8.12
+    },
+    "58K": {
+     "tokens": 58022,
+     "tok_s": 2058.3,
+     "needle_found": true,
+     "nvme_read_gb": 81.33,
+     "ram_available_min_gib": 7.92
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 17.8,
+    "nvme_read_gb": 30.66
+   },
+   "swap_gib_before_after": [
+    5.08,
+    5.08
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "engine started (command line omitted)",
+    "FileExpertSource: RAM budget 35.00 GiB: 11986 of the 57.14 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 0 of its 3668 slots keep their experts in RAM too (0.00 GiB of the budget's remaining 0.00 GiB)",
+    "FileExpertSource: WARNING: 3668 of 3668 lendable slots (100%) will read their experts from the pack during a long prompt; expect a slower prompt read on 50K+ token prompts (one measurement: 18% uncovered cost 26%). Raise --resident-budget-gib (the lend region comes after the ranked experts) and rest",
+    "strata generate: WARNING: a prompt chunk of 32768 tokens lends 3668 cache slots to the prompt path, but only 0 of their experts fit in RAM: the others are read from the SSD on every chunk, and prompts can read ~3x slower than with --prefill auto (#669). A larger --resident-budget-gib (the lend regio",
+    "strata generate: expert cache auto: 15.93 GiB free, 832 MiB reserved (+281 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 3922 slots",
+    "strata generate: expert cache 5002 slots, 14.59 GiB of VRAM; policy is",
+    "strata generate: pre-filled 5002 of 5002 slots from the profile in 12.5 s (1257 MB/s); slot 0 verified"
+   ]
+  },
+  {
+   "mode": "max",
+   "version": "uncensored",
+   "file": "IQ3_XXS (in use)",
+   "resident_budget_gib_asked": null,
+   "load": {
+    "seconds": 19.7,
+    "nvme_read_gb": 49.66,
+    "ram_available_min_gib": 7.69
+   },
+   "ram_available_after_load_gib": 7.69,
+   "ram_available_before_load_gib": 51.13,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 63.9,
+     "nvme_read_gb": 0.13,
+     "ram_available_min_gib": 7.54
+    },
+    {
+     "tok_s": 65.8,
+     "nvme_read_gb": 0.08,
+     "ram_available_min_gib": 7.52
+    }
+   ],
+   "decode_tok_s_median": 64.8,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 712.4,
+     "needle_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 7.54
+    },
+    "16K": {
+     "tokens": 16088,
+     "tok_s": 2375.9,
+     "needle_found": true,
+     "nvme_read_gb": 0.0,
+     "ram_available_min_gib": 7.48
+    },
+    "58K": {
+     "tokens": 58023,
+     "tok_s": 3240.2,
+     "needle_found": true,
+     "nvme_read_gb": 0.0,
+     "ram_available_min_gib": 7.3
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 60.7,
+    "nvme_read_gb": 0.05
+   },
+   "swap_gib_before_after": [
+    5.08,
+    5.09
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "strata generate: expert cache auto: 15.29 GiB free, 832 MiB reserved (+184 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 6475 slots",
+    "strata generate: expert cache 8673 slots, 14.05 GiB of VRAM; policy is",
+    "strata generate: pre-filled 8673 of 8673 slots from the profile in 3.5 s (4331 MB/s); slot 0 verified",
+    "strata serve: the prompt path borrows 6358 CUDA0 cache slots (10.25 GiB)"
+   ]
+  },
+  {
+   "mode": "max",
+   "version": "uncensored",
+   "file": "UD-IQ4_XS",
+   "resident_budget_gib_asked": 45,
+   "load": {
+    "seconds": 35.8,
+    "nvme_read_gb": 72.31,
+    "ram_available_min_gib": 2.32
+   },
+   "ram_available_after_load_gib": 2.28,
+   "ram_available_before_load_gib": 51.51,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 43.8,
+     "nvme_read_gb": 0.12,
+     "ram_available_min_gib": 2.19
+    },
+    {
+     "tok_s": 41.3,
+     "nvme_read_gb": 0.09,
+     "ram_available_min_gib": 2.16
+    }
+   ],
+   "decode_tok_s_median": 42.5,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 451.9,
+     "needle_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 2.39
+    },
+    "16K": {
+     "tokens": 16092,
+     "tok_s": 1349.0,
+     "needle_found": true,
+     "nvme_read_gb": 5.28,
+     "ram_available_min_gib": 1.72
+    },
+    "58K": {
+     "tokens": 58024,
+     "tok_s": 2644.8,
+     "needle_found": true,
+     "nvme_read_gb": 19.37,
+     "ram_available_min_gib": 1.49
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 35.9,
+    "nvme_read_gb": 0.06
+   },
+   "swap_gib_before_after": [
+    5.09,
+    5.1
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "engine started (command line omitted)",
+    "FileExpertSource: --resident-budget-gib 45.00 exceeds available RAM (48.27 GiB minus 4 GiB headroom and a 0.25 GiB margin): 44.02 GiB",
+    "FileExpertSource: RAM budget 44.02 GiB: 18011 of the 40.64 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 1498 of its 4665 slots keep their experts in RAM too (3.39 GiB of the budget's remaining 3.39 GiB)",
+    "FileExpertSource: WARNING: 3167 of 4665 lendable slots (68%) will read their experts from the pack during a long prompt; expect a slower prompt read on 50K+ token prompts (one measurement: 18% uncovered cost 26%). Raise --resident-budget-gib (the lend region comes after the ranked experts) and resta",
+    "strata generate: WARNING: a prompt chunk of 32768 tokens lends 4665 cache slots to the prompt path, but only 1498 of their experts fit in RAM: the others are read from the SSD on every chunk, and prompts can read ~3x slower than with --prefill auto (#669). A larger --resident-budget-gib (the lend re",
+    "strata generate: expert cache auto: 16.07 GiB free, 832 MiB reserved (+218 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 4563 slots",
+    "strata generate: expert cache 6565 slots, 14.79 GiB of VRAM; policy is",
+    "strata generate: pre-filled 6565 of 6565 slots from the profile in 16.1 s (986 MB/s); slot 0 verified"
+   ]
+  },
+  {
+   "mode": "max",
+   "version": "uncensored",
+   "file": "UD-Q4_K_XL",
+   "resident_budget_gib_asked": 45,
+   "load": {
+    "seconds": 33.6,
+    "nvme_read_gb": 74.2,
+    "ram_available_min_gib": 2.38
+   },
+   "ram_available_after_load_gib": 2.36,
+   "ram_available_before_load_gib": 51.61,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 24.4,
+     "nvme_read_gb": 21.72,
+     "ram_available_min_gib": 1.36
+    },
+    {
+     "tok_s": 24.7,
+     "nvme_read_gb": 23.14,
+     "ram_available_min_gib": 1.22
+    }
+   ],
+   "decode_tok_s_median": 24.5,
+   "prompt": {
+    "4K": {
+     "tokens": 4126,
+     "tok_s": 333.9,
+     "needle_found": true,
+     "nvme_read_gb": 22.06,
+     "ram_available_min_gib": 1.02
+    },
+    "16K": {
+     "tokens": 16089,
+     "tok_s": 1162.3,
+     "needle_found": true,
+     "nvme_read_gb": 28.55,
+     "ram_available_min_gib": 0.81
+    },
+    "58K": {
+     "tokens": 58022,
+     "tok_s": 2063.1,
+     "needle_found": true,
+     "nvme_read_gb": 60.54,
+     "ram_available_min_gib": 1.19
+    }
+   },
+   "follow_up_after_58k": {
+    "decode_tok_s": 21.3,
+    "nvme_read_gb": 17.01
+   },
+   "swap_gib_before_after": [
+    5.1,
+    5.15
+   ],
+   "error_lines": 0,
+   "engine_notes": [
+    "engine started (command line omitted)",
+    "FileExpertSource: --resident-budget-gib 45.00 exceeds available RAM (48.03 GiB minus 4 GiB headroom and a 0.25 GiB margin): 43.78 GiB",
+    "FileExpertSource: RAM budget 43.78 GiB: 15000 of the 57.14 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 0 of its 3668 slots keep their experts in RAM too (0.00 GiB of the budget's remaining 0.00 GiB)",
+    "FileExpertSource: WARNING: 3668 of 3668 lendable slots (100%) will read their experts from the pack during a long prompt; expect a slower prompt read on 50K+ token prompts (one measurement: 18% uncovered cost 26%). Raise --resident-budget-gib (the lend region comes after the ranked experts) and rest",
+    "strata generate: WARNING: a prompt chunk of 32768 tokens lends 3668 cache slots to the prompt path, but only 0 of their experts fit in RAM: the others are read from the SSD on every chunk, and prompts can read ~3x slower than with --prefill auto (#669). A larger --resident-budget-gib (the lend regio",
+    "strata generate: expert cache auto: 15.93 GiB free, 832 MiB reserved (+281 MiB for the draft head, +256 MiB for what is allocated after the cache) -> 3922 slots",
+    "strata generate: expert cache 5002 slots, 14.59 GiB of VRAM; policy is",
+    "strata generate: pre-filled 5002 of 5002 slots from the profile in 12.8 s (1223 MB/s); slot 0 verified"
+   ]
+  }
+ ]
+}

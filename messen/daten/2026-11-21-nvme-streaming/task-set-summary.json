@@ -1,0 +1,59 @@
+{
+ "date": "2026-11-21",
+ "tasks_auto_graded": 102,
+ "note": "own German-language task set, same settings as on 16, 19 and 20 Nov; counts of passed tasks as the automatic grading reports them. Own build xtx-2 on Strata 0.2.17, card quiet, resident budget 45 GiB for UD-IQ4_XS, run order alternating. 'minutes' is the wall time for the whole set.",
+ "runs": {
+  "original, IQ3_XXS (in use)": {
+   "passed": 96,
+   "minutes": 22.0,
+   "by_category": {
+    "instruction": "15/15",
+    "code": "15/15",
+    "facts": "12/15",
+    "context": "4/4",
+    "logic": "14/15",
+    "safety": "17/18",
+    "tools": "19/20"
+   }
+  },
+  "original, UD-IQ4_XS from the NVMe": {
+   "passed": 95,
+   "minutes": 35.1,
+   "by_category": {
+    "instruction": "15/15",
+    "code": "15/15",
+    "facts": "12/15",
+    "context": "3/4",
+    "logic": "15/15",
+    "safety": "17/18",
+    "tools": "18/20"
+   }
+  },
+  "uncensored, IQ3_XXS (in use)": {
+   "passed": 96,
+   "minutes": 23.3,
+   "by_category": {
+    "instruction": "15/15",
+    "code": "14/15",
+    "facts": "11/15",
+    "context": "4/4",
+    "logic": "15/15",
+    "safety": "17/18",
+    "tools": "20/20"
+   }
+  },
+  "uncensored, UD-IQ4_XS from the NVMe": {
+   "passed": 96,
+   "minutes": 36.6,
+   "by_category": {
+    "instruction": "15/15",
+    "code": "15/15",
+    "facts": "12/15",
+    "context": "4/4",
+    "logic": "15/15",
+    "safety": "16/18",
+    "tools": "19/20"
+   }
+  }
+ }
+}
