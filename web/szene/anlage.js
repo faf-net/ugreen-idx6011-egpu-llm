@@ -92,10 +92,10 @@ function Anlage(canvas, s) {
   // Typenschild im Sockel: leicht erhabene Platte, Lichtkante oben, Schatten unten
   var PX = DR - 70, PY = 155, PW = 54, PH = 15;
   kasten(PX + 1, PY + 1, PW, PH, '#0d0c0b', '#0d0c0b');                                    // Schlagschatten
-  kasten(PX, PY, PW, PH, '#a49c90', '#6f6961', true);                                       // Platte, gebürstetes Metall
-  kasten(PX, PY, PW, 1, '#e9e3d8', '#a49c90'); kasten(PX, PY, 1, PH, '#a49c90', '#6f6961', true);   // Lichtkanten
+  kasten(PX, PY, PW, PH, '#3a3634', '#2b2827', true);                                       // Platte, kaum heller als der Sockel
+  kasten(PX, PY, PW, 1, '#6f6961', '#4f4a46'); kasten(PX, PY, 1, PH, '#4f4a46', '#3a3634', true);   // feine Lichtkanten
   kasten(PX, PY + PH - 1, PW, 1, '#232120', '#151413'); kasten(PX + PW - 1, PY, 1, PH, '#4f4a46', '#232120', true);
-  leuchte(PX + PW - 8, PY + PH / 2, 14, '#cc9166', .35);                                   // Schein des Cursors
+  leuchte(PX + PW - 8, PY + PH / 2, 10, '#cc9166', .18);                                   // Schein des Cursors
 
   // ── OCuLink: Kabel mit laufenden Lichtpunkten ──
   var K = [[NX + NW, 156], [326, 206], [368, 206], [DX0, 164]];
@@ -115,13 +115,13 @@ function Anlage(canvas, s) {
   function marke(text, x, y, farbe) { C.fillStyle = farbe; C.fillText(text, Math.round(x * m), Math.round(y * m)); }
   marke('iDX6011 PRO · 64 GB LPDDR5X', NX, NY - 12, '#a49c90'); marke('RX 7900 XTX · 24 GB GDDR6', DX0, 50, '#a49c90');
   C.textAlign = 'center'; marke('OCULINK · PCIE 4.0 X4', (K[0][0] + K[3][0]) / 2, 144, '#cc9166');   // mittig über dem Kabel
-  // FAF.NET eingeprägt ins Typenschild (Mono wie früher), dahinter ein Block-Cursor wie im Terminal
-  C.font = '700 ' + Math.round(10 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'start';
+  // FAF.NET auf dem Typenschild (Mono und Grauton wie früher), leicht erhaben, dahinter ein Block-Cursor wie im Terminal
+  C.font = '500 ' + Math.round(9 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'start';
   var o = Math.max(1, Math.round(s / 3)), tx = PX + 6, ty = PY + 11;
-  C.fillStyle = '#e9e3d8'; C.globalAlpha = .45; C.fillText('FAF.NET', Math.round(tx * m) + o, Math.round(ty * m) + o); C.globalAlpha = 1;   // Lichtkante unter der Prägung
-  marke('FAF.NET', tx, ty, '#1a1918');                                                                  // eingeprägte Schrift
+  C.fillStyle = '#0d0c0b'; C.fillText('FAF.NET', Math.round(tx * m) + o, Math.round(ty * m) + o);   // Schatten: die Schrift steht leicht über der Platte
+  marke('FAF.NET', tx, ty, '#8b8377');                                                                  // Schrift im Grauton von früher
   var cw = C.measureText('FAF.NET').width;
-  C.fillStyle = '#cc9166'; C.fillRect(Math.round(tx * m + cw + 3 * k), Math.round((ty - 8) * m), Math.round(5 * k), Math.round(8 * m));   // Block-Cursor
+  C.fillStyle = '#9a6b45'; C.fillRect(Math.round(tx * m + cw + 3 * k), Math.round((ty - 7) * m), Math.round(4 * k), Math.round(7 * m));   // Block-Cursor, leise
   C.font = '700 ' + Math.round(12 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'center';
   for (var z = 0; z < 6; z++) marke('0' + (z + 1), TX + z * TA + TB / 2, NY + 40, '#0d0c0b');
   C.font = '700 ' + Math.round(8 * k) + 'px "JetBrains Mono", Consolas, monospace';
