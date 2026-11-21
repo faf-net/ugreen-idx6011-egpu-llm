@@ -6,6 +6,28 @@ In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modell
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
+## Nachtrag 21.11.2026: Strata 0.2.17 bringt hier ebenfalls kein Tempo, der Eigenbau läuft darauf als `xtx-2`
+
+Engine und Control 0.1.63. Die Voreinstellungen für gfx1100 sind im Release weiter unverändert, also habe ich wieder das unveränderte Release und meinen Eigenbau [strata-xtx](https://github.com/faf-net/strata-xtx) auf derselben Basis gemessen. Der Bau heißt `xtx-2`: Der Patch ist derselbe wie zuvor bis auf einen Wert, den Einlesepuffer `STRATA_PREFILL_RING`, jetzt 384 statt 192.
+
+| Median | Release 0.2.17 | Vergleich |
+|---|---:|---:|
+| verschränkte Paare, eine Sitzung: Schreiben, Token/s | 61,6 | 62,3 (Release 0.2.16) |
+| `strata_bench.py --long`, 3 Läufe im Wechsel: Einlesen 4K / 16K / 32K, Token/s | 785 / 1.390 / 1.352 | 1.576 / 2.481 / 2.848 (Eigenbau auf 0.2.17) |
+| dieselben Läufe: Schreiben Chat / Agent, Token/s | 67,9 / 72,1 | 77,7 / 80,9 (Eigenbau auf 0.2.17) |
+| Prompt mit 250.000 Token, versteckte Zahl in der Mitte | 206,9 s | 82,1 s (Eigenbau, `faber`), 83,8 s (`liber`) |
+| Aufgabensatz, bestanden von 102 | nicht bewertet | `faber` 95, `liber` 97 (Eigenbau auf 0.2.17) |
+
+- **Auf dieser Karte ist das Release so schnell wie 0.2.16.** Die Paare liegen beim Schreiben 0,7 Token/s auseinander; das Einlesen in `strata_bench.py` liegt innerhalb von 3 % von 0.2.16.
+- **Der Eigenbau liest wieder etwa doppelt so schnell,** gemessen in drei Läufen im Wechsel, jede Engine frisch geladen, die Reihenfolge je Runde getauscht. Mit voller Kartenleistung (eine Runde): 785 / 1.396 / 1.362 gegen 1.643 / 2.476 / 2.854 Token/s. Über die Kontexttiefe liest er ab 65K 5 bis 11 % mehr als `xtx-1` auf 0.2.16 zwei Tage zuvor; das schreibe ich dem größeren Puffer zu, es ist aber je Bau eine Messreihe, kein Vergleich im Wechsel.
+- **Schreiben:** In `strata_bench.py` war der Eigenbau in allen drei Runden schneller, im Chat-Teil um 5 bis 15 %, im Agenten-Teil um 8 bis 13 %, mehr als auf 0.2.16. In den anderen Messreihen sehe ich das nicht: Vor der Übernahme schrieb er so schnell wie der Bau im Betrieb, und bei langen Antworten schrieb die unzensierte Fassung sogar langsamer als am 19.11. (64,3 gegen 67,4 Token/s), das Original schneller (70,2 gegen 68,3). Das beobachte ich weiter.
+- **Nadeln:** Bei 32K und 128K in 10, 50 und 90 % Tiefe und bei 250K in der Mitte wurde die versteckte Zahl jedes Mal gefunden, auf dem Release und auf dem Eigenbau mit beiden Modellen.
+- **Aufgabensatz:** `faber` 95, `liber` 97 von 102 auf dem Eigenbau (auf 0.2.16: 97 und 96). Das Release wurde diesmal nicht bewertet; auf 0.2.16 kam es auf dasselbe wie der Eigenbau.
+- **Vor der Übernahme (20.11.):** Vergleich mit dem Bau im Betrieb, gleich schnell mit beiden Modellen (`liber` bei 58K 3.200 gegen 3.201 Token/s); ein Dauerlauf von 90 Minuten mit `liber` (1.267 Anfragen, kein Fehler, 181 von 181 versteckten Zahlen gefunden, keine nicht-endlichen Werte im Engine-Log); Selbstrettung mit beiden Modellen. Im Betrieb seit dem 20.11.2026, 22:16 Uhr.
+- `standard-v1` lief für das Paket und für das Docker-Image und liegt bei den Rohdaten.
+
+Rohdaten: `messen/daten/2026-11-21-strata-xtx-0.2.17/` (das Release unter `release-0.2.17/`, die Läufe im Wechsel unter `strata-bench-alternating/`, die Prüfungen vor der Übernahme unter `checks/`).
+
 ## Nachtrag 19.11.2026: Strata 0.2.16 bringt hier kein Tempo, der Eigenbau läuft jetzt darauf
 
 Engine und Control 0.1.62. Die Version bringt Stratas eigenen Engine-Code (ohne ggml), eine neue Ordnerstruktur (`engine/`, `terminal/`, `tools/`) und ein offizielles Bauskript (`tools/packaging/build_hip_linux.sh`). Die Voreinstellungen für gfx1100 sind im Release unverändert: Die Schalter für das Einlesen bleiben auf dieser Karte ausgeschaltet. Deshalb habe ich zweierlei gemessen, das unveränderte Release und meinen Eigenbau [strata-xtx](https://github.com/faf-net/strata-xtx) auf derselben Basis.
@@ -25,7 +47,7 @@ Engine und Control 0.1.62. Die Version bringt Stratas eigenen Engine-Code (ohne 
 - **Aufgabensatz:** `liber` besteht auf dem Release und auf dem Eigenbau je 96 von 102, `faber` auf dem Eigenbau 97. Sechs Aufgaben habe ich je fünfmal wiederholt, auf beiden Fassungen mit demselben Bild: Zwei besteht das Modell mal ja, mal nein, vier nie. Je nach Lauf sind es also 96 bis 98 (auf 0.2.15 waren es 98).
 - `standard-v1` ist für das Paket und für das Docker-Image gelaufen und liegt bei den Rohdaten.
 
-**Der Eigenbau.** Seit dem Abend des 18.11.2026 stehen die Schalter aus dem Nachtrag darunter nicht mehr in der Laufkonfiguration, sondern im Code: strata-xtx setzt sie auf einer einzelnen RX 7900 XTX unter Linux selbst (eine Tabelle mit 27 Schaltern; 26 davon setzt die Engine neu, einer ist im Release schon an). Zuerst lief er auf der Basis von 0.2.15, seit dem 19.11.2026 auf 0.2.16, für `liber` und `faber`. Vor der Umstellung auf die neue Basis habe ich neu geprüft: Tempo mit und ohne Tabelle, Tool-Call, Bildeingang und Steuervektor, den Aufgabensatz, einen Dauerlauf von 90 Minuten mit `liber` (1.232 Anfragen, kein Fehler, 176 von 176 versteckten Zahlen gefunden) und die Selbstrettung mit beiden Modellen (nach nicht-endlichen Werten aus Stratas Fehlerinjektion endet die auslösende Anfrage selbst mit einem Fehler, HTTP 503; der Server startet die Engine einmal ohne die Tabelle neu und beantwortet die folgenden Anfragen). Für den Bau waren die neue Ordnerstruktur und die Bauoptionen des offiziellen Skripts nachzuziehen. Das Einlesen ist auf beiden Basen gleich schnell.
+**Der Eigenbau.** Seit dem Abend des 18.11.2026 stehen die Schalter aus dem Nachtrag darunter nicht mehr in der Laufkonfiguration, sondern im Code: strata-xtx setzt sie auf einer einzelnen RX 7900 XTX unter Linux selbst (eine Tabelle mit 27 Schaltern; 26 davon setzt die Engine neu, einer ist im Release schon an). Zuerst lief er auf der Basis von 0.2.15, vom 19. bis 20.11.2026 auf 0.2.16, für `liber` und `faber` (seitdem auf 0.2.17, siehe oben). Vor der Umstellung auf die neue Basis habe ich neu geprüft: Tempo mit und ohne Tabelle, Tool-Call, Bildeingang und Steuervektor, den Aufgabensatz, einen Dauerlauf von 90 Minuten mit `liber` (1.232 Anfragen, kein Fehler, 176 von 176 versteckten Zahlen gefunden) und die Selbstrettung mit beiden Modellen (nach nicht-endlichen Werten aus Stratas Fehlerinjektion endet die auslösende Anfrage selbst mit einem Fehler, HTTP 503; der Server startet die Engine einmal ohne die Tabelle neu und beantwortet die folgenden Anfragen). Für den Bau waren die neue Ordnerstruktur und die Bauoptionen des offiziellen Skripts nachzuziehen. Das Einlesen ist auf beiden Basen gleich schnell.
 
 Rohdaten: `messen/daten/2026-11-19-strata-xtx-0.2.16/` (das Release unter `release-0.2.16/`, die Läufe im Wechsel unter `strata-bench-alternating/`).
 

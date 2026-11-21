@@ -1,0 +1,73 @@
+{
+ "exe": "/opt/engine/strata",
+ "args": [
+  "--pack",
+  "/strata/data/packs/iq3_xxs",
+  "--native",
+  "/strata/data/models/IQ3_XXS/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS-00001-of-00002.gguf",
+  "--ple-gguf",
+  "/strata/data/models/IQ3_XXS/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS-00002-of-00002.gguf",
+  "--expert-profile",
+  "/opt/strata/data/expert-profile.bin",
+  "--expert-cache",
+  "auto",
+  "--prefill",
+  "auto",
+  "--spec",
+  "4",
+  "--spec-min-p",
+  "0.5",
+  "--mtp",
+  "/strata/data/mtp/rt",
+  "--max-context",
+  "262144",
+  "--kv",
+  "int8",
+  "--vram-reserve-mib",
+  "832",
+  "--pcie-frac",
+  "0",
+  "--control-vector-scaled",
+  "/strata/data/vektor/refusal-direction.gguf:1.0",
+  "--control-vector-layer-range",
+  "4",
+  "44",
+  "--cvec-mode",
+  "project",
+  "--cvec-dir",
+  "per-layer",
+  "--conversation-cache-slots",
+  "2",
+  "--conversation-cache-min-tokens",
+  "8192",
+  "--conversation-cache-mib",
+  "4608",
+  "--vision",
+  "--conversation-cache-min-free-mib",
+  "1536"
+ ],
+ "cwd": "/opt/strata",
+ "tokenizer": "/strata/data/packs/iq3_xxs/tokenizer",
+ "model_name": "liber",
+ "log": "/strata/konfig/liber.log",
+ "lib_dirs": [
+  "/opt/engine"
+ ],
+ "backend": "hip",
+ "env": {
+  "STRATA_HIPBLASLT_TUNING": "/opt/engine/tuning/gfx1100-hipblaslt-100200.txt"
+ },
+ "open_browser": false,
+ "reasoning_effort": "high",
+ "allowed_hosts": [
+  "localhost"
+ ],
+ "vision": {
+  "exe": "/opt/engine/strata-vision",
+  "mmproj": "/strata/vision/mmproj-Qwen3.8-Flash-Next-BF16.gguf",
+  "model": "/strata/data/models/IQ3_XXS/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS-00001-of-00002.gguf",
+  "gpu": false,
+  "max_tokens": 300,
+  "threads": 8
+ }
+}
