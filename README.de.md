@@ -307,7 +307,7 @@ Stratas Engine bringt Umgebungsschalter für das Einlesen mit, die auf dieser Ka
 
 ## Strata-Versionen auf dieser Karte
 
-Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Seit dem 18.11.2026 läuft im Betrieb nicht mehr das Release, sondern der Eigenbau auf dessen Basis; im Diagramm stehen die Rauten über 0.2.15 bis 0.2.17 für ihn auf jeder Basis (über 0.2.15 hohl, aus anderen Messungen, nicht im Wechsel). Einzelheiten, Tabellen und Rohdaten zu jeder Version: [docs/releases.de.md](docs/releases.de.md).
+Jede Version seit 0.2.0-beta ist hier gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Seit dem 18.11.2026 läuft im Betrieb nicht mehr das Release, sondern der Eigenbau auf dessen Basis; im Diagramm stehen die Rauten über 0.2.16 und 0.2.17 für ihn auf beiden Basen, jeweils im Wechsel mit dem Release gemessen. Einzelheiten, Tabellen und Rohdaten zu jeder Version: [docs/releases.de.md](docs/releases.de.md).
 
 ![Strata-Versionen auf derselben Karte](bilder/versionen-de.png)
 

@@ -306,7 +306,7 @@ Strata's engine ships environment switches for prompt reading that are off on th
 
 ## Strata releases on this card
 
-Every release since 0.2.0-beta was measured here against the one before it, with the identical run config and only engine and control swapped. Since 18 Nov 2026 production no longer runs the release but my own build on its base; in the chart the diamonds above 0.2.15 to 0.2.17 show it on each base (on 0.2.15, hollow, from other measurements, not alternating). Details, tables and raw data for each one: [docs/releases.md](docs/releases.md).
+Every release since 0.2.0-beta was measured here against the one before it, with the identical run config and only engine and control swapped. Since 18 Nov 2026 production no longer runs the release but my own build on its base; in the chart the diamonds above 0.2.16 and 0.2.17 show it on both bases, each measured alternating with the release. Details, tables and raw data for each one: [docs/releases.md](docs/releases.md).
 
 ![Strata releases on the same card](bilder/versionen-en.png)
 
