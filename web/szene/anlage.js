@@ -49,22 +49,50 @@ function Anlage(canvas, s) {
   kasten(NX + 186, NY + 104, 10, 6, '#a9bfcf', '#5a7385'); leuchte(NX + 191, NY + 107, 9, '#7d97ab', .6);
 
   // ── Dock: offener Rahmen, Netzteil, Karte mit drei Lüftern ──
-  kasten(408, 150, 232, 26, '#4f4a46', '#2b2827');
-  kasten(408, 66, 8, 86, '#6f6961', '#3a3634'); kasten(632, 66, 8, 86, '#4f4a46', '#2b2827'); kasten(408, 62, 232, 6, '#a49c90', '#4f4a46');
-  kasten(424, 154, 70, 18, '#232120', '#151413'); S.fillStyle = '#3a3634'; for (var v = 0; v < 8; v++) S.fillRect(430 + v * 8, 158, 4, 10);
-  kasten(424, 84, 200, 54, '#3a3634', '#151413', true);
-  kasten(424, 84, 200, 5, '#e3b48e', '#9a6b45'); leuchte(524, 86, 150, '#cc9166', .55);
+  // Die Karte nach dem Original (RX 7900 XTX, Frontansicht): Seitenverhältnis 2,9 : 1, schwarzes Gehäuse mit Silberkanten,
+  // drei große Lüfter, die fast die ganze Höhe füllen und sich beinahe berühren, je ein Silberring, gebogene schwarze Blätter
+  // vor hellen Kühlrippen, Nabe halb silbern; links das Slotblech, unten die goldenen PCIe-Kontakte.
+  var DX0 = 416, DW = 212, DR = DX0 + DW;                                                   // Dock 20 Einheiten schmaler als zuvor
+  kasten(DX0, 150, DW, 26, '#4f4a46', '#2b2827');                                           // Sockel mit Netzteil
+  kasten(DX0, 66, 8, 86, '#6f6961', '#3a3634'); kasten(DR - 8, 66, 8, 86, '#4f4a46', '#2b2827'); kasten(DX0, 62, DW, 6, '#a49c90', '#4f4a46');
+  kasten(DX0 + 14, 154, 62, 18, '#232120', '#151413'); S.fillStyle = '#3a3634'; for (var v = 0; v < 7; v++) S.fillRect(DX0 + 20 + v * 8, 158, 4, 10);
+  leuchte(DX0 + DW / 2, 70, 150, '#cc9166', .38);                                           // warmes Licht von oben, schwächer: die Karte bleibt schwarz und silbern
+  var CX = 432, CY = 76, CW = 180, CH = 62;                                                 // Kartenkörper
+  kasten(CX - 6, 70, 5, 82, '#e9e3d8', '#6f6961', true); kasten(CX - 5, 132, 3, 8, '#151413', '#0d0c0b');   // Slotblech mit Anschlüssen
+  [[.11, .15], [.165, .43]].forEach(function (g) { kasten(CX + g[0] * CW, CY + CH, (g[1] - g[0]) * CW, 4, '#e4cd85', '#8d7524', true); });  // PCIe-Kontakte
+  kasten(CX, CY, CW, CH, '#1a1918', '#0d0c0b', true);                                       // Gehäuse
+  kasten(CX, CY, CW, 2, '#a49c90', '#4f4a46'); kasten(CX, CY + CH - 2, CW, 2, '#4f4a46', '#2b2827');   // Silberkanten oben und unten
+  kasten(CX + CW - 4, CY, 4, CH, '#e9e3d8', '#6f6961', true);                               // Silberkappe am Ende
   for (var f = 0; f < 3; f++) {
-    var cx = 458 + f * 66, cy = 113;
-    S.fillStyle = verlauf(cx - 24, cy - 24, cx + 24, cy + 24, [[0, '#4f4a46'], [1, '#1a1918']]); S.beginPath(); S.arc(cx, cy, 23, 0, 7); S.fill();
-    S.strokeStyle = '#6f6961'; S.lineWidth = 2; S.beginPath(); S.arc(cx, cy, 23, 0, 7); S.stroke();
-    S.strokeStyle = '#2b2827'; S.lineWidth = 3; for (var b = 0; b < 9; b++) { var w = b * .7 + f; S.beginPath(); S.moveTo(cx + Math.cos(w) * 6, cy + Math.sin(w) * 6); S.lineTo(cx + Math.cos(w + .5) * 20, cy + Math.sin(w + .5) * 20); S.stroke(); }
-    S.fillStyle = '#9a6b45'; S.beginPath(); S.arc(cx, cy, 5, 0, 7); S.fill(); leuchte(cx, cy, 16, '#cc9166', .5);
+    var cx = CX + [.185, .50, .815][f] * CW, cy = CY + CH / 2, R = 27;
+    S.save(); S.beginPath(); S.arc(cx, cy, R - 1, 0, 7); S.clip();
+    S.fillStyle = '#2b2827'; S.fillRect(cx - R, cy - R, 2 * R, 2 * R);                     // Kühlrippen hinter den Blättern, gedämpft
+    S.fillStyle = '#4f4a46'; for (var r = -R; r < R; r += 4) S.fillRect(cx + r, cy - R, 2, 2 * R);
+    for (var b = 0; b < 13; b++) {                                                          // 13 gebogene Blätter
+      var a = b * 2 * Math.PI / 13 + f * .4;
+      S.fillStyle = '#0d0c0b'; S.beginPath();
+      S.moveTo(cx + Math.cos(a) * 8, cy + Math.sin(a) * 8);
+      S.quadraticCurveTo(cx + Math.cos(a + .55) * 17, cy + Math.sin(a + .55) * 17, cx + Math.cos(a + .95) * (R - 1), cy + Math.sin(a + .95) * (R - 1));
+      S.lineTo(cx + Math.cos(a + 1.28) * (R - 1), cy + Math.sin(a + 1.28) * (R - 1));
+      S.quadraticCurveTo(cx + Math.cos(a + .8) * 15, cy + Math.sin(a + .8) * 15, cx + Math.cos(a + .32) * 8, cy + Math.sin(a + .32) * 8);
+      S.fill();
+      S.strokeStyle = '#3a3634'; S.lineWidth = 1; S.beginPath();                            // Lichtkante am Blatt
+      S.moveTo(cx + Math.cos(a) * 8, cy + Math.sin(a) * 8);
+      S.quadraticCurveTo(cx + Math.cos(a + .55) * 17, cy + Math.sin(a + .55) * 17, cx + Math.cos(a + .95) * (R - 1), cy + Math.sin(a + .95) * (R - 1)); S.stroke();
+    }
+    S.restore();
+    S.strokeStyle = verlauf(cx - R, cy - R, cx + R, cy + R, [[0, '#f5f1eb'], [.45, '#a49c90'], [1, '#4f4a46']]); S.lineWidth = 3;
+    S.beginPath(); S.arc(cx, cy, R - 1, 0, 7); S.stroke();                                  // Silberring
+    S.fillStyle = '#0d0c0b'; S.beginPath(); S.arc(cx, cy, 10, 0, 7); S.fill();              // Nabe: Rand dunkel, links silbern, rechts schwarz
+    S.fillStyle = verlauf(cx - 8, cy, cx + 8, cy, [[0, '#e9e3d8'], [.44, '#a49c90'], [.5, '#151413'], [1, '#0d0c0b']]);
+    S.beginPath(); S.arc(cx, cy, 8, 0, 7); S.fill();
+    S.strokeStyle = '#a49c90'; S.lineWidth = 1.5; S.beginPath(); S.arc(cx, cy, 10, 0, 7); S.stroke();
+    leuchte(cx - 10, cy - 14, 12, '#e9e3d8', .18);                                          // Glanz auf dem Ring
   }
-  kasten(424, 138, 200, 4, '#6b4a30', '#3e2a1c');
+  leuchte(DR - 44, 163, 34, '#cc9166', .22);                                                // hinterleuchtetes Namensschild
 
   // ── OCuLink: Kabel mit laufenden Lichtpunkten ──
-  var K = [[NX + NW, 156], [326, 206], [368, 206], [408, 164]];
+  var K = [[NX + NW, 156], [326, 206], [368, 206], [DX0, 164]];
   function kabel(ctx, breite, farbe) { ctx.strokeStyle = farbe; ctx.lineWidth = breite; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(K[0][0], K[0][1]); ctx.bezierCurveTo(K[1][0], K[1][1], K[2][0], K[2][1], K[3][0], K[3][1]); ctx.stroke(); }
   kabel(S, 5, '#3a3634'); kabel(S, 2, '#9a6b45');
   [[.16, 1], [.42, .8], [.66, 1], [.88, .7]].forEach(function (p) {
@@ -79,10 +107,11 @@ function Anlage(canvas, s) {
   C.textBaseline = 'alphabetic';
   C.font = '500 ' + Math.round(11 * k) + 'px "JetBrains Mono", Consolas, monospace';
   function marke(text, x, y, farbe) { C.fillStyle = farbe; C.fillText(text, Math.round(x * m), Math.round(y * m)); }
-  marke('iDX6011 PRO · 64 GB LPDDR5X', NX, NY - 12, '#a49c90'); marke('RX 7900 XTX · 24 GB GDDR6', 408, 50, '#a49c90');
+  marke('iDX6011 PRO · 64 GB LPDDR5X', NX, NY - 12, '#a49c90'); marke('RX 7900 XTX · 24 GB GDDR6', DX0, 50, '#a49c90');
   C.textAlign = 'center'; marke('OCULINK · PCIE 4.0 X4', (K[0][0] + K[3][0]) / 2, 144, '#cc9166');   // mittig über dem Kabel
-  C.font = '500 ' + Math.round(8 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'end';
-  marke('FAF.NET', 630, 170, '#8b8377');                                                              // dezent rechts unten im Dock
+  // faf.net als Namensschild im Sockel des Docks: Instrument Serif kursiv wie die Kapitelüberschriften, in Bernstein
+  C.font = 'italic 400 ' + Math.round(19 * k) + 'px "Instrument Serif", Georgia, serif'; C.textAlign = 'end';
+  marke('faf.net', DR - 14, 169, '#cc9166');
   C.textAlign = 'start';
   C.font = '700 ' + Math.round(12 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'center';
   for (var z = 0; z < 6; z++) marke('0' + (z + 1), TX + z * TA + TB / 2, NY + 40, '#0d0c0b');
