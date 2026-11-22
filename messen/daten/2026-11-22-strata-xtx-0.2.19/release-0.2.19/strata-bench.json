@@ -1,0 +1,608 @@
+{
+ "schema": 1,
+ "tool": "tools/strata_bench.py",
+ "date": "2026-11-22",
+ "params": {
+  "runs": 3,
+  "think": false,
+  "clients": 0,
+  "long": true,
+  "started_server": false,
+  "command": "python tools/strata_bench.py --long"
+ },
+ "elapsed_s": 68.46094965934753,
+ "machine": {
+  "gpu": [
+   "AMD Radeon"
+  ],
+  "gpu_vram_mib": null,
+  "gpu_driver": null,
+  "cuda": null,
+  "cpu": "Intel(R) Core(TM) Ultra 7 255H",
+  "cpu_cores": null,
+  "cpu_threads": 16,
+  "ram_gib": 62.3,
+  "os": "Linux 6.18.15",
+  "python": "3.11.2",
+  "strata_version": "0.1.44.1",
+  "strata_commit": "296b59d2",
+  "engine_version": null,
+  "model": null,
+  "quant": null,
+  "context": null,
+  "parallel_slots": null,
+  "config": {},
+  "launch": null,
+  "engine_info": {},
+  "vram_after": {}
+ },
+ "results": {
+  "chat": {
+   "requests": [
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.405,
+     "total_s": 1.602,
+     "prompt_tokens": 51,
+     "reused_tokens": 0,
+     "read_tokens": 51,
+     "generated_tokens": 100,
+     "prompt_tps": 133.4,
+     "prompt_tps_source": "engine",
+     "decode_tps": 82.4,
+     "decode_tps_source": "engine",
+     "prompt_ms": 382.3,
+     "decode_ms": 1213.1,
+     "drafts_offered": 90,
+     "drafts_accepted": 69,
+     "run": 0,
+     "prompt": 0
+    },
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.315,
+     "total_s": 1.86,
+     "prompt_tokens": 43,
+     "reused_tokens": 0,
+     "read_tokens": 43,
+     "generated_tokens": 100,
+     "prompt_tps": 146.6,
+     "prompt_tps_source": "engine",
+     "decode_tps": 64.0,
+     "decode_tps_source": "engine",
+     "prompt_ms": 293.3,
+     "decode_ms": 1562.0,
+     "drafts_offered": 95,
+     "drafts_accepted": 53,
+     "run": 0,
+     "prompt": 1
+    },
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.344,
+     "total_s": 1.946,
+     "prompt_tokens": 46,
+     "reused_tokens": 0,
+     "read_tokens": 46,
+     "generated_tokens": 100,
+     "prompt_tps": 155.9,
+     "prompt_tps_source": "engine",
+     "decode_tps": 61.8,
+     "decode_tps_source": "engine",
+     "prompt_ms": 295.1,
+     "decode_ms": 1617.7,
+     "drafts_offered": 96,
+     "drafts_accepted": 51,
+     "run": 0,
+     "prompt": 2
+    },
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.313,
+     "total_s": 1.398,
+     "prompt_tokens": 51,
+     "reused_tokens": 0,
+     "read_tokens": 51,
+     "generated_tokens": 100,
+     "prompt_tps": 175.0,
+     "prompt_tps_source": "engine",
+     "decode_tps": 90.9,
+     "decode_tps_source": "engine",
+     "prompt_ms": 291.5,
+     "decode_ms": 1100.1,
+     "drafts_offered": 87,
+     "drafts_accepted": 69,
+     "run": 1,
+     "prompt": 0
+    },
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.275,
+     "total_s": 1.558,
+     "prompt_tokens": 43,
+     "reused_tokens": 0,
+     "read_tokens": 43,
+     "generated_tokens": 100,
+     "prompt_tps": 185.6,
+     "prompt_tps_source": "engine",
+     "decode_tps": 77.1,
+     "decode_tps_source": "engine",
+     "prompt_ms": 231.7,
+     "decode_ms": 1297.5,
+     "drafts_offered": 89,
+     "drafts_accepted": 55,
+     "run": 1,
+     "prompt": 1
+    },
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.322,
+     "total_s": 1.757,
+     "prompt_tokens": 46,
+     "reused_tokens": 0,
+     "read_tokens": 46,
+     "generated_tokens": 100,
+     "prompt_tps": 158.3,
+     "prompt_tps_source": "engine",
+     "decode_tps": 68.9,
+     "decode_tps_source": "engine",
+     "prompt_ms": 290.5,
+     "decode_ms": 1451.1,
+     "drafts_offered": 97,
+     "drafts_accepted": 51,
+     "run": 1,
+     "prompt": 2
+    },
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.307,
+     "total_s": 1.372,
+     "prompt_tokens": 51,
+     "reused_tokens": 0,
+     "read_tokens": 51,
+     "generated_tokens": 100,
+     "prompt_tps": 178.8,
+     "prompt_tps_source": "engine",
+     "decode_tps": 92.5,
+     "decode_tps_source": "engine",
+     "prompt_ms": 285.3,
+     "decode_ms": 1081.4,
+     "drafts_offered": 86,
+     "drafts_accepted": 69,
+     "run": 2,
+     "prompt": 0
+    },
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.248,
+     "total_s": 1.52,
+     "prompt_tokens": 43,
+     "reused_tokens": 0,
+     "read_tokens": 43,
+     "generated_tokens": 100,
+     "prompt_tps": 189.9,
+     "prompt_tps_source": "engine",
+     "decode_tps": 77.6,
+     "decode_tps_source": "engine",
+     "prompt_ms": 226.4,
+     "decode_ms": 1288.7,
+     "drafts_offered": 90,
+     "drafts_accepted": 55,
+     "run": 2,
+     "prompt": 1
+    },
+    {
+     "ok": true,
+     "err": null,
+     "ttft_s": 0.283,
+     "total_s": 1.692,
+     "prompt_tokens": 46,
+     "reused_tokens": 0,
+     "read_tokens": 46,
+     "generated_tokens": 100,
+     "prompt_tps": 176.0,
+     "prompt_tps_source": "engine",
+     "decode_tps": 70.1,
+     "decode_tps_source": "engine",
+     "prompt_ms": 261.3,
+     "decode_ms": 1425.8,
+     "drafts_offered": 97,
+     "drafts_accepted": 51,
+     "run": 2,
+     "prompt": 2
+    }
+   ],
+   "decode_tps": {
+    "median": 77.1,
+    "min": 61.8,
+    "max": 92.5,
+    "n": 9
+   },
+   "ttft_s": {
+    "median": 0.313,
+    "min": 0.248,
+    "max": 0.405,
+    "n": 9
+   },
+   "generated_tokens": {
+    "median": 100,
+    "min": 100,
+    "max": 100,
+    "n": 9
+   },
+   "prompt_tokens": {
+    "median": 46,
+    "min": 43,
+    "max": 51,
+    "n": 9
+   }
+  },
+  "prompts": {
+   "4K": {
+    "target_tokens": 4096,
+    "requests": [
+     {
+      "ok": true,
+      "err": null,
+      "ttft_s": 5.472,
+      "total_s": 5.861,
+      "prompt_tokens": 4019,
+      "reused_tokens": 0,
+      "read_tokens": 4019,
+      "generated_tokens": 24,
+      "prompt_tps": 738.1,
+      "prompt_tps_source": "engine",
+      "decode_tps": 59.2,
+      "decode_tps_source": "engine",
+      "prompt_ms": 5445.2,
+      "decode_ms": 405.7,
+      "drafts_offered": 19,
+      "drafts_accepted": 12,
+      "run": 0
+     },
+     {
+      "ok": true,
+      "err": null,
+      "ttft_s": 4.764,
+      "total_s": 5.096,
+      "prompt_tokens": 4019,
+      "reused_tokens": 0,
+      "read_tokens": 4019,
+      "generated_tokens": 24,
+      "prompt_tps": 847.8,
+      "prompt_tps_source": "engine",
+      "decode_tps": 68.8,
+      "decode_tps_source": "engine",
+      "prompt_ms": 4740.5,
+      "decode_ms": 348.6,
+      "drafts_offered": 20,
+      "drafts_accepted": 13,
+      "run": 1
+     },
+     {
+      "ok": true,
+      "err": null,
+      "ttft_s": 4.757,
+      "total_s": 5.072,
+      "prompt_tokens": 4019,
+      "reused_tokens": 0,
+      "read_tokens": 4019,
+      "generated_tokens": 24,
+      "prompt_tps": 849.1,
+      "prompt_tps_source": "engine",
+      "decode_tps": 72.3,
+      "decode_tps_source": "engine",
+      "prompt_ms": 4733.0,
+      "decode_ms": 331.9,
+      "drafts_offered": 20,
+      "drafts_accepted": 12,
+      "run": 2
+     }
+    ],
+    "prompt_tps": {
+     "median": 847.8,
+     "min": 738.1,
+     "max": 849.1,
+     "n": 3
+    },
+    "ttft_s": {
+     "median": 4.764,
+     "min": 4.757,
+     "max": 5.472,
+     "n": 3
+    },
+    "prompt_tokens": {
+     "median": 4019,
+     "min": 4019,
+     "max": 4019,
+     "n": 3
+    },
+    "reused_tokens": {
+     "median": 0,
+     "min": 0,
+     "max": 0,
+     "n": 3
+    }
+   },
+   "16K": {
+    "target_tokens": 16384,
+    "requests": [
+     {
+      "ok": true,
+      "err": null,
+      "ttft_s": 10.644,
+      "total_s": 10.985,
+      "prompt_tokens": 16058,
+      "reused_tokens": 0,
+      "read_tokens": 16058,
+      "generated_tokens": 24,
+      "prompt_tps": 1512.8,
+      "prompt_tps_source": "engine",
+      "decode_tps": 66.9,
+      "decode_tps_source": "engine",
+      "prompt_ms": 10614.5,
+      "decode_ms": 358.5,
+      "drafts_offered": 19,
+      "drafts_accepted": 10,
+      "run": 0
+     },
+     {
+      "ok": true,
+      "err": null,
+      "ttft_s": 10.691,
+      "total_s": 11.067,
+      "prompt_tokens": 16058,
+      "reused_tokens": 0,
+      "read_tokens": 16058,
+      "generated_tokens": 24,
+      "prompt_tps": 1507.3,
+      "prompt_tps_source": "engine",
+      "decode_tps": 60.9,
+      "decode_tps_source": "engine",
+      "prompt_ms": 10653.8,
+      "decode_ms": 394.1,
+      "drafts_offered": 22,
+      "drafts_accepted": 9,
+      "run": 1
+     },
+     {
+      "ok": false,
+      "err": "{'type': 'server_error', 'message': 'this instance is draining; retry against the next instance'}",
+      "ttft_s": null,
+      "total_s": 10.548,
+      "prompt_tokens": null,
+      "reused_tokens": null,
+      "read_tokens": null,
+      "generated_tokens": 0,
+      "prompt_tps": null,
+      "prompt_tps_source": null,
+      "decode_tps": null,
+      "decode_tps_source": null,
+      "prompt_ms": null,
+      "decode_ms": null,
+      "drafts_offered": null,
+      "drafts_accepted": null,
+      "run": 2
+     }
+    ],
+    "prompt_tps": {
+     "median": 1510.05,
+     "min": 1507.3,
+     "max": 1512.8,
+     "n": 2
+    },
+    "ttft_s": {
+     "median": 10.668,
+     "min": 10.644,
+     "max": 10.691,
+     "n": 2
+    },
+    "prompt_tokens": {
+     "median": 16058.0,
+     "min": 16058,
+     "max": 16058,
+     "n": 2
+    },
+    "reused_tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0,
+     "n": 2
+    }
+   },
+   "32K": {
+    "target_tokens": 32768,
+    "requests": [
+     {
+      "ok": false,
+      "err": "URLError(ConnectionRefusedError(111, 'Connection refused'))",
+      "ttft_s": null,
+      "total_s": 0.0,
+      "prompt_tokens": null,
+      "reused_tokens": null,
+      "read_tokens": null,
+      "generated_tokens": 0,
+      "prompt_tps": null,
+      "prompt_tps_source": null,
+      "decode_tps": null,
+      "decode_tps_source": null,
+      "prompt_ms": null,
+      "decode_ms": null,
+      "drafts_offered": null,
+      "drafts_accepted": null,
+      "run": 0
+     },
+     {
+      "ok": false,
+      "err": "URLError(ConnectionRefusedError(111, 'Connection refused'))",
+      "ttft_s": null,
+      "total_s": 0.0,
+      "prompt_tokens": null,
+      "reused_tokens": null,
+      "read_tokens": null,
+      "generated_tokens": 0,
+      "prompt_tps": null,
+      "prompt_tps_source": null,
+      "decode_tps": null,
+      "decode_tps_source": null,
+      "prompt_ms": null,
+      "decode_ms": null,
+      "drafts_offered": null,
+      "drafts_accepted": null,
+      "run": 1
+     },
+     {
+      "ok": false,
+      "err": "URLError(ConnectionRefusedError(111, 'Connection refused'))",
+      "ttft_s": null,
+      "total_s": 0.0,
+      "prompt_tokens": null,
+      "reused_tokens": null,
+      "read_tokens": null,
+      "generated_tokens": 0,
+      "prompt_tps": null,
+      "prompt_tps_source": null,
+      "decode_tps": null,
+      "decode_tps_source": null,
+      "prompt_ms": null,
+      "decode_ms": null,
+      "drafts_offered": null,
+      "drafts_accepted": null,
+      "run": 2
+     }
+    ],
+    "prompt_tps": null,
+    "ttft_s": null,
+    "prompt_tokens": null,
+    "reused_tokens": null
+   }
+  },
+  "agent": {
+   "sessions": [
+    [
+     {
+      "ok": false,
+      "err": "ConnectionResetError(104, 'Connection reset by peer')",
+      "ttft_s": null,
+      "total_s": 0.843,
+      "prompt_tokens": null,
+      "reused_tokens": null,
+      "read_tokens": null,
+      "generated_tokens": 0,
+      "prompt_tps": null,
+      "prompt_tps_source": null,
+      "decode_tps": null,
+      "decode_tps_source": null,
+      "prompt_ms": null,
+      "decode_ms": null,
+      "drafts_offered": null,
+      "drafts_accepted": null,
+      "run": 0,
+      "turn": 0
+     }
+    ],
+    [
+     {
+      "ok": false,
+      "err": "URLError(ConnectionRefusedError(111, 'Connection refused'))",
+      "ttft_s": null,
+      "total_s": 0.0,
+      "prompt_tokens": null,
+      "reused_tokens": null,
+      "read_tokens": null,
+      "generated_tokens": 0,
+      "prompt_tps": null,
+      "prompt_tps_source": null,
+      "decode_tps": null,
+      "decode_tps_source": null,
+      "prompt_ms": null,
+      "decode_ms": null,
+      "drafts_offered": null,
+      "drafts_accepted": null,
+      "run": 1,
+      "turn": 0
+     }
+    ],
+    [
+     {
+      "ok": false,
+      "err": "URLError(ConnectionRefusedError(111, 'Connection refused'))",
+      "ttft_s": null,
+      "total_s": 0.0,
+      "prompt_tokens": null,
+      "reused_tokens": null,
+      "read_tokens": null,
+      "generated_tokens": 0,
+      "prompt_tps": null,
+      "prompt_tps_source": null,
+      "decode_tps": null,
+      "decode_tps_source": null,
+      "prompt_ms": null,
+      "decode_ms": null,
+      "drafts_offered": null,
+      "drafts_accepted": null,
+      "run": 2,
+      "turn": 0
+     }
+    ]
+   ],
+   "hit_pct": null,
+   "reread_tokens": {
+    "median": 0,
+    "min": 0,
+    "max": 0,
+    "n": 3
+   },
+   "new_tokens": {
+    "median": 0,
+    "min": 0,
+    "max": 0,
+    "n": 3
+   },
+   "turn_ttft_s": null,
+   "last_turn_prompt_tokens": null,
+   "turn_decode_tps": null,
+   "first_turn_ttft_s": null
+  },
+  "clients": {},
+  "skipped": {},
+  "failures": [
+   {
+    "where": "16K",
+    "error": "{'type': 'server_error', 'message': 'this instance is draining; retry against the next instance'}"
+   },
+   {
+    "where": "agent",
+    "error": "ConnectionResetError(104, 'Connection reset by peer')"
+   },
+   {
+    "where": "agent",
+    "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+   },
+   {
+    "where": "agent",
+    "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+   },
+   {
+    "where": "32K",
+    "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+   },
+   {
+    "where": "32K",
+    "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+   },
+   {
+    "where": "32K",
+    "error": "URLError(ConnectionRefusedError(111, 'Connection refused'))"
+   }
+  ]
+ }
+}

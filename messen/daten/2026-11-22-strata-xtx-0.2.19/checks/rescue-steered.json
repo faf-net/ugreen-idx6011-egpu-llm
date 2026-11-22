@@ -1,0 +1,46 @@
+{
+ "basis": "liber",
+ "fenster": "7,8",
+ "anfragen": [
+  {
+   "ok": false,
+   "s": 37.2,
+   "status": 503,
+   "fehler": "{\"error\": {\"type\": \"server_error\", \"message\": \"the model's output became non-finite (NaN) twice in a row (#879); the engine has dropped its cached state - send the request again\"}}"
+  },
+  {
+   "ok": true,
+   "s": 1.6,
+   "antwort": "Rom",
+   "prompt_token": 27,
+   "lesen_tps": 92.0
+  },
+  {
+   "ok": true,
+   "s": 0.5,
+   "antwort": "Madrid",
+   "prompt_token": 27,
+   "lesen_tps": 75.4
+  }
+ ],
+ "lang_16k": {
+  "ok": true,
+  "s": 12.8,
+  "antwort": "46291",
+  "prompt_token": 16086,
+  "lesen_tps": 1268.5,
+  "nadel": true
+ },
+ "rettungszeile": "[strata] gfx1100: non-finite logits (#879) with the gfx1100 prompt-path defaults on: starting the engine again without them (STRATA_GFX1100_DEFAULTS=0 STRATA_GFX11_DEFAULTS=0; prompts are read at about half the speed until the server is started again; STRATA_GFX1100_RESCUE=0 turns this off)",
+ "server_meldungen_879": [
+  "[strata] the engine's logits became non-finite before the first token (#879); it dropped its cached state: sending the request again once",
+  "[strata] gfx1100: non-finite logits (#879) with the gfx1100 prompt-path defaults on: starting the engine again without them (STRATA_GFX1100_DEFAULTS=0 STRATA_GFX11_DEFAULTS=0; prompts are read at abou",
+  "[strata] the engine's logits became non-finite again on the retry (#879): the request ends with an error",
+  "[strata] 503: the model's output became non-finite (NaN) twice in a row (#879); the engine has dropped its cached state - send the request again",
+  "[strata] the engine's logits became non-finite before the first token (#879); it dropped its cached state: sending the request again once"
+ ],
+ "engine_starts": 2,
+ "tabelle_zeilen": 1,
+ "nonfinite_zeilen_engine": 13,
+ "bestanden": true
+}

@@ -1,0 +1,702 @@
+{
+ "faber": [
+  {
+   "laden_und_kurzantwort_s": 19.8,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 4.05,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    62.4,
+    62.8
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 5.6,
+      "token_je_s": 753.7,
+      "nadel": true,
+      "ram_min_gib": 3.92
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.2,
+      "token_je_s": 820.4,
+      "nadel": true,
+      "ram_min_gib": 4.0
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16090,
+      "s": 6.6,
+      "token_je_s": 2509.6,
+      "nadel": true,
+      "ram_min_gib": 3.89
+     },
+     {
+      "prompt_token": 16091,
+      "s": 6.5,
+      "token_je_s": 2510.7,
+      "nadel": true,
+      "ram_min_gib": 3.79
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58023,
+      "s": 17.9,
+      "token_je_s": 3264.4,
+      "nadel": true,
+      "ram_min_gib": 3.61
+     },
+     {
+      "prompt_token": 58024,
+      "s": 18.5,
+      "token_je_s": 3160.8,
+      "nadel": true,
+      "ram_min_gib": 3.94
+     }
+    ]
+   },
+   "tabelle_im_log": "strata: gfx1100 (one RX 7900 XTX / XT): 26 prompt-path switches on by default (about twice the prompt speed; answers differ in the last bits; STRATA_GFX1100_DEFAULTS=0 turns them off; a switch you set is kept): HIP_WMMA SELECT_WMMA PA_FAST PF_GEMM PF_PAD PF_F16 PF_HCDOWN HC_UPMIX QFUSE FUSE_CONVAB CVEC_FUSE GDN_CHUNKED GDN_HEAD GDN_PP GDN_CONVL2 GDN_NOY PREFILL_CPU_SHARE PREFILL_CPU_SHARE_MAX PREF",
+   "chunk_im_log": "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "steuervektor_zeile": null,
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.46
+  },
+  {
+   "laden_und_kurzantwort_s": 19.6,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 4.16,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    60.1,
+    63.1
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 5.5,
+      "token_je_s": 768.5,
+      "nadel": true,
+      "ram_min_gib": 4.1
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.2,
+      "token_je_s": 818.5,
+      "nadel": true,
+      "ram_min_gib": 4.01
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16089,
+      "s": 6.5,
+      "token_je_s": 2516.0,
+      "nadel": true,
+      "ram_min_gib": 3.91
+     },
+     {
+      "prompt_token": 16088,
+      "s": 6.6,
+      "token_je_s": 2486.9,
+      "nadel": true,
+      "ram_min_gib": 3.76
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58022,
+      "s": 18.0,
+      "token_je_s": 3250.6,
+      "nadel": true,
+      "ram_min_gib": 3.59
+     },
+     {
+      "prompt_token": 58023,
+      "s": 18.5,
+      "token_je_s": 3157.6,
+      "nadel": true,
+      "ram_min_gib": 3.99
+     }
+    ]
+   },
+   "tabelle_im_log": "strata: gfx1100 (one RX 7900 XTX / XT): 26 prompt-path switches on by default (about twice the prompt speed; answers differ in the last bits; STRATA_GFX1100_DEFAULTS=0 turns them off; a switch you set is kept): HIP_WMMA SELECT_WMMA PA_FAST PF_GEMM PF_PAD PF_F16 PF_HCDOWN HC_UPMIX QFUSE FUSE_CONVAB CVEC_FUSE GDN_CHUNKED GDN_HEAD GDN_PP GDN_CONVL2 GDN_NOY PREFILL_CPU_SHARE PREFILL_CPU_SHARE_MAX PREF",
+   "chunk_im_log": "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "steuervektor_zeile": null,
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.41
+  }
+ ],
+ "t-fo-faber": [
+  {
+   "laden_und_kurzantwort_s": 19.7,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 4.11,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    65.1,
+    66.6
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 5.7,
+      "token_je_s": 738.5,
+      "nadel": true,
+      "ram_min_gib": 4.1
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.1,
+      "token_je_s": 831.5,
+      "nadel": true,
+      "ram_min_gib": 4.02
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16090,
+      "s": 6.4,
+      "token_je_s": 2553.5,
+      "nadel": true,
+      "ram_min_gib": 3.94
+     },
+     {
+      "prompt_token": 16089,
+      "s": 6.5,
+      "token_je_s": 2522.9,
+      "nadel": true,
+      "ram_min_gib": 3.83
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58024,
+      "s": 16.7,
+      "token_je_s": 3497.0,
+      "nadel": true,
+      "ram_min_gib": 3.62
+     },
+     {
+      "prompt_token": 58021,
+      "s": 17.9,
+      "token_je_s": 3262.0,
+      "nadel": true,
+      "ram_min_gib": 4.01
+     }
+    ]
+   },
+   "tabelle_im_log": "strata: gfx1100 (one RX 7900 XTX / XT): 27 prompt-path switches on by default (about twice the prompt speed; answers differ in the last bits; STRATA_GFX1100_DEFAULTS=0 turns them off; a switch you set is kept): HIP_WMMA SELECT_WMMA PA_FAST PF_GEMM PF_PAD PF_F16 PF_HCDOWN HC_UPMIX QFUSE FUSE_CONVAB CVEC_FUSE GDN_CHUNKED GDN_HEAD GDN_PP GDN_CONVL2 GDN_NOY PREFILL_CPU_SHARE PREFILL_CPU_SHARE_MAX PREF",
+   "chunk_im_log": "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "steuervektor_zeile": null,
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.33
+  },
+  {
+   "laden_und_kurzantwort_s": 19.7,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 4.07,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    65.2,
+    67.5
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 5.1,
+      "token_je_s": 830.2,
+      "nadel": true,
+      "ram_min_gib": 3.96
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.1,
+      "token_je_s": 825.6,
+      "nadel": true,
+      "ram_min_gib": 3.89
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16090,
+      "s": 6.4,
+      "token_je_s": 2551.1,
+      "nadel": true,
+      "ram_min_gib": 3.8
+     },
+     {
+      "prompt_token": 16091,
+      "s": 6.5,
+      "token_je_s": 2520.3,
+      "nadel": true,
+      "ram_min_gib": 3.68
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58023,
+      "s": 16.7,
+      "token_je_s": 3494.5,
+      "nadel": true,
+      "ram_min_gib": 3.54
+     },
+     {
+      "prompt_token": 58024,
+      "s": 17.3,
+      "token_je_s": 3370.6,
+      "nadel": true,
+      "ram_min_gib": 3.94
+     }
+    ]
+   },
+   "tabelle_im_log": "strata: gfx1100 (one RX 7900 XTX / XT): 27 prompt-path switches on by default (about twice the prompt speed; answers differ in the last bits; STRATA_GFX1100_DEFAULTS=0 turns them off; a switch you set is kept): HIP_WMMA SELECT_WMMA PA_FAST PF_GEMM PF_PAD PF_F16 PF_HCDOWN HC_UPMIX QFUSE FUSE_CONVAB CVEC_FUSE GDN_CHUNKED GDN_HEAD GDN_PP GDN_CONVL2 GDN_NOY PREFILL_CPU_SHARE PREFILL_CPU_SHARE_MAX PREF",
+   "chunk_im_log": "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "steuervektor_zeile": null,
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.22
+  }
+ ],
+ "t-fo-aus": [
+  {
+   "laden_und_kurzantwort_s": 19.6,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 4.82,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    65.1,
+    64.4
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 5.7,
+      "token_je_s": 742.3,
+      "nadel": true,
+      "ram_min_gib": 4.73
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.0,
+      "token_je_s": 856.8,
+      "nadel": true,
+      "ram_min_gib": 4.63
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16089,
+      "s": 10.7,
+      "token_je_s": 1516.3,
+      "nadel": true,
+      "ram_min_gib": 4.56
+     },
+     {
+      "prompt_token": 16088,
+      "s": 10.8,
+      "token_je_s": 1506.3,
+      "nadel": true,
+      "ram_min_gib": 4.42
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58022,
+      "s": 40.6,
+      "token_je_s": 1434.9,
+      "nadel": true,
+      "ram_min_gib": 3.96
+     },
+     {
+      "prompt_token": 58023,
+      "s": 40.8,
+      "token_je_s": 1425.7,
+      "nadel": true,
+      "ram_min_gib": 3.34
+     }
+    ]
+   },
+   "tabelle_im_log": null,
+   "chunk_im_log": null,
+   "steuervektor_zeile": null,
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.34
+  },
+  {
+   "laden_und_kurzantwort_s": 19.6,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 4.74,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    63.2,
+    63.8
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 5.4,
+      "token_je_s": 781.5,
+      "nadel": true,
+      "ram_min_gib": 4.73
+     },
+     {
+      "prompt_token": 4126,
+      "s": 4.9,
+      "token_je_s": 857.8,
+      "nadel": true,
+      "ram_min_gib": 4.64
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16090,
+      "s": 10.7,
+      "token_je_s": 1518.3,
+      "nadel": true,
+      "ram_min_gib": 4.48
+     },
+     {
+      "prompt_token": 16089,
+      "s": 10.9,
+      "token_je_s": 1497.7,
+      "nadel": true,
+      "ram_min_gib": 4.36
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58024,
+      "s": 40.5,
+      "token_je_s": 1437.3,
+      "nadel": true,
+      "ram_min_gib": 3.97
+     },
+     {
+      "prompt_token": 58021,
+      "s": 41.0,
+      "token_je_s": 1421.1,
+      "nadel": true,
+      "ram_min_gib": 3.44
+     }
+    ]
+   },
+   "tabelle_im_log": null,
+   "chunk_im_log": null,
+   "steuervektor_zeile": null,
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.44
+  }
+ ],
+ "liber": [
+  {
+   "laden_und_kurzantwort_s": 18.7,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 7.69,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    58.9,
+    63.7
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 6.1,
+      "token_je_s": 691.1,
+      "nadel": true,
+      "ram_min_gib": 7.62
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.6,
+      "token_je_s": 751.9,
+      "nadel": true,
+      "ram_min_gib": 7.53
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16090,
+      "s": 6.9,
+      "token_je_s": 2378.1,
+      "nadel": true,
+      "ram_min_gib": 7.4
+     },
+     {
+      "prompt_token": 16091,
+      "s": 7.0,
+      "token_je_s": 2345.7,
+      "nadel": true,
+      "ram_min_gib": 7.28
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58023,
+      "s": 18.1,
+      "token_je_s": 3223.5,
+      "nadel": true,
+      "ram_min_gib": 7.03
+     },
+     {
+      "prompt_token": 58024,
+      "s": 18.5,
+      "token_je_s": 3163.9,
+      "nadel": true,
+      "ram_min_gib": 6.3
+     }
+    ],
+    "128K": [
+     {
+      "prompt_token": 127090,
+      "s": 38.8,
+      "token_je_s": 3290.8,
+      "nadel": true,
+      "ram_min_gib": 5.47
+     }
+    ]
+   },
+   "bild_ok": true,
+   "tabelle_im_log": "strata: gfx1100 (one RX 7900 XTX / XT): 26 prompt-path switches on by default (about twice the prompt speed; answers differ in the last bits; STRATA_GFX1100_DEFAULTS=0 turns them off; a switch you set is kept): HIP_WMMA SELECT_WMMA PA_FAST PF_GEMM PF_PAD PF_F16 PF_HCDOWN HC_UPMIX QFUSE FUSE_CONVAB CVEC_FUSE GDN_CHUNKED GDN_HEAD GDN_PP GDN_CONVL2 GDN_NOY PREFILL_CPU_SHARE PREFILL_CPU_SHARE_MAX PREF",
+   "chunk_im_log": "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "steuervektor_zeile": "strata generate: control vector mode = project, dir = per-layer, layers 4..44 (41 steered)",
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.79
+  },
+  {
+   "laden_und_kurzantwort_s": 19.7,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 7.66,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    61.8,
+    63.5
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 6.0,
+      "token_je_s": 702.2,
+      "nadel": true,
+      "ram_min_gib": 7.43
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.6,
+      "token_je_s": 753.2,
+      "nadel": true,
+      "ram_min_gib": 7.5
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16089,
+      "s": 6.9,
+      "token_je_s": 2380.6,
+      "nadel": true,
+      "ram_min_gib": 7.46
+     },
+     {
+      "prompt_token": 16088,
+      "s": 6.9,
+      "token_je_s": 2361.1,
+      "nadel": true,
+      "ram_min_gib": 7.31
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58022,
+      "s": 18.2,
+      "token_je_s": 3223.0,
+      "nadel": true,
+      "ram_min_gib": 7.04
+     },
+     {
+      "prompt_token": 58023,
+      "s": 18.4,
+      "token_je_s": 3170.7,
+      "nadel": true,
+      "ram_min_gib": 6.47
+     }
+    ],
+    "128K": [
+     {
+      "prompt_token": 127089,
+      "s": 38.7,
+      "token_je_s": 3293.3,
+      "nadel": true,
+      "ram_min_gib": 5.53
+     }
+    ]
+   },
+   "bild_ok": true,
+   "tabelle_im_log": "strata: gfx1100 (one RX 7900 XTX / XT): 26 prompt-path switches on by default (about twice the prompt speed; answers differ in the last bits; STRATA_GFX1100_DEFAULTS=0 turns them off; a switch you set is kept): HIP_WMMA SELECT_WMMA PA_FAST PF_GEMM PF_PAD PF_F16 PF_HCDOWN HC_UPMIX QFUSE FUSE_CONVAB CVEC_FUSE GDN_CHUNKED GDN_HEAD GDN_PP GDN_CONVL2 GDN_NOY PREFILL_CPU_SHARE PREFILL_CPU_SHARE_MAX PREF",
+   "chunk_im_log": "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "steuervektor_zeile": "strata generate: control vector mode = project, dir = per-layer, layers 4..44 (41 steered)",
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.74
+  }
+ ],
+ "t-fo-liber": [
+  {
+   "laden_und_kurzantwort_s": 19.6,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 7.7,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    64.3,
+    64.4
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 5.9,
+      "token_je_s": 718.1,
+      "nadel": true,
+      "ram_min_gib": 7.61
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.5,
+      "token_je_s": 769.9,
+      "nadel": true,
+      "ram_min_gib": 7.54
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16090,
+      "s": 6.8,
+      "token_je_s": 2414.6,
+      "nadel": true,
+      "ram_min_gib": 7.44
+     },
+     {
+      "prompt_token": 16089,
+      "s": 6.9,
+      "token_je_s": 2390.2,
+      "nadel": true,
+      "ram_min_gib": 7.29
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58024,
+      "s": 17.0,
+      "token_je_s": 3444.1,
+      "nadel": true,
+      "ram_min_gib": 7.02
+     },
+     {
+      "prompt_token": 58021,
+      "s": 17.3,
+      "token_je_s": 3384.0,
+      "nadel": true,
+      "ram_min_gib": 6.52
+     }
+    ],
+    "128K": [
+     {
+      "prompt_token": 127090,
+      "s": 36.5,
+      "token_je_s": 3504.6,
+      "nadel": true,
+      "ram_min_gib": 5.21
+     }
+    ]
+   },
+   "bild_ok": true,
+   "tabelle_im_log": "strata: gfx1100 (one RX 7900 XTX / XT): 27 prompt-path switches on by default (about twice the prompt speed; answers differ in the last bits; STRATA_GFX1100_DEFAULTS=0 turns them off; a switch you set is kept): HIP_WMMA SELECT_WMMA PA_FAST PF_GEMM PF_PAD PF_F16 PF_HCDOWN HC_UPMIX QFUSE FUSE_CONVAB CVEC_FUSE GDN_CHUNKED GDN_HEAD GDN_PP GDN_CONVL2 GDN_NOY PREFILL_CPU_SHARE PREFILL_CPU_SHARE_MAX PREF",
+   "chunk_im_log": "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "steuervektor_zeile": "strata generate: control vector mode = project, dir = per-layer, layers 4..44 (41 steered)",
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.78
+  },
+  {
+   "laden_und_kurzantwort_s": 19.6,
+   "kurzantwort_ok": true,
+   "ram_nach_laden_gib": 7.6,
+   "tool_call_ok": true,
+   "schreiben_tps": [
+    64.7,
+    66.9
+   ],
+   "einlesen": {
+    "4K": [
+     {
+      "prompt_token": 4126,
+      "s": 5.8,
+      "token_je_s": 726.7,
+      "nadel": true,
+      "ram_min_gib": 7.55
+     },
+     {
+      "prompt_token": 4126,
+      "s": 5.5,
+      "token_je_s": 767.5,
+      "nadel": true,
+      "ram_min_gib": 7.46
+     }
+    ],
+    "16K": [
+     {
+      "prompt_token": 16090,
+      "s": 7.1,
+      "token_je_s": 2309.5,
+      "nadel": true,
+      "ram_min_gib": 7.38
+     },
+     {
+      "prompt_token": 16091,
+      "s": 6.8,
+      "token_je_s": 2399.9,
+      "nadel": true,
+      "ram_min_gib": 7.35
+     }
+    ],
+    "58K": [
+     {
+      "prompt_token": 58023,
+      "s": 16.9,
+      "token_je_s": 3459.6,
+      "nadel": true,
+      "ram_min_gib": 6.92
+     },
+     {
+      "prompt_token": 58024,
+      "s": 17.3,
+      "token_je_s": 3371.8,
+      "nadel": true,
+      "ram_min_gib": 6.4
+     }
+    ],
+    "128K": [
+     {
+      "prompt_token": 127090,
+      "s": 36.2,
+      "token_je_s": 3526.4,
+      "nadel": true,
+      "ram_min_gib": 5.54
+     }
+    ]
+   },
+   "bild_ok": true,
+   "tabelle_im_log": "strata: gfx1100 (one RX 7900 XTX / XT): 27 prompt-path switches on by default (about twice the prompt speed; answers differ in the last bits; STRATA_GFX1100_DEFAULTS=0 turns them off; a switch you set is kept): HIP_WMMA SELECT_WMMA PA_FAST PF_GEMM PF_PAD PF_F16 PF_HCDOWN HC_UPMIX QFUSE FUSE_CONVAB CVEC_FUSE GDN_CHUNKED GDN_HEAD GDN_PP GDN_CONVL2 GDN_NOY PREFILL_CPU_SHARE PREFILL_CPU_SHARE_MAX PREF",
+   "chunk_im_log": "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "steuervektor_zeile": "strata generate: control vector mode = project, dir = per-layer, layers 4..44 (41 steered)",
+   "fehlerzeilen": 0,
+   "ram_ende_gib": 3.66
+  }
+ ]
+}

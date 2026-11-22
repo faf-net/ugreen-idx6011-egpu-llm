@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0.2.19 bremst das Einlesen, 0.2.19-xtx3 löst die Bremse und liest lange Prompts 7 % schneller</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #efeae1; color: #2a2724; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 16px; }
+    .frame { max-width: 1100px; width: 100%; min-width: 0; }
+    .scroll { width: 100%; overflow-x: auto; }
+    svg { width: 100%; min-width: 960px; display: block; font-variant-numeric: tabular-nums; }
+    @media print { .scroll { overflow: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame"><div class="scroll">
+    <svg viewBox="0 0 960 596" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="bremse-de-title bremse-de-desc">
+      <title id="bremse-de-title">0.2.19 bremst das Einlesen, 0.2.19-xtx3 löst die Bremse und </title>
+      <desc id="bremse-de-desc">Strata 0.2.19 auf einer RX 7900 XTX in einem NAS mit 64 GB RAM: Ein RAM-Wächter hält die Prompt-Stücke klein. Die unzensierte Fassung liest 128K mit 2.657 statt 3.292 Token/s; mit dem Ableger 0.2.19-xtx3 sind es 3.516, mit dem Release und Stratas eigenem Schalter 2.718.</desc>
+      <rect width="960" height="596" fill="#efeae1"/>
+      <text x="72.0" y="36.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.16em">FLASH-NEXT 125B IQ3_XXS · RX 7900 XTX · STRATA 0.2.19 · RAM-WÄCHTER #2090 · 22.11.2026</text>
+      <text x="72.0" y="68.0" fill="#171512" font-size="25" font-family="'Instrument Serif', Georgia, serif">0.2.19 bremst das Einlesen, 0.2.19-xtx3 löst die Bremse und liest lange Prompts 7 % schneller</text>
+      <text x="72.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">A · ORIGINAL · EINLESEN · TOKEN/S</text>
+      <text x="72.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">höher ist schneller · Stückgröße unter dem Balken</text>
+      <text x="64.0" y="387.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">0</text>
+      <line x1="72.0" y1="324.0" x2="470.0" y2="324.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="327.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">1.000</text>
+      <line x1="72.0" y1="264.0" x2="470.0" y2="264.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="267.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">2.000</text>
+      <line x1="72.0" y1="204.0" x2="470.0" y2="204.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="207.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">3.000</text>
+      <line x1="72.0" y1="144.0" x2="470.0" y2="144.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="64.0" y="147.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">4.000</text>
+      <line x1="72.0" y1="144.0" x2="72.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="72.0" y1="384.0" x2="470.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <rect x="94.5" y="233.4" width="34.0" height="150.6" fill="#456579" fill-opacity="0.06" stroke="#456579" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="111.5" y="226.4" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">2.510</text>
+      <text x="111.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <rect x="134.5" y="288.8" width="34.0" height="95.2" fill="#9c4d40" fill-opacity="0.18" stroke="#9c4d40" stroke-width="1"/>
+      <text x="151.5" y="281.8" fill="#9c4d40" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">1.586</text>
+      <text x="151.5" y="268.8" fill="#9c4d40" font-size="9.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="700">−37 %</text>
+      <text x="151.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">8K</text>
+      <rect x="174.5" y="272.9" width="34.0" height="111.1" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1"/>
+      <text x="191.5" y="265.9" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">1.851</text>
+      <text x="191.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <rect x="214.5" y="231.8" width="34.0" height="152.2" fill="#975b34" fill-opacity="0.18" stroke="#975b34" stroke-width="2"/>
+      <text x="231.5" y="224.8" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">2.537</text>
+      <text x="231.5" y="211.8" fill="#975b34" font-size="9.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="700">+1 %</text>
+      <text x="231.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <text x="171.5" y="414.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">16K-Prompt</text>
+      <rect x="293.5" y="191.6" width="34.0" height="192.4" fill="#456579" fill-opacity="0.06" stroke="#456579" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="310.5" y="184.6" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">3.206</text>
+      <text x="310.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <rect x="333.5" y="294.2" width="34.0" height="89.8" fill="#9c4d40" fill-opacity="0.18" stroke="#9c4d40" stroke-width="1"/>
+      <text x="350.5" y="287.2" fill="#9c4d40" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">1.497</text>
+      <text x="350.5" y="274.2" fill="#9c4d40" font-size="9.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="700">−53 %</text>
+      <text x="350.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">8K</text>
+      <rect x="373.5" y="231.0" width="34.0" height="153.0" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1"/>
+      <text x="390.5" y="224.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">2.550</text>
+      <text x="390.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <rect x="413.5" y="178.0" width="34.0" height="206.0" fill="#975b34" fill-opacity="0.18" stroke="#975b34" stroke-width="2"/>
+      <text x="430.5" y="171.0" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">3.433</text>
+      <text x="430.5" y="158.0" fill="#975b34" font-size="9.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="700">+7 %</text>
+      <text x="430.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <text x="370.5" y="414.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">58K-Prompt</text>
+      <text x="530.0" y="104.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">B · UNZENSIERTE FASSUNG · EINLESEN · TOKEN/S</text>
+      <text x="530.0" y="120.0" fill="#6a6258" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">höher ist schneller · Stückgröße unter dem Balken</text>
+      <text x="522.0" y="387.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">0</text>
+      <line x1="530.0" y1="324.0" x2="928.0" y2="324.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="522.0" y="327.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">1.000</text>
+      <line x1="530.0" y1="264.0" x2="928.0" y2="264.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="522.0" y="267.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">2.000</text>
+      <line x1="530.0" y1="204.0" x2="928.0" y2="204.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="522.0" y="207.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">3.000</text>
+      <line x1="530.0" y1="144.0" x2="928.0" y2="144.0" stroke="#2a2724" stroke-opacity="0.08" stroke-width="0.8"/>
+      <text x="522.0" y="147.0" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="end">4.000</text>
+      <line x1="530.0" y1="144.0" x2="530.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <line x1="530.0" y1="384.0" x2="928.0" y2="384.0" stroke="#2a2724" stroke-opacity="0.3" stroke-width="1"/>
+      <rect x="552.5" y="192.2" width="34.0" height="191.8" fill="#456579" fill-opacity="0.06" stroke="#456579" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="569.5" y="185.2" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">3.197</text>
+      <text x="569.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <rect x="592.5" y="234.7" width="34.0" height="149.3" fill="#9c4d40" fill-opacity="0.18" stroke="#9c4d40" stroke-width="1"/>
+      <text x="609.5" y="227.7" fill="#9c4d40" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">2.489</text>
+      <text x="609.5" y="214.7" fill="#9c4d40" font-size="9.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="700">−22 %</text>
+      <text x="609.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">16K</text>
+      <rect x="632.5" y="225.7" width="34.0" height="158.3" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1"/>
+      <text x="649.5" y="218.7" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">2.638</text>
+      <text x="649.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <rect x="672.5" y="179.2" width="34.0" height="204.8" fill="#975b34" fill-opacity="0.18" stroke="#975b34" stroke-width="2"/>
+      <text x="689.5" y="172.2" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">3.414</text>
+      <text x="689.5" y="159.2" fill="#975b34" font-size="9.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="700">+7 %</text>
+      <text x="689.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <text x="629.5" y="414.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">58K-Prompt</text>
+      <rect x="751.5" y="186.5" width="34.0" height="197.5" fill="#456579" fill-opacity="0.06" stroke="#456579" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="768.5" y="179.5" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">3.292</text>
+      <text x="768.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <rect x="791.5" y="224.6" width="34.0" height="159.4" fill="#9c4d40" fill-opacity="0.18" stroke="#9c4d40" stroke-width="1"/>
+      <text x="808.5" y="217.6" fill="#9c4d40" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">2.657</text>
+      <text x="808.5" y="204.6" fill="#9c4d40" font-size="9.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="700">−19 %</text>
+      <text x="808.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">16K</text>
+      <rect x="831.5" y="220.9" width="34.0" height="163.1" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1"/>
+      <text x="848.5" y="213.9" fill="#6a6258" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">2.718</text>
+      <text x="848.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <rect x="871.5" y="173.0" width="34.0" height="211.0" fill="#975b34" fill-opacity="0.18" stroke="#975b34" stroke-width="2"/>
+      <text x="888.5" y="166.0" fill="#975b34" font-size="9" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="600">3.516</text>
+      <text x="888.5" y="153.0" fill="#975b34" font-size="9.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" font-weight="700">+7 %</text>
+      <text x="888.5" y="396.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle">32K</text>
+      <text x="828.5" y="414.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" text-anchor="middle" font-weight="600">128K-Prompt</text>
+      <text x="86.0" y="168.0" fill="#2a2724" font-size="13" font-family="'Instrument Serif', Georgia, serif" font-style="italic">Wie geliefert liest 0.2.19 hier 58K mit 1.430 Token/s.</text>
+      <line x1="40.0" y1="440.0" x2="920.0" y2="440.0" stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"/>
+      <rect x="72.0" y="457.0" width="16.0" height="10.0" fill="#456579" fill-opacity="0.06" stroke="#456579" stroke-width="1" stroke-dasharray="3,2" rx="2"/>
+      <text x="96.0" y="466.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">bisher: 0.2.18-xtx2</text>
+      <rect x="228.5" y="457.0" width="16.0" height="10.0" fill="#9c4d40" fill-opacity="0.18" stroke="#9c4d40" stroke-width="1" rx="2"/>
+      <text x="252.5" y="466.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">0.2.19 mit altem Patch: Wächter bremst</text>
+      <rect x="489.5" y="457.0" width="16.0" height="10.0" fill="#456579" fill-opacity="0.18" stroke="#456579" stroke-width="1" rx="2"/>
+      <text x="513.5" y="466.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">Release 0.2.19 + Stratas Schalter</text>
+      <rect x="723.0" y="457.0" width="16.0" height="10.0" fill="#975b34" fill-opacity="0.18" stroke="#975b34" stroke-width="1" rx="2"/>
+      <text x="747.0" y="466.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">0.2.19-xtx3: Bremse gelöst</text>
+      <text x="72.0" y="488.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Ursache: Stratas neue RDNA3-Stückregel schaltet den RAM-Wächter #2090 ein · er nimmt größere Prompt-Stücke nur, wenn Leihbedarf + 6 GiB frei sind</text>
+      <text x="72.0" y="502.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">mit dem Original waren 7,7 GiB frei, 32K-Stücke brauchen 9,2 GiB mehr → 8K-Stücke</text>
+      <text x="72.0" y="516.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">„0.2.19 mit altem Patch“: der bisherige Patch xtx2 unverändert auf 0.2.19 (wie geliefert liest 0.2.19 genauso langsam)</text>
+      <text x="72.0" y="530.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Schalter: STRATA_GFX11_CHUNK=1 (Stratas eigener) · 0.2.19-xtx3 trägt ihn in seiner Tabelle · Prozent: Abstand zu 0.2.18-xtx2</text>
+      <text x="72.0" y="544.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">das Release liest auch damit langsamer (Puffer 96 statt 384 Plätze) · kleinster freier RAM wie auf 0.2.18</text>
+      <text x="72.0" y="558.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">leise Karteneinstellung, versteckte Zahl jedes Mal gefunden · Median aus 2 × 2 Läufen, Release + Schalter: ein Lauf</text>
+      <text x="72.0" y="572.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Daten: messen/daten/2026-11-22-strata-xtx-0.2.19/read-brake-0.2.19.json</text>
+    </svg>
+  </div></div>
+</body>
+</html>

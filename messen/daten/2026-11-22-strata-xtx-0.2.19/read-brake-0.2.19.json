@@ -1,0 +1,226 @@
+{
+ "date": "2026-11-22",
+ "note": "Prompt reading of Flash-Next IQ3_XXS on Strata 0.2.19, RX 7900 XTX, quiet card setting, one model loaded, NAS services running. 'operation_0218' is the build that was in use (strata-xtx 0.2.18-xtx2). 'release_0219' is the 0.2.19 engine with my table switched off (STRATA_GFX1100_DEFAULTS=0), i.e. Strata's own defaults. 'xtx2_0219' is my previous patch (xtx2) unchanged on 0.2.19, 'release_0219_chunk1' Strata's defaults plus STRATA_GFX11_CHUNK=1, 'xtx3_0219' my new build 0.2.19-xtx3. Stage-4 rows: median of 2 rounds x 2 runs; diagnosis rows (marked single_run): one run. Chunk sizes from the engine log.",
+ "faber": {
+  "operation_0218": {
+   "16K": 2510,
+   "58K": 3206,
+   "decode": 62.6,
+   "ram_min_gib": 3.59
+  },
+  "release_0219": {
+   "16K": 1511,
+   "58K": 1430,
+   "decode": 64.1,
+   "ram_min_gib": 3.34
+  },
+  "xtx2_0219": {
+   "16K": 1586,
+   "58K": 1497,
+   "decode": 66.5,
+   "ram_min_gib": 3.32
+  },
+  "release_0219_chunk1": {
+   "16K": 1851,
+   "58K": 2550,
+   "decode": 60.0,
+   "ram_min_gib": 3.95,
+   "single_run": true
+  },
+  "xtx3_0219": {
+   "16K": 2537,
+   "58K": 3433,
+   "decode": 65.9,
+   "ram_min_gib": 3.54
+  }
+ },
+ "steered": {
+  "operation_0218": {
+   "16K": 2370,
+   "58K": 3197,
+   "128K": 3292,
+   "decode": 62.6,
+   "ram_min_gib": 5.47
+  },
+  "xtx2_0219": {
+   "16K": 2408,
+   "58K": 2489,
+   "128K": 2657,
+   "decode": 64.2,
+   "ram_min_gib": 5.25
+  },
+  "release_0219_chunk1": {
+   "16K": 1908,
+   "58K": 2638,
+   "128K": 2718,
+   "decode": 58.0,
+   "ram_min_gib": 6.73,
+   "single_run": true
+  },
+  "xtx3_0219": {
+   "16K": 2395,
+   "58K": 3414,
+   "128K": 3516,
+   "decode": 64.6,
+   "ram_min_gib": 5.21
+  }
+ },
+ "prompt_chunk_tokens": {
+  "faber": {
+   "release_0219": 8192,
+   "xtx2_0219": 8192,
+   "release_0219_chunk1": 32768,
+   "xtx3_0219": 32768,
+   "operation_0218": 32768
+  },
+  "steered": {
+   "xtx2_0219": 16384,
+   "release_0219_chunk1": 32768,
+   "xtx3_0219": 32768,
+   "operation_0218": 32768
+  }
+ },
+ "ram_guard": {
+  "rule": "#2090: a bigger chunk only when MemAvailable >= extra cache loan + 6 GiB",
+  "faber": {
+   "available_mib": 7838,
+   "extra_mib_16384": 3014,
+   "extra_mib_32768": 9373
+  },
+  "steered": {
+   "available_mib": 10306,
+   "extra_mib_32768": 9431
+  }
+ },
+ "diagnosis_single_runs": {
+  "d-voll": {
+   "ok": true,
+   "schreiben": 61.8,
+   "ram_nach_laden_gib": 4.63,
+   "16K": 1592.7,
+   "16K_nadel": true,
+   "16K_ram_min": 4.54,
+   "58K": 1519.2,
+   "58K_nadel": true,
+   "58K_ram_min": 4.28,
+   "swap_gib": 5.36
+  },
+  "d-chunk1": {
+   "ok": true,
+   "schreiben": 60.9,
+   "ram_nach_laden_gib": 4.1,
+   "16K": 2181.6,
+   "16K_nadel": true,
+   "16K_ram_min": 3.94,
+   "58K": 3489.9,
+   "58K_nadel": true,
+   "58K_ram_min": 3.74,
+   "swap_gib": 5.36
+  },
+  "d-chunk16": {
+   "ok": true,
+   "schreiben": 60.0,
+   "ram_nach_laden_gib": 4.6,
+   "16K": 1599.3,
+   "16K_nadel": true,
+   "16K_ram_min": 4.49,
+   "58K": 1528.1,
+   "58K_nadel": true,
+   "58K_ram_min": 4.26,
+   "swap_gib": 5.36
+  },
+  "d-liber-voll": {
+   "ok": true,
+   "schreiben": 63.1,
+   "ram_nach_laden_gib": 7.93,
+   "16K": 2178.9,
+   "16K_nadel": true,
+   "16K_ram_min": 7.96,
+   "58K": 2498.9,
+   "58K_nadel": true,
+   "58K_ram_min": 7.61,
+   "128K": 2621.7,
+   "128K_nadel": true,
+   "128K_ram_min": 6.79,
+   "swap_gib": 5.36
+  },
+  "d-liber-chunk1": {
+   "ok": true,
+   "schreiben": 56.2,
+   "ram_nach_laden_gib": 7.57,
+   "16K": 2279.9,
+   "16K_nadel": true,
+   "16K_ram_min": 7.57,
+   "58K": 3448.9,
+   "58K_nadel": true,
+   "58K_ram_min": 7.44,
+   "128K": 3545.1,
+   "128K_nadel": true,
+   "128K_ram_min": 6.84,
+   "swap_gib": 5.36
+  },
+  "d-gfx11aus": {
+   "ok": true,
+   "schreiben": 60.3,
+   "ram_nach_laden_gib": 4.11,
+   "16K": 2207.8,
+   "16K_nadel": true,
+   "16K_ram_min": 4.12,
+   "58K": 3326.7,
+   "58K_nadel": true,
+   "58K_ram_min": 4.1,
+   "swap_gib": 5.36
+  },
+  "d-wmmaaus": {
+   "ok": true,
+   "schreiben": 59.4,
+   "ram_nach_laden_gib": 4.62,
+   "16K": 1556.4,
+   "16K_nadel": true,
+   "16K_ram_min": 4.63,
+   "58K": 1497.2,
+   "58K_nadel": true,
+   "58K_ram_min": 4.27,
+   "swap_gib": 5.37
+  },
+  "d-chunk1-gdnpp2": {
+   "ok": true,
+   "schreiben": 65.2,
+   "ram_nach_laden_gib": 4.12,
+   "16K": 2378.1,
+   "16K_nadel": true,
+   "16K_ram_min": 4.14,
+   "58K": 3488.8,
+   "58K_nadel": true,
+   "58K_ram_min": 3.82,
+   "swap_gib": 5.38
+  },
+  "d-rel-chunk1": {
+   "ok": true,
+   "schreiben": 60.0,
+   "ram_nach_laden_gib": 4.23,
+   "16K": 1850.7,
+   "16K_nadel": true,
+   "16K_ram_min": 4.25,
+   "58K": 2550.5,
+   "58K_nadel": true,
+   "58K_ram_min": 3.95,
+   "swap_gib": 5.38
+  },
+  "d-liber-rel-chunk1": {
+   "ok": true,
+   "schreiben": 58.0,
+   "ram_nach_laden_gib": 7.71,
+   "16K": 1908.0,
+   "16K_nadel": true,
+   "16K_ram_min": 7.68,
+   "58K": 2637.8,
+   "58K_nadel": true,
+   "58K_ram_min": 7.45,
+   "128K": 2718.3,
+   "128K_nadel": true,
+   "128K_ram_min": 6.73,
+   "swap_gib": 5.38
+  }
+ }
+}

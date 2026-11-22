@@ -1,0 +1,211 @@
+{
+ "d-voll": {
+  "ok": true,
+  "schreiben": 61.8,
+  "ram_nach_laden_gib": 4.63,
+  "16K": 1592.7,
+  "16K_nadel": true,
+  "16K_ram_min": 4.54,
+  "58K": 1519.2,
+  "58K_nadel": true,
+  "58K_ram_min": 4.28,
+  "gfx11": [
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "strata generate: gfx11: prompt chunks stay at 16384: 32768 would lend 4218 more cache slots (9371 MiB more held in RAM during a prompt), and 7830 MiB of RAM is available for 0 MiB of resident experts plus that (#2090; STRATA_GFX11_CHUNK=1 takes the default ceiling anyway)",
+   "strata generate: gfx11: prompt chunks stay at 8192: 16384 would lend 1362 more cache slots (3025 MiB more held in RAM during a prompt), and 7830 MiB of RAM is available for 0 MiB of resident experts plus that (#2090; STRATA_GFX11_CHUNK=1 takes the default ceiling anyway)",
+   "strata serve: prompt chunk auto: 8192 tokens, a 384-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.36
+ },
+ "d-chunk1": {
+  "ok": true,
+  "schreiben": 60.9,
+  "ram_nach_laden_gib": 4.1,
+  "16K": 2181.6,
+  "16K_nadel": true,
+  "16K_ram_min": 3.94,
+  "58K": 3489.9,
+  "58K_nadel": true,
+  "58K_ram_min": 3.74,
+  "gfx11": [
+   "strata: gfx11 (RDNA3): 8-bit hyper-connection weights are on (quantized at load, decode faster, answers can differ slightly); STRATA_HC_Q8=0 or STRATA_GFX11_DEFAULTS=0 keeps the bf16 read",
+   "strata generate: GPU 0: AMD Radeon RX 7900 XTX (gfx1100)",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "strata serve: prompt chunk auto: 32768 tokens, a 384-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.36
+ },
+ "d-chunk16": {
+  "ok": true,
+  "schreiben": 60.0,
+  "ram_nach_laden_gib": 4.6,
+  "16K": 1599.3,
+  "16K_nadel": true,
+  "16K_ram_min": 4.49,
+  "58K": 1528.1,
+  "58K_nadel": true,
+  "58K_ram_min": 4.26,
+  "gfx11": [
+   "strata generate: GPU 0: AMD Radeon RX 7900 XTX (gfx1100)",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "strata generate: gfx11: prompt chunks stay at 8192: 16384 would lend 1357 more cache slots (3014 MiB more held in RAM during a prompt), and 7838 MiB of RAM is available for 0 MiB of resident experts plus that (#2090; STRATA_GFX11_CHUNK=1 takes the default ceiling anyway)",
+   "strata serve: prompt chunk auto: 8192 tokens, a 384-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.36
+ },
+ "d-liber-voll": {
+  "ok": true,
+  "schreiben": 63.1,
+  "ram_nach_laden_gib": 7.93,
+  "16K": 2178.9,
+  "16K_nadel": true,
+  "16K_ram_min": 7.96,
+  "58K": 2498.9,
+  "58K_nadel": true,
+  "58K_ram_min": 7.61,
+  "128K": 2621.7,
+  "128K_nadel": true,
+  "128K_ram_min": 6.79,
+  "gfx11": [
+   "strata generate: GPU 0: AMD Radeon RX 7900 XTX (gfx1100)",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "strata generate: gfx11: prompt chunks stay at 16384: 32768 would lend 4245 more cache slots (9431 MiB more held in RAM during a prompt), and 10306 MiB of RAM is available for 0 MiB of resident experts plus that (#2090; STRATA_GFX11_CHUNK=1 takes the default ceiling anyway)",
+   "strata serve: prompt chunk auto: 16384 tokens, a 384-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.36
+ },
+ "d-liber-chunk1": {
+  "ok": true,
+  "schreiben": 56.2,
+  "ram_nach_laden_gib": 7.57,
+  "16K": 2279.9,
+  "16K_nadel": true,
+  "16K_ram_min": 7.57,
+  "58K": 3448.9,
+  "58K_nadel": true,
+  "58K_ram_min": 7.44,
+  "128K": 3545.1,
+  "128K_nadel": true,
+  "128K_ram_min": 6.84,
+  "gfx11": [
+   "strata: gfx11 (RDNA3): 8-bit hyper-connection weights are on (quantized at load, decode faster, answers can differ slightly); STRATA_HC_Q8=0 or STRATA_GFX11_DEFAULTS=0 keeps the bf16 read",
+   "strata generate: GPU 0: AMD Radeon RX 7900 XTX (gfx1100)",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "strata serve: prompt chunk auto: 32768 tokens, a 384-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.36
+ },
+ "d-gfx11aus": {
+  "ok": true,
+  "schreiben": 60.3,
+  "ram_nach_laden_gib": 4.11,
+  "16K": 2207.8,
+  "16K_nadel": true,
+  "16K_ram_min": 4.12,
+  "58K": 3326.7,
+  "58K_nadel": true,
+  "58K_ram_min": 4.1,
+  "gfx11": [
+   "strata generate: gfx1100: --prefill auto may take chunks up to 32768 (STRATA_GFX1100_DEFAULTS=0 keeps 8192)",
+   "strata generate: GPU 0: AMD Radeon RX 7900 XTX (gfx1100)",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "strata serve: prompt chunk auto: 32768 tokens, a 384-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.36
+ },
+ "d-wmmaaus": {
+  "ok": true,
+  "schreiben": 59.4,
+  "ram_nach_laden_gib": 4.62,
+  "16K": 1556.4,
+  "16K_nadel": true,
+  "16K_ram_min": 4.63,
+  "58K": 1497.2,
+  "58K_nadel": true,
+  "58K_ram_min": 4.27,
+  "gfx11": [
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "strata generate: gfx11: prompt chunks stay at 16384: 32768 would lend 4225 more cache slots (9386 MiB more held in RAM during a prompt), and 7848 MiB of RAM is available for 0 MiB of resident experts plus that (#2090; STRATA_GFX11_CHUNK=1 takes the default ceiling anyway)",
+   "strata generate: gfx11: prompt chunks stay at 8192: 16384 would lend 1371 more cache slots (3045 MiB more held in RAM during a prompt), and 7848 MiB of RAM is available for 0 MiB of resident experts plus that (#2090; STRATA_GFX11_CHUNK=1 takes the default ceiling anyway)",
+   "strata serve: prompt chunk auto: 8192 tokens, a 384-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.37
+ },
+ "d-chunk1-gdnpp2": {
+  "ok": true,
+  "schreiben": 65.2,
+  "ram_nach_laden_gib": 4.12,
+  "16K": 2378.1,
+  "16K_nadel": true,
+  "16K_ram_min": 4.14,
+  "58K": 3488.8,
+  "58K_nadel": true,
+  "58K_ram_min": 3.82,
+  "gfx11": [
+   "strata: gfx11 (RDNA3): 8-bit hyper-connection weights are on (quantized at load, decode faster, answers can differ slightly); STRATA_HC_Q8=0 or STRATA_GFX11_DEFAULTS=0 keeps the bf16 read",
+   "strata generate: GPU 0: AMD Radeon RX 7900 XTX (gfx1100)",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "strata serve: prompt chunk auto: 32768 tokens, a 384-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.38
+ },
+ "d-rel-chunk1": {
+  "ok": true,
+  "schreiben": 60.0,
+  "ram_nach_laden_gib": 4.23,
+  "16K": 1850.7,
+  "16K_nadel": true,
+  "16K_ram_min": 4.25,
+  "58K": 2550.5,
+  "58K_nadel": true,
+  "58K_ram_min": 3.95,
+  "gfx11": [
+   "strata generate: GPU 0: AMD Radeon RX 7900 XTX (gfx1100)",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "prefill: the CPU share is ON by default for prompt chunks up to 3072 tokens on this gfx11 card (the idle CPU takes some of the experts the GPU would stream; answers can differ slightly: first-token KL ~0.01-0.02 below 3K tokens). STRATA_PREFILL_CPU_SHARE=0 or STRATA_GFX11_DEFAULTS=0 turns it off, ST",
+   "strata serve: prompt chunk auto: 32768 tokens, a 96-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.38
+ },
+ "d-liber-rel-chunk1": {
+  "ok": true,
+  "schreiben": 58.0,
+  "ram_nach_laden_gib": 7.71,
+  "16K": 1908.0,
+  "16K_nadel": true,
+  "16K_ram_min": 7.68,
+  "58K": 2637.8,
+  "58K_nadel": true,
+  "58K_ram_min": 7.45,
+  "128K": 2718.3,
+  "128K_nadel": true,
+  "128K_ram_min": 6.73,
+  "gfx11": [
+   "strata generate: GPU 0: AMD Radeon RX 7900 XTX (gfx1100)",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)",
+   "strata: STRATA_HIP_WMMA: the prompt attention on matrix cores on (gfx1100)",
+   "prefill: the CPU share is ON by default for prompt chunks up to 3072 tokens on this gfx11 card (the idle CPU takes some of the experts the GPU would stream; answers can differ slightly: first-token KL ~0.01-0.02 below 3K tokens). STRATA_PREFILL_CPU_SHARE=0 or STRATA_GFX11_DEFAULTS=0 turns it off, ST",
+   "strata serve: prompt chunk auto: 32768 tokens, a 96-slot ring",
+   "prefill gemm: hipBLASLt tuning enabled (26 rows, gfx1100, version 100200)"
+  ],
+  "swap_gib": 5.38
+ }
+}

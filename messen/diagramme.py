@@ -114,6 +114,8 @@ def fuss(s, y, legende, quelle):
                 s.zug([(x, y - 4), (x + 16, y - 4)], farbe); s.punkt(x + 8, y - 4, farbe, hohl=True, r=3)
             elif art == "raute":
                 s.raute(x + 8, y - 4, farbe)
+            elif art == "raute-hohl":
+                s.raute(x + 8, y - 4, farbe, hohl=True)
             elif art == "punkt":
                 s.punkt(x + 8, y - 4, farbe)
             elif art == "punkt-hohl":
@@ -228,11 +230,13 @@ def standard(pfad):
 
 
 TIEFE_DATEI = "tiefe-20261116.jsonl"   # 16.11.2026, Strata 0.2.14; Oktober (0.1.44.1): tiefe-20261017.jsonl
-TIEFE_XTX = "tiefe-20261122.jsonl"     # 22.11.2026, Eigenbau strata-xtx (xtx-2) auf Strata 0.2.18 (Label faber-xtx, liber-xtx, faber-xtx-ohne-mtp); 0.2.17: tiefe-20261121.jsonl, 0.2.16: tiefe-20261119.jsonl
-XTX_DATEN = "2026-11-22-strata-xtx-0.2.18"    # Nachmessung im Betrieb auf dem Eigenbau
-XTX_VER = "0.2.18"                     # Strata-Version, auf der der Eigenbau im Betrieb läuft
+TIEFE_XTX = "tiefe-20261122-0.2.19.jsonl"   # 22.11.2026 abends, Eigenbau 0.2.19-xtx3 (Label faber-xtx, liber-xtx, faber-xtx-ohne-mtp); 0.2.18-xtx2 am selben Tag: tiefe-20261122.jsonl, 0.2.17: tiefe-20261121.jsonl, 0.2.16: tiefe-20261119.jsonl
+XTX_DATEN = "2026-11-22-strata-xtx-0.2.19"    # Nachmessung im Betrieb auf dem Eigenbau 0.2.19-xtx3
+XTX_VER = "0.2.19"                     # Strata-Version, auf der der Eigenbau im Betrieb läuft
+XTX_NAME = "0.2.19-xtx3"               # Name des Baus im Betrieb (Schema <Release>-xtx<Patchstand> seit 22.11.2026)
 XTX_TAG = {"de": "22.11.2026", "en": "22 Nov 2026"}   # Tag der Nachmessung
-XTX_VOR = "2026-11-21-strata-xtx-0.2.17"      # Nachmessung auf der Basis 0.2.17, zum Nachschlagen
+XTX_VOR = "2026-11-22-strata-xtx-0.2.18"      # Nachmessung auf der Basis 0.2.18 (0.2.18-xtx2), zum Nachschlagen
+XTX_0217 = "2026-11-21-strata-xtx-0.2.17"     # Nachmessung auf der Basis 0.2.17 (0.2.17-xtx2)
 XTX_0216 = "2026-11-19-strata-xtx-0.2.16"     # Nachmessung auf der Basis 0.2.16 (davor 2026-11-18-strata-xtx auf 0.2.15)
 
 
@@ -272,7 +276,7 @@ def tiefe(d, sp):
     felder = ((L, 456, "decode_tps", 80, 20, "A · Decode · tokens/s" if en else "A · Schreiben · Token/s",
                "256 new tokens after a fresh prompt · higher is faster" if en else "256 neue Token nach frischem Prompt · höher ist schneller",
                f"MTP adds {p_lo}–{p_hi} % at every depth." if en else f"MTP bringt {p_lo}–{p_hi} % in jeder Tiefe.", 76),
-              (544, R, "prompt_tps", 3200, 400, "B · Prefill · tokens/s" if en else "B · Einlesen · Token/s",
+              (544, R, "prompt_tps", 3600, 400, "B · Prefill · tokens/s" if en else "B · Einlesen · Token/s",
                "reading the fresh prompt · higher is faster" if en else "Einlesen des frischen Prompts · höher ist schneller",
                f"From 16K on above {z(x16, sp)} tokens/s, the release above {z(l16, sp)}." if en else f"Ab 16K über {z(x16, sp)} Token/s, das Release über {z(l16, sp)}.", 560))
     for x0, x1, wert, vmax, schritt, was, hilfe, anm, anm_v in felder:
@@ -371,19 +375,22 @@ VERSIONEN = [("0.2.0β", "2026-10-19/strata-0.2.0-beta/strata-bench-results.json
                         + [f"2026-11-15-v0.2.14/strata-bench-alternating/round{n}-0.2.14.json" for n in (1, 2, 3)]),   # vier Läufe, gezeigt wird der Median
              ("0.2.15", [f"2026-11-16-v0.2.15/strata-bench-alternating/round{n}-0.2.15.json" for n in (1, 2, 3)]),
              ("0.2.16", [f"{XTX_0216}/strata-bench-alternating/round{n}-release-0.2.16.json" for n in (1, 2, 3)]),   # das unveränderte Release, im Wechsel mit dem Eigenbau (19.11.)
-             ("0.2.17", [f"{XTX_VOR}/strata-bench-alternating/round{n}-release-0.2.17.json" for n in (1, 2, 3)]),   # dasselbe am 21.11.
-             ("0.2.18", [f"{XTX_DATEN}/strata-bench-alternating/round{n}-release-0.2.18.json" for n in (1, 2, 3)])]   # und am 22.11.
+             ("0.2.17", [f"{XTX_0217}/strata-bench-alternating/round{n}-release-0.2.17.json" for n in (1, 2, 3)]),   # dasselbe am 21.11.
+             ("0.2.18", [f"{XTX_VOR}/strata-bench-alternating/round{n}-release-0.2.18.json" for n in (1, 2, 3)]),   # und am 22.11. mittags
+             ("0.2.19", [f"{XTX_DATEN}/strata-bench-alternating/round{n}-release-0.2.19.json" for n in (1, 2, 3)])]   # und am 22.11. abends
 XTX_BENCH = [f"{XTX_DATEN}/strata-bench-alternating/round{n}-strata-xtx-{XTX_VER}.json" for n in (1, 2, 3)]            # der Eigenbau auf derselben Basis
 IN_BETRIEB, GEPRUEFT = "0.2.14", XTX_VER   # letztes Release im Betrieb · Basis des Eigenbaus
 # Der Eigenbau auf jeder Basis, die mit strata_bench im Wechsel gemessen ist (21.11.2026). 0.2.15 bewusst nicht: dort gibt es nur Tiefenreihe
 # und bench.py, eine andere Messart (Frank 21.11.2026: wieder herausgenommen). xtx_basis() kann sie bei Bedarf noch lesen ("tiefe+bench").
 XTX_VERLAUF = [("0.2.16", [f"{XTX_0216}/strata-bench-alternating/round{n}-strata-xtx-0.2.16.json" for n in (1, 2, 3)], None),
-               ("0.2.17", [f"{XTX_VOR}/strata-bench-alternating/round{n}-strata-xtx-0.2.17.json" for n in (1, 2, 3)], None),
+               ("0.2.17", [f"{XTX_0217}/strata-bench-alternating/round{n}-strata-xtx-0.2.17.json" for n in (1, 2, 3)], None),
+               ("0.2.18", [f"{XTX_VOR}/strata-bench-alternating/round{n}-strata-xtx-0.2.18.json" for n in (1, 2, 3)], None),
                (XTX_VER, XTX_BENCH, None)]
 
 
 def versionen(d, sp):
     en = sp == "en"
+    T = lambda de, en_: en_ if en else de
     def lauf(p):                                   # ein Lauf oder der Median mehrerer Läufe derselben Version
         ws = [strata_bench(os.path.join(d, q)) for q in ([p] if isinstance(p, str) else p)]
         return {k: med([w[k] for w in ws]) for k in ws[0]}
@@ -399,7 +406,7 @@ def versionen(d, sp):
     verlauf = [(namen.index(v), *xtx_basis(q, o)) for v, q, o in XTX_VERLAUF if v in namen]
     n = len(werte)
     s = Svg()
-    zahlwort = {8: ("Eight", "Acht"), 9: ("Nine", "Neun"), 10: ("Ten", "Zehn"), 11: ("Eleven", "Elf"), 12: ("Twelve", "Zwölf"), 13: ("Thirteen", "Dreizehn"), 14: ("Fourteen", "Vierzehn")}.get(n, (str(n), str(n)))
+    zahlwort = {8: ("Eight", "Acht"), 9: ("Nine", "Neun"), 10: ("Ten", "Zehn"), 11: ("Eleven", "Elf"), 12: ("Twelve", "Zwölf"), 13: ("Thirteen", "Dreizehn"), 14: ("Fourteen", "Vierzehn"), 15: ("Fifteen", "Fünfzehn")}.get(n, (str(n), str(n)))
     titel = f"{zahlwort[0]} Strata releases on the same card, and my own build reads prompts about twice as fast" if en else f"{zahlwort[1]} Strata-Versionen auf derselben Karte, und der Eigenbau liest Prompts etwa doppelt so schnell"
     kopf(s, "Flash-Next 125B IQ3_XXS · RX 7900 XTX · tools/strata_bench.py --long", titel)
     felder = ((L, 456, (("agent", STAHL, True, "agent" if en else "Agent"), ("chat", ACC, False, "chat" if en else "Chat")), 100, 20,
@@ -437,12 +444,20 @@ def versionen(d, sp):
         endmarken(s, X(n - 1) + 12, marken)
         if not jeder:
             s.text(X(n - 1) + 12, p.Y(max(xtx[k_] for k_ in ("4K", "16K", "32K"))) - 22, "strata-xtx", 9, INK, "mono", weight=600)
-            s.text(X(n - 1) + 12, p.Y(werte[-1]["16K"]) + 3, f"{z(werte[-1]['32K'], sp)} · {z(werte[-1]['16K'], sp)}", 8.5, STAHL, "mono")
+            s.text(X(n - 1) + 12, p.Y(werte[-1]["16K"]) + 15, f"{z(werte[-1]['32K'], sp)} · {z(werte[-1]['16K'], sp)}", 8.5, STAHL, "mono")
+            # Der Einbruch auf 0.2.19 (Frank 22.11.2026: „deutlicher an dem Punkt, wo das normale Strata langsamer wurde“): der alte
+            # Patch unverändert auf 0.2.19, 16K aus dem Vergleichstest (fork_test, dieselbe Größenordnung wie strata_bench 16K)
+            br = json.load(open(os.path.join(d, XTX_DATEN, BREMSE), encoding="utf-8"))["faber"]["xtx2_0219"]["16K"]
+            rose = TON["rose"][1]
+            s.raute(X(n - 1) - 9, p.Y(br), rose, hohl=True)
+            s.line(X(n - 1) - 9, p.Y(br) + 6, X(n - 1) - 9, p.Y(1080) - 4, f'stroke="{rose}" stroke-width="1" stroke-dasharray="2,2"')
+            s.text(X(n - 1) - 14, p.Y(1080) + 6, T(f"0.2.19 mit altem Patch: 16K nur {z(br, sp, 0)}", f"0.2.19 with the old patch: 16K only {z(br, sp, 0)}"), 8.5, rose, "mono", "end", 600)
+            s.text(X(n - 1) - 14, p.Y(1080) + 18, T(f"RAM-Wächter bremst · {XTX_NAME} löst das", f"RAM guard brakes · {XTX_NAME} fixes it"), 8.5, rose, "mono", "end")
             s.text(X(n - 1) + 12, p.Y(werte[-1]["4K"]) + 3, z(werte[-1]["4K"], sp), 8.5, ACC, "mono")
     s.text(L + 24, 344, "0.2.1's worker plan for hybrid CPUs lifted decode." if en else "Der Worker-Plan von 0.2.1 hob das Schreibtempo.", 15, INK, "serif", kursiv=True)
-    h = fuss(s, 424, (("linie", STAHL, "Strata releases, unchanged" if en else "Strata-Releases, unverändert"), ("raute", STAHL, f"my own build strata-xtx on 0.2.16 to {XTX_VER}" if en else f"Eigenbau strata-xtx auf 0.2.16 bis {XTX_VER}")),
-             f"median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, from 0.2.11 with them running · 0.2.14: median of four runs · 0.2.15: three runs alternating with 0.2.14 on 16 Nov · 0.2.16 and 0.2.17: three runs each alternating with my own build on 19 and 21 Nov · {XTX_VER} and my own build: three runs each, alternating, on {XTX_TAG['en']} · releases were in use up to 0.2.14 (until 18 Nov 2026) · since then my own build runs, now on the base of {XTX_VER} · decode of the own build in the same runs: chat {z(xtx['chat'], sp)}, agent {z(xtx['agent'], sp)} tokens/s · data: messen/daten/<date>-v<release>/strata-bench*/ and <date>-strata-xtx-<release>/strata-bench-alternating/" if en else
-             f"Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, ab 0.2.11 mit laufenden · 0.2.14: Median aus vier Läufen · 0.2.15: drei Läufe im Wechsel mit 0.2.14 am 16.11. · 0.2.16 und 0.2.17: je drei Läufe im Wechsel mit dem Eigenbau am 19. und 21.11. · {XTX_VER} und der Eigenbau: je drei Läufe im Wechsel am {XTX_TAG['de']} · im Betrieb liefen Releases bis 0.2.14 (bis 18.11.2026) · seitdem läuft der Eigenbau, jetzt auf der Basis von {XTX_VER} · Schreibtempo des Eigenbaus in denselben Läufen: Chat {z(xtx['chat'], sp)}, Agent {z(xtx['agent'], sp)} Token/s · Daten: messen/daten/<Datum>-v<Version>/strata-bench*/ und <Datum>-strata-xtx-<Version>/strata-bench-alternating/")
+    h = fuss(s, 424, (("linie", STAHL, "Strata releases, unchanged" if en else "Strata-Releases, unverändert"), ("raute", STAHL, f"my own build strata-xtx, 0.2.16-xtx1 to {XTX_NAME}" if en else f"Eigenbau strata-xtx, 0.2.16-xtx1 bis {XTX_NAME}"), ("raute-hohl", TON["rose"][1], "0.2.19 with the old patch (comparison test)" if en else "0.2.19 mit altem Patch (Vergleichstest)")),
+             f"median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, from 0.2.11 with them running · 0.2.14: median of four runs · 0.2.15: three runs alternating with 0.2.14 on 16 Nov · 0.2.16 to 0.2.18: three runs each alternating with my own build on 19, 21 and 22 Nov (midday) · {XTX_VER} and my own build: three runs each, alternating, on {XTX_TAG['en']} (evening) · open diamond: my previous patch unchanged on {XTX_VER}, 16K from the comparison test (same order as strata_bench 16K) · releases were in use up to 0.2.14 (until 18 Nov 2026) · since then my own build runs, now as {XTX_NAME} · decode of the own build in the same runs: chat {z(xtx['chat'], sp)}, agent {z(xtx['agent'], sp)} tokens/s · data: messen/daten/<date>-v<release>/strata-bench*/ and <date>-strata-xtx-<release>/strata-bench-alternating/" if en else
+             f"Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, ab 0.2.11 mit laufenden · 0.2.14: Median aus vier Läufen · 0.2.15: drei Läufe im Wechsel mit 0.2.14 am 16.11. · 0.2.16 bis 0.2.18: je drei Läufe im Wechsel mit dem Eigenbau am 19., 21. und 22.11. (mittags) · {XTX_VER} und der Eigenbau: je drei Läufe im Wechsel am {XTX_TAG['de']} (abends) · hohle Raute: der bisherige Patch unverändert auf {XTX_VER}, 16K aus dem Vergleichstest (gleiche Größenordnung wie strata_bench 16K) · im Betrieb liefen Releases bis 0.2.14 (bis 18.11.2026) · seitdem läuft der Eigenbau, jetzt als {XTX_NAME} · Schreibtempo des Eigenbaus in denselben Läufen: Chat {z(xtx['chat'], sp)}, Agent {z(xtx['agent'], sp)} Token/s · Daten: messen/daten/<Datum>-v<Version>/strata-bench*/ und <Datum>-strata-xtx-<Version>/strata-bench-alternating/")
     return "versionen", titel, (f"Chat and agent decode speed and prompt reading speed at 4K, 16K and 32K for Strata releases 0.2.0-beta to {VERSIONEN[-1][0]} on one RX 7900 XTX; decode stays within its scatter, prompt reading at 16K and 32K rises with 0.2.14 and holds since. My own build strata-xtx on {XTX_VER} reads {z(xtx['4K'], sp)}, {z(xtx['16K'], sp)} and {z(xtx['32K'], sp)} tokens per second at 4K, 16K and 32K." if en else
                                 f"Schreibtempo für Chat und Agent und Einlesetempo bei 4K, 16K und 32K für die Strata-Versionen 0.2.0-beta bis {VERSIONEN[-1][0]} auf einer RX 7900 XTX; das Schreibtempo bleibt in seiner Streuung, das Einlesen bei 16K und 32K steigt mit 0.2.14 und hält seitdem. Der Eigenbau strata-xtx auf {XTX_VER} liest bei 4K, 16K und 32K {z(xtx['4K'], sp)}, {z(xtx['16K'], sp)} und {z(xtx['32K'], sp)} Token je Sekunde."), s, h
 
@@ -559,8 +574,8 @@ def speicher(d, sp):
                 s.text(x + 24, yy, name, 10, INK, "sans")
                 s.text(x + 150, yy, z(wert, sp), 9, MUTED, "mono", "end")
             s.text(R, yb + 34, "With 64 GB of RAM this is about the limit." if en else "Mit 64 GB RAM ist das etwa die Grenze.", 15, INK, "serif", "end", kursiv=True)
-    h = fuss(s, 384, None, f"measured {XTX_TAG['en']} · /proc, amdgpu mem_info_vram_used, engine log · dense/KV/work = used − expert cache − draft · the uncensored version in daily use (with image input, without pinned K/V): engine {z(lb['strata_rss_gib'], sp)}, available {z(lb['ram_available_gib'], sp)}, expert cache {z(lb['expert_cache_gib'], sp)} GiB · data: messen/daten/{XTX_DATEN}/ (21 Nov on the base of 0.2.17: {XTX_VOR}/, 19 Nov on 0.2.16: {XTX_0216}/, 16 Nov on the 0.2.14 release: 2026-11-16-speicher/)" if en else
-             f"gemessen am {XTX_TAG['de']} · /proc, amdgpu mem_info_vram_used, Engine-Log · dicht/KV/Arbeit = belegt − Experten-Cache − Entwurf · die unzensierte Fassung im täglichen Einsatz (mit Bildeingang, ohne festgepinnte K/V): Engine {z(lb['strata_rss_gib'], sp)}, verfügbar {z(lb['ram_available_gib'], sp)}, Experten-Cache {z(lb['expert_cache_gib'], sp)} GiB · Daten: messen/daten/{XTX_DATEN}/ (21.11. auf der Basis 0.2.17: {XTX_VOR}/, 19.11. auf 0.2.16: {XTX_0216}/, 16.11. auf dem Release 0.2.14: 2026-11-16-speicher/)")
+    h = fuss(s, 384, None, f"measured {XTX_TAG['en']} · /proc, amdgpu mem_info_vram_used, engine log · dense/KV/work = used − expert cache − draft · the uncensored version in daily use (with image input, without pinned K/V): engine {z(lb['strata_rss_gib'], sp)}, available {z(lb['ram_available_gib'], sp)}, expert cache {z(lb['expert_cache_gib'], sp)} GiB · data: messen/daten/{XTX_DATEN}/ (earlier bases: <date>-strata-xtx-<release>/, release 0.2.14: 2026-11-16-speicher/)" if en else
+             f"gemessen am {XTX_TAG['de']} · /proc, amdgpu mem_info_vram_used, Engine-Log · dicht/KV/Arbeit = belegt − Experten-Cache − Entwurf · die unzensierte Fassung im täglichen Einsatz (mit Bildeingang, ohne festgepinnte K/V): Engine {z(lb['strata_rss_gib'], sp)}, verfügbar {z(lb['ram_available_gib'], sp)}, Experten-Cache {z(lb['expert_cache_gib'], sp)} GiB · Daten: messen/daten/{XTX_DATEN}/ (frühere Basen: <Datum>-strata-xtx-<Version>/, Release 0.2.14: 2026-11-16-speicher/)")
     frei = m["vram_total_gib"] - m["vram_used_gib"]
     return "speicher", titel, (f"Of {z(m['ram_total_gib'], sp)} GiB RAM the Strata engine holds {z(m['strata_rss_gib'], sp)}, NAS services and kernel {z(dienste, sp)}, and {z(m['ram_available_gib'], sp)} stay available; of 24 GiB VRAM the expert cache takes {z(m['expert_cache_gib'], sp)}, the MTP draft {z(m['mtp_gib'], sp)}, everything else {z(rest, sp)}, and {z(frei, sp)} stay free." if en else
                                f"Von {z(m['ram_total_gib'], sp)} GiB RAM hält die Strata-Engine {z(m['strata_rss_gib'], sp)}, NAS-Dienste und Kernel {z(dienste, sp)}, verfügbar bleiben {z(m['ram_available_gib'], sp)}; von 24 GiB VRAM nimmt der Experten-Cache {z(m['expert_cache_gib'], sp)}, der MTP-Entwurf {z(m['mtp_gib'], sp)}, alles Übrige {z(rest, sp)}, frei bleiben {z(frei, sp)}."), s, h
@@ -856,7 +871,7 @@ def dflash2(d, sp):
 
 def betriebsdatei(d, name):
     """Betriebsmessung: die Nachmessung auf Strata 0.2.14 vom 16.11.2026, wo es sie gibt, sonst die Messung vom 15.11.2026."""
-    for ordner in (XTX_DATEN, XTX_VOR, XTX_0216, "2026-11-16-betrieb"):   # neueste Messung zuerst, auch wenn sie im Vorgängerordner liegt (21.11.2026)
+    for ordner in (XTX_DATEN, XTX_VOR, XTX_0217, XTX_0216, "2026-11-16-betrieb"):   # neueste Messung zuerst, auch wenn sie im Vorgängerordner liegt (21.11.2026)
         neu = os.path.join(d, ordner, name)
         if os.path.exists(neu):
             return neu
@@ -1009,7 +1024,7 @@ def wartezeit(d, sp):
     kalt = statistics.median(k["erste_antwort_s"] for k in lade("kaltstart-faber.json")["laeufe"])
     med = lambda name, f: statistics.median(x[f] for x in warte[name])
     s = Svg()
-    titel = T("Im Gespräch kommt die Antwort sofort, ein ganzes Buch liest das Modell in gut einer Minute", "In a conversation the answer comes at once, a whole book takes the model a good minute to read")
+    titel = T("Im Gespräch kommt die Antwort sofort, ein ganzes Buch liest das Modell in knapp einer Minute", "In a conversation the answer comes at once, a whole book takes the model just under a minute to read")
     kopf(s, T(f"Qwen3.8-Flash-Next 125B · Warten bis zum ersten Wort der Antwort · iDX6011 Pro · strata-xtx auf Strata {XTX_VER} · {XTX_TAG['de']}", f"Qwen3.8-Flash-Next 125B · wait for the first word of the answer · iDX6011 Pro · strata-xtx on Strata {XTX_VER} · {XTX_TAG['en']}"), titel)
     x0, x1, lo, hi, ya = 96, 896, 0.2, 300.0, 240
     X = lambda v: x0 + (math.log10(v) - math.log10(lo)) / (math.log10(hi) - math.log10(lo)) * (x1 - x0)
@@ -1053,8 +1068,8 @@ def wartezeit(d, sp):
     h = fuss(s, 388, None,
              T("Median aus bis zu drei Läufen, das Buch mit 300 Seiten ein Lauf · auf dem Release 0.2.14 am 16.11.2026: 50 Seiten 27 s, das Buch 2,7 min · die Zeitachse ist logarithmisch: gleiche Abstände sind gleiche Vielfache · eine Folgefrage zum selben langen Text kommt wieder nach rund 0,3 s · nach 30 Minuten ohne Anfrage wird das Modell entladen",
                "median of up to three runs, the 300-page book one run · on the 0.2.14 release on 16 Nov 2026: 50 pages 27 s, the book 2.7 min · the time axis is logarithmic: equal distances are equal multiples · a follow-up question on the same long text comes after about 0.3 s again · after 30 minutes without a request the model is unloaded"))
-    return "wartezeit", titel, T(f"Zeitstrahl der Wartezeit bis zum ersten Wort: Fragen im Gespräch unter einer halben Sekunde, eine Seite Text unter zwei Sekunden, zehn Seiten gut fünf, 50 Seiten rund 13 Sekunden, ein Buch von 300 Seiten gut eine Minute; nach einer Pause {z(kalt, sp, 0)} Sekunden, zu zweit rund sieben.",
-                                 f"Timeline of the wait for the first word: questions in a conversation under half a second, one page of text under two seconds, ten pages a good five, 50 pages about 13 seconds, a 300-page book a good minute; after a break {z(kalt, sp, 0)} seconds, two people at once about seven."), s, h
+    return "wartezeit", titel, T(f"Zeitstrahl der Wartezeit bis zum ersten Wort: Fragen im Gespräch unter einer halben Sekunde, eine Seite Text unter zwei Sekunden, zehn Seiten gut fünf, 50 Seiten rund 12 Sekunden, ein Buch von 300 Seiten knapp eine Minute; nach einer Pause {z(kalt, sp, 0)} Sekunden, zu zweit rund sechs.",
+                                 f"Timeline of the wait for the first word: questions in a conversation under half a second, one page of text under two seconds, ten pages a good five, 50 pages about 12 seconds, a 300-page book just under a minute; after a break {z(kalt, sp, 0)} seconds, two people at once about six."), s, h
 
 
 def gegenprobe(d, sp):
@@ -1163,7 +1178,7 @@ def aufbau(d, sp):
     # Webleser: seit 19.11.2026 im Heimnetz, nur der Agent ruft ihn; er holt die Seiten über ein VPN (wie SearXNG).
     knoten(B_, r4, T("Seiten lesen", "Read pages"), "Crawl4AI", T("liest über ein VPN im Netz", "reads through a VPN"), "extern")
     knoten(C_, r2, T("Weiche", "Switch"), "llama-swap", T("ein Modell zur Zeit", "one model at a time"))
-    knoten(D_, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 70 Token/s · 256K", "Strata · 70 tok/s · 256K"), "fokus", w=152)
+    knoten(D_, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 80 T/s · 256K", "Strata · 80 tok/s · 256K"), "fokus", w=152)
     knoten(D_, r3, T("Bilder", "Pictures"), "ComfyUI", T("8–66 s je Bild", "8–66 s per picture"), w=152)
     y = 536
     s.line(40, y, W - 40, y, 'stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"')
@@ -1194,7 +1209,7 @@ def parallel(d, sp):
     GUT, OFFEN = TON["salbei"][2], TON["gold"][2]
     bahnen = [
         (T("Karte im Dock", "Card in the dock"), "RX 7900 XTX · 24 GB", ACC, [
-            (T("Sprachmodell", "Language model"), T("rund 70 Token/s", "about 70 tokens/s"), T("gemessen", "measured"), GUT, True),
+            (T("Sprachmodell", "Language model"), T("65 bis 80 Token/s", "65 to 80 tokens/s"), T("gemessen", "measured"), GUT, True),
             (T("Bildmodelle", "Picture models"), T("8–66 s je Bild, im Wechsel", "8–66 s per picture, in turn"), T("gemessen", "measured"), GUT, False)]),
         (T("Eingebaute iGPU", "Built-in iGPU"), "Intel Arc", STAHL, [
             (T("Video: Transkodierung", "Video: transcoding"), f"{z(min(tr['waehrend_schreiben_bilder_s']), sp, 0)}–{z(max(tr['waehrend_schreiben_bilder_s']), sp, 0)} {T('Bilder/s', 'frames/s')} ({T('ohne Last', 'idle')} {z(tr['ohne_modell_bilder_s'][0], sp, 0)})", T("gemessen", "measured"), GUT, False),
@@ -1350,7 +1365,7 @@ def eigenbau(d, sp):
     a_plain, a_steer = (next(v["passed"] for k, v in aufg.items() if k.startswith(m)) for m in ("plain", "steered"))
     s = Svg()
     faktor = xtx["32K"] / rel["32K"]
-    titel = T(f"strata-xtx liest lange Prompts {z(faktor, sp, 1)}-mal so schnell wie das Release", f"strata-xtx reads long prompts {z(faktor, sp, 1)} times as fast as the release")
+    titel = T(f"{XTX_NAME} liest lange Prompts {z(faktor, sp, 1)}-mal so schnell wie das Release", f"{XTX_NAME} reads long prompts {z(faktor, sp, 1)} times as fast as the release")
     kopf(s, T(f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata {XTX_VER}: Release gegen Eigenbau · {XTX_TAG['de']}",
               f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata {XTX_VER}: release against my own build · {XTX_TAG['en']}"), titel)
     feld(s, L, 104, T("A · Prompt einlesen · Token/s", "A · Prompt reading · tokens/s"), T("nach Prompt-Länge · höher ist schneller", "by prompt length · higher is faster"))
@@ -1371,21 +1386,76 @@ def eigenbau(d, sp):
         p.balken(gm + 24, 40, b, ACC, z(b, sp, 0), True, True)
         s.text(gm, 404, T(f"{k} Token", f"{k} tokens"), 12, INK, "sans", "middle", 600)
         s.text(gm, 420, f"−{z((1 - b / a) * 100, sp, 0)} %", 9.5, ACC, "mono", "middle", 600)
-    feld(s, 760, 104, T("C · Schreiben · Token/s", "C · Decode · tokens/s"), T("kurze Chat-Antworten · höher ist schneller", "short chat answers · higher is faster"))
+    feld(s, 760, 104, T("C · Schreiben · Token/s", "C · Decode · tokens/s"), T("kurze Antworten · höher ist schneller", "short answers · higher is faster"))
     p = Hoch(s, 760, R, 144, 384, 100)
     p.achse(20, sp)
-    gm = (760 + R) / 2
-    p.balken(gm - 24, 40, rel["chat"], STAHL, z(rel["chat"], sp))
-    p.balken(gm + 24, 40, xtx["chat"], ACC, z(xtx["chat"], sp), True, True)
-    s.text(gm, 404, "Chat", 12, INK, "sans", "middle", 600)
-    s.text(gm, 420, T("gleich bis leicht schneller", "equal to slightly faster"), 9, MUTED, "mono", "middle")
+    for g, (k, name) in enumerate((("chat", "Chat"), ("agent", T("Agent", "agent")))):   # seit 22.11.2026 beide: der Agent kommt mit 0.2.19-xtx3 auf rund 80
+        gm = 760 + (g + 0.5) * (R - 760) / 2
+        p.balken(gm - 15, 26, rel[k], STAHL, z(rel[k], sp))
+        p.balken(gm + 15, 26, xtx[k], ACC, z(xtx[k], sp), True, True)
+        s.text(gm, 404, name, 12, INK, "sans", "middle", 600)
+        s.text(gm, 420, f"+{z((xtx[k] / rel[k] - 1) * 100, sp, 0)} %", 9.5, ACC, "mono", "middle", 600)
     s.text(L + 20, 168, T("Dieselbe Karte, kein Schalter gesetzt.", "The same card, no switch set."), 15, INK, "serif", kursiv=True)
-    h = fuss(s, 444, (("balken", STAHL, T(f"Strata {XTX_VER}, unverändertes Release", f"Strata {XTX_VER}, unchanged release")), ("balken", ACC, T(f"Eigenbau strata-xtx auf {XTX_VER}", f"my own build strata-xtx on {XTX_VER}"))),
+    h = fuss(s, 444, (("balken", STAHL, T(f"Strata {XTX_VER}, unverändertes Release", f"Strata {XTX_VER}, unchanged release")), ("balken", ACC, T(f"Eigenbau strata-xtx {XTX_NAME}", f"my own build strata-xtx {XTX_NAME}"))),
              T(f"A und C: tools/strata_bench.py --long, Median aus 3 Läufen im Wechsel, jede Engine frisch geladen, leise Karteneinstellung · B: tools/needle_bench.py, eine versteckte Zahl in der Mitte des Prompts, jedes Mal gefunden · C misst kurze, gut vorhersehbare Antworten; lange Antworten (1.500 Token) schreibt der Eigenbau mit {z(lang, sp)} Token/s, nach einem frischen langen Prompt mit {tief_von} bis {tief_bis} · Aufgabensatz auf {XTX_VER}: {a_plain} von 102 beim Original, {a_steer} bei der unzensierten Fassung · Preis: Antworten nicht Bit für Bit gleich, Karte beim Einlesen 25 bis 30 W mehr (gemessen am 18.11.) · Daten: messen/daten/{XTX_DATEN}/",
                f"A and C: tools/strata_bench.py --long, median of 3 alternating runs, each engine freshly loaded, quiet card setting · B: tools/needle_bench.py, one hidden number in the middle of the prompt, found every time · C measures short, easily predicted answers; long answers (1,500 tokens) my own build writes at {z(lang, sp)} tokens/s, after a fresh long prompt at {tief_von} to {tief_bis} · task set on {XTX_VER}: {a_plain} of 102 with the original, {a_steer} with the uncensored version · price: answers not bit for bit the same, card draws 25 to 30 W more while reading (measured 18 Nov) · data: messen/daten/{XTX_DATEN}/"))
     da = {k: (a, b) for k, a, b in w["dauer"]}
-    return "eigenbau", titel, T(f"Release {XTX_VER} gegen den Eigenbau strata-xtx: Einlesen bei 4K {z(rel['4K'], sp)} gegen {z(xtx['4K'], sp)} Token je Sekunde, bei 16K {z(rel['16K'], sp)} gegen {z(xtx['16K'], sp)}, bei 32K {z(rel['32K'], sp)} gegen {z(xtx['32K'], sp)}; ein Prompt von 250.000 Token braucht {z(da['250K'][0], sp, 0)} gegen {z(da['250K'][1], sp, 0)} Sekunden; Schreiben im Chat {z(rel['chat'], sp)} gegen {z(xtx['chat'], sp)} Token je Sekunde.",
-                                f"Release {XTX_VER} against my own build strata-xtx: reading at 4K {z(rel['4K'], sp)} against {z(xtx['4K'], sp)} tokens per second, at 16K {z(rel['16K'], sp)} against {z(xtx['16K'], sp)}, at 32K {z(rel['32K'], sp)} against {z(xtx['32K'], sp)}; a prompt of 250,000 tokens takes {z(da['250K'][0], sp, 0)} against {z(da['250K'][1], sp, 0)} seconds; decode in chat {z(rel['chat'], sp)} against {z(xtx['chat'], sp)} tokens per second."), s, h
+    return "eigenbau", titel, T(f"Release {XTX_VER} gegen den Eigenbau strata-xtx: Einlesen bei 4K {z(rel['4K'], sp)} gegen {z(xtx['4K'], sp)} Token je Sekunde, bei 16K {z(rel['16K'], sp)} gegen {z(xtx['16K'], sp)}, bei 32K {z(rel['32K'], sp)} gegen {z(xtx['32K'], sp)}; ein Prompt von 250.000 Token braucht {z(da['250K'][0], sp, 0)} gegen {z(da['250K'][1], sp, 0)} Sekunden; Schreiben im Chat {z(rel['chat'], sp)} gegen {z(xtx['chat'], sp)}, im Agentenlauf {z(rel['agent'], sp)} gegen {z(xtx['agent'], sp)} Token je Sekunde.",
+                                f"Release {XTX_VER} against my own build strata-xtx: reading at 4K {z(rel['4K'], sp)} against {z(xtx['4K'], sp)} tokens per second, at 16K {z(rel['16K'], sp)} against {z(xtx['16K'], sp)}, at 32K {z(rel['32K'], sp)} against {z(xtx['32K'], sp)}; a prompt of 250,000 tokens takes {z(da['250K'][0], sp, 0)} against {z(da['250K'][1], sp, 0)} seconds; decode in chat {z(rel['chat'], sp)} against {z(xtx['chat'], sp)}, in the agent run {z(rel['agent'], sp)} against {z(xtx['agent'], sp)} tokens per second."), s, h
+
+
+BREMSE = "read-brake-0.2.19.json"   # im Ordner XTX_DATEN (22.11.2026): Strata 0.2.19 halbiert ohne Abhilfe das Einlesen auf der iDX
+
+
+def bremse(d, sp):
+    """Strata 0.2.19 auf der iDX: der RAM-Wächter #2090 hält die Prompt-Stücke klein. Betrieb 0.2.18, der alte Ableger auf 0.2.19,
+    das Release mit Stratas eigenem Schalter und xtx-3 nebeneinander, Original und unzensierte Fassung."""
+    en = sp == "en"
+    T = lambda de, en_: en_ if en else de
+    b = json.load(open(os.path.join(d, XTX_DATEN, BREMSE), encoding="utf-8"))
+    stk = b["prompt_chunk_tokens"]
+    reihen = (("operation_0218", STAHL, "leer", T("bisher: 0.2.18-xtx2", "until now: 0.2.18-xtx2")),
+              ("xtx2_0219", TON["rose"][1], "balken", T("0.2.19 mit altem Patch: Wächter bremst", "0.2.19 with the old patch: guard brakes")),
+              ("release_0219_chunk1", STAHL, "balken", T("Release 0.2.19 + Stratas Schalter", "release 0.2.19 + Strata's switch")),
+              ("xtx3_0219", ACC, "balken", T(f"{XTX_NAME}: Bremse gelöst", f"{XTX_NAME}: brake released")))
+    s = Svg()
+    x3, alt = b["steered"]["xtx3_0219"], b["steered"]["operation_0218"]
+    titel = T(f"0.2.19 bremst das Einlesen, {XTX_NAME} löst die Bremse und liest lange Prompts {z((x3['128K'] / alt['128K'] - 1) * 100, sp, 0)} % schneller",
+              f"0.2.19 slows prompt reading, {XTX_NAME} releases the brake and reads long prompts {z((x3['128K'] / alt['128K'] - 1) * 100, sp, 0)} % faster")
+    kopf(s, T(f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.19 · RAM-Wächter #2090 · {XTX_TAG['de']}",
+              f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.19 · RAM guard #2090 · {XTX_TAG['en']}"), titel)
+    felder = ((L, 470, "faber", ("16K", "58K"), T("A · Original · Einlesen · Token/s", "A · Original · prompt reading · tokens/s")),
+              (530, R, "steered", ("58K", "128K"), T("B · Unzensierte Fassung · Einlesen · Token/s", "B · Uncensored version · prompt reading · tokens/s")))
+    for x0, x1, modell, stufen, was in felder:
+        feld(s, x0, 104, was, T("höher ist schneller · Stückgröße unter dem Balken", "higher is faster · chunk size under the bar"))
+        p = Hoch(s, x0, x1, 144, 384, 4000)
+        p.achse(1000, sp)
+        for g, k in enumerate(stufen):
+            gm = x0 + (g + 0.5) * (x1 - x0) / len(stufen)
+            for i, (schl, farbe, art, _) in enumerate(reihen):
+                v = b[modell][schl][k]
+                mx = gm + (i - 1.5) * 40
+                if art == "leer":
+                    y = p.Y(v)
+                    s.rect(mx - 17, y, 34, 384 - y, farbe, deck=0.06, strich="3,2")
+                    s.text(mx, y - 7, z(v, sp, 0), 8.5, MUTED, "mono", "middle")
+                else:
+                    p.balken(mx, 34, v, farbe, z(v, sp, 0), schl in ("xtx3_0219", "xtx2_0219"), schl == "xtx3_0219")
+                    if schl in ("xtx2_0219", "xtx3_0219"):   # Abstand zum bisherigen Betrieb über dem Balken (Frank 22.11.: Einbruch und Vorsprung deutlich zeigen)
+                        dlt = (v / b[modell]["operation_0218"][k] - 1) * 100
+                        s.text(mx, p.Y(v) - 20, f"{'+' if dlt >= 0 else '−'}{z(abs(dlt), sp, 0)} %", 9.5, farbe, "mono", "middle", 700)
+                s.text(mx, 396, f"{stk[modell][schl] // 1024}K", 7.5, MUTED, "mono", "middle")
+            s.text(gm, 414, T(f"{k}-Prompt", f"{k} prompt"), 12, INK, "sans", "middle", 600)
+    f = b["faber"]
+    s.text(L + 14, 168, T(f"Wie geliefert liest 0.2.19 hier 58K mit {z(f['release_0219']['58K'], sp, 0)} Token/s.",
+                          f"As shipped, 0.2.19 reads 58K here at {z(f['release_0219']['58K'], sp, 0)} tokens/s."), 13, INK, "serif", kursiv=True)
+    g = b["ram_guard"]["faber"]
+    h = fuss(s, 440, tuple((art, farbe, name) for _, farbe, art, name in reihen),
+             T(f"Ursache: Stratas neue RDNA3-Stückregel schaltet den RAM-Wächter #2090 ein · er nimmt größere Prompt-Stücke nur, wenn Leihbedarf + 6 GiB frei sind · mit dem Original waren {z(g['available_mib'] / 1024, sp, 1)} GiB frei, 32K-Stücke brauchen {z(g['extra_mib_32768'] / 1024, sp, 1)} GiB mehr → 8K-Stücke · „0.2.19 mit altem Patch“: der bisherige Patch xtx2 unverändert auf 0.2.19 (wie geliefert liest 0.2.19 genauso langsam) · Schalter: STRATA_GFX11_CHUNK=1 (Stratas eigener) · {XTX_NAME} trägt ihn in seiner Tabelle · Prozent: Abstand zu 0.2.18-xtx2 · das Release liest auch damit langsamer (Puffer 96 statt 384 Plätze) · kleinster freier RAM wie auf 0.2.18 · leise Karteneinstellung, versteckte Zahl jedes Mal gefunden · Median aus 2 × 2 Läufen, Release + Schalter: ein Lauf · Daten: messen/daten/{XTX_DATEN}/{BREMSE}",
+               f"Cause: Strata's new RDNA3 chunk rule turns on the RAM guard #2090 · it takes bigger prompt chunks only when the cache loan + 6 GiB is available · with the original {z(g['available_mib'] / 1024, sp, 1)} GiB were available, 32K chunks need {z(g['extra_mib_32768'] / 1024, sp, 1)} GiB more → 8K chunks · '0.2.19 with the old patch': my previous patch xtx2 unchanged on 0.2.19 (0.2.19 as shipped reads as slowly) · switch: STRATA_GFX11_CHUNK=1 (Strata's own) · {XTX_NAME} carries it in its table · per cent: difference to 0.2.18-xtx2 · the release still reads slower with it (ring 96 instead of 384 slots) · lowest available RAM as on 0.2.18 · quiet card setting, hidden number found every time · median of 2 × 2 runs, release + switch: one run · data: messen/daten/{XTX_DATEN}/{BREMSE}"))
+    r_ = b["steered"]
+    return "bremse", titel, T(f"Strata 0.2.19 auf einer RX 7900 XTX in einem NAS mit 64 GB RAM: Ein RAM-Wächter hält die Prompt-Stücke klein. Die unzensierte Fassung liest 128K mit {z(r_['xtx2_0219']['128K'], sp, 0)} statt {z(alt['128K'], sp, 0)} Token/s; mit dem Ableger {XTX_NAME} sind es {z(x3['128K'], sp, 0)}, mit dem Release und Stratas eigenem Schalter {z(r_['release_0219_chunk1']['128K'], sp, 0)}.",
+                              f"Strata 0.2.19 on an RX 7900 XTX in a NAS with 64 GB of RAM: a RAM guard keeps the prompt chunks small. The uncensored version reads 128K at {z(r_['xtx2_0219']['128K'], sp, 0)} instead of {z(alt['128K'], sp, 0)} tokens/s; with my build {XTX_NAME} it is {z(x3['128K'], sp, 0)}, with the release and Strata's own switch {z(r_['release_0219_chunk1']['128K'], sp, 0)}."), s, h
 
 
 def schalter_lang(d, sp):
@@ -1427,7 +1497,7 @@ def schalter_lang(d, sp):
                                      f"Reading speed for long prompts from 70,000 to 250,000 tokens without and with 28 environment switches, for the variant with control vector and the original model: a good twice as fast in both, 250,000 tokens take {z(s_mit, sp, 0)} instead of {z(s_ohne, sp, 0)} seconds."), s, h
 
 
-ALLE = (eigenbau, schalter, schalter_lang, tiefe,mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, cloud_vergleich, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
+ALLE = (eigenbau, bremse, schalter, schalter_lang, tiefe,mtp_annahme, pool_workers, versionen, docker_image, kontext, speicher, dicht_moe, cloud_vergleich, erfinden, gegenprobe, urteil, schichten, bildmodelle, dflash2, betrieb, werksmodell, aufbau, parallel, steuervektor)
 
 
 def main():
