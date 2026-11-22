@@ -11,6 +11,20 @@ cp opencode.jsonc ~/.config/opencode/opencode.jsonc     # then enter llama-swap'
 opencode
 ```
 
+As a service in the home network (how it runs here since 22 Nov 2026): one machine in the home network runs
+OpenCode permanently, with a password, and every computer, phone or tablet uses it from the terminal or the
+browser. A session keeps running when the laptop is closed.
+
+```bash
+# on the machine that runs the service (for example as a systemd user service)
+OPENCODE_SERVER_PASSWORD=<password> opencode serve --hostname <its address in the home network> --port 4096
+# on any computer in the home network
+OPENCODE_PASSWORD=<password> opencode --server http://<address>:4096
+```
+
+The browser reaches the same sessions at `http://<address>:4096`. Keep the port inside the home network; the
+service runs commands on that machine.
+
 What I learned:
 
 - **One request at a time.** Strata answers one request after the other. If the agent or the chat is writing,

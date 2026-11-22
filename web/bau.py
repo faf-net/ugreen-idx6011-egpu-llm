@@ -232,9 +232,9 @@ def seite(sp):
          T("„Mach ein Bild von …“ im Chat oder im Messenger: Die Weiche entlädt das Sprachmodell und lädt ein Bildmodell auf dieselbe Karte. Beides zugleich passt nicht in 24 GB.",
            "\"Make a picture of …\" in the chat or the messenger: the switch unloads the language model and loads a picture model onto the same card. Both at once do not fit into 24 GB."),
          T("<b>8–66 s</b> je Bild · Wechsel vom Sprachmodell 21–27 s", "<b>8–66 s</b> per picture · swapping from the language model 21–27 s")),
-        (T("Programmieren im Terminal", "Coding in the terminal"), "OpenCode 2",
-         T("Ein Programmier-Agent im Terminal, der Dateien liest, ändert und Befehle ausführt. Er spricht dieselbe Adresse an wie der Chat, das Modell wählt man in der Sitzung. Der Code bleibt dabei im Haus.",
-           "A coding agent in the terminal that reads and changes files and runs commands. It talks to the same address as the chat, and you pick the model in the session. The code stays at home."),
+        (T("Programmieren", "Coding"), "OpenCode 2",
+         T("Ein Programmier-Agent, der Dateien liest, ändert und Befehle ausführt. Er läuft als Dienst im Heimnetz, mit Passwort, und wird im Browser oder aus dem Terminal jedes Rechners bedient; eine Sitzung läuft weiter, wenn der Laptop zugeklappt wird. Er spricht dieselbe Adresse an wie der Chat, das Modell wählt man in der Sitzung. Mit den lokalen Modellen bleibt der Code im Haus.",
+           "A coding agent that reads and changes files and runs commands. It runs as a service in the home network, with a password, and is used from the browser or from the terminal of any computer; a session keeps running when the laptop is closed. It talks to the same address as the chat, and you pick the model in the session. With the local models the code stays at home."),
          T("teilt sich die Karte mit Chat und Agent: <b>eine Anfrage nach der anderen</b>", "shares the card with chat and agent: <b>one request at a time</b>")),
         (T("Eigene Programme", "Your own programs"), T("API im OpenAI-Format", "API in the OpenAI format"),
          T("Jedes Programm, das einen Cloud-Dienst im OpenAI-Format ansprechen kann, lässt sich auf die Adresse im Heimnetz umstellen: Skripte, Editor-Erweiterungen, Automationen. Ein Konto bei einem Anbieter ist nicht nötig.",
@@ -474,8 +474,8 @@ def seite(sp):
         (T("Agent dazu", "Add the agent"), T("Hermes Agent mit dem lokalen Modell: Kontext auf 256K stellen, ein Token-Budget für das Nachdenken setzen und die Regeln gegen das Erfinden aus Kapitel 6 in den Systemprompt nehmen.",
                                              "Hermes Agent with the local model: set the context to 256K, give the reasoning a token budget and put the rules against making things up from chapter 6 into the system prompt."),
          doc("agent"), T("Regeln und Prüfer", "Rules and checker")),
-        (T("OpenCode 2 dazu", "Add OpenCode 2"), T("OpenCode 2 auf dem eigenen Rechner, mit llama-swap als Anbieter im OpenAI-Format. Für die Sitzungstitel dasselbe Modell eintragen wie für die Arbeit, sonst lädt die Weiche für jeden Titel um.",
-                                               "OpenCode 2 on your own computer, with llama-swap as a provider in the OpenAI format. Set the same model for session titles as for the work, otherwise the switch reloads for every title."),
+        (T("OpenCode 2 dazu", "Add OpenCode 2"), T("OpenCode 2 als Dienst im Heimnetz (<code>opencode serve</code> mit Passwort) oder auf dem eigenen Rechner, mit llama-swap als Anbieter im OpenAI-Format. Für die Sitzungstitel dasselbe Modell eintragen wie für die Arbeit, sonst lädt die Weiche für jeden Titel um.",
+                                               "OpenCode 2 as a service in the home network (<code>opencode serve</code> with a password) or on your own computer, with llama-swap as a provider in the OpenAI format. Set the same model for session titles as for the work, otherwise the switch reloads for every title."),
          f"{GH}/tree/main/konfig/opencode", T("Beispielkonfiguration", "Example config")),
     ]
     A('<ol class="schritte">' + "".join(f'<li><h3>{e(t_)}</h3><p>{b_}</p><a href="{u}">{e(l_)}</a></li>' for t_, b_, u, l_ in schritte) + "</ol>")

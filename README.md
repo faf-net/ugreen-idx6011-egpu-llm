@@ -519,7 +519,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   konfig/strata-xtx-0.2.16/     the same for the build on 0.2.16 (19 to 20 Nov 2026)
   konfig/hermes-pruefer/        plugin for Hermes Agent: checks every answer with fixed rules, no language model
   konfig/stack/                 chat and web search: Compose file for Open WebUI and SearXNG, tested on the NAS (EN/DE)
-  konfig/opencode/              OpenCode 2 in the terminal with the local models: example config and what I learned (EN/DE)
+  konfig/opencode/              OpenCode 2 with the local models, as a service in the home network or in the terminal: example config and what I learned (EN/DE)
 ```
 
 **UGOS**

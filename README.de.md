@@ -522,7 +522,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   konfig/strata-xtx-0.2.16/     dasselbe für den Bau auf 0.2.16 (19. bis 20.11.2026)
   konfig/hermes-pruefer/        Plugin für Hermes Agent: prüft jede Antwort mit festen Regeln, ohne Sprachmodell
   konfig/stack/                 Chat und Websuche: Compose-Datei für Open WebUI und SearXNG, auf dem NAS getestet (EN/DE)
-  konfig/opencode/              OpenCode 2 im Terminal mit den lokalen Modellen: Beispielkonfiguration und was ich gelernt habe (EN/DE)
+  konfig/opencode/              OpenCode 2 mit den lokalen Modellen, als Dienst im Heimnetz oder im Terminal: Beispielkonfiguration und was ich gelernt habe (EN/DE)
 ```
 
 **UGOS**

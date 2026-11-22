@@ -11,6 +11,20 @@ cp opencode.jsonc ~/.config/opencode/opencode.jsonc     # danach die Adresse von
 opencode
 ```
 
+Als Dienst im Heimnetz (so läuft es hier seit dem 22.11.2026): Ein Rechner im Heimnetz betreibt OpenCode
+dauerhaft, mit Passwort, und jeder Rechner, jedes Handy oder Tablet bedient ihn aus dem Terminal oder im Browser.
+Eine Sitzung läuft weiter, wenn der Laptop zugeklappt wird.
+
+```bash
+# auf dem Rechner, der den Dienst trägt (zum Beispiel als systemd-Benutzerdienst)
+OPENCODE_SERVER_PASSWORD=<Passwort> opencode serve --hostname <seine Adresse im Heimnetz> --port 4096
+# auf jedem Rechner im Heimnetz
+OPENCODE_PASSWORD=<Passwort> opencode --server http://<Adresse>:4096
+```
+
+Im Browser erreicht man dieselben Sitzungen unter `http://<Adresse>:4096`. Den Port im Heimnetz lassen; der
+Dienst führt auf diesem Rechner Befehle aus.
+
 Was ich gelernt habe:
 
 - **Eine Anfrage nach der anderen.** Strata beantwortet Anfragen nacheinander. Schreibt gerade der Agent oder
