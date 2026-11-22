@@ -1160,18 +1160,18 @@ def aufbau(d, sp):
     pfeil(f"M 200,{r1 + 44} H 228 Q 236,{r1 + 44} 236,{r1 + 52} V {r3 + 8} Q 236,{r3 + 16} 244,{r3 + 16} H 270")   # Geräte -> Hermes direkt (Browser, im Heimnetz)
     pfeil(f"M 136,{r1 + 56} V {r3 - 2}", gestrichelt=True)                                              # Geräte -> Messenger-Dienst
     pfeil(f"M 200,{r3 + 38} H 270", gestrichelt=True)                                                   # Messenger-Dienst -> Hermes
-    pfeil(f"M 72,{r1 + 28} H 60 Q 52,{r1 + 28} 52,{r1 + 36} V {r4 + 64} Q 52,{r4 + 72} 60,{r4 + 72} H 584 Q 592,{r4 + 72} 592,{r4 + 64} V {r3 + 58}")   # Geräte -> OpenCode 2 (Dienst im Heimnetz seit 22.11.2026), links außen und unten herum
+    pfeil(f"M 136,{r1} V {r1 - 6} Q 136,{r1 - 14} 144,{r1 - 14} H 584 Q 592,{r1 - 14} 592,{r1 - 6} V {r1 - 2}")   # Geräte -> OpenCode 2 (Dienst im Heimnetz seit 22.11.2026), oben herum (Frank 22.11.2026)
     pfeil(f"M 352,{r1 + 56} V {r2 - 2}")                                                                # Open WebUI -> SearXNG
     pfeil(f"M 352,{r3} V {r2 + 58}")                                                                    # Hermes -> SearXNG
     pfeil(f"M 352,{r3 + 56} V {r4 - 2}")                                                                # Hermes -> Crawl4AI, direkt darunter
     pfeil(f"M 432,{r1 + 28} H 464 Q 472,{r1 + 28} 472,{r1 + 36} V {r2 + 8} Q 472,{r2 + 16} 480,{r2 + 16} H 510")   # Open WebUI -> llama-swap
     pfeil(f"M 432,{r3 + 28} H 464 Q 472,{r3 + 28} 472,{r3 + 20} V {r2 + 48} Q 472,{r2 + 40} 480,{r2 + 40} H 510")  # Hermes -> llama-swap
-    pfeil(f"M 592,{r3} V {r2 + 58}")                                                                    # OpenCode 2 -> llama-swap, direkt darüber (Zeile von Hermes und ComfyUI, Frank 22.11.2026)
+    pfeil(f"M 592,{r1 + 56} V {r2 - 2}")                                                                    # OpenCode 2 -> llama-swap, von oben (Zeile von Open WebUI, Frank 22.11.2026)
     pfeil(f"M 672,{r2 + 16} H 696 Q 704,{r2 + 16} 704,{r2 + 8} V 184 Q 704,176 712,176 H 742", fokus=True)        # llama-swap -> Sprachmodell
     pfeil(f"M 672,{r2 + 40} H 696 Q 704,{r2 + 40} 704,{r2 + 48} V {r3 + 20} Q 704,{r3 + 28} 712,{r3 + 28} H 742")  # llama-swap -> ComfyUI
     knoten(A_, r1, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
     knoten(A_, r3, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
-    knoten(C_, r3, T("Programmieren", "Coding"), "OpenCode 2", T("Dienst · Browser, Terminal", "service · browser, terminal"))
+    knoten(C_, r1, T("Programmieren", "Coding"), "OpenCode 2", T("Dienst · Browser, Terminal", "service · browser, terminal"))
     knoten(B_, r1, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
     knoten(B_, r2, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches through a VPN"), "extern")
     knoten(B_, r3, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
