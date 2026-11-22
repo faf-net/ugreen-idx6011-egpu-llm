@@ -1,0 +1,424 @@
+{
+ "date": "2026-11-21/22",
+ "engine": {
+  "hy4": "strata-hy4 0.1.64 from the Strata 0.2.18 release (package hip-rx7900)",
+  "qwen": "own build strata-xtx on Strata 0.2.18 (engine 0.1.64)"
+ },
+ "card": "RX 7900 XTX in the dock, mode quiet (2,800 MHz, -100 mV)",
+ "ram_gib": 62.3,
+ "context": 131072,
+ "files": {
+  "Hy4-Flash SQ-64 + Engram-Q8 + Vision": "Strata's own quantization of Tencent Hy4-Flash (220B, 12B active): SQ-64 62.0 GB, Engram-Q8 67.6 GB, Vision 0.93 GB; checked against Strata's SHA-256",
+  "Qwen3.8-Flash-Next IQ3_XXS (my file in use)": "75.8 GB"
+ },
+ "method": "per run: load, short answer, tool call, 2 x 900 tokens decode after warm-up (temperature 0, thinking off), prompts with a hidden number, a follow-up question after the long prompt. NVMe bytes read (block device counters), lowest MemAvailable and the mean power of NAS + dock (UPS) sampled per step. Figures from the server's timings.",
+ "splits": {
+  "setup default": "the split Strata's setup writes (hy4_fit: --vram-experts-gb 9.35, --ram-experts-gb 46.69); strata-hy4 ignores both ('not used by this runner yet') and keeps all 55.8 GB of host experts in RAM",
+  "RAM budget 36 GB": "env HY4_RAM_BUDGET_GB=36: 45.0 GB wanted, 4,038 coldest experts (9.03 GB) read from the NVMe on demand"
+ },
+ "issue": "https://github.com/Niko1221/Strata/issues/6556",
+ "runs": [
+  {
+   "name": "uncensored version (control vector)",
+   "file": "Qwen3.8-Flash-Next IQ3_XXS (my file in use)",
+   "split": "all experts in VRAM + RAM",
+   "control": "own build",
+   "cold_start": true,
+   "load_to_first_answer_s": 19.7,
+   "ram_available_before_load_gib": 52.17,
+   "ram_available_after_load_gib": 7.68,
+   "vram_after_load_gib": 23.29,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 60.0,
+     "tokens": 900,
+     "nvme_read_gb": 0.16,
+     "ram_available_min_gib": 7.55,
+     "nas_and_dock_w_mean": 249.0
+    },
+    {
+     "tok_s": 61.9,
+     "tokens": 900,
+     "nvme_read_gb": 0.1,
+     "ram_available_min_gib": 7.49,
+     "nas_and_dock_w_mean": 396.0
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4126,
+     "tok_s": 669.1,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 7.57,
+     "nas_and_dock_w_mean": 396.0
+    },
+    "16K": {
+     "prompt_tokens": 16088,
+     "tok_s": 2392.4,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.25,
+     "ram_available_min_gib": 7.41,
+     "nas_and_dock_w_mean": 497.7
+    },
+    "58K": {
+     "prompt_tokens": 58023,
+     "tok_s": 3093.7,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.05,
+     "ram_available_min_gib": 7.23,
+     "nas_and_dock_w_mean": 518.0
+    },
+    "105K": {
+     "prompt_tokens": 104888,
+     "tok_s": 3205.7,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.03,
+     "ram_available_min_gib": 6.85,
+     "nas_and_dock_w_mean": 493.8
+    }
+   },
+   "follow_up_after_long_prompt": {
+    "tok_s": 57.5,
+    "nvme_read_gb": 0.05,
+    "ram_available_min_gib": 6.73
+   },
+   "error_lines_in_engine_log": 0
+  },
+  {
+   "name": "original",
+   "file": "Qwen3.8-Flash-Next IQ3_XXS (my file in use)",
+   "split": "all experts in VRAM + RAM",
+   "control": "own build",
+   "cold_start": true,
+   "load_to_first_answer_s": 19.7,
+   "ram_available_before_load_gib": 52.34,
+   "ram_available_after_load_gib": 4.14,
+   "vram_after_load_gib": 23.29,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 64.4,
+     "tokens": 900,
+     "nvme_read_gb": 0.16,
+     "ram_available_min_gib": 3.97,
+     "nas_and_dock_w_mean": 354.0
+    },
+    {
+     "tok_s": 57.9,
+     "tokens": 859,
+     "nvme_read_gb": 0.14,
+     "ram_available_min_gib": 3.99,
+     "nas_and_dock_w_mean": 377.6
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4126,
+     "tok_s": 756.9,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.3,
+     "ram_available_min_gib": 4.02,
+     "nas_and_dock_w_mean": 413.0
+    },
+    "16K": {
+     "prompt_tokens": 16092,
+     "tok_s": 2308.1,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.02,
+     "ram_available_min_gib": 3.94,
+     "nas_and_dock_w_mean": 413.0
+    },
+    "58K": {
+     "prompt_tokens": 58024,
+     "tok_s": 3161.3,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.03,
+     "ram_available_min_gib": 3.77,
+     "nas_and_dock_w_mean": 436.4
+    },
+    "105K": {
+     "prompt_tokens": 104892,
+     "tok_s": 3154.4,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.04,
+     "ram_available_min_gib": 3.42,
+     "nas_and_dock_w_mean": 438.7
+    }
+   },
+   "follow_up_after_long_prompt": {
+    "tok_s": 51.3,
+    "nvme_read_gb": 0.05,
+    "ram_available_min_gib": 3.29
+   },
+   "error_lines_in_engine_log": 0
+  },
+  {
+   "name": "Hy4-Flash, 128K",
+   "file": "Hy4-Flash SQ-64 + Engram-Q8 + Vision",
+   "split": "RAM budget 36 GB",
+   "control": "own build",
+   "cold_start": false,
+   "load_to_first_answer_s": 86.1,
+   "ram_available_before_load_gib": 50.21,
+   "ram_available_after_load_gib": 15.7,
+   "vram_after_load_gib": 23.74,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 7.0,
+     "tokens": 900,
+     "nvme_read_gb": 162.18,
+     "ram_available_min_gib": 7.46,
+     "nas_and_dock_w_mean": 229.0
+    },
+    {
+     "tok_s": 7.5,
+     "tokens": 900,
+     "nvme_read_gb": 164.82,
+     "ram_available_min_gib": 7.52,
+     "nas_and_dock_w_mean": 234.3
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 5346,
+     "tok_s": 433.2,
+     "hidden_number_found": true,
+     "nvme_read_gb": 110.52,
+     "ram_available_min_gib": 7.58,
+     "nas_and_dock_w_mean": 269.5
+    },
+    "16K": {
+     "prompt_tokens": 20868,
+     "tok_s": 437.7,
+     "hidden_number_found": true,
+     "nvme_read_gb": 119.65,
+     "ram_available_min_gib": 7.49,
+     "nas_and_dock_w_mean": 188.9
+    },
+    "58K": {
+     "prompt_tokens": 75266,
+     "tok_s": 413.7,
+     "hidden_number_found": true,
+     "nvme_read_gb": 147.74,
+     "ram_available_min_gib": 7.31,
+     "nas_and_dock_w_mean": 261.8
+    }
+   },
+   "follow_up_after_long_prompt": {
+    "tok_s": 6.8,
+    "nvme_read_gb": 207.93,
+    "ram_available_min_gib": 7.48
+   },
+   "error_lines_in_engine_log": 0,
+   "drafter_accepted_per_verify_step": 0.19
+  },
+  {
+   "name": "Hy4-Flash, 128K",
+   "file": "Hy4-Flash SQ-64 + Engram-Q8 + Vision",
+   "split": "setup default",
+   "control": "own build",
+   "note": "the RAM budget the engine computes from MemTotal leaves no room for the NAS: memory full, swapping; not representative of the model",
+   "cold_start": true,
+   "load_to_first_answer_s": 90.2,
+   "ram_available_before_load_gib": 52.43,
+   "ram_available_after_load_gib": 0.0,
+   "vram_after_load_gib": 23.78,
+   "tool_call_ok": true,
+   "image_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 0.3,
+     "tokens": 900,
+     "nvme_read_gb": 2214.57,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 162.6
+    },
+    {
+     "tok_s": 0.4,
+     "tokens": 900,
+     "nvme_read_gb": 1868.52,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 154.0
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 5346,
+     "tok_s": 228.4,
+     "hidden_number_found": true,
+     "nvme_read_gb": 19.01,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 215.1
+    },
+    "16K": {
+     "prompt_tokens": 20866,
+     "tok_s": 281.8,
+     "hidden_number_found": true,
+     "nvme_read_gb": 51.94,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 172.0
+    },
+    "58K": {
+     "prompt_tokens": 75266,
+     "tok_s": 157.6,
+     "hidden_number_found": true,
+     "nvme_read_gb": 413.21,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 208.7
+    },
+    "105K": {
+     "error": "HTTP 400: prompt longer than the 131,072-token context (Hy4's tokenizer needs about 30 % more tokens than Qwen's for the same text)"
+    }
+   },
+   "error_lines_in_engine_log": 0
+  },
+  {
+   "name": "Hy4-Flash, 128K",
+   "file": "Hy4-Flash SQ-64 + Engram-Q8 + Vision",
+   "split": "setup default",
+   "control": "release",
+   "note": "the RAM budget the engine computes from MemTotal leaves no room for the NAS: memory full, swapping; not representative of the model",
+   "cold_start": false,
+   "load_to_first_answer_s": 92.8,
+   "ram_available_before_load_gib": 52.64,
+   "ram_available_after_load_gib": 0.0,
+   "vram_after_load_gib": 23.78,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 0.3,
+     "tokens": 900,
+     "nvme_read_gb": 2268.01,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 152.9
+    },
+    {
+     "tok_s": 0.4,
+     "tokens": 900,
+     "nvme_read_gb": 1865.8,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 156.8
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 5346,
+     "tok_s": 224.2,
+     "hidden_number_found": true,
+     "nvme_read_gb": 22.63,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 148.4
+    },
+    "16K": {
+     "prompt_tokens": 20866,
+     "tok_s": 307.0,
+     "hidden_number_found": true,
+     "nvme_read_gb": 53.49,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 250.4
+    }
+   },
+   "follow_up_after_long_prompt": {
+    "tok_s": 0.3,
+    "nvme_read_gb": 1034.97,
+    "ram_available_min_gib": 0.0
+   },
+   "error_lines_in_engine_log": 0
+  },
+  {
+   "name": "Hy4-Flash, 32K",
+   "file": "Hy4-Flash SQ-64 + Engram-Q8 + Vision",
+   "split": "setup default",
+   "control": "own build",
+   "note": "the RAM budget the engine computes from MemTotal leaves no room for the NAS: memory full, swapping; not representative of the model",
+   "cold_start": false,
+   "load_to_first_answer_s": 91.5,
+   "ram_available_before_load_gib": 52.19,
+   "ram_available_after_load_gib": 0.0,
+   "vram_after_load_gib": 23.78,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 0.4,
+     "tokens": 900,
+     "nvme_read_gb": 1881.41,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 159.2
+    },
+    {
+     "tok_s": 0.4,
+     "tokens": 900,
+     "nvme_read_gb": 1840.06,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 158.1
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 5346,
+     "tok_s": 217.3,
+     "hidden_number_found": true,
+     "nvme_read_gb": 21.67,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 123.3
+    },
+    "16K": {
+     "prompt_tokens": 20868,
+     "tok_s": 289.0,
+     "hidden_number_found": true,
+     "nvme_read_gb": 45.15,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 137.5
+    }
+   },
+   "follow_up_after_long_prompt": {
+    "tok_s": 0.4,
+    "nvme_read_gb": 764.29,
+    "ram_available_min_gib": 0.0
+   },
+   "error_lines_in_engine_log": 0
+  },
+  {
+   "name": "Hy4-Flash, 128K, drafter off",
+   "file": "Hy4-Flash SQ-64 + Engram-Q8 + Vision",
+   "split": "setup default",
+   "control": "own build",
+   "note": "the RAM budget the engine computes from MemTotal leaves no room for the NAS: memory full, swapping; not representative of the model",
+   "cold_start": false,
+   "load_to_first_answer_s": 146.3,
+   "ram_available_before_load_gib": 52.39,
+   "ram_available_after_load_gib": 0.0,
+   "vram_after_load_gib": 23.78,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 0.5,
+     "tokens": 900,
+     "nvme_read_gb": 1409.2,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 159.6
+    },
+    {
+     "tok_s": 0.6,
+     "tokens": 900,
+     "nvme_read_gb": 1211.1,
+     "ram_available_min_gib": 0.0,
+     "nas_and_dock_w_mean": 166.1
+    }
+   ],
+   "prompts": {},
+   "error_lines_in_engine_log": 0
+  }
+ ],
+ "not_measured": [
+  "task set / quality",
+  "agent runs",
+  "mode max",
+  "image input on the run with RAM budget",
+  "a cgroup memory limit instead of HY4_RAM_BUDGET_GB"
+ ]
+}

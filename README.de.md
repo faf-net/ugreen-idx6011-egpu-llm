@@ -146,6 +146,10 @@ Mit geladenem, ruhendem Original (`faber`) belegt die Engine 47,7 der 62,3 GiB R
 
 Strata kann die Experten, die weder auf die Karte noch in ein RAM-Budget passen, während der Antwort aus der Modelldatei nachladen, und das NAS hat einen schnellen NVMe-Verbund. Ich habe deshalb zwei größere Quants desselben Modells ausprobiert, Unsloths UD-IQ4_XS (93,7 GB) und UD-Q4_K_XL (111 GB), gegen meine IQ3_XXS-Datei im Betrieb (75,8 GB), jeweils mit 45 GiB RAM-Budget. UD-IQ4_XS schreibt mit 44 bis 46 statt 61 Token/s und besteht in meinem Aufgabensatz gleich viele Aufgaben (95 und 96 gegen 96 und 96 von 102), braucht dafür aber rund 55 % länger. UD-Q4_K_XL liest für jede Antwort mit 900 Token 21 bis 23 GB von der NVMe und schreibt mit 24 Token/s. Mit beiden Dateien bleiben neben den NAS-Diensten nur rund 2,3 GiB RAM verfügbar. Meine Datei im Betrieb bleibt. Rohdaten und Bedingungen: [`messen/daten/2026-11-21-nvme-streaming/`](messen/daten/2026-11-21-nvme-streaming/README.de.md).
 
+### Ein größeres Modell, Tencent Hy4-Flash (220B), ist hier achtmal langsamer (21./22.11.2026)
+
+Strata 0.2.18 bringt Hy4-Flash mit, 220 Milliarden Parameter (12 Milliarden aktiv), mit eigener Engine. Ich habe das kleinste Quant (SQ-64, 62 GB plus 68 GB Engram-Datei) gegen meinen Betrieb gemessen. Es läuft, schreibt aber mit 7,0 bis 7,5 statt rund 60 Token/s und liest einen langen Prompt mit 414 statt 3.094 Token/s. Die CPU des NAS rechnet 36 GB Experten aus dem RAM, und pro Antwort mit 900 Token liest es rund 160 GB von der NVMe. Mit der Aufteilung, die Stratas Setup für diese Maschine schreibt, läuft der Speicher voll, und es schreibt nur 0,3 bis 0,6 Token/s. Die Engine verwirft die Angaben des Setups und rechnet mit dem gesamten RAM. Abhilfe ist `HY4_RAM_BUDGET_GB`, gemeldet als [Strata-Issue #6556](https://github.com/Niko1221/Strata/issues/6556). Mein Eigenbau ändert daran nichts, weil die Hy4-Engine keinen seiner Schalter liest. Hy4-Flash ist zensiert und nimmt keinen Steuervektor an. Qualität habe ich nicht gemessen. Rohdaten und Bedingungen: [`messen/daten/2026-11-22-hy4-flash/`](messen/daten/2026-11-22-hy4-flash/README.de.md).
+
 ### Strom, Kaltstart, NAS-Betrieb, ein dichtes 70B und UGREENs eigenes Modell (15. bis 21.11.2026)
 
 ![Leistung je Phase, und das MoE-Modell gegen ein dichtes 70B](bilder/betrieb-de.png)
@@ -560,6 +564,7 @@ Modelle, Sekunden je Bild, was ich auf gfx1100 gelernt habe, und der Bild-Anbiet
   messen/daten/2026-11-19-strata-xtx-0.2.16/  Eigenbau strata-xtx auf der Basis 0.2.16: Prüfungen vor der Übernahme, drei Läufe strata_bench im Wechsel mit dem Release 0.2.16, Nadeln, Strom, Kaltstart, Wartezeiten, zwei Personen, Speicher; unter release-0.2.16/ der Test des unveränderten Release
   messen/daten/2026-11-18-unsloth-ud-iq2xs/  Unsloth UD-IQ2_XS v3.1 gegen die IQ3_XXS-Datei: Perplexität, Tempo ohne und mit Schaltern (README darin)
   messen/daten/2026-11-21-nvme-streaming/  größere Quants (UD-IQ4_XS, UD-Q4_K_XL) mit Experten von der NVMe: Tempo, Speicher, NVMe-Lesen, Aufgabensatz (README darin)
+  messen/daten/2026-11-22-hy4-flash/       Tencent Hy4-Flash (220B) gegen Flash-Next: Tempo, Speicher, NVMe-Lesen, die RAM-Falle (README darin)
   messen/schalter.py            die 28 Schalter in eine Laufkonfiguration eintragen, herausnehmen, prüfen (Stand 18.11., für das unveränderte Release)
   messen/schalter_pruefen.py    kennt eine Engine die 28 Namen noch? Prüfung für jedes Release, ohne Karte
   messen/daten/2026-11-16-speicher/  Speicherbelegung von Original und unzensierter Fassung auf 0.2.14
