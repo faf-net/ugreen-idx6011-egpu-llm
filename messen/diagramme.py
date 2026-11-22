@@ -1160,7 +1160,7 @@ def aufbau(d, sp):
     pfeil(f"M 200,{r1 + 44} H 228 Q 236,{r1 + 44} 236,{r1 + 52} V {r3 + 8} Q 236,{r3 + 16} 244,{r3 + 16} H 270")   # Geräte -> Hermes direkt (Browser, im Heimnetz)
     pfeil(f"M 136,{r1 + 56} V {r3 - 2}", gestrichelt=True)                                              # Geräte -> Messenger-Dienst
     pfeil(f"M 200,{r3 + 38} H 270", gestrichelt=True)                                                   # Messenger-Dienst -> Hermes
-    pfeil(f"M 136,{r1} V {r1 - 6} Q 136,{r1 - 14} 144,{r1 - 14} H 584 Q 592,{r1 - 14} 592,{r1 - 6} V {r1 - 2}")   # Geräte -> OpenCode 2 (Dienst im Heimnetz seit 22.11.2026), oben herum (Frank 22.11.2026)
+    pfeil(f"M 136,{r1} V {r1 - 32} Q 136,{r1 - 40} 144,{r1 - 40} H 584 Q 592,{r1 - 40} 592,{r1 - 32} V {r1 - 2}")   # Geräte -> OpenCode 2 (Dienst im Heimnetz seit 22.11.2026), oben herum (Frank 22.11.2026)
     pfeil(f"M 352,{r1 + 56} V {r2 - 2}")                                                                # Open WebUI -> SearXNG
     pfeil(f"M 352,{r3} V {r2 + 58}")                                                                    # Hermes -> SearXNG
     pfeil(f"M 352,{r3 + 56} V {r4 - 2}")                                                                # Hermes -> Crawl4AI, direkt darunter
