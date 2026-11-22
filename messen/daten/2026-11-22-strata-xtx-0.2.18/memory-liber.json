@@ -1,0 +1,19 @@
+{
+ "measured": "2026-11-22 13:18, liber (strata-xtx on Strata 0.2.18, no switch in the run configuration) loaded and idle, 180 s after one request; NAS services running, agent stopped",
+ "ram_total_gib": 62.34,
+ "ram_available_gib": 7.35,
+ "strata_rss_gib": 43.36,
+ "strata_rss_anon_gib": 42.01,
+ "strata_rss_shmem_gib": 1.25,
+ "strata_rss_file_gib": 0.1,
+ "vram_total_gib": 23.98,
+ "vram_used_gib": 23.26,
+ "expert_cache_gib": 14.05,
+ "mtp_gib": 1.25,
+ "sources": [
+  "/proc/<pid>/status of the largest process in the engine container (VmRSS, RssAnon, RssShmem, RssFile)",
+  "/proc/meminfo (MemTotal, MemAvailable)",
+  "/sys/class/drm/card*/device/mem_info_vram_used and _total",
+  "engine log of the same run: 'expert cache ... 14.05 GiB of VRAM', 'draft layer loaded, 1098 MiB', 'draft head ... (178.4 MiB)'"
+ ]
+}

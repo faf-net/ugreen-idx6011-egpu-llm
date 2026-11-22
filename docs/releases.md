@@ -6,6 +6,28 @@ In configs, scripts and file names the three versions of the model go by short n
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
 
+## Follow-up 22 Nov 2026: Strata 0.2.18 brings no speed for Flash-Next, my own build runs on it unchanged
+
+Engine and control 0.1.64. The gfx1100 defaults are still unchanged in the release, so again I measured the unchanged release and my own build [strata-xtx](https://github.com/faf-net/strata-xtx) on the same base. The patch applied without any change; the build stays `xtx-2`. New in 0.2.18 is a second model with an engine of its own, Tencent Hy4-Flash (220B); it runs here eight times slower than Flash-Next, and with the split Strata's setup writes for this machine memory runs full. My measurements of it are in [`messen/daten/2026-11-22-hy4-flash/`](../messen/daten/2026-11-22-hy4-flash/), reported as [#6556](https://github.com/Niko1221/Strata/issues/6556).
+
+| Median | Release 0.2.18 | Comparison |
+|---|---:|---:|
+| interleaved pairs, same session: decode, tokens/s | 61.1 | 61.6 (release 0.2.17) |
+| `strata_bench.py --long`, 3 alternating runs: prompt 4K / 16K / 32K, tokens/s | 786 / 1,385 / 1,358 | 1,641 / 2,479 / 2,851 (own build on 0.2.18) |
+| same runs: decode chat / agent, tokens/s | 69.5 / 73.5 | 76.3 / 78.7 (own build on 0.2.18) |
+| 250,000-token prompt, hidden number in the middle | 205.7 s | 82.7 s (own build, `faber`), 81.1 s (`liber`) |
+| task set, passed of 102 | not graded | `faber` 96, `liber` 97 (own build on 0.2.18) |
+
+- **For Flash-Next the release is as fast as 0.2.17.** The pairs are 0.5 tokens/s apart in decode; prompt reading in `strata_bench.py` is 1 to 3 % above 0.2.17.
+- **My own build reads about twice as fast,** measured in three alternating runs, each engine loaded fresh and the order swapped every round. At full card power (one round): 787 / 1,396 / 1,382 against 1,571 / 2,478 / 2,850 tokens/s. Over the context depth it reads within 3 % of `xtx-2` on 0.2.17.
+- **Decode:** in `strata_bench.py` the own build was faster in all three rounds, by 9 to 10 % in the chat part and 4 to 12 % in the agent part. Long answers: 67.8 tokens/s with the original, 68.5 with the uncensored version; the slower long answers of the uncensored version on 0.2.17 (64.3) did not come back.
+- **Needles:** at 32K and 128K in 10, 50 and 90 % depth and at 250K in the middle the hidden number was found every time, on the release and on the own build with both models.
+- **Task set:** `faber` 96, `liber` 97 of 102 on the own build (on 0.2.17: 95 and 97). The release was not graded.
+- **Before adoption (21 Nov):** comparison with the build in use, equally fast (`liber` at 58K 3,208 against 3,203 tokens/s); a 90-minute endurance run with `liber` (1,260 requests, no error, 180 of 180 hidden numbers found, no non-finite values in the engine log); self-rescue with `liber`. In use since 22 Nov 2026, 10:34.
+- `standard-v1` ran for the package and for the Docker image and is part of the raw data.
+
+Raw data: `messen/daten/2026-11-22-strata-xtx-0.2.18/` (the release under `release-0.2.18/`, the alternating runs under `strata-bench-alternating/`, the checks before adoption under `checks/`).
+
 ## Follow-up 21 Nov 2026: Strata 0.2.17 brings no speed here either, my own build runs on it as `xtx-2`
 
 Engine and control 0.1.63. The gfx1100 defaults are still unchanged in the release, so again I measured the unchanged release and my own build [strata-xtx](https://github.com/faf-net/strata-xtx) on the same base. The build is called `xtx-2`: the patch is the same as before except for one value, the prompt reading buffer `STRATA_PREFILL_RING`, now 384 instead of 192.
@@ -23,7 +45,7 @@ Engine and control 0.1.63. The gfx1100 defaults are still unchanged in the relea
 - **Decode:** in `strata_bench.py` the own build was faster in all three rounds, by 5 to 15 % in the chat part and 8 to 13 % in the agent part, more than on 0.2.16. In the other series I do not see that: before adoption it wrote as fast as the build in use, and with long answers the uncensored version even wrote more slowly than on 19 Nov (64.3 against 67.4 tokens/s), the original faster (70.2 against 68.3). I am keeping an eye on it.
 - **Needles:** at 32K and 128K in 10, 50 and 90 % depth and at 250K in the middle the hidden number was found every time, on the release and on the own build with both models.
 - **Task set:** `faber` 95, `liber` 97 of 102 on the own build (on 0.2.16: 97 and 96). The release was not graded this time; on 0.2.16 it scored the same as the own build.
-- **Before adoption (20 Nov):** comparison with the build in use, equally fast with both models (`liber` at 58K 3,200 against 3,201 tokens/s); a 90-minute endurance run with `liber` (1,267 requests, no error, 181 of 181 hidden numbers found, no non-finite values in the engine log); self-rescue with both models. In use since 20 Nov 2026, 22:16.
+- **Before adoption (20 Nov):** comparison with the build in use, equally fast with both models (`liber` at 58K 3,200 against 3,201 tokens/s); a 90-minute endurance run with `liber` (1,267 requests, no error, 181 of 181 hidden numbers found, no non-finite values in the engine log); self-rescue with both models. In use from 20 Nov 2026, 22:16, to 22 Nov 2026, 10:34.
 - `standard-v1` ran for the package and for the Docker image and is part of the raw data.
 
 Raw data: `messen/daten/2026-11-21-strata-xtx-0.2.17/` (the release under `release-0.2.17/`, the alternating runs under `strata-bench-alternating/`, the checks before adoption under `checks/`).
@@ -47,7 +69,7 @@ Engine and control 0.1.62. The release brings Strata's own engine code (without 
 - **Task set:** `liber` passes 96 of 102 on the release and on the own build alike, `faber` 97 on the own build. I repeated six tasks five times each, with the same picture on both: two the model passes sometimes, four never. Depending on the run that makes 96 to 98 (on 0.2.15 it was 98).
 - `standard-v1` ran for the package and for the Docker image and is part of the raw data.
 
-**The own build.** Since the evening of 18 Nov 2026 the switches from the follow-up below are no longer in the run config but in the code: on a single RX 7900 XTX under Linux strata-xtx sets them by itself (a table of 27 switches; the engine newly sets 26 of them, one is already on in the release). It first ran on the base of 0.2.15 and from 19 to 20 Nov 2026 on 0.2.16, for `liber` and `faber` (since then on 0.2.17, see above). Before moving to the new base I checked again: speed with and without the table, tool call, image input and control vector, the task set, a 90-minute endurance run with `liber` (1,232 requests, no error, 176 of 176 hidden numbers found) and the self-rescue with both models (after non-finite values from Strata's fault injection the request that triggers it ends with an error itself, HTTP 503; the server starts the engine once more without the table and answers the following requests). For the build the new folder layout and the build options of the official script had to be followed. Prompt reading is equally fast on both bases.
+**The own build.** Since the evening of 18 Nov 2026 the switches from the follow-up below are no longer in the run config but in the code: on a single RX 7900 XTX under Linux strata-xtx sets them by itself (a table of 27 switches; the engine newly sets 26 of them, one is already on in the release). It first ran on the base of 0.2.15 and from 19 to 20 Nov 2026 on 0.2.16, for `liber` and `faber` (then on 0.2.17 and 0.2.18, see above). Before moving to the new base I checked again: speed with and without the table, tool call, image input and control vector, the task set, a 90-minute endurance run with `liber` (1,232 requests, no error, 176 of 176 hidden numbers found) and the self-rescue with both models (after non-finite values from Strata's fault injection the request that triggers it ends with an error itself, HTTP 503; the server starts the engine once more without the table and answers the following requests). For the build the new folder layout and the build options of the official script had to be followed. Prompt reading is equally fast on both bases.
 
 Raw data: `messen/daten/2026-11-19-strata-xtx-0.2.16/` (the release under `release-0.2.16/`, the alternating runs under `strata-bench-alternating/`).
 

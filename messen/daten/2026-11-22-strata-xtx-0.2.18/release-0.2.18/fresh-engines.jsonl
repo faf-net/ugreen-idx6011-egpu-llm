@@ -1,0 +1,16 @@
+{"engine": 1, "prompt": 1, "prompt_token": 3793, "neu_token": 2, "prompt_tps": 672.5, "decode_tps": 27.7, "draft_n": 3, "draft_ok": 0, "sekunden": 5.7}
+{"engine": 1, "prompt": 2, "prompt_token": 3771, "neu_token": 2, "prompt_tps": 743.4, "decode_tps": 31.3, "draft_n": 3, "draft_ok": 0, "sekunden": 5.2}
+{"engine": 2, "prompt": 1, "prompt_token": 3781, "neu_token": 2, "prompt_tps": 689.1, "decode_tps": 29.2, "draft_n": 3, "draft_ok": 0, "sekunden": 5.6}
+{"engine": 2, "prompt": 2, "prompt_token": 3803, "neu_token": 2, "prompt_tps": 752.3, "decode_tps": 31.7, "draft_n": 3, "draft_ok": 0, "sekunden": 5.1}
+{"engine": 3, "prompt": 1, "prompt_token": 3764, "neu_token": 2, "prompt_tps": 653.7, "decode_tps": 28.1, "draft_n": 3, "draft_ok": 0, "sekunden": 5.8}
+{"engine": 3, "prompt": 2, "prompt_token": 3773, "neu_token": 2, "prompt_tps": 752.2, "decode_tps": 31.4, "draft_n": 3, "draft_ok": 0, "sekunden": 5.1}
+{"engine": 4, "prompt": 1, "prompt_token": 3782, "neu_token": 2, "prompt_tps": 654.0, "decode_tps": 29.1, "draft_n": 3, "draft_ok": 0, "sekunden": 5.9}
+{"engine": 4, "prompt": 2, "prompt_token": 3783, "neu_token": 2, "prompt_tps": 747.2, "decode_tps": 31.4, "draft_n": 3, "draft_ok": 0, "sekunden": 5.1}
+{"engine": 5, "prompt": 1, "prompt_token": 3767, "neu_token": 2, "prompt_tps": 650.8, "decode_tps": 29.7, "draft_n": 3, "draft_ok": 0, "sekunden": 5.9}
+{"engine": 5, "prompt": 2, "prompt_token": 3787, "neu_token": 2, "prompt_tps": 752.0, "decode_tps": 31.4, "draft_n": 3, "draft_ok": 0, "sekunden": 5.1}
+{"engine": 6, "prompt": 1, "prompt_token": 3745, "neu_token": 2, "prompt_tps": 657.7, "decode_tps": 29.5, "draft_n": 3, "draft_ok": 0, "sekunden": 5.8}
+{"engine": 6, "prompt": 2, "prompt_token": 3766, "neu_token": 2, "prompt_tps": 743.7, "decode_tps": 31.6, "draft_n": 3, "draft_ok": 0, "sekunden": 5.1}
+{"engine": 7, "prompt": 1, "prompt_token": 3783, "neu_token": 2, "prompt_tps": 642.9, "decode_tps": 28.9, "draft_n": 3, "draft_ok": 0, "sekunden": 6.0}
+{"engine": 7, "prompt": 2, "prompt_token": 3762, "neu_token": 2, "prompt_tps": 740.9, "decode_tps": 31.7, "draft_n": 3, "draft_ok": 0, "sekunden": 5.2}
+{"engine": 8, "prompt": 1, "prompt_token": 3772, "neu_token": 2, "prompt_tps": 677.4, "decode_tps": 27.6, "draft_n": 3, "draft_ok": 0, "sekunden": 5.6}
+{"engine": 8, "prompt": 2, "prompt_token": 3738, "neu_token": 2, "prompt_tps": 735.5, "decode_tps": 31.9, "draft_n": 3, "draft_ok": 0, "sekunden": 5.2}

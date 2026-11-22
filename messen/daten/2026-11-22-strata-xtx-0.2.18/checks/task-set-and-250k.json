@@ -1,0 +1,70 @@
+{
+ "aufgabensatz": {
+  "liber": {
+   "label": "liber-xtx-20261121-1927",
+   "exit": 0,
+   "sekunden": 1444
+  },
+  "faber": {
+   "label": "faber-xtx-20261121-1927",
+   "exit": 0,
+   "sekunden": 1385
+  }
+ },
+ "lang_250k": {
+  "t-k-q-liber": [
+   {
+    "prompt_token": 247954,
+    "s": 78.5,
+    "token_je_s": 3169.1,
+    "nadel": true,
+    "ram_min_gib": 7.03
+   },
+   {
+    "prompt_token": 247954,
+    "s": 78.7,
+    "token_je_s": 3160.2,
+    "nadel": true,
+    "ram_min_gib": 7.05
+   }
+  ],
+  "t-k-s-liber": [
+   {
+    "prompt_token": 247954,
+    "s": 78.8,
+    "token_je_s": 3154.4,
+    "nadel": true,
+    "ram_min_gib": 6.97
+   },
+   {
+    "prompt_token": 247954,
+    "s": 79.6,
+    "token_je_s": 3121.5,
+    "nadel": true,
+    "ram_min_gib": 7.0
+   }
+  ],
+  "t-k-q-faber": [
+   {
+    "prompt_token": 247954,
+    "s": 80.0,
+    "token_je_s": 3109.0,
+    "nadel": true,
+    "ram_min_gib": 3.6
+   }
+  ],
+  "t-k-s-faber": [
+   {
+    "prompt_token": 247954,
+    "s": 81.1,
+    "token_je_s": 3065.8,
+    "nadel": true,
+    "ram_min_gib": 3.58
+   }
+  ]
+ },
+ "fehlerzeilen": {
+  "t-k-q-liber": 0,
+  "t-k-q-faber": 0
+ }
+}
