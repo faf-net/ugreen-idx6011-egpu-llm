@@ -1166,11 +1166,14 @@ def aufbau(d, sp):
     pfeil(f"M 352,{r3 + 56} V {r4 - 2}")                                                                # Hermes -> Crawl4AI, direkt darunter
     pfeil(f"M 432,{r1 + 28} H 464 Q 472,{r1 + 28} 472,{r1 + 36} V {r2 + 8} Q 472,{r2 + 16} 480,{r2 + 16} H 510")   # Open WebUI -> llama-swap
     pfeil(f"M 432,{r3 + 28} H 464 Q 472,{r3 + 28} 472,{r3 + 20} V {r2 + 48} Q 472,{r2 + 40} 480,{r2 + 40} H 510")  # Hermes -> llama-swap
+    pfeil(f"M 432,{r3 + 44} H 510")                                                                     # Hermes -> n8n (MCP), knapp unter dem Pfeil zu llama-swap
     pfeil(f"M 592,{r1 + 56} V {r2 - 2}")                                                                    # OpenCode 2 -> llama-swap, von oben (Zeile von Open WebUI, Frank 22.11.2026)
     pfeil(f"M 672,{r2 + 16} H 696 Q 704,{r2 + 16} 704,{r2 + 8} V 184 Q 704,176 712,176 H 742", fokus=True)        # llama-swap -> Sprachmodell
     pfeil(f"M 672,{r2 + 40} H 696 Q 704,{r2 + 40} 704,{r2 + 48} V {r3 + 20} Q 704,{r3 + 28} 712,{r3 + 28} H 742")  # llama-swap -> ComfyUI
     knoten(A_, r1, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
     knoten(A_, r3, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
+    s.text(491, r3 + 40, "MCP", 7, MUTED, "mono", "middle", sperr="0.1em")                              # Beschriftung des Pfeils Hermes -> n8n
+    knoten(C_, r3, T("Abläufe", "Workflows"), "n8n", T("Zeitpläne, ohne Modell", "schedules, no model"))   # seit 22.11.2026, Hermes ruft es per MCP
     knoten(C_, r1, T("Programmieren", "Coding"), "OpenCode 2", T("Dienst · Browser, Terminal", "service · browser, terminal"))
     knoten(B_, r1, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
     knoten(B_, r2, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches through a VPN"), "extern")
@@ -1187,10 +1190,10 @@ def aufbau(d, sp):
     s.roh(f'<path d="M 280,{y + 22} H 312" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#{pf})"/>')
     s.text(324, y + 26, T("verlässt das Haus", "leaves the house"), 10, INK, "sans")
     s.text(R, y + 27, T("Nur Suchanfragen, gelesene Seiten und Messenger-Nachrichten verlassen das Haus.", "Only search queries, pages the agent reads and messenger messages leave the house."), 15, INK, "serif", "end", kursiv=True)
-    s.text(L, y + 48, T("Chat, Suche und Agent laufen als Container, OpenCode als Dienst im Heimnetz, die Modelle auf der Karte im Dock",
-                        "Chat, search and agent run as containers, OpenCode as a service in the home network, the models on the card in the dock"), 8.5, MUTED, "mono")
-    return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, ebenso OpenCode 2, das als Dienst im Heimnetz läuft und vom Browser oder Terminal aus bedient wird. llama-swap lädt auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI. Webseiten liest der Agent über Crawl4AI auf der iDX, das sie über ein VPN abruft. Nur Suchanfragen, die vom Agenten gelesenen Seiten und Messenger-Nachrichten verlassen das Haus.",
-                              "Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, as does OpenCode 2, which runs as a service in the home network and is used from the browser or the terminal. llama-swap loads either the language model or ComfyUI on the RX 7900 XTX. The agent reads web pages through Crawl4AI on the iDX, which fetches them through a VPN. Only search queries, the pages the agent reads and messenger messages leave the house."), s, 600
+    s.text(L, y + 48, T("Chat, Suche, Agent und Abläufe laufen als Container, OpenCode als Dienst im Heimnetz, die Modelle auf der Karte im Dock",
+                        "Chat, search, agent and workflows run as containers, OpenCode as a service in the home network, the models on the card in the dock"), 8.5, MUTED, "mono")
+    return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, ebenso OpenCode 2, das als Dienst im Heimnetz läuft und vom Browser oder Terminal aus bedient wird. Hermes startet über MCP feste Abläufe in n8n, die ohne Sprachmodell laufen. llama-swap lädt auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI. Webseiten liest der Agent über Crawl4AI auf der iDX, das sie über ein VPN abruft. Nur Suchanfragen, die vom Agenten gelesenen Seiten und Messenger-Nachrichten verlassen das Haus.",
+                              "Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, as does OpenCode 2, which runs as a service in the home network and is used from the browser or the terminal. Hermes starts fixed workflows in n8n through MCP, which run without a language model. llama-swap loads either the language model or ComfyUI on the RX 7900 XTX. The agent reads web pages through Crawl4AI on the iDX, which fetches them through a VPN. Only search queries, the pages the agent reads and messenger messages leave the house."), s, 600
 
 
 def parallel(d, sp):

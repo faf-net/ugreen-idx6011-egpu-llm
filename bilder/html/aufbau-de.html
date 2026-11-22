@@ -18,7 +18,7 @@
   <div class="frame"><div class="scroll">
     <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="aufbau-de-title aufbau-de-desc">
       <title id="aufbau-de-title">Chat, Agent und Bilder auf einer Karte, und fast nichts verl</title>
-      <desc id="aufbau-de-desc">Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, ebenso OpenCode 2, das als Dienst im Heimnetz läuft und vom Browser oder Terminal aus bedient wird. llama-swap lädt auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI. Webseiten liest der Agent über Crawl4AI auf der iDX, das sie über ein VPN abruft. Nur Suchanfragen, die vom Agenten gelesenen Seiten und Messenger-Nachrichten verlassen das Haus.</desc>
+      <desc id="aufbau-de-desc">Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, ebenso OpenCode 2, das als Dienst im Heimnetz läuft und vom Browser oder Terminal aus bedient wird. Hermes startet über MCP feste Abläufe in n8n, die ohne Sprachmodell laufen. llama-swap lädt auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI. Webseiten liest der Agent über Crawl4AI auf der iDX, das sie über ein VPN abruft. Nur Suchanfragen, die vom Agenten gelesenen Seiten und Messenger-Nachrichten verlassen das Haus.</desc>
       <rect width="960" height="600" fill="#efeae1"/>
       <text x="72.0" y="36.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.16em">UGREEN IDX6011 PRO · EGPU-DOCK · RX 7900 XTX · DER AUFBAU</text>
       <text x="72.0" y="68.0" fill="#171512" font-size="25" font-family="'Instrument Serif', Georgia, serif">Chat, Agent und Bilder auf einer Karte, und fast nichts verlässt das Haus</text>
@@ -39,6 +39,7 @@
       <path d="M 352,372 V 406" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-de)"/>
       <path d="M 432,160 H 464 Q 472,160 472,168 V 232 Q 472,240 480,240 H 510" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-de)"/>
       <path d="M 432,344 H 464 Q 472,344 472,336 V 272 Q 472,264 480,264 H 510" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-de)"/>
+      <path d="M 432,360 H 510" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-de)"/>
       <path d="M 592,188 V 222" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-de)"/>
       <path d="M 672,240 H 696 Q 704,240 704,232 V 184 Q 704,176 712,176 H 742" fill="none" stroke="#975b34" stroke-width="1.6" marker-end="url(#pf-de-a)"/>
       <path d="M 672,264 H 696 Q 704,264 704,272 V 336 Q 704,344 712,344 H 742" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-de)"/>
@@ -52,6 +53,12 @@
       <text x="84.0" y="332.0" fill="#456579" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">EXTERN</text>
       <text x="84.0" y="349.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">Messenger-Dienst</text>
       <text x="84.0" y="363.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">z. B. Signal</text>
+      <text x="491.0" y="356.0" fill="#6a6258" font-size="7" font-family="'JetBrains Mono', Consolas, monospace" text-anchor="middle" letter-spacing="0.1em">MCP</text>
+      <rect x="512" y="316" width="160" height="56" rx="6" fill="#efeae1"/>
+      <rect x="512" y="316" width="160" height="56" rx="6" fill="#2a2724" fill-opacity="0.04" stroke="#2a2724" stroke-width="1"/>
+      <text x="524.0" y="332.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">ABLÄUFE</text>
+      <text x="524.0" y="349.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">n8n</text>
+      <text x="524.0" y="363.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Zeitpläne, ohne Modell</text>
       <rect x="512" y="132" width="160" height="56" rx="6" fill="#efeae1"/>
       <rect x="512" y="132" width="160" height="56" rx="6" fill="#2a2724" fill-opacity="0.04" stroke="#2a2724" stroke-width="1"/>
       <text x="524.0" y="148.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">PROGRAMMIEREN</text>
@@ -98,7 +105,7 @@
       <path d="M 280,558 H 312" fill="none" stroke="#6a6258" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#pf-de)"/>
       <text x="324.0" y="562.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">verlässt das Haus</text>
       <text x="928.0" y="563.0" fill="#2a2724" font-size="15" font-family="'Instrument Serif', Georgia, serif" text-anchor="end" font-style="italic">Nur Suchanfragen, gelesene Seiten und Messenger-Nachrichten verlassen das Haus.</text>
-      <text x="72.0" y="584.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Chat, Suche und Agent laufen als Container, OpenCode als Dienst im Heimnetz, die Modelle auf der Karte im Dock</text>
+      <text x="72.0" y="584.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Chat, Suche, Agent und Abläufe laufen als Container, OpenCode als Dienst im Heimnetz, die Modelle auf der Karte im Dock</text>
     </svg>
   </div></div>
 </body>
