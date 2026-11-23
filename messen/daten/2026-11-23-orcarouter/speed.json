@@ -1,0 +1,447 @@
+{
+ "date": "2026-11-23",
+ "engine": "own build strata-xtx 0.2.19-xtx3 (Strata 0.2.19, engine 0.1.65) for all runs",
+ "card": "RX 7900 XTX in the dock; quiet = 2,800 MHz, -100 mV; max = 3,060 MHz, 0 mV",
+ "ram_gib": 62.3,
+ "context": 131072,
+ "files": {
+  "OrcaRouter": "orcarouter/Qwen3.8-Flash-Next-Uncensored-GGUF, IQ3_XXS, 2 parts, 85.2 GB, checked against the SHA-256 on Hugging Face; pack built with tools/iq_pack.py --compat-bf16 (docs/ORCA.md)",
+  "Flash-Next": "Qwen3.8-Flash-Next IQ3_XXS, 75.8 GB (my file in use)"
+ },
+ "method": "each variant loaded fresh; per run: load, tool call, 2 x 900 tokens decode (temperature 0, thinking off), prompts of 4K/16K/58K tokens with a hidden number, a follow-up question after the 58K prompt. NVMe bytes read (block device counters) and lowest MemAvailable sampled per step. Figures from the server's timings. A watchdog would have unloaded below 2 GiB available RAM and stopped a variant below 3 tok/s; it never fired.",
+ "not_measured": "image input of OrcaRouter: the run with the image reader loaded it, but the test script only asked the image question of the uncensored Flash-Next",
+ "runs": [
+  {
+   "name": "Flash-Next IQ3_XXS, uncensored version (control vector)",
+   "mode": "quiet",
+   "file": "Qwen3.8-Flash-Next IQ3_XXS (my file in use)",
+   "split": "all experts in VRAM + RAM",
+   "control": "own build strata-xtx 0.2.19-xtx3",
+   "control_vector": true,
+   "load_s": 11.7,
+   "nvme_read_while_loading_gb": 43.57,
+   "ram_available_after_load_gib": 7.68,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 61.8,
+     "tokens": 900,
+     "nvme_read_gb": 0.23,
+     "ram_available_min_gib": 6.64
+    },
+    {
+     "tok_s": 62.9,
+     "tokens": 900,
+     "nvme_read_gb": 0.18,
+     "ram_available_min_gib": 6.41
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4125,
+     "tok_s": 743.0,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.17,
+     "ram_available_min_gib": 6.32
+    },
+    "16K": {
+     "prompt_tokens": 16087,
+     "tok_s": 2380.9,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.03,
+     "ram_available_min_gib": 6.24
+    },
+    "58K": {
+     "prompt_tokens": 58022,
+     "tok_s": 3437.1,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.02,
+     "ram_available_min_gib": 5.79
+    }
+   },
+   "follow_up_after_58K": {
+    "tok_s": 54.6,
+    "nvme_read_gb": 0.11,
+    "ram_available_min_gib": 4.53
+   },
+   "swap_before_after_gib": [
+    5.19,
+    5.19
+   ],
+   "error_lines_in_engine_log": 0,
+   "image_ok": true
+  },
+  {
+   "name": "Flash-Next IQ3_XXS, original",
+   "mode": "quiet",
+   "file": "Qwen3.8-Flash-Next IQ3_XXS (my file in use)",
+   "split": "all experts in VRAM + RAM",
+   "control": "own build strata-xtx 0.2.19-xtx3",
+   "control_vector": false,
+   "load_s": 20.6,
+   "nvme_read_while_loading_gb": 48.53,
+   "ram_available_after_load_gib": 4.22,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 60.1,
+     "tokens": 894,
+     "nvme_read_gb": 0.14,
+     "ram_available_min_gib": 3.98
+    },
+    {
+     "tok_s": 63.6,
+     "tokens": 900,
+     "nvme_read_gb": 0.09,
+     "ram_available_min_gib": 4.03
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4125,
+     "tok_s": 736.0,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 4.09
+    },
+    "16K": {
+     "prompt_tokens": 16091,
+     "tok_s": 2639.9,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.0,
+     "ram_available_min_gib": 3.98
+    },
+    "58K": {
+     "prompt_tokens": 58023,
+     "tok_s": 3537.7,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.05,
+     "ram_available_min_gib": 3.86
+    }
+   },
+   "follow_up_after_58K": {
+    "tok_s": 52.3,
+    "nvme_read_gb": 0.04,
+    "ram_available_min_gib": 3.79
+   },
+   "swap_before_after_gib": [
+    5.19,
+    5.19
+   ],
+   "error_lines_in_engine_log": 0
+  },
+  {
+   "name": "OrcaRouter Uncensored IQ3_XXS, RAM budget 45 GiB",
+   "mode": "quiet",
+   "file": "Qwen3.8-Flash-Next-Uncensored IQ3_XXS by OrcaRouter",
+   "split": "--resident-budget-gib 45, rest read from the model file",
+   "control": "own build strata-xtx 0.2.19-xtx3",
+   "control_vector": false,
+   "load_s": 39.9,
+   "nvme_read_while_loading_gb": 98.55,
+   "ram_available_after_load_gib": 4.55,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 54.8,
+     "tokens": 900,
+     "nvme_read_gb": 0.17,
+     "ram_available_min_gib": 4.52
+    },
+    {
+     "tok_s": 58.8,
+     "tokens": 900,
+     "nvme_read_gb": 0.1,
+     "ram_available_min_gib": 4.53
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4125,
+     "tok_s": 651.7,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.04,
+     "ram_available_min_gib": 4.51
+    },
+    "16K": {
+     "prompt_tokens": 16088,
+     "tok_s": 2145.3,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 4.48
+    },
+    "58K": {
+     "prompt_tokens": 58021,
+     "tok_s": 3363.5,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.02,
+     "ram_available_min_gib": 4.31
+    }
+   },
+   "follow_up_after_58K": {
+    "tok_s": 48.4,
+    "nvme_read_gb": 0.32,
+    "ram_available_min_gib": 4.23
+   },
+   "swap_before_after_gib": [
+    5.19,
+    5.27
+   ],
+   "error_lines_in_engine_log": 0,
+   "engine_notes": [
+    "FileExpertSource: RAM budget 45.00 GiB: 16221 of the 32.87 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 4961 of its 4961 slots keep their experts in RAM too (10.05 GiB of the budget's remaining 12.13 GiB)"
+   ]
+  },
+  {
+   "name": "OrcaRouter Uncensored IQ3_XXS, RAM budget 40 GiB",
+   "mode": "quiet",
+   "file": "Qwen3.8-Flash-Next-Uncensored IQ3_XXS by OrcaRouter",
+   "split": "--resident-budget-gib 40, rest read from the model file",
+   "control": "own build strata-xtx 0.2.19-xtx3",
+   "control_vector": false,
+   "load_s": 36.0,
+   "nvme_read_while_loading_gb": 71.68,
+   "ram_available_after_load_gib": 7.48,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 51.3,
+     "tokens": 846,
+     "nvme_read_gb": 0.14,
+     "ram_available_min_gib": 7.32
+    },
+    {
+     "tok_s": 49.6,
+     "tokens": 900,
+     "nvme_read_gb": 0.1,
+     "ram_available_min_gib": 7.23
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4125,
+     "tok_s": 647.9,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.03,
+     "ram_available_min_gib": 7.46
+    },
+    "16K": {
+     "prompt_tokens": 16087,
+     "tok_s": 2130.9,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.0,
+     "ram_available_min_gib": 7.34
+    },
+    "58K": {
+     "prompt_tokens": 58022,
+     "tok_s": 3364.2,
+     "hidden_number_found": true,
+     "nvme_read_gb": 1.96,
+     "ram_available_min_gib": 7.09
+    }
+   },
+   "follow_up_after_58K": {
+    "tok_s": 46.1,
+    "nvme_read_gb": 0.05,
+    "ram_available_min_gib": 6.91
+   },
+   "swap_before_after_gib": [
+    5.95,
+    5.31
+   ],
+   "error_lines_in_engine_log": 0,
+   "engine_notes": [
+    "FileExpertSource: RAM budget 40.00 GiB: 16222 of the 32.87 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 3515 of its 4961 slots keep their experts in RAM too (7.12 GiB of the budget's remaining 7.13 GiB)",
+    "FileExpertSource: WARNING: 1446 of 4961 lendable slots (29%) will read their experts from the pack during a long prompt; expect a slower prompt read on 50K+ token prompts (one measurement: 18% uncovered cost 26%). Raise --resident-budget-gib (the lend region comes after the ranked experts) and resta"
+   ]
+  },
+  {
+   "name": "OrcaRouter Uncensored IQ3_XXS, RAM budget 45 GiB, with the original's image reader",
+   "mode": "quiet",
+   "file": "Qwen3.8-Flash-Next-Uncensored IQ3_XXS by OrcaRouter + the original's vision part",
+   "split": "--resident-budget-gib 45, rest read from the model file",
+   "control": "own build strata-xtx 0.2.19-xtx3",
+   "control_vector": false,
+   "load_s": 43.0,
+   "nvme_read_while_loading_gb": 88.79,
+   "ram_available_after_load_gib": 3.91,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 58.1,
+     "tokens": 900,
+     "nvme_read_gb": 0.22,
+     "ram_available_min_gib": 3.87
+    },
+    {
+     "tok_s": 60.6,
+     "tokens": 900,
+     "nvme_read_gb": 0.13,
+     "ram_available_min_gib": 3.79
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4125,
+     "tok_s": 472.6,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.3,
+     "ram_available_min_gib": 3.7
+    },
+    "16K": {
+     "prompt_tokens": 16091,
+     "tok_s": 2149.7,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.02,
+     "ram_available_min_gib": 3.65
+    },
+    "58K": {
+     "prompt_tokens": 58023,
+     "tok_s": 3111.7,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.03,
+     "ram_available_min_gib": 3.46
+    }
+   },
+   "follow_up_after_58K": {
+    "tok_s": 48.9,
+    "nvme_read_gb": 0.07,
+    "ram_available_min_gib": 3.49
+   },
+   "swap_before_after_gib": [
+    5.31,
+    6.98
+   ],
+   "error_lines_in_engine_log": 0,
+   "engine_notes": [
+    "FileExpertSource: RAM budget 45.00 GiB: 16222 of the 32.87 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 4961 of its 4961 slots keep their experts in RAM too (10.05 GiB of the budget's remaining 12.13 GiB)"
+   ]
+  },
+  {
+   "name": "Flash-Next IQ3_XXS, uncensored version (control vector)",
+   "mode": "max",
+   "file": "Qwen3.8-Flash-Next IQ3_XXS (my file in use)",
+   "split": "all experts in VRAM + RAM",
+   "control": "own build strata-xtx 0.2.19-xtx3",
+   "control_vector": true,
+   "load_s": 22.7,
+   "nvme_read_while_loading_gb": 50.15,
+   "ram_available_after_load_gib": 7.77,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 64.6,
+     "tokens": 900,
+     "nvme_read_gb": 0.15,
+     "ram_available_min_gib": 7.62
+    },
+    {
+     "tok_s": 68.7,
+     "tokens": 900,
+     "nvme_read_gb": 0.09,
+     "ram_available_min_gib": 7.57
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4125,
+     "tok_s": 784.6,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.01,
+     "ram_available_min_gib": 7.48
+    },
+    "16K": {
+     "prompt_tokens": 16088,
+     "tok_s": 2477.1,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.02,
+     "ram_available_min_gib": 7.39
+    },
+    "58K": {
+     "prompt_tokens": 58021,
+     "tok_s": 3460.5,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.07,
+     "ram_available_min_gib": 7.17
+    }
+   },
+   "follow_up_after_58K": {
+    "tok_s": 59.9,
+    "nvme_read_gb": 0.05,
+    "ram_available_min_gib": 7.08
+   },
+   "swap_before_after_gib": [
+    6.98,
+    5.36
+   ],
+   "error_lines_in_engine_log": 0,
+   "image_ok": true
+  },
+  {
+   "name": "OrcaRouter Uncensored IQ3_XXS, RAM budget 45 GiB",
+   "mode": "max",
+   "file": "Qwen3.8-Flash-Next-Uncensored IQ3_XXS by OrcaRouter",
+   "split": "--resident-budget-gib 45, rest read from the model file",
+   "control": "own build strata-xtx 0.2.19-xtx3",
+   "control_vector": false,
+   "load_s": 40.8,
+   "nvme_read_while_loading_gb": 103.06,
+   "ram_available_after_load_gib": 4.83,
+   "tool_call_ok": true,
+   "decode_900_tokens": [
+    {
+     "tok_s": 62.8,
+     "tokens": 899,
+     "nvme_read_gb": 0.19,
+     "ram_available_min_gib": 4.78
+    },
+    {
+     "tok_s": 63.7,
+     "tokens": 857,
+     "nvme_read_gb": 0.13,
+     "ram_available_min_gib": 4.76
+    }
+   ],
+   "prompts": {
+    "4K": {
+     "prompt_tokens": 4125,
+     "tok_s": 582.3,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.02,
+     "ram_available_min_gib": 4.75
+    },
+    "16K": {
+     "prompt_tokens": 16087,
+     "tok_s": 2073.6,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.26,
+     "ram_available_min_gib": 4.62
+    },
+    "58K": {
+     "prompt_tokens": 58022,
+     "tok_s": 3280.9,
+     "hidden_number_found": true,
+     "nvme_read_gb": 0.05,
+     "ram_available_min_gib": 4.53
+    }
+   },
+   "follow_up_after_58K": {
+    "tok_s": 48.4,
+    "nvme_read_gb": 0.06,
+    "ram_available_min_gib": 4.5
+   },
+   "swap_before_after_gib": [
+    5.36,
+    5.4
+   ],
+   "error_lines_in_engine_log": 0,
+   "engine_notes": [
+    "FileExpertSource: RAM budget 45.00 GiB: 16221 of the 32.87 GiB of experts the GPU cache does not hold, by profile rank; the rest are read from the files",
+    "FileExpertSource: the prompt path's lend region: 4961 of its 4961 slots keep their experts in RAM too (10.05 GiB of the budget's remaining 12.13 GiB)"
+   ]
+  }
+ ]
+}

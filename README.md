@@ -169,6 +169,10 @@ Strata can stream the experts that fit neither on the card nor into a RAM budget
 
 Strata 0.2.18 brings Hy4-Flash, 220 billion parameters (12 billion active), with an engine of its own. I measured the smallest quant (SQ-64, 62 GB plus a 68 GB Engram file) against what I run. It works, but writes at 7.0 to 7.5 instead of about 60 tokens/s and reads a long prompt at 414 instead of 3,094 tokens/s: the NAS's CPU computes 36 GB of experts from RAM, and every answer of 900 tokens reads about 160 GB from the NVMe. With the split Strata's setup writes for this machine, memory runs full and it writes at 0.3 to 0.6 tokens/s, because the engine ignores the setup's figures and budgets with the whole RAM. The fix is `HY4_RAM_BUDGET_GB`, reported as [Strata issue #6556](https://github.com/Niko1221/Strata/issues/6556). My own build changes nothing here, since the Hy4 engine reads none of its switches. Hy4-Flash is censored and takes no control vector; I did not measure quality. Raw data and conditions: [`messen/daten/2026-11-22-hy4-flash/`](messen/daten/2026-11-22-hy4-flash/).
 
+### An uncensored Flash-Next from OrcaRouter does not replace my control vector (23 Nov 2026)
+
+OrcaRouter publishes an uncensored version of the model I run, also as IQ3_XXS (85.2 GB). Its experts need about 7 GB more RAM than my file, so beside the NAS services it ran with a RAM budget of 45 GiB. It writes 5 to 10 % slower than my variant with a control vector (54.8 to 58.8 against 61.8 to 62.9 tokens/s), reads a little slower and passes 89 instead of 97 of the 102 graded tasks of my task set. It loses exactly where an agent needs it: 15 of 20 tool tasks (it reaches for shell commands instead of the tools offered) and 15 of 18 safety tasks, two of them graded dangerous. It also thinks long, often over 6,000 tokens. It is uncensored without a vector, but that does not outweigh the rest, so my combination stays. Raw data and conditions: [`messen/daten/2026-11-23-orcarouter/`](messen/daten/2026-11-23-orcarouter/).
+
 ### Power, cold start, the NAS at work, a dense 70B and UGREEN's own model (15 to 22 Nov 2026)
 
 ![Power per phase, and the MoE model against a dense 70B](bilder/betrieb-en.png)
@@ -591,6 +595,7 @@ Models, seconds per picture, what I learned on gfx1100 and the image backend for
   messen/daten/2026-11-18-unsloth-ud-iq2xs/  Unsloth UD-IQ2_XS v3.1 against the IQ3_XXS file: perplexity, speed without and with the switches (README inside)
   messen/daten/2026-11-21-nvme-streaming/  bigger quants (UD-IQ4_XS, UD-Q4_K_XL) with experts streamed from the NVMe: speed, memory, NVMe reads, task set (README inside)
   messen/daten/2026-11-22-hy4-flash/       Tencent Hy4-Flash (220B) against Flash-Next: speed, memory, NVMe reads, the RAM trap (README inside)
+  messen/daten/2026-11-23-orcarouter/      OrcaRouter's uncensored Flash-Next against the original with a control vector: speed, memory, task set (README inside)
   messen/schalter.py            write the 28 switches into a run config, remove them, check (state of 18 Nov, for the unchanged release)
   messen/schalter_pruefen.py    does an engine still know the 28 names? check for every release, without the card
   messen/daten/2026-11-16-speicher/  memory use of the original and the uncensored version on 0.2.14
