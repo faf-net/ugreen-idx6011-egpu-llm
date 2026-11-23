@@ -6,9 +6,26 @@ In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modell
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
+## Nachtrag 23.11.2026: Strata 0.2.20 ändert hier nichts, der Eigenbau läuft darauf unverändert als `0.2.20-xtx3`
+
+Engine und Control 0.1.66. Für Flash-Next auf dieser Karte bringt das Release keine Änderung. Der RAM-Wächter aus 0.2.19 ist noch da: Das unveränderte Release liest in 8K-Stücken (die Logzeilen von 0.2.18, 0.2.19 und 0.2.20 stehen in [#6687](https://github.com/Niko1221/Strata/issues/6687)). Neu für Hy4-Flash: Seine Engine folgt jetzt der RAM-Aufteilung, die Stratas Setup schreibt, damit ist [#6556](https://github.com/Niko1221/Strata/issues/6556) behoben: Mit genau den Angaben des Setups schreibt es mit 12,7 bis 13,4 statt 0,3 bis 0,6 Token/s, bei mindestens 9,5 GiB verfügbarem RAM und ohne Auslagerung ([`messen/daten/2026-11-23-hy4-0.2.20/`](../messen/daten/2026-11-23-hy4-0.2.20/README.de.md)).
+
+| Median | Release 0.2.20 | Vergleich |
+|---|---:|---:|
+| Paare im Wechsel, dieselbe Sitzung: Schreiben, Token/s | 64,8 | 65,8 (Release 0.2.19) |
+| `strata_bench.py --long`, 3 Läufe im Wechsel: Prompt 4K / 16K / 32K, Token/s | 818 / 1.503 / 1.475 | **1.694 / 2.524 / 3.053** (`0.2.20-xtx3`) |
+| dieselben Läufe: Schreiben Chat / Agent, Token/s | 65,1 / 79,7 | **72,2** / 83,6 (`0.2.20-xtx3`) |
+| eine Runde mit voller Leistung: Prompt 4K / 16K / 32K | 788 / 1.502 / 1.506 | 1.600 / 2.519 / 3.061 |
+| Prompt mit 128.000 / 250.000 Token, versteckte Zahl in der Mitte | 73 / 175 s | 35 / 77 s (`faber` und `liber`) |
+| Aufgabensatz, bestanden von 102 | nicht bewertet | `faber` 98, `liber` 97 (`0.2.20-xtx3`) |
+
+- **Der Patch ließ sich unverändert anwenden.** Gegen den laufenden Bau (`0.2.19-xtx3`) liest der neue gleich schnell (96 bis 105 %), die Stückgröße im Engine-Log ist 32.768, und mit abgeschalteter Tabelle liest er so langsam wie das Release (16K 1.454, 58K 1.427 Token/s). Aufgabensatz 98 und 97 wie auf 0.2.19, 250.000 Token in 74 bis 76 s mit beiden Modellen, Selbstrettung mit `liber` geprüft, 90 Minuten Dauerlast mit `liber` ohne Fehler (1.309 Anfragen, 187 von 187 versteckten Zahlen, verfügbarer RAM nie unter 5,5 GiB). In Betrieb seit 23.11., 12:10; Abnahme bestanden, `liber` zuerst.
+- **CPU-Anteil bei kurzen Prompts neu geprüft.** Meine Tabelle lässt den Prozessor bei Prompt-Stücken bis 4.096 Token einen Teil der Experten übernehmen. Grenzen von 3.072 bis 6.144 mit Prompts von 2K bis 16K: 4.096 hält 4K bei 1.131 statt 714 Token/s (3.072), bei 16K lesen alle Grenzen gleich schnell (2.517 bis 2.545), 6.144 liest 6K schneller (+30 %), 8K aber langsamer (−12 %). Die Tabelle bleibt, wie sie ist. In der Nacht davor, auf 0.2.19, brachte der Anteil bei 1K das 2,7-fache, 0,4 und 0,8 lasen wie 0,6, und die hipBLASLt-Tuning-Tabelle abzuschalten änderte nichts Messbares.
+- Daten: [`messen/daten/2026-11-23-strata-xtx-0.2.20/`](../messen/daten/2026-11-23-strata-xtx-0.2.20/) (README darin).
+
 ## Nachtrag 22.11.2026, abends: Strata 0.2.19 bremst das Einlesen hinter einem RAM-Wächter, der Eigenbau `0.2.19-xtx3` löst die Bremse
 
-Engine und Control 0.1.65. Neu sind zwei Dinge: Strata bringt jetzt eigene Voreinstellungen für RDNA3-Karten mit (`gfx11_extra.hpp`: ein Satz Rechenwege, WMMA-Pfade, 8-Bit-Hyperconnections, eine CPU-Beteiligung beim Einlesen und eine Regel für die Prompt-Stücke), und ein drittes Modell mit eigener Engine, Thinking Machines Inkling 2 Mini (26B, 3,4B aktiv; der Test läuft noch). Die Bauten heißen ab hier `<Strata-Version>-xtx<Patchstand>`.
+Engine und Control 0.1.65. Neu sind zwei Dinge: Strata bringt jetzt eigene Voreinstellungen für RDNA3-Karten mit (`gfx11_extra.hpp`: ein Satz Rechenwege, WMMA-Pfade, 8-Bit-Hyperconnections, eine CPU-Beteiligung beim Einlesen und eine Regel für die Prompt-Stücke), und ein drittes Modell mit eigener Engine, Thinking Machines Inkling 2 Mini (26B, 3,4B aktiv; Ergebnis im README: schnell oder lange Prompts, nicht beides). Die Bauten heißen ab hier `<Strata-Version>-xtx<Patchstand>`.
 
 | Median | Release 0.2.19 | Vergleich |
 |---|---:|---:|

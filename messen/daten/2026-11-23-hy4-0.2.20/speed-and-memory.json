@@ -1,0 +1,889 @@
+{
+ "date": "2026-11-23",
+ "strata": "0.2.20 (engine and control 0.1.66), Hy4 engine from the release; Flash-Next runs on 0.2.20-xtx3",
+ "machine": "RX 7900 XTX 24 GB in an OCuLink dock, 64 GB RAM (MemTotal 62.3 GiB), NAS services running, agent paused",
+ "model": "Hy4-Flash SQ-64 + Engram-Q8 + Vision, --max-context 131072, drafter dfly2",
+ "variants": {
+  "hy4-setup": "--vram-experts-gb 16.71 --ram-experts-gb 39.33 as Strata 0.2.20's setup writes them, nothing else",
+  "hy4-r36": "the old workaround from issue #6556: HY4_RAM_BUDGET_GB=36 with the 0.2.18 setup figures 9.35 / 36",
+  "liber": "Flash-Next 125B IQ3_XXS with control vector and image input (daily use)",
+  "faber": "Flash-Next 125B IQ3_XXS original"
+ },
+ "notes": "Each variant loaded fresh; quiet power profile, then full power ('max') for liber and hy4-setup. Writing: 2 answers of 900 tokens. Prompts: the same text for all models (Hy4's tokenizer needs about 30 % more tokens). nvme_gb = bytes read from the model pool during the request. Guard: unload below 2 GiB available RAM (never triggered). Timestamps in engine log lines are UTC.",
+ "results": {
+  "setup": [
+   131072,
+   16.71,
+   39.33
+  ],
+  "leise": {
+   "liber": {
+    "swap_vorher_gib": 5.3,
+    "kaltstart": false,
+    "ram_entladen_gib": 52.09,
+    "laden": {
+     "ok": true,
+     "nvme_gb": 50.0,
+     "dauer_s": 20.7,
+     "ram_min_gib": 7.7,
+     "vram_max_gib": 23.29,
+     "karte_w": null,
+     "usv_w": 88.1
+    },
+    "ram_nach_laden_gib": 7.68,
+    "vram_nach_laden_gib": 23.29,
+    "tool_call_ok": true,
+    "schreiben": [
+     {
+      "tps": 64.8,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 63,
+       "prompt_ms": 460.0,
+       "prompt_per_token_ms": 7.302,
+       "prompt_per_second": 137.0,
+       "predicted_n": 900,
+       "predicted_ms": 13879.7,
+       "predicted_per_token_ms": 15.422,
+       "draft_n": 696,
+       "draft_n_accepted": 334
+      },
+      "nvme_gb": 0.13,
+      "dauer_s": 14.4,
+      "ram_min_gib": 7.51,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 141.9
+     },
+     {
+      "tps": 65.5,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 63,
+       "prompt_ms": 542.5,
+       "prompt_per_token_ms": 8.611,
+       "prompt_per_second": 116.1,
+       "predicted_n": 900,
+       "predicted_ms": 13739.6,
+       "predicted_per_token_ms": 15.266,
+       "draft_n": 704,
+       "draft_n_accepted": 341
+      },
+      "nvme_gb": 0.31,
+      "dauer_s": 14.3,
+      "ram_min_gib": 7.43,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 423.0
+     }
+    ],
+    "einlesen": {
+     "4K": {
+      "prompt_token": 4125,
+      "token_je_s": 681.1,
+      "nadel": true,
+      "nvme_gb": 0.02,
+      "dauer_s": 6.2,
+      "ram_min_gib": 7.62,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 423.0
+     },
+     "16K": {
+      "prompt_token": 16091,
+      "token_je_s": 2402.8,
+      "nadel": true,
+      "nvme_gb": 0.01,
+      "dauer_s": 6.8,
+      "ram_min_gib": 7.51,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 423.0
+     },
+     "58K": {
+      "prompt_token": 58023,
+      "token_je_s": 3425.0,
+      "nadel": true,
+      "nvme_gb": 0.01,
+      "dauer_s": 17.1,
+      "ram_min_gib": 7.35,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 479.0
+     }
+    },
+    "folgefrage_nach_langem_text": {
+     "tps": 56.5,
+     "prompt_tps": 104.9,
+     "nvme_gb": 0.09,
+     "dauer_s": 7.5,
+     "ram_min_gib": 7.33,
+     "vram_max_gib": 23.3,
+     "karte_w": null,
+     "usv_w": 491.0
+    },
+    "bild_ok": true,
+    "log_info": [
+     "strata generate: control vector mode = project, dir = per-layer, layers 4..44 (41 steered)",
+     "strata mtp: draft layer loaded (Q2_0 S2), 1098 MiB of VRAM (experts 675, dense 111), files read in 0.34 s (2313 MiB/s)",
+     "strata generate: expert arena: cudaHostRegister PORTABLE ok; MAP_HUGETLB unavailable (needed 20464 2 MiB pages, vm.nr_hugepages=0); transparent huge pages are on for every mapping (THP always): MADV_HUGEPAGE not requested",
+     "strata generate: GPU host-callback thread started before host-core pinning",
+     "strata generate: CPU pool tasks/phase: 33 (automatic), participating threads: 11",
+     "strata aux cpus: threads that are neither pool workers nor the host go to CPUs 11,12,13,14,15 (off at start; a request's aux_cpus=1 turns it on)",
+     "strata generate: the GPU computes the experts in the cache; it rounds differently from the CPU,",
+     "strata generate: R4 hit path ON - resident experts are computed on the GPU",
+     "strata generate: token graph hit path: 8914 resident experts, decided on the device",
+     "strata: prompt experts on the fused int8 kernels (STRATA_PF_FUSED=1, #136)"
+    ],
+    "fehlerzeilen": [],
+    "swap_nachher_gib": 5.27,
+    "ram_ende_gib": 6.78,
+    "waechter": []
+   },
+   "faber": {
+    "swap_vorher_gib": 5.27,
+    "kaltstart": false,
+    "ram_entladen_gib": 51.58,
+    "laden": {
+     "ok": true,
+     "nvme_gb": 48.58,
+     "dauer_s": 20.6,
+     "ram_min_gib": 4.2,
+     "vram_max_gib": 23.29,
+     "karte_w": null,
+     "usv_w": 59.0
+    },
+    "ram_nach_laden_gib": 4.2,
+    "vram_nach_laden_gib": 23.29,
+    "tool_call_ok": true,
+    "schreiben": [
+     {
+      "tps": 63.7,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 63,
+       "prompt_ms": 378.5,
+       "prompt_per_token_ms": 6.008,
+       "prompt_per_second": 166.4,
+       "predicted_n": 900,
+       "predicted_ms": 14124.0,
+       "predicted_per_token_ms": 15.693,
+       "draft_n": 705,
+       "draft_n_accepted": 331
+      },
+      "nvme_gb": 0.12,
+      "dauer_s": 14.5,
+      "ram_min_gib": 4.08,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 307.3
+     },
+     {
+      "tps": 60.3,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 63,
+       "prompt_ms": 424.7,
+       "prompt_per_token_ms": 6.741,
+       "prompt_per_second": 148.3,
+       "predicted_n": 900,
+       "predicted_ms": 14929.8,
+       "predicted_per_token_ms": 16.589,
+       "draft_n": 710,
+       "draft_n_accepted": 323
+      },
+      "nvme_gb": 0.1,
+      "dauer_s": 15.4,
+      "ram_min_gib": 4.06,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 375.0
+     }
+    ],
+    "einlesen": {
+     "4K": {
+      "prompt_token": 4125,
+      "token_je_s": 718.7,
+      "nadel": true,
+      "nvme_gb": 0.01,
+      "dauer_s": 5.9,
+      "ram_min_gib": 4.05,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 375.0
+     },
+     "16K": {
+      "prompt_token": 16088,
+      "token_je_s": 2557.8,
+      "nadel": true,
+      "nvme_gb": 0.01,
+      "dauer_s": 6.5,
+      "ram_min_gib": 4.03,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 316.0
+     },
+     "58K": {
+      "prompt_token": 58021,
+      "token_je_s": 3495.8,
+      "nadel": true,
+      "nvme_gb": 0.01,
+      "dauer_s": 16.8,
+      "ram_min_gib": 3.77,
+      "vram_max_gib": 23.3,
+      "karte_w": null,
+      "usv_w": 316.0
+     }
+    },
+    "folgefrage_nach_langem_text": {
+     "tps": 50.5,
+     "prompt_tps": 102.3,
+     "nvme_gb": 0.05,
+     "dauer_s": 8.2,
+     "ram_min_gib": 4.0,
+     "vram_max_gib": 23.3,
+     "karte_w": null,
+     "usv_w": 316.0
+    },
+    "log_info": [
+     "strata generate: KV streaming: 32768 of 262144 cells per QSA layer in VRAM, the K/V in 3.09 GiB of pinned RAM",
+     "strata mtp: draft layer loaded (Q2_0 S2), 835 MiB of VRAM (experts 675, dense 111), files read in 0.37 s (2117 MiB/s)",
+     "strata generate: expert arena: cudaHostRegister PORTABLE ok; MAP_HUGETLB unavailable (needed 20464 2 MiB pages, vm.nr_hugepages=0); transparent huge pages are on for every mapping (THP always): MADV_HUGEPAGE not requested",
+     "strata generate: GPU host-callback thread started before host-core pinning",
+     "strata generate: CPU pool tasks/phase: 33 (automatic), participating threads: 11",
+     "strata aux cpus: threads that are neither pool workers nor the host go to CPUs 11,12,13,14,15 (off at start; a request's aux_cpus=1 turns it on)",
+     "strata generate: the GPU computes the experts in the cache; it rounds differently from the CPU,",
+     "strata generate: R4 hit path ON - resident experts are computed on the GPU",
+     "strata generate: token graph hit path: 10721 resident experts, decided on the device",
+     "strata: prompt experts on the fused int8 kernels (STRATA_PF_FUSED=1, #136)"
+    ],
+    "fehlerzeilen": [],
+    "swap_nachher_gib": 5.27,
+    "ram_ende_gib": 3.59,
+    "waechter": []
+   },
+   "hy4-setup": {
+    "swap_vorher_gib": 5.27,
+    "kaltstart": false,
+    "ram_entladen_gib": 51.62,
+    "laden": {
+     "ok": true,
+     "nvme_gb": 61.38,
+     "dauer_s": 28.5,
+     "ram_min_gib": 9.95,
+     "vram_max_gib": 23.63,
+     "karte_w": null,
+     "usv_w": 140.1
+    },
+    "ram_nach_laden_gib": 9.94,
+    "vram_nach_laden_gib": 23.63,
+    "tool_call_ok": true,
+    "schreiben": [
+     {
+      "tps": 12.7,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 65,
+       "prompt_ms": 957.4,
+       "prompt_per_token_ms": 14.729,
+       "prompt_per_second": 67.9,
+       "predicted_n": 900,
+       "predicted_ms": 70764.2,
+       "predicted_per_token_ms": 78.627,
+       "draft_n": 0,
+       "draft_n_accepted": 0
+      },
+      "nvme_gb": 2.4,
+      "dauer_s": 71.7,
+      "ram_min_gib": 9.67,
+      "vram_max_gib": 23.66,
+      "karte_w": null,
+      "usv_w": 282.8
+     },
+     {
+      "tps": 13.0,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 65,
+       "prompt_ms": 930.5,
+       "prompt_per_token_ms": 14.315,
+       "prompt_per_second": 69.9,
+       "predicted_n": 900,
+       "predicted_ms": 69439.5,
+       "predicted_per_token_ms": 77.155,
+       "draft_n": 0,
+       "draft_n_accepted": 0
+      },
+      "nvme_gb": 2.31,
+      "dauer_s": 70.4,
+      "ram_min_gib": 9.64,
+      "vram_max_gib": 23.66,
+      "karte_w": null,
+      "usv_w": 285.4
+     }
+    ],
+    "einlesen": {
+     "4K": {
+      "prompt_token": 5346,
+      "token_je_s": 409.4,
+      "nadel": true,
+      "nvme_gb": 1.14,
+      "dauer_s": 13.2,
+      "ram_min_gib": 9.6,
+      "vram_max_gib": 23.66,
+      "karte_w": null,
+      "usv_w": 281.0
+     },
+     "16K": {
+      "prompt_token": 20866,
+      "token_je_s": 511.7,
+      "nadel": true,
+      "nvme_gb": 3.04,
+      "dauer_s": 40.9,
+      "ram_min_gib": 9.56,
+      "vram_max_gib": 23.66,
+      "karte_w": null,
+      "usv_w": 340.9
+     },
+     "58K": {
+      "prompt_token": 75268,
+      "token_je_s": 640.9,
+      "nadel": true,
+      "nvme_gb": 9.42,
+      "dauer_s": 117.6,
+      "ram_min_gib": 9.59,
+      "vram_max_gib": 23.54,
+      "karte_w": null,
+      "usv_w": 357.7
+     }
+    },
+    "folgefrage_nach_langem_text": {
+     "tps": 15.9,
+     "prompt_tps": 74.7,
+     "nvme_gb": 1.98,
+     "dauer_s": 25.6,
+     "ram_min_gib": 9.62,
+     "vram_max_gib": 23.27,
+     "karte_w": null,
+     "usv_w": 324.0
+    },
+    "log_info": [
+     "[load] RAM budget 39.3 GB for the host experts (43.8 GB wanted): 719 experts (1.61 GB, the coldest ranks) stay on the SSD",
+     "[load] experts 4-tier: 3291 static VRAM (12.20 GB) + 1439 adaptive VRAM slots (4.07 GB) = 16.27 GB VRAM, 16982 in RAM (CPU) (42.23 GB), 719 on SSD (1.61 GB), 1.9 s",
+     "[load] done: trunk 5.54 GB in 1.1 s, experts 56.04 GB in 1.9 s",
+     "[cpuexp] 16982 experts resident, 42.23 GB in 20.5 s (2.06 GB/s), 328 reads, mlock=no, isa=scalar, kernel=fast(avx2-vnni), act=q8",
+     "[cpuexp] 8 pool threads (pinned, physical cores first), spin 300 us, sched=1, pf=2 rows, l3_pf=on",
+     "[cpuexp] cold experts: 719 (slot 2.13 MB, 120 slots = 256 MB cache, 8 readers, io=O_DIRECT)",
+     "[hybrid] 16982 experts (42.23 GB) in host RAM computed by 8 CPU threads",
+     "[hybrid] prefill streaming on (arena pinned): 2 buffer(s) of 384 MiB, 123 groups for 41 layers (38.16 GB/pass, skipped 1439 vcache experts, cpu_frac=0.00, largest 0.93 GB), active for T >= 128 (gather < 4096)",
+     "[hybrid] calibrated PCIe/CPU miss split (T>=2, pinned): gpu=2.4 exp/ms vs cpu=11.0 exp/ms -> pcie_share=0.18",
+     "[hybrid] calibrated PCIe/CPU miss split (T=1, pinned): gpu=2.5 exp/ms vs cpu=6.5 exp/ms -> pcie_share=0.28"
+    ],
+    "fehlerzeilen": [],
+    "swap_nachher_gib": 5.26,
+    "ram_ende_gib": 9.63,
+    "ram_zeilen": [
+     "[strata] 2026-11-23 15:02:01 engine started: strata-hy4 --serve --native Hy4-Flash-SQ-64.strata --engram Hy4-Flash-Engram-Q8.strata --max-context 131072 --vision Hy4-Flash-Vision.strata --vram-experts-",
+     "[plan] ctx 131072 (init 16384, kv=fp16) chunk 4096: buffers ~1.78 GB, KV+idx 0.34 GB (128K full 2.72 GB), dfly 0.28 GB, floor 0.50 GB, trunk 5.54 GB (embed in RAM) on 25.7/25.8 GB -> host mask 0; reserve 3.49 GiB",
+     "[load] embed_tokens (0.38 GB) in pinned mapped host RAM -> trunk VRAM 5.54 GB",
+     "[load] RAM budget 39.3 GB for the host experts (43.8 GB wanted): 719 experts (1.61 GB, the coldest ranks) stay on the SSD",
+     "[load] experts 4-tier: 3291 static VRAM (12.20 GB) + 1439 adaptive VRAM slots (4.07 GB) = 16.27 GB VRAM, 16982 in RAM (CPU) (42.23 GB), 719 on SSD (1.61 GB), 1.9 s",
+     "[load] done: trunk 5.54 GB in 1.1 s, experts 56.04 GB in 1.9 s",
+     "[cpuexp] 16982 experts resident, 42.23 GB in 20.5 s (2.06 GB/s), 328 reads, mlock=no, isa=scalar, kernel=fast(avx2-vnni), act=q8",
+     "[cpuexp] 8 pool threads (pinned, physical cores first), spin 300 us, sched=1, pf=2 rows, l3_pf=on",
+     "[cpuexp] cold experts: 719 (slot 2.13 MB, 120 slots = 256 MB cache, 8 readers, io=O_DIRECT)",
+     "[hybrid] 16982 experts (42.23 GB) in host RAM computed by 8 CPU threads",
+     "[engram] auto cache 512 MiB (RAM 62 GiB) -> 4628197 LRU rows",
+     "[vcache] pre-populated 1439/1439 adaptive VRAM slots (4.07 GB, decay=0.965, max_swaps=8) in 0.63 s",
+     "[hybrid] prefill streaming on (arena pinned): 2 buffer(s) of 384 MiB, 123 groups for 41 layers (38.16 GB/pass, skipped 1439 vcache experts, cpu_frac=0.00, largest 0.93 GB), active for T >= 128 (gather < 4096)",
+     "[spec] accepted histogram (0..8): 0 0 0 0 0 0 0 0 0",
+     "[hybrid] calibrated PCIe/CPU miss split (T>=2, pinned): gpu=2.4 exp/ms vs cpu=11.0 exp/ms -> pcie_share=0.18",
+     "[spec] accepted histogram (0..8): 0 0 0 0 0 0 1 1 0",
+     "[hybrid] calibrated PCIe/CPU miss split (T=1, pinned): gpu=2.5 exp/ms vs cpu=6.5 exp/ms -> pcie_share=0.28",
+     "[spec] accepted histogram (0..8): 130 32 3 0 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 458 119 18 0 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 824 239 33 0 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 824 239 33 0 0 1 1 1 0",
+     "[runner] sparse KV + IndexPool grew in VRAM: 16384 -> 32768 positions (0.68 GB total, 21.9 ms)",
+     "[spec] accepted histogram (0..8): 824 239 33 0 0 2 1 1 0",
+     "[runner] sparse KV + IndexPool grew in VRAM: 32768 -> 49152 positions (1.02 GB total, 20.9 ms)",
+     "[runner] sparse KV + IndexPool grew in VRAM: 49152 -> 65536 positions (1.36 GB total, 22.7 ms)",
+     "[runner] sparse KV + IndexPool grew in VRAM: 65536 -> 81920 positions (1.70 GB total, 23.3 ms)",
+     "[spec] accepted histogram (0..8): 824 239 33 0 0 2 1 2 0",
+     "[spec] accepted histogram (0..8): 972 335 46 2 1 2 1 2 0"
+    ],
+    "container": "ls-hy4-setup 42.19GiB / 62.34GiB",
+    "druck": "some avg10=0.01 avg60=0.08 avg300=1.24 total=20233426493",
+    "waechter": []
+   },
+   "hy4-r36": {
+    "swap_vorher_gib": 5.26,
+    "kaltstart": false,
+    "ram_entladen_gib": 51.54,
+    "laden": {
+     "ok": true,
+     "nvme_gb": 54.52,
+     "dauer_s": 24.3,
+     "ram_min_gib": 13.32,
+     "vram_max_gib": 17.81,
+     "karte_w": null,
+     "usv_w": 63.0
+    },
+    "ram_nach_laden_gib": 13.31,
+    "vram_nach_laden_gib": 17.81,
+    "tool_call_ok": true,
+    "schreiben": [
+     {
+      "tps": 14.7,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 65,
+       "prompt_ms": 943.6,
+       "prompt_per_token_ms": 14.517,
+       "prompt_per_second": 68.9,
+       "predicted_n": 900,
+       "predicted_ms": 61100.3,
+       "predicted_per_token_ms": 67.889,
+       "draft_n": 0,
+       "draft_n_accepted": 0
+      },
+      "nvme_gb": 87.39,
+      "dauer_s": 62.0,
+      "ram_min_gib": 13.15,
+      "vram_max_gib": 17.84,
+      "karte_w": null,
+      "usv_w": 273.6
+     },
+     {
+      "tps": 17.3,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 65,
+       "prompt_ms": 1000.6,
+       "prompt_per_token_ms": 15.394,
+       "prompt_per_second": 65.0,
+       "predicted_n": 900,
+       "predicted_ms": 51873.8,
+       "predicted_per_token_ms": 57.638,
+       "draft_n": 0,
+       "draft_n_accepted": 0
+      },
+      "nvme_gb": 99.18,
+      "dauer_s": 52.9,
+      "ram_min_gib": 13.06,
+      "vram_max_gib": 17.84,
+      "karte_w": null,
+      "usv_w": 302.7
+     }
+    ],
+    "einlesen": {
+     "4K": {
+      "prompt_token": 5346,
+      "token_je_s": 342.7,
+      "nadel": true,
+      "nvme_gb": 10.78,
+      "dauer_s": 15.7,
+      "ram_min_gib": 13.18,
+      "vram_max_gib": 17.84,
+      "karte_w": null,
+      "usv_w": 305.0
+     },
+     "16K": {
+      "prompt_token": 20868,
+      "token_je_s": 371.3,
+      "nadel": true,
+      "nvme_gb": 28.33,
+      "dauer_s": 56.4,
+      "ram_min_gib": 13.02,
+      "vram_max_gib": 18.2,
+      "karte_w": null,
+      "usv_w": 190.1
+     },
+     "58K": {
+      "prompt_token": 75266,
+      "token_je_s": 384.2,
+      "nadel": true,
+      "nvme_gb": 84.25,
+      "dauer_s": 196.1,
+      "ram_min_gib": 13.04,
+      "vram_max_gib": 19.13,
+      "karte_w": null,
+      "usv_w": 224.8
+     }
+    },
+    "folgefrage_nach_langem_text": {
+     "tps": 15.8,
+     "prompt_tps": 64.0,
+     "nvme_gb": 67.04,
+     "dauer_s": 26.0,
+     "ram_min_gib": 13.07,
+     "vram_max_gib": 19.13,
+     "karte_w": null,
+     "usv_w": 267.8
+    },
+    "log_info": [
+     "[load] RAM budget 36.0 GB for the host experts (48.5 GB wanted): 4407 experts (9.86 GB, the coldest ranks) stay on the SSD",
+     "[load] experts 4-tier: 2029 static VRAM (7.53 GB) + 676 adaptive VRAM slots (2.51 GB) = 10.04 GB VRAM, 14556 in RAM (CPU) (38.65 GB), 4407 on SSD (9.86 GB), 1.2 s",
+     "[load] done: trunk 5.54 GB in 1.1 s, experts 56.04 GB in 1.2 s",
+     "[cpuexp] 14556 experts resident, 38.65 GB in 18.1 s (2.13 GB/s), 328 reads, mlock=no, isa=scalar, kernel=fast(avx2-vnni), act=q8",
+     "[cpuexp] 8 pool threads (pinned, physical cores first), spin 300 us, sched=1, pf=2 rows, l3_pf=on",
+     "[cpuexp] cold experts: 4407 (slot 2.13 MB, 120 slots = 256 MB cache, 8 readers, io=O_DIRECT)",
+     "[hybrid] 14556 experts (38.65 GB) in host RAM computed by 8 CPU threads",
+     "[hybrid] prefill streaming on (arena pinned): 2 buffer(s) of 384 MiB, 123 groups for 41 layers (36.15 GB/pass, skipped 676 vcache experts, cpu_frac=0.00, largest 0.88 GB), active for T >= 128 (gather < 4096)",
+     "[hybrid] calibrated PCIe/CPU miss split (T=1, pinned): gpu=2.3 exp/ms vs cpu=14.4 exp/ms -> pcie_share=0.14",
+     "[hybrid] calibrated PCIe/CPU miss split (T>=2, pinned): gpu=2.1 exp/ms vs cpu=12.9 exp/ms -> pcie_share=0.14"
+    ],
+    "fehlerzeilen": [],
+    "swap_nachher_gib": 5.25,
+    "ram_ende_gib": 13.07,
+    "ram_zeilen": [
+     "[strata] 2026-11-23 15:08:49 engine started: strata-hy4 --serve --native Hy4-Flash-SQ-64.strata --engram Hy4-Flash-Engram-Q8.strata --max-context 131072 --vision Hy4-Flash-Vision.strata --vram-experts-",
+     "[plan] ctx 131072 (init 16384, kv=fp16) chunk 4096: buffers ~1.78 GB, KV+idx 0.34 GB (128K full 2.72 GB), dfly 0.28 GB, floor 0.50 GB, trunk 5.54 GB (embed in RAM) on 25.7/25.8 GB -> host mask 0; reserve 3.49 GiB",
+     "[load] embed_tokens (0.38 GB) in pinned mapped host RAM -> trunk VRAM 5.54 GB",
+     "[load] RAM budget 36.0 GB for the host experts (48.5 GB wanted): 4407 experts (9.86 GB, the coldest ranks) stay on the SSD",
+     "[load] experts 4-tier: 2029 static VRAM (7.53 GB) + 676 adaptive VRAM slots (2.51 GB) = 10.04 GB VRAM, 14556 in RAM (CPU) (38.65 GB), 4407 on SSD (9.86 GB), 1.2 s",
+     "[load] done: trunk 5.54 GB in 1.1 s, experts 56.04 GB in 1.2 s",
+     "[cpuexp] 14556 experts resident, 38.65 GB in 18.1 s (2.13 GB/s), 328 reads, mlock=no, isa=scalar, kernel=fast(avx2-vnni), act=q8",
+     "[cpuexp] 8 pool threads (pinned, physical cores first), spin 300 us, sched=1, pf=2 rows, l3_pf=on",
+     "[cpuexp] cold experts: 4407 (slot 2.13 MB, 120 slots = 256 MB cache, 8 readers, io=O_DIRECT)",
+     "[hybrid] 14556 experts (38.65 GB) in host RAM computed by 8 CPU threads",
+     "[engram] auto cache 512 MiB (RAM 62 GiB) -> 4628197 LRU rows",
+     "[vcache] pre-populated 676/676 adaptive VRAM slots (2.51 GB, decay=0.985, max_swaps=2) in 0.38 s",
+     "[hybrid] prefill streaming on (arena pinned): 2 buffer(s) of 384 MiB, 123 groups for 41 layers (36.15 GB/pass, skipped 676 vcache experts, cpu_frac=0.00, largest 0.88 GB), active for T >= 128 (gather < 4096)",
+     "[spec] accepted histogram (0..8): 0 0 0 0 0 0 0 0 0",
+     "[spec] accepted histogram (0..8): 0 0 0 0 0 0 1 1 0",
+     "[hybrid] calibrated PCIe/CPU miss split (T=1, pinned): gpu=2.3 exp/ms vs cpu=14.4 exp/ms -> pcie_share=0.14",
+     "[spec] accepted histogram (0..8): 42 0 0 0 0 0 1 1 0",
+     "[hybrid] calibrated PCIe/CPU miss split (T>=2, pinned): gpu=2.1 exp/ms vs cpu=12.9 exp/ms -> pcie_share=0.14",
+     "[spec] accepted histogram (0..8): 274 107 21 0 0 0 2 1 0",
+     "[spec] accepted histogram (0..8): 692 292 54 1 0 0 2 1 0",
+     "[spec] accepted histogram (0..8): 692 292 54 1 0 1 2 1 0",
+     "[runner] sparse KV + IndexPool grew in VRAM: 16384 -> 32768 positions (0.68 GB total, 5.7 ms)",
+     "[spec] accepted histogram (0..8): 692 292 54 1 0 2 2 1 0",
+     "[runner] sparse KV + IndexPool grew in VRAM: 32768 -> 49152 positions (1.02 GB total, 8.0 ms)",
+     "[runner] sparse KV + IndexPool grew in VRAM: 49152 -> 65536 positions (1.36 GB total, 10.1 ms)",
+     "[runner] sparse KV + IndexPool grew in VRAM: 65536 -> 81920 positions (1.70 GB total, 12.4 ms)",
+     "[spec] accepted histogram (0..8): 692 292 54 1 0 2 3 1 0",
+     "[spec] accepted histogram (0..8): 828 354 72 2 2 2 3 1 0"
+    ],
+    "container": "ls-hy4-r36 38.78GiB / 62.34GiB",
+    "druck": "some avg10=0.00 avg60=0.00 avg300=1.02 total=20244583997",
+    "waechter": []
+   }
+  },
+  "max": {
+   "liber": {
+    "swap_vorher_gib": 5.25,
+    "kaltstart": false,
+    "ram_entladen_gib": 51.42,
+    "laden": {
+     "ok": true,
+     "nvme_gb": 49.6,
+     "dauer_s": 20.6,
+     "ram_min_gib": 7.76,
+     "vram_max_gib": 23.28,
+     "karte_w": null,
+     "usv_w": 232.2
+    },
+    "ram_nach_laden_gib": 7.72,
+    "vram_nach_laden_gib": 23.28,
+    "tool_call_ok": true,
+    "schreiben": [
+     {
+      "tps": 65.5,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 63,
+       "prompt_ms": 425.9,
+       "prompt_per_token_ms": 6.76,
+       "prompt_per_second": 147.9,
+       "predicted_n": 900,
+       "predicted_ms": 13731.6,
+       "predicted_per_token_ms": 15.257,
+       "draft_n": 759,
+       "draft_n_accepted": 333
+      },
+      "nvme_gb": 0.11,
+      "dauer_s": 14.2,
+      "ram_min_gib": 7.51,
+      "vram_max_gib": 23.29,
+      "karte_w": null,
+      "usv_w": 316.7
+     },
+     {
+      "tps": 65.8,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 63,
+       "prompt_ms": 560.5,
+       "prompt_per_token_ms": 8.897,
+       "prompt_per_second": 112.4,
+       "predicted_n": 900,
+       "predicted_ms": 13673.4,
+       "predicted_per_token_ms": 15.193,
+       "draft_n": 707,
+       "draft_n_accepted": 346
+      },
+      "nvme_gb": 0.13,
+      "dauer_s": 14.2,
+      "ram_min_gib": 7.49,
+      "vram_max_gib": 23.29,
+      "karte_w": null,
+      "usv_w": 455.0
+     }
+    ],
+    "einlesen": {
+     "4K": {
+      "prompt_token": 4125,
+      "token_je_s": 697.3,
+      "nadel": true,
+      "nvme_gb": 0.01,
+      "dauer_s": 6.1,
+      "ram_min_gib": 7.65,
+      "vram_max_gib": 23.29,
+      "karte_w": null,
+      "usv_w": 455.0
+     },
+     "16K": {
+      "prompt_token": 16088,
+      "token_je_s": 2399.0,
+      "nadel": true,
+      "nvme_gb": 0.0,
+      "dauer_s": 6.8,
+      "ram_min_gib": 7.54,
+      "vram_max_gib": 23.29,
+      "karte_w": null,
+      "usv_w": 428.9
+     },
+     "58K": {
+      "prompt_token": 58021,
+      "token_je_s": 3445.7,
+      "nadel": true,
+      "nvme_gb": 0.0,
+      "dauer_s": 17.0,
+      "ram_min_gib": 7.34,
+      "vram_max_gib": 23.29,
+      "karte_w": null,
+      "usv_w": 272.0
+     }
+    },
+    "folgefrage_nach_langem_text": {
+     "tps": 51.5,
+     "prompt_tps": 106.4,
+     "nvme_gb": 0.05,
+     "dauer_s": 7.8,
+     "ram_min_gib": 7.42,
+     "vram_max_gib": 23.29,
+     "karte_w": null,
+     "usv_w": 272.0
+    },
+    "bild_ok": true,
+    "log_info": [
+     "strata generate: control vector mode = project, dir = per-layer, layers 4..44 (41 steered)",
+     "strata mtp: draft layer loaded (Q2_0 S2), 1098 MiB of VRAM (experts 675, dense 111), files read in 0.34 s (2336 MiB/s)",
+     "strata generate: expert arena: cudaHostRegister PORTABLE ok; MAP_HUGETLB unavailable (needed 20464 2 MiB pages, vm.nr_hugepages=0); transparent huge pages are on for every mapping (THP always): MADV_HUGEPAGE not requested",
+     "strata generate: GPU host-callback thread started before host-core pinning",
+     "strata generate: CPU pool tasks/phase: 33 (automatic), participating threads: 11",
+     "strata aux cpus: threads that are neither pool workers nor the host go to CPUs 11,12,13,14,15 (off at start; a request's aux_cpus=1 turns it on)",
+     "strata generate: the GPU computes the experts in the cache; it rounds differently from the CPU,",
+     "strata generate: R4 hit path ON - resident experts are computed on the GPU",
+     "strata generate: token graph hit path: 8914 resident experts, decided on the device",
+     "strata: prompt experts on the fused int8 kernels (STRATA_PF_FUSED=1, #136)"
+    ],
+    "fehlerzeilen": [],
+    "swap_nachher_gib": 5.25,
+    "ram_ende_gib": 6.9,
+    "waechter": []
+   },
+   "hy4-setup": {
+    "swap_vorher_gib": 5.25,
+    "kaltstart": false,
+    "ram_entladen_gib": 51.72,
+    "laden": {
+     "ok": true,
+     "nvme_gb": 61.15,
+     "dauer_s": 26.4,
+     "ram_min_gib": 9.97,
+     "vram_max_gib": 23.62,
+     "karte_w": null,
+     "usv_w": 62.0
+    },
+    "ram_nach_laden_gib": 9.97,
+    "vram_nach_laden_gib": 23.62,
+    "tool_call_ok": true,
+    "schreiben": [
+     {
+      "tps": 12.8,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 65,
+       "prompt_ms": 895.3,
+       "prompt_per_token_ms": 13.774,
+       "prompt_per_second": 72.6,
+       "predicted_n": 900,
+       "predicted_ms": 70102.0,
+       "predicted_per_token_ms": 77.891,
+       "draft_n": 0,
+       "draft_n_accepted": 0
+      },
+      "nvme_gb": 2.39,
+      "dauer_s": 71.0,
+      "ram_min_gib": 9.76,
+      "vram_max_gib": 23.66,
+      "karte_w": null,
+      "usv_w": 309.0
+     },
+     {
+      "tps": 13.4,
+      "token": 900,
+      "timings": {
+       "cache_n": 0,
+       "prompt_n": 65,
+       "prompt_ms": 929.5,
+       "prompt_per_token_ms": 14.3,
+       "prompt_per_second": 69.9,
+       "predicted_n": 900,
+       "predicted_ms": 67288.3,
+       "predicted_per_token_ms": 74.765,
+       "draft_n": 0,
+       "draft_n_accepted": 0
+      },
+      "nvme_gb": 2.54,
+      "dauer_s": 68.2,
+      "ram_min_gib": 9.78,
+      "vram_max_gib": 23.66,
+      "karte_w": null,
+      "usv_w": 335.3
+     }
+    ],
+    "einlesen": {
+     "4K": {
+      "prompt_token": 5346,
+      "token_je_s": 408.5,
+      "nadel": true,
+      "nvme_gb": 1.15,
+      "dauer_s": 13.2,
+      "ram_min_gib": 9.71,
+      "vram_max_gib": 23.66,
+      "karte_w": null,
+      "usv_w": 307.0
+     },
+     "16K": {
+      "prompt_token": 20866,
+      "token_je_s": 512.5,
+      "nadel": true,
+      "nvme_gb": 3.09,
+      "dauer_s": 40.9,
+      "ram_min_gib": 9.71,
+      "vram_max_gib": 23.66,
+      "karte_w": null,
+      "usv_w": 328.2
+     },
+     "58K": {
+      "prompt_token": 75268,
+      "token_je_s": 640.9,
+      "nadel": true,
+      "nvme_gb": 9.6,
+      "dauer_s": 117.6,
+      "ram_min_gib": 9.42,
+      "vram_max_gib": 23.54,
+      "karte_w": null,
+      "usv_w": 357.9
+     }
+    },
+    "folgefrage_nach_langem_text": {
+     "tps": 16.4,
+     "prompt_tps": 74.5,
+     "nvme_gb": 1.87,
+     "dauer_s": 24.9,
+     "ram_min_gib": 9.5,
+     "vram_max_gib": 23.22,
+     "karte_w": null,
+     "usv_w": 345.5
+    },
+    "log_info": [
+     "[load] RAM budget 39.3 GB for the host experts (43.8 GB wanted): 719 experts (1.61 GB, the coldest ranks) stay on the SSD",
+     "[load] experts 4-tier: 3291 static VRAM (12.20 GB) + 1439 adaptive VRAM slots (4.07 GB) = 16.27 GB VRAM, 16982 in RAM (CPU) (42.23 GB), 719 on SSD (1.61 GB), 1.9 s",
+     "[load] done: trunk 5.54 GB in 1.0 s, experts 56.04 GB in 1.9 s",
+     "[cpuexp] 16982 experts resident, 42.23 GB in 18.8 s (2.25 GB/s), 328 reads, mlock=no, isa=scalar, kernel=fast(avx2-vnni), act=q8",
+     "[cpuexp] 8 pool threads (pinned, physical cores first), spin 300 us, sched=1, pf=2 rows, l3_pf=on",
+     "[cpuexp] cold experts: 719 (slot 2.13 MB, 120 slots = 256 MB cache, 8 readers, io=O_DIRECT)",
+     "[hybrid] 16982 experts (42.23 GB) in host RAM computed by 8 CPU threads",
+     "[hybrid] prefill streaming on (arena pinned): 2 buffer(s) of 384 MiB, 123 groups for 41 layers (38.16 GB/pass, skipped 1439 vcache experts, cpu_frac=0.00, largest 0.93 GB), active for T >= 128 (gather < 4096)",
+     "[hybrid] calibrated PCIe/CPU miss split (T>=2, pinned): gpu=2.4 exp/ms vs cpu=11.0 exp/ms -> pcie_share=0.18",
+     "[hybrid] calibrated PCIe/CPU miss split (T=1, pinned): gpu=2.5 exp/ms vs cpu=6.8 exp/ms -> pcie_share=0.27"
+    ],
+    "fehlerzeilen": [],
+    "swap_nachher_gib": 5.24,
+    "ram_ende_gib": 9.55,
+    "ram_zeilen": [
+     "[hybrid] calibrated PCIe/CPU miss split (T=1, pinned): gpu=2.5 exp/ms vs cpu=6.5 exp/ms -> pcie_share=0.28",
+     "[spec] accepted histogram (0..8): 130 32 3 0 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 458 119 18 0 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 824 239 33 0 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 824 239 33 0 0 1 1 1 0",
+     "[runner] sparse KV + IndexPool grew in VRAM: 16384 -> 32768 positions (0.68 GB total, 21.9 ms)",
+     "[spec] accepted histogram (0..8): 824 239 33 0 0 2 1 1 0",
+     "[runner] sparse KV + IndexPool grew in VRAM: 32768 -> 49152 positions (1.02 GB total, 20.9 ms)",
+     "[runner] sparse KV + IndexPool grew in VRAM: 49152 -> 65536 positions (1.36 GB total, 22.7 ms)",
+     "[runner] sparse KV + IndexPool grew in VRAM: 65536 -> 81920 positions (1.70 GB total, 23.3 ms)",
+     "[spec] accepted histogram (0..8): 824 239 33 0 0 2 1 2 0",
+     "[spec] accepted histogram (0..8): 972 335 46 2 1 2 1 2 0",
+     "[strata] 2026-11-23 15:18:28 engine started: strata-hy4 --serve --native Hy4-Flash-SQ-64.strata --engram Hy4-Flash-Engram-Q8.strata --max-context 131072 --vision Hy4-Flash-Vision.strata --vram-experts-",
+     "[plan] ctx 131072 (init 16384, kv=fp16) chunk 4096: buffers ~1.78 GB, KV+idx 0.34 GB (128K full 2.72 GB), dfly 0.28 GB, floor 0.50 GB, trunk 5.54 GB (embed in RAM) on 25.7/25.8 GB -> host mask 0; reserve 3.49 GiB",
+     "[load] embed_tokens (0.38 GB) in pinned mapped host RAM -> trunk VRAM 5.54 GB",
+     "[load] RAM budget 39.3 GB for the host experts (43.8 GB wanted): 719 experts (1.61 GB, the coldest ranks) stay on the SSD",
+     "[load] experts 4-tier: 3291 static VRAM (12.20 GB) + 1439 adaptive VRAM slots (4.07 GB) = 16.27 GB VRAM, 16982 in RAM (CPU) (42.23 GB), 719 on SSD (1.61 GB), 1.9 s",
+     "[load] done: trunk 5.54 GB in 1.0 s, experts 56.04 GB in 1.9 s",
+     "[cpuexp] 16982 experts resident, 42.23 GB in 18.8 s (2.25 GB/s), 328 reads, mlock=no, isa=scalar, kernel=fast(avx2-vnni), act=q8",
+     "[cpuexp] 8 pool threads (pinned, physical cores first), spin 300 us, sched=1, pf=2 rows, l3_pf=on",
+     "[cpuexp] cold experts: 719 (slot 2.13 MB, 120 slots = 256 MB cache, 8 readers, io=O_DIRECT)",
+     "[hybrid] 16982 experts (42.23 GB) in host RAM computed by 8 CPU threads",
+     "[engram] auto cache 512 MiB (RAM 62 GiB) -> 4628197 LRU rows",
+     "[vcache] pre-populated 1439/1439 adaptive VRAM slots (4.07 GB, decay=0.965, max_swaps=8) in 0.62 s",
+     "[hybrid] prefill streaming on (arena pinned): 2 buffer(s) of 384 MiB, 123 groups for 41 layers (38.16 GB/pass, skipped 1439 vcache experts, cpu_frac=0.00, largest 0.93 GB), active for T >= 128 (gather < 4096)",
+     "[spec] accepted histogram (0..8): 0 0 0 0 0 0 0 0 0",
+     "[hybrid] calibrated PCIe/CPU miss split (T>=2, pinned): gpu=2.4 exp/ms vs cpu=11.0 exp/ms -> pcie_share=0.18",
+     "[spec] accepted histogram (0..8): 0 0 0 0 0 0 1 1 0",
+     "[hybrid] calibrated PCIe/CPU miss split (T=1, pinned): gpu=2.5 exp/ms vs cpu=6.8 exp/ms -> pcie_share=0.27",
+     "[spec] accepted histogram (0..8): 155 46 7 1 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 430 158 23 2 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 797 303 49 5 0 0 1 1 0",
+     "[spec] accepted histogram (0..8): 797 303 49 5 0 1 1 1 0",
+     "[runner] sparse KV + IndexPool grew in VRAM: 16384 -> 32768 positions (0.68 GB total, 20.9 ms)",
+     "[spec] accepted histogram (0..8): 797 303 49 5 0 2 1 1 0",
+     "[runner] sparse KV + IndexPool grew in VRAM: 32768 -> 49152 positions (1.02 GB total, 19.7 ms)",
+     "[runner] sparse KV + IndexPool grew in VRAM: 49152 -> 65536 positions (1.36 GB total, 25.0 ms)",
+     "[runner] sparse KV + IndexPool grew in VRAM: 65536 -> 81920 positions (1.70 GB total, 24.4 ms)",
+     "[spec] accepted histogram (0..8): 797 303 49 5 0 2 2 1 0",
+     "[spec] accepted histogram (0..8): 936 399 67 6 2 2 2 1 0"
+    ],
+    "container": "ls-hy4-setup 42.1GiB / 62.34GiB",
+    "druck": "some avg10=0.00 avg60=0.04 avg300=1.28 total=20257128459",
+    "waechter": []
+   }
+  },
+  "waechter": [],
+  "liber_danach": {
+   "antwort_ok": true,
+   "tool_call_ok": true,
+   "schreiben_tps": 59.2,
+   "bild_ok": true,
+   "vektor_zeile": [
+    "strata generate: control vector mode = project, dir = per-layer, layers 4..44 (41 steered)"
+   ],
+   "ram_frei_gib": 7.41
+  }
+ }
+}

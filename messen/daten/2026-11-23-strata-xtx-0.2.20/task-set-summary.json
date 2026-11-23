@@ -1,0 +1,45 @@
+{
+ "date": "2026-11-23",
+ "tasks_auto_graded": 102,
+ "note": "own German-language task set, same settings as on 16, 19, 20, 21 and 22 Nov; counts of passed tasks as the automatic grading reports them. 'steered' is the variant with control vector. Run on my own build 0.2.20-xtx3 on Strata 0.2.20 before it went into use; the unchanged release was not graded this time. On 0.2.19-xtx3 (22 Nov): plain 98, steered 97.",
+ "runs": {
+  "plain, own build strata-xtx 0.2.20-xtx3": {
+   "passed": 98,
+   "by_category": {
+    "instruction": "15/15",
+    "code": "15/15",
+    "facts": "12/15",
+    "context": "4/4",
+    "logic": "15/15",
+    "safety": "17/18",
+    "tools": "20/20"
+   }
+  },
+  "steered, own build strata-xtx 0.2.20-xtx3": {
+   "passed": 97,
+   "by_category": {
+    "instruction": "15/15",
+    "code": "15/15",
+    "facts": "12/15",
+    "context": "4/4",
+    "logic": "15/15",
+    "safety": "17/18",
+    "tools": "19/20"
+   }
+  }
+ },
+ "prompt_250k": {
+  "tokens": 247954,
+  "steered_seconds": [
+   74.3,
+   74.1,
+   75.4,
+   74.9
+  ],
+  "plain_seconds": [
+   74.9,
+   75.5
+  ],
+  "number_found": true
+ }
+}

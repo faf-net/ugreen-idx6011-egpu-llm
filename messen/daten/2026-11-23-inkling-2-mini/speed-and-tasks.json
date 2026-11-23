@@ -1,0 +1,755 @@
+{
+ "model": "Inkling 2 Mini (Thinking Machines), Strata's SQ-20 / SQ-15 / SQ-10 packs, SHA-256 checked",
+ "card": "RX 7900 XTX in the dock, 24 GB; NAS with 62.3 GiB RAM, NAS services running; quiet = 2,800 MHz, -100 mV",
+ "method": "each variant loaded fresh; tool call, 2 x 900 tokens decode (temperature 0, thinking off), prompts with a hidden number; per step lowest available RAM; figures from the server's timings. Variant names: ink<SQ>-<context>, e.g. ink20-128k = SQ-20 pack, 128K context.",
+ "runs": [
+  {
+   "date": "2026-11-22",
+   "setup": "Strata 0.2.19, strata-inkling 0.1.65, split as Strata's setup computes it (inkling_fit, 23.98 GiB card)",
+   "split_gb": {
+    "ink20-128k": {
+     "vram_gb": 15.68,
+     "ram_gb": 0.0,
+     "ssd_gb": 0.0,
+     "full_vram": true
+    },
+    "ink20-128k-ohne-draft": {
+     "vram_gb": 15.68,
+     "ram_gb": 0.0,
+     "ssd_gb": 0.0,
+     "full_vram": true
+    },
+    "ink20-256k": {
+     "vram_gb": 12.47,
+     "ram_gb": 3.21,
+     "ssd_gb": 0.0,
+     "full_vram": false
+    },
+    "ink15-256k": {
+     "vram_gb": 12.28,
+     "ram_gb": 0.0,
+     "ssd_gb": 0.0,
+     "full_vram": true
+    },
+    "ink10-256k": {
+     "vram_gb": 8.6,
+     "ram_gb": 0.0,
+     "ssd_gb": 0.0,
+     "full_vram": true
+    }
+   },
+   "variants": [
+    {
+     "name": "Flash-Next IQ3_XXS, uncensored version (control vector)",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      65.1,
+      66.4
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 713.7,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 2406.1,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 3447.1,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "105K": {
+       "tok_s": 3401.0,
+       "hidden_number_found": true,
+       "error": null
+      }
+     },
+     "ram_available_after_load_gib": 7.76,
+     "vram_after_load_gib": 23.28
+    },
+    {
+     "name": "Flash-Next IQ3_XXS, original",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      64.0,
+      59.3
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 680.4,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 2560.4,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 3488.1,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "105K": {
+       "tok_s": 3372.9,
+       "hidden_number_found": true,
+       "error": null
+      }
+     },
+     "ram_available_after_load_gib": 4.23,
+     "vram_after_load_gib": 23.28
+    },
+    {
+     "name": "ink20-128k",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      70.6,
+      72.8
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 2374.3,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 2407.6,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 2010.2,
+       "hidden_number_found": false,
+       "error": null
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 51.25,
+     "vram_after_load_gib": 18.95
+    },
+    {
+     "name": "ink20-128k-ohne-draft",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      72.9,
+      74.1
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 2378.7,
+       "hidden_number_found": false,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 2416.7,
+       "hidden_number_found": false,
+       "error": null
+      }
+     },
+     "ram_available_after_load_gib": 50.99,
+     "vram_after_load_gib": 18.95
+    },
+    {
+     "name": "ink20-256k",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      19.9,
+      18.6
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 722.4,
+       "hidden_number_found": false,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 789.3,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 776.9,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "105K": {
+       "tok_s": 735.3,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "200K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 48.63,
+     "vram_after_load_gib": 16.83
+    },
+    {
+     "name": "ink15-256k",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      70.6,
+      70.9
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "16K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "58K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "200K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 50.91,
+     "vram_after_load_gib": 14.83
+    },
+    {
+     "name": "ink10-256k",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      76.6,
+      76.7
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "16K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "58K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "200K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 50.72,
+     "vram_after_load_gib": 11.4
+    },
+    {
+     "name": "Flash-Next IQ3_XXS, uncensored version (control vector)",
+     "mode": "max",
+     "decode_900_tokens_tok_s": [
+      65.5,
+      65.5
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 760.2,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 2396.6,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 3450.1,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "105K": {
+       "tok_s": 3416.2,
+       "hidden_number_found": true,
+       "error": null
+      }
+     },
+     "ram_available_after_load_gib": 7.69,
+     "vram_after_load_gib": 23.29
+    },
+    {
+     "name": "Flash-Next IQ3_XXS, original",
+     "mode": "max",
+     "decode_900_tokens_tok_s": [
+      69.6,
+      66.0
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 757.3,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 2595.5,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 3486.2,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "105K": {
+       "tok_s": 3436.9,
+       "hidden_number_found": true,
+       "error": null
+      }
+     },
+     "ram_available_after_load_gib": 4.22,
+     "vram_after_load_gib": 23.28
+    },
+    {
+     "name": "ink20-128k",
+     "mode": "max",
+     "decode_900_tokens_tok_s": [
+      75.1,
+      75.5
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 2454.0,
+       "hidden_number_found": false,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 2492.3,
+       "hidden_number_found": false,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 2084.0,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 51.17,
+     "vram_after_load_gib": 18.95
+    },
+    {
+     "name": "ink10-256k",
+     "mode": "max",
+     "decode_900_tokens_tok_s": [
+      80.0,
+      80.8
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "16K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "58K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "200K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 50.74,
+     "vram_after_load_gib": 11.4
+    }
+   ]
+  },
+  {
+   "date": "2026-11-23 night",
+   "setup": "Strata 0.2.19, strata-inkling 0.1.65, split computed for 21 GiB to leave room for the growing KV",
+   "split_gb": {
+    "ink20-128k": {
+     "vram_gb": 13.56,
+     "ram_gb": 2.12,
+     "ssd_gb": 0.0,
+     "full_vram": false
+    },
+    "ink20-128k-ohne-draft": {
+     "vram_gb": 13.56,
+     "ram_gb": 2.12,
+     "ssd_gb": 0.0,
+     "full_vram": false
+    },
+    "ink20-256k": {
+     "vram_gb": 9.27,
+     "ram_gb": 6.41,
+     "ssd_gb": 0.0,
+     "full_vram": false
+    },
+    "ink15-256k": {
+     "vram_gb": 10.87,
+     "ram_gb": 1.41,
+     "ssd_gb": 0.0,
+     "full_vram": false
+    },
+    "ink10-256k": {
+     "vram_gb": 8.6,
+     "ram_gb": 0.0,
+     "ssd_gb": 0.0,
+     "full_vram": true
+    },
+    "ink10-128k": {
+     "vram_gb": 8.6,
+     "ram_gb": 0.0,
+     "ssd_gb": 0.0,
+     "full_vram": true
+    },
+    "ink10-256k-fp8": {
+     "vram_gb": 8.6,
+     "ram_gb": 0.0,
+     "ssd_gb": 0.0,
+     "full_vram": true
+    }
+   },
+   "variants": [
+    {
+     "name": "ink20-128k",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      33.9,
+      27.7
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 954.9,
+       "hidden_number_found": false,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 1036.7,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 975.3,
+       "hidden_number_found": false,
+       "error": null
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 49.94,
+     "vram_after_load_gib": 17.92
+    },
+    {
+     "name": "ink15-256k",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      43.8,
+      45.0
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "16K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "timeout"
+      },
+      "58K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "timeout"
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "timeout"
+      },
+      "200K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "timeout"
+      }
+     },
+     "ram_available_after_load_gib": 50.68,
+     "vram_after_load_gib": 14.27
+    },
+    {
+     "name": "ink10-128k",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      77.9,
+      77.1
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "16K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "58K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 50.15,
+     "vram_after_load_gib": 11.4
+    },
+    {
+     "name": "ink10-256k-fp8",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      74.4,
+      76.5
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "16K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "58K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "105K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      },
+      "200K": {
+       "tok_s": null,
+       "hidden_number_found": null,
+       "error": "HTTP 503"
+      }
+     },
+     "ram_available_after_load_gib": 50.06,
+     "vram_after_load_gib": 11.31
+    }
+   ]
+  },
+  {
+   "date": "2026-11-23",
+   "setup": "Strata 0.2.20, strata-inkling 0.1.66, Strata's new split (inkling_fit with backend hip); stopped after two variants",
+   "split_gb": {
+    "ink20-128k": {
+     "vram_gb": 11.3,
+     "ram_gb": 4.38,
+     "ssd_gb": 0.0,
+     "host_kv_gb": 0.0,
+     "kv_dtype": "fp16",
+     "kv_offload": "off",
+     "full_vram": false
+    },
+    "ink20-256k": {
+     "vram_gb": 3.89,
+     "ram_gb": 11.79,
+     "ssd_gb": 0.0,
+     "host_kv_gb": 0.0,
+     "kv_dtype": "fp16",
+     "kv_offload": "off",
+     "full_vram": false
+    },
+    "ink15-256k": {
+     "vram_gb": 5.49,
+     "ram_gb": 6.79,
+     "ssd_gb": 0.0,
+     "host_kv_gb": 0.0,
+     "kv_dtype": "fp16",
+     "kv_offload": "off",
+     "full_vram": false
+    },
+    "ink10-256k": {
+     "vram_gb": 5.69,
+     "ram_gb": 2.91,
+     "ssd_gb": 0.0,
+     "host_kv_gb": 0.0,
+     "kv_dtype": "fp16",
+     "kv_offload": "off",
+     "full_vram": false
+    },
+    "ink20-256k-kvon": {
+     "vram_gb": 3.89,
+     "ram_gb": 11.79,
+     "ssd_gb": 0.0,
+     "host_kv_gb": 0.0,
+     "kv_dtype": "fp16",
+     "kv_offload": "off",
+     "full_vram": false
+    }
+   },
+   "variants": [
+    {
+     "name": "Flash-Next IQ3_XXS, uncensored version (control vector)",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      66.1,
+      62.7
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 679.5,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 2385.1,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 3460.0,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "105K": {
+       "tok_s": 3420.6,
+       "hidden_number_found": true,
+       "error": null
+      }
+     },
+     "ram_available_after_load_gib": 7.77,
+     "vram_after_load_gib": 23.29
+    },
+    {
+     "name": "ink20-128k",
+     "mode": "quiet",
+     "decode_900_tokens_tok_s": [
+      9.5,
+      9.7
+     ],
+     "prompts": {
+      "4K": {
+       "tok_s": 580.6,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "16K": {
+       "tok_s": 657.7,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "58K": {
+       "tok_s": 653.6,
+       "hidden_number_found": true,
+       "error": null
+      },
+      "105K": {
+       "tok_s": 619.9,
+       "hidden_number_found": true,
+       "error": null
+      }
+     },
+     "ram_available_after_load_gib": 47.61,
+     "vram_after_load_gib": 15.67
+    }
+   ],
+   "note": "ink20-256k wrote 3.2 tokens/s (2 x 900 tokens) before the run was stopped on purpose; its prompts were not measured"
+  }
+ ],
+ "task_set": {
+  "note": "own German-language task set, 102 automatically graded tasks, same settings as for Flash-Next (temperature 0, thinking on, at most 8,000 tokens); the uncensored Flash-Next scores 97 on the same set",
+  "ink20-128k, 22 Nov (0.2.19, setup split)": {
+   "passed": 93,
+   "by_category": {
+    "code": "15/15",
+    "logic": "15/15",
+    "tools": "17/20",
+    "safety": "18/18",
+    "facts": "11/15",
+    "instruction": "15/15",
+    "context": "2/4"
+   },
+   "empty_answers": 2
+  },
+  "ink20-128k, 23 Nov night (0.2.19, 21 GiB split)": {
+   "passed": 94,
+   "by_category": {
+    "code": "14/15",
+    "logic": "15/15",
+    "tools": "18/20",
+    "safety": "18/18",
+    "facts": "12/15",
+    "instruction": "15/15",
+    "context": "2/4"
+   },
+   "empty_answers": 2
+  },
+  "ink10-256k, 22 Nov (0.2.19), invalid: most answers empty after HTTP 503": {
+   "passed": 47,
+   "by_category": {
+    "code": "3/15",
+    "logic": "0/15",
+    "tools": "2/20",
+    "safety": "16/18",
+    "facts": "12/15",
+    "instruction": "14/15",
+    "context": "0/4"
+   },
+   "empty_answers": 72
+  }
+ }
+}

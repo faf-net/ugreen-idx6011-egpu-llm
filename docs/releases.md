@@ -6,9 +6,26 @@ In configs, scripts and file names the three versions of the model go by short n
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
 
+## Follow-up 23 Nov 2026: Strata 0.2.20 changes nothing here, my own build runs on it unchanged as `0.2.20-xtx3`
+
+Engine and control 0.1.66. For Flash-Next on this card the release brings no change. The RAM guard from 0.2.19 is still there: the unchanged release reads in 8K chunks (the engine log lines of 0.2.18, 0.2.19 and 0.2.20 are in [#6687](https://github.com/Niko1221/Strata/issues/6687)). New for Hy4-Flash: its engine now follows the RAM split that Strata's setup writes, which fixes [#6556](https://github.com/Niko1221/Strata/issues/6556): with exactly the setup's flags it writes at 12.7 to 13.4 instead of 0.3 to 0.6 tokens/s, with at least 9.5 GiB of RAM available and no swapping ([`messen/daten/2026-11-23-hy4-0.2.20/`](../messen/daten/2026-11-23-hy4-0.2.20/)).
+
+| Median | Release 0.2.20 | Comparison |
+|---|---:|---:|
+| interleaved pairs, same session: decode, tokens/s | 64.8 | 65.8 (release 0.2.19) |
+| `strata_bench.py --long`, 3 alternating runs: prompt 4K / 16K / 32K, tokens/s | 818 / 1,503 / 1,475 | **1,694 / 2,524 / 3,053** (`0.2.20-xtx3`) |
+| same runs: decode chat / agent, tokens/s | 65.1 / 79.7 | **72.2** / 83.6 (`0.2.20-xtx3`) |
+| one round at full power: prompt 4K / 16K / 32K | 788 / 1,502 / 1,506 | 1,600 / 2,519 / 3,061 |
+| 128,000 / 250,000-token prompt, hidden number in the middle | 73 / 175 s | 35 / 77 s (`faber` and `liber`) |
+| task set, passed of 102 | not graded | `faber` 98, `liber` 97 (`0.2.20-xtx3`) |
+
+- **The patch applied unchanged.** Against the build in use (`0.2.19-xtx3`) the new build reads equally fast (96 to 105 %), the chunk size in the engine log is 32,768, and with the table switched off it reads as slowly as the release (16K 1,454, 58K 1,427 tokens/s). Task set 98 and 97 as on 0.2.19, 250,000 tokens in 74 to 76 s with both models, self-rescue checked with `liber`, 90 minutes of continuous load with `liber` without an error (1,309 requests, 187 of 187 hidden numbers, available RAM never below 5.5 GiB). In production since 23 Nov, 12:10; acceptance passed with `liber` first.
+- **CPU share for short prompts re-tested.** My table lets the CPU take part of the experts for prompt chunks of up to 4,096 tokens. Ceilings of 3,072 to 6,144 with prompts of 2K to 16K: 4,096 keeps 4K at 1,131 instead of 714 tokens/s (3,072), every ceiling reads 16K equally fast (2,517 to 2,545), 6,144 reads 6K faster (+30 %) but 8K slower (−12 %). The table stays as it is. The night before, on 0.2.19, the share was worth 2.7 times at 1K, 0.4 and 0.8 read like 0.6, and switching the hipBLASLt tuning table off changed nothing measurable.
+- Data: [`messen/daten/2026-11-23-strata-xtx-0.2.20/`](../messen/daten/2026-11-23-strata-xtx-0.2.20/) (README inside).
+
 ## Follow-up 22 Nov 2026, evening: Strata 0.2.19 slows prompt reading behind a RAM guard, my own build `0.2.19-xtx3` releases the brake
 
-Engine and control 0.1.65. Two things are new: Strata now ships defaults of its own for RDNA3 cards (`gfx11_extra.hpp`: a set of compute paths, WMMA paths, 8-bit hyperconnections, CPU participation in prompt reading and a rule for the prompt chunks), and a third model with an engine of its own, Thinking Machines Inkling 2 Mini (26B, 3.4B active; the test is still running). From here on the builds are named `<Strata version>-xtx<patch level>`.
+Engine and control 0.1.65. Two things are new: Strata now ships defaults of its own for RDNA3 cards (`gfx11_extra.hpp`: a set of compute paths, WMMA paths, 8-bit hyperconnections, CPU participation in prompt reading and a rule for the prompt chunks), and a third model with an engine of its own, Thinking Machines Inkling 2 Mini (26B, 3.4B active; result in the README: fast or long prompts, not both). From here on the builds are named `<Strata version>-xtx<patch level>`.
 
 | Median | Release 0.2.19 | Comparison |
 |---|---:|---:|

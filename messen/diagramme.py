@@ -230,11 +230,12 @@ def standard(pfad):
 
 
 TIEFE_DATEI = "tiefe-20261116.jsonl"   # 16.11.2026, Strata 0.2.14; Oktober (0.1.44.1): tiefe-20261017.jsonl
-TIEFE_XTX = "tiefe-20261122-0.2.19.jsonl"   # 22.11.2026 abends, Eigenbau 0.2.19-xtx3 (Label faber-xtx, liber-xtx, faber-xtx-ohne-mtp); 0.2.18-xtx2 am selben Tag: tiefe-20261122.jsonl, 0.2.17: tiefe-20261121.jsonl, 0.2.16: tiefe-20261119.jsonl
-XTX_DATEN = "2026-11-22-strata-xtx-0.2.19"    # Nachmessung im Betrieb auf dem Eigenbau 0.2.19-xtx3
-XTX_VER = "0.2.19"                     # Strata-Version, auf der der Eigenbau im Betrieb läuft
-XTX_NAME = "0.2.19-xtx3"               # Name des Baus im Betrieb (Schema <Release>-xtx<Patchstand> seit 22.11.2026)
-XTX_TAG = {"de": "22.11.2026", "en": "22 Nov 2026"}   # Tag der Nachmessung
+TIEFE_XTX = "tiefe-20261123-0.2.20.jsonl"   # 23.11.2026, Eigenbau 0.2.20-xtx3 (Label faber-xtx, liber-xtx, faber-xtx-ohne-mtp); 0.2.19-xtx3: tiefe-20261122-0.2.19.jsonl, 0.2.18-xtx2 am selben Tag: tiefe-20261122.jsonl, 0.2.17: tiefe-20261121.jsonl, 0.2.16: tiefe-20261119.jsonl
+XTX_DATEN = "2026-11-23-strata-xtx-0.2.20"    # Nachmessung im Betrieb auf dem Eigenbau 0.2.20-xtx3
+XTX_0219 = "2026-11-22-strata-xtx-0.2.19"     # 0.2.19-xtx3 (Bremse #2090, Bremsendiagramm)
+XTX_VER = "0.2.20"                     # Strata-Version, auf der der Eigenbau im Betrieb läuft
+XTX_NAME = "0.2.20-xtx3"               # Name des Baus im Betrieb (Schema <Release>-xtx<Patchstand> seit 22.11.2026)
+XTX_TAG = {"de": "23.11.2026", "en": "23 Nov 2026"}   # Tag der Nachmessung
 XTX_VOR = "2026-11-22-strata-xtx-0.2.18"      # Nachmessung auf der Basis 0.2.18 (0.2.18-xtx2), zum Nachschlagen
 XTX_0217 = "2026-11-21-strata-xtx-0.2.17"     # Nachmessung auf der Basis 0.2.17 (0.2.17-xtx2)
 XTX_0216 = "2026-11-19-strata-xtx-0.2.16"     # Nachmessung auf der Basis 0.2.16 (davor 2026-11-18-strata-xtx auf 0.2.15)
@@ -377,7 +378,8 @@ VERSIONEN = [("0.2.0β", "2026-10-19/strata-0.2.0-beta/strata-bench-results.json
              ("0.2.16", [f"{XTX_0216}/strata-bench-alternating/round{n}-release-0.2.16.json" for n in (1, 2, 3)]),   # das unveränderte Release, im Wechsel mit dem Eigenbau (19.11.)
              ("0.2.17", [f"{XTX_0217}/strata-bench-alternating/round{n}-release-0.2.17.json" for n in (1, 2, 3)]),   # dasselbe am 21.11.
              ("0.2.18", [f"{XTX_VOR}/strata-bench-alternating/round{n}-release-0.2.18.json" for n in (1, 2, 3)]),   # und am 22.11. mittags
-             ("0.2.19", [f"{XTX_DATEN}/strata-bench-alternating/round{n}-release-0.2.19.json" for n in (1, 2, 3)])]   # und am 22.11. abends
+             ("0.2.19", [f"{XTX_0219}/strata-bench-alternating/round{n}-release-0.2.19.json" for n in (1, 2, 3)]),   # und am 22.11. abends
+             ("0.2.20", [f"{XTX_DATEN}/strata-bench-alternating/round{n}-release-0.2.20.json" for n in (1, 2, 3)])]   # und am 23.11. mittags
 XTX_BENCH = [f"{XTX_DATEN}/strata-bench-alternating/round{n}-strata-xtx-{XTX_VER}.json" for n in (1, 2, 3)]            # der Eigenbau auf derselben Basis
 IN_BETRIEB, GEPRUEFT = "0.2.14", XTX_VER   # letztes Release im Betrieb · Basis des Eigenbaus
 # Der Eigenbau auf jeder Basis, die mit strata_bench im Wechsel gemessen ist (21.11.2026). 0.2.15 bewusst nicht: dort gibt es nur Tiefenreihe
@@ -385,6 +387,7 @@ IN_BETRIEB, GEPRUEFT = "0.2.14", XTX_VER   # letztes Release im Betrieb · Basis
 XTX_VERLAUF = [("0.2.16", [f"{XTX_0216}/strata-bench-alternating/round{n}-strata-xtx-0.2.16.json" for n in (1, 2, 3)], None),
                ("0.2.17", [f"{XTX_0217}/strata-bench-alternating/round{n}-strata-xtx-0.2.17.json" for n in (1, 2, 3)], None),
                ("0.2.18", [f"{XTX_VOR}/strata-bench-alternating/round{n}-strata-xtx-0.2.18.json" for n in (1, 2, 3)], None),
+               ("0.2.19", [f"{XTX_0219}/strata-bench-alternating/round{n}-strata-xtx-0.2.19.json" for n in (1, 2, 3)], None),
                (XTX_VER, XTX_BENCH, None)]
 
 
@@ -447,17 +450,18 @@ def versionen(d, sp):
             s.text(X(n - 1) + 12, p.Y(werte[-1]["16K"]) + 15, f"{z(werte[-1]['32K'], sp)} · {z(werte[-1]['16K'], sp)}", 8.5, STAHL, "mono")
             # Der Einbruch auf 0.2.19 (Frank 22.11.2026: „deutlicher an dem Punkt, wo das normale Strata langsamer wurde“): der alte
             # Patch unverändert auf 0.2.19, 16K aus dem Vergleichstest (fork_test, dieselbe Größenordnung wie strata_bench 16K)
-            br = json.load(open(os.path.join(d, XTX_DATEN, BREMSE), encoding="utf-8"))["faber"]["xtx2_0219"]["16K"]
+            br = json.load(open(os.path.join(d, XTX_0219, BREMSE), encoding="utf-8"))["faber"]["xtx2_0219"]["16K"]
             rose = TON["rose"][1]
-            s.raute(X(n - 1) - 9, p.Y(br), rose, hohl=True)
-            s.line(X(n - 1) - 9, p.Y(br) + 6, X(n - 1) - 9, p.Y(1080) - 4, f'stroke="{rose}" stroke-width="1" stroke-dasharray="2,2"')
-            s.text(X(n - 1) - 14, p.Y(1080) + 6, T(f"0.2.19 mit altem Patch: 16K nur {z(br, sp, 0)}", f"0.2.19 with the old patch: 16K only {z(br, sp, 0)}"), 8.5, rose, "mono", "end", 600)
-            s.text(X(n - 1) - 14, p.Y(1080) + 18, T(f"RAM-Wächter bremst · {XTX_NAME} löst das", f"RAM guard brakes · {XTX_NAME} fixes it"), 8.5, rose, "mono", "end")
+            x19 = X(namen.index("0.2.19"))         # seit 0.2.20 nicht mehr die letzte Version (23.11.2026)
+            s.raute(x19 - 9, p.Y(br), rose, hohl=True)
+            s.line(x19 - 9, p.Y(br) + 6, x19 - 9, p.Y(1080) - 4, f'stroke="{rose}" stroke-width="1" stroke-dasharray="2,2"')
+            s.text(x19 - 14, p.Y(1080) + 6, T(f"0.2.19 mit altem Patch: 16K nur {z(br, sp, 0)}", f"0.2.19 with the old patch: 16K only {z(br, sp, 0)}"), 8.5, rose, "mono", "end", 600)
+            s.text(x19 - 14, p.Y(1080) + 18, T("RAM-Wächter bremst · 0.2.19-xtx3 löst das", "RAM guard brakes · 0.2.19-xtx3 fixes it"), 8.5, rose, "mono", "end")
             s.text(X(n - 1) + 12, p.Y(werte[-1]["4K"]) + 3, z(werte[-1]["4K"], sp), 8.5, ACC, "mono")
     s.text(L + 24, 344, "0.2.1's worker plan for hybrid CPUs lifted decode." if en else "Der Worker-Plan von 0.2.1 hob das Schreibtempo.", 15, INK, "serif", kursiv=True)
     h = fuss(s, 424, (("linie", STAHL, "Strata releases, unchanged" if en else "Strata-Releases, unverändert"), ("raute", STAHL, f"my own build strata-xtx, 0.2.16-xtx1 to {XTX_NAME}" if en else f"Eigenbau strata-xtx, 0.2.16-xtx1 bis {XTX_NAME}"), ("raute-hohl", TON["rose"][1], "0.2.19 with the old patch (comparison test)" if en else "0.2.19 mit altem Patch (Vergleichstest)")),
-             f"median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, from 0.2.11 with them running · 0.2.14: median of four runs · 0.2.15: three runs alternating with 0.2.14 on 16 Nov · 0.2.16 to 0.2.18: three runs each alternating with my own build on 19, 21 and 22 Nov (midday) · {XTX_VER} and my own build: three runs each, alternating, on {XTX_TAG['en']} (evening) · open diamond: my previous patch unchanged on {XTX_VER}, 16K from the comparison test (same order as strata_bench 16K) · releases were in use up to 0.2.14 (until 18 Nov 2026) · since then my own build runs, now as {XTX_NAME} · decode of the own build in the same runs: chat {z(xtx['chat'], sp)}, agent {z(xtx['agent'], sp)} tokens/s · data: messen/daten/<date>-v<release>/strata-bench*/ and <date>-strata-xtx-<release>/strata-bench-alternating/" if en else
-             f"Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, ab 0.2.11 mit laufenden · 0.2.14: Median aus vier Läufen · 0.2.15: drei Läufe im Wechsel mit 0.2.14 am 16.11. · 0.2.16 bis 0.2.18: je drei Läufe im Wechsel mit dem Eigenbau am 19., 21. und 22.11. (mittags) · {XTX_VER} und der Eigenbau: je drei Läufe im Wechsel am {XTX_TAG['de']} (abends) · hohle Raute: der bisherige Patch unverändert auf {XTX_VER}, 16K aus dem Vergleichstest (gleiche Größenordnung wie strata_bench 16K) · im Betrieb liefen Releases bis 0.2.14 (bis 18.11.2026) · seitdem läuft der Eigenbau, jetzt als {XTX_NAME} · Schreibtempo des Eigenbaus in denselben Läufen: Chat {z(xtx['chat'], sp)}, Agent {z(xtx['agent'], sp)} Token/s · Daten: messen/daten/<Datum>-v<Version>/strata-bench*/ und <Datum>-strata-xtx-<Version>/strata-bench-alternating/")
+             f"median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, from 0.2.11 with them running · 0.2.14: median of four runs · 0.2.15: three runs alternating with 0.2.14 on 16 Nov · 0.2.16 to 0.2.19: three runs each alternating with my own build on 19, 21, 22 Nov (midday) and 22 Nov (evening) · {XTX_VER} and my own build: three runs each, alternating, on {XTX_TAG['en']} (midday) · open diamond: my previous patch unchanged on 0.2.19, 16K from the comparison test (same order as strata_bench 16K) · releases were in use up to 0.2.14 (until 18 Nov 2026) · since then my own build runs, now as {XTX_NAME} · decode of the own build in the same runs: chat {z(xtx['chat'], sp)}, agent {z(xtx['agent'], sp)} tokens/s · data: messen/daten/<date>-v<release>/strata-bench*/ and <date>-strata-xtx-<release>/strata-bench-alternating/" if en else
+             f"Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, ab 0.2.11 mit laufenden · 0.2.14: Median aus vier Läufen · 0.2.15: drei Läufe im Wechsel mit 0.2.14 am 16.11. · 0.2.16 bis 0.2.19: je drei Läufe im Wechsel mit dem Eigenbau am 19., 21., 22.11. (mittags) und 22.11. (abends) · {XTX_VER} und der Eigenbau: je drei Läufe im Wechsel am {XTX_TAG['de']} (mittags) · hohle Raute: der bisherige Patch unverändert auf 0.2.19, 16K aus dem Vergleichstest (gleiche Größenordnung wie strata_bench 16K) · im Betrieb liefen Releases bis 0.2.14 (bis 18.11.2026) · seitdem läuft der Eigenbau, jetzt als {XTX_NAME} · Schreibtempo des Eigenbaus in denselben Läufen: Chat {z(xtx['chat'], sp)}, Agent {z(xtx['agent'], sp)} Token/s · Daten: messen/daten/<Datum>-v<Version>/strata-bench*/ und <Datum>-strata-xtx-<Version>/strata-bench-alternating/")
     return "versionen", titel, (f"Chat and agent decode speed and prompt reading speed at 4K, 16K and 32K for Strata releases 0.2.0-beta to {VERSIONEN[-1][0]} on one RX 7900 XTX; decode stays within its scatter, prompt reading at 16K and 32K rises with 0.2.14 and holds since. My own build strata-xtx on {XTX_VER} reads {z(xtx['4K'], sp)}, {z(xtx['16K'], sp)} and {z(xtx['32K'], sp)} tokens per second at 4K, 16K and 32K." if en else
                                 f"Schreibtempo für Chat und Agent und Einlesetempo bei 4K, 16K und 32K für die Strata-Versionen 0.2.0-beta bis {VERSIONEN[-1][0]} auf einer RX 7900 XTX; das Schreibtempo bleibt in seiner Streuung, das Einlesen bei 16K und 32K steigt mit 0.2.14 und hält seitdem. Der Eigenbau strata-xtx auf {XTX_VER} liest bei 4K, 16K und 32K {z(xtx['4K'], sp)}, {z(xtx['16K'], sp)} und {z(xtx['32K'], sp)} Token je Sekunde."), s, h
 
@@ -533,8 +537,9 @@ def kontext(d, sp):
 
 def speicher(d, sp):
     en = sp == "en"
-    m = json.load(open(os.path.join(d, XTX_DATEN, "memory-faber.json"), encoding="utf-8"))
-    lb = json.load(open(os.path.join(d, XTX_DATEN, "memory-liber.json"), encoding="utf-8"))
+    # seit 23.11.2026 (Frank): das Modell im Alltag (Variante mit Steuervektor) im Balken, das Original in der Fußzeile
+    m = json.load(open(os.path.join(d, XTX_DATEN, "memory-liber.json"), encoding="utf-8"))
+    fb = json.load(open(os.path.join(d, XTX_DATEN, "memory-faber.json"), encoding="utf-8"))
     dienste = m["ram_total_gib"] - m["strata_rss_gib"] - m["ram_available_gib"]
     rest = m["vram_used_gib"] - m["expert_cache_gib"] - m["mtp_gib"]
     ram = [("Strata engine" if en else "Strata-Engine", m["strata_rss_gib"], ACC), ("NAS services, kernel" if en else "NAS-Dienste, Kernel", m["ram_total_gib"] - m["strata_rss_gib"] - m["ram_available_gib"], STAHL),
@@ -543,8 +548,8 @@ def speicher(d, sp):
             ("dense, KV, work" if en else "dicht, KV, Arbeit", m["vram_used_gib"] - m["expert_cache_gib"] - m["mtp_gib"], PETROL),
             ("free" if en else "frei", m["vram_total_gib"] - m["vram_used_gib"], None)]
     s = Svg()
-    titel = "Where the memory goes with the original 125B model loaded" if en else "Wohin der Speicher geht, wenn das 125B-Original geladen ist"
-    kopf(s, f"Flash-Next 125B IQ3_XXS (faber) loaded and idle · strata-xtx on Strata {XTX_VER} · 256K context" if en else f"Flash-Next 125B IQ3_XXS (faber) geladen und ruhend · strata-xtx auf Strata {XTX_VER} · 256K Kontext", titel)
+    titel = "Where the memory goes with the 125B model I use every day" if en else "Wohin der Speicher geht, wenn das 125B-Modell im Alltag geladen ist"
+    kopf(s, f"Flash-Next 125B IQ3_XXS with control vector and image input, loaded and idle · strata-xtx on Strata {XTX_VER} · 256K context" if en else f"Flash-Next 125B IQ3_XXS mit Steuervektor und Bildeingang, geladen und ruhend · strata-xtx auf Strata {XTX_VER} · 256K Kontext", titel)
     X = lambda v: L + v / 64 * (R - L)
     for v in range(0, 61, 10):
         s.line(X(v), 132, X(v), 324, GITTER if v else ACHSE)
@@ -574,8 +579,8 @@ def speicher(d, sp):
                 s.text(x + 24, yy, name, 10, INK, "sans")
                 s.text(x + 150, yy, z(wert, sp), 9, MUTED, "mono", "end")
             s.text(R, yb + 34, "With 64 GB of RAM this is about the limit." if en else "Mit 64 GB RAM ist das etwa die Grenze.", 15, INK, "serif", "end", kursiv=True)
-    h = fuss(s, 384, None, f"measured {XTX_TAG['en']} · /proc, amdgpu mem_info_vram_used, engine log · dense/KV/work = used − expert cache − draft · the uncensored version in daily use (with image input, without pinned K/V): engine {z(lb['strata_rss_gib'], sp)}, available {z(lb['ram_available_gib'], sp)}, expert cache {z(lb['expert_cache_gib'], sp)} GiB · data: messen/daten/{XTX_DATEN}/ (earlier bases: <date>-strata-xtx-<release>/, release 0.2.14: 2026-11-16-speicher/)" if en else
-             f"gemessen am {XTX_TAG['de']} · /proc, amdgpu mem_info_vram_used, Engine-Log · dicht/KV/Arbeit = belegt − Experten-Cache − Entwurf · die unzensierte Fassung im täglichen Einsatz (mit Bildeingang, ohne festgepinnte K/V): Engine {z(lb['strata_rss_gib'], sp)}, verfügbar {z(lb['ram_available_gib'], sp)}, Experten-Cache {z(lb['expert_cache_gib'], sp)} GiB · Daten: messen/daten/{XTX_DATEN}/ (frühere Basen: <Datum>-strata-xtx-<Version>/, Release 0.2.14: 2026-11-16-speicher/)")
+    h = fuss(s, 384, None, f"measured {XTX_TAG['en']} · /proc, amdgpu mem_info_vram_used, engine log · dense/KV/work = used − expert cache − draft · the original without control vector (bigger conversation cache, 32K of K/V pinned in RAM): engine {z(fb['strata_rss_gib'], sp)}, available {z(fb['ram_available_gib'], sp)}, expert cache {z(fb['expert_cache_gib'], sp)} GiB · data: messen/daten/{XTX_DATEN}/ (earlier bases: <date>-strata-xtx-<release>/, release 0.2.14: 2026-11-16-speicher/)" if en else
+             f"gemessen am {XTX_TAG['de']} · /proc, amdgpu mem_info_vram_used, Engine-Log · dicht/KV/Arbeit = belegt − Experten-Cache − Entwurf · das Original ohne Steuervektor (größerer Gesprächs-Cache, 32K der K/V fest im RAM): Engine {z(fb['strata_rss_gib'], sp)}, verfügbar {z(fb['ram_available_gib'], sp)}, Experten-Cache {z(fb['expert_cache_gib'], sp)} GiB · Daten: messen/daten/{XTX_DATEN}/ (frühere Basen: <Datum>-strata-xtx-<Version>/, Release 0.2.14: 2026-11-16-speicher/)")
     frei = m["vram_total_gib"] - m["vram_used_gib"]
     return "speicher", titel, (f"Of {z(m['ram_total_gib'], sp)} GiB RAM the Strata engine holds {z(m['strata_rss_gib'], sp)}, NAS services and kernel {z(dienste, sp)}, and {z(m['ram_available_gib'], sp)} stay available; of 24 GiB VRAM the expert cache takes {z(m['expert_cache_gib'], sp)}, the MTP draft {z(m['mtp_gib'], sp)}, everything else {z(rest, sp)}, and {z(frei, sp)} stay free." if en else
                                f"Von {z(m['ram_total_gib'], sp)} GiB RAM hält die Strata-Engine {z(m['strata_rss_gib'], sp)}, NAS-Dienste und Kernel {z(dienste, sp)}, verfügbar bleiben {z(m['ram_available_gib'], sp)}; von 24 GiB VRAM nimmt der Experten-Cache {z(m['expert_cache_gib'], sp)}, der MTP-Entwurf {z(m['mtp_gib'], sp)}, alles Übrige {z(rest, sp)}, frei bleiben {z(frei, sp)}."), s, h
@@ -871,7 +876,7 @@ def dflash2(d, sp):
 
 def betriebsdatei(d, name):
     """Betriebsmessung: die Nachmessung auf Strata 0.2.14 vom 16.11.2026, wo es sie gibt, sonst die Messung vom 15.11.2026."""
-    for ordner in (XTX_DATEN, XTX_VOR, XTX_0217, XTX_0216, "2026-11-16-betrieb"):   # neueste Messung zuerst, auch wenn sie im Vorgängerordner liegt (21.11.2026)
+    for ordner in (XTX_DATEN, XTX_0219, XTX_VOR, XTX_0217, XTX_0216, "2026-11-16-betrieb"):   # neueste Messung zuerst, auch wenn sie im Vorgängerordner liegt (21.11.2026)
         neu = os.path.join(d, ordner, name)
         if os.path.exists(neu):
             return neu
@@ -1408,7 +1413,7 @@ def eigenbau(d, sp):
                                 f"Release {XTX_VER} against my own build strata-xtx: reading at 4K {z(rel['4K'], sp)} against {z(xtx['4K'], sp)} tokens per second, at 16K {z(rel['16K'], sp)} against {z(xtx['16K'], sp)}, at 32K {z(rel['32K'], sp)} against {z(xtx['32K'], sp)}; a prompt of 250,000 tokens takes {z(da['250K'][0], sp, 0)} against {z(da['250K'][1], sp, 0)} seconds; decode in chat {z(rel['chat'], sp)} against {z(xtx['chat'], sp)}, in the agent run {z(rel['agent'], sp)} against {z(xtx['agent'], sp)} tokens per second."), s, h
 
 
-BREMSE = "read-brake-0.2.19.json"   # im Ordner XTX_DATEN (22.11.2026): Strata 0.2.19 halbiert ohne Abhilfe das Einlesen auf der iDX
+BREMSE = "read-brake-0.2.19.json"   # im Ordner XTX_0219 (22.11.2026): Strata 0.2.19 halbiert ohne Abhilfe das Einlesen auf der iDX
 
 
 def bremse(d, sp):
@@ -1416,18 +1421,18 @@ def bremse(d, sp):
     das Release mit Stratas eigenem Schalter und xtx-3 nebeneinander, Original und unzensierte Fassung."""
     en = sp == "en"
     T = lambda de, en_: en_ if en else de
-    b = json.load(open(os.path.join(d, XTX_DATEN, BREMSE), encoding="utf-8"))
+    b = json.load(open(os.path.join(d, XTX_0219, BREMSE), encoding="utf-8"))
     stk = b["prompt_chunk_tokens"]
     reihen = (("operation_0218", STAHL, "leer", T("bisher: 0.2.18-xtx2", "until now: 0.2.18-xtx2")),
               ("xtx2_0219", TON["rose"][1], "balken", T("0.2.19 mit altem Patch: Wächter bremst", "0.2.19 with the old patch: guard brakes")),
               ("release_0219_chunk1", STAHL, "balken", T("Release 0.2.19 + Stratas Schalter", "release 0.2.19 + Strata's switch")),
-              ("xtx3_0219", ACC, "balken", T(f"{XTX_NAME}: Bremse gelöst", f"{XTX_NAME}: brake released")))
+              ("xtx3_0219", ACC, "balken", T(f"{"0.2.19-xtx3"}: Bremse gelöst", f"{"0.2.19-xtx3"}: brake released")))
     s = Svg()
     x3, alt = b["steered"]["xtx3_0219"], b["steered"]["operation_0218"]
-    titel = T(f"0.2.19 bremst das Einlesen, {XTX_NAME} löst die Bremse und liest lange Prompts {z((x3['128K'] / alt['128K'] - 1) * 100, sp, 0)} % schneller",
-              f"0.2.19 slows prompt reading, {XTX_NAME} releases the brake and reads long prompts {z((x3['128K'] / alt['128K'] - 1) * 100, sp, 0)} % faster")
-    kopf(s, T(f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.19 · RAM-Wächter #2090 · {XTX_TAG['de']}",
-              f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.19 · RAM guard #2090 · {XTX_TAG['en']}"), titel)
+    titel = T(f"0.2.19 bremst das Einlesen, {"0.2.19-xtx3"} löst die Bremse und liest lange Prompts {z((x3['128K'] / alt['128K'] - 1) * 100, sp, 0)} % schneller",
+              f"0.2.19 slows prompt reading, {"0.2.19-xtx3"} releases the brake and reads long prompts {z((x3['128K'] / alt['128K'] - 1) * 100, sp, 0)} % faster")
+    kopf(s, T(f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.19 · RAM-Wächter #2090 · {'22.11.2026'}",
+              f"Flash-Next 125B IQ3_XXS · RX 7900 XTX · Strata 0.2.19 · RAM guard #2090 · {'22 Nov 2026'}"), titel)
     felder = ((L, 470, "faber", ("16K", "58K"), T("A · Original · Einlesen · Token/s", "A · Original · prompt reading · tokens/s")),
               (530, R, "steered", ("58K", "128K"), T("B · Unzensierte Fassung · Einlesen · Token/s", "B · Uncensored version · prompt reading · tokens/s")))
     for x0, x1, modell, stufen, was in felder:
@@ -1455,11 +1460,11 @@ def bremse(d, sp):
                           f"As shipped, 0.2.19 reads 58K here at {z(f['release_0219']['58K'], sp, 0)} tokens/s."), 13, INK, "serif", kursiv=True)
     g = b["ram_guard"]["faber"]
     h = fuss(s, 440, tuple((art, farbe, name) for _, farbe, art, name in reihen),
-             T(f"Ursache: Stratas neue RDNA3-Stückregel schaltet den RAM-Wächter #2090 ein · er nimmt größere Prompt-Stücke nur, wenn Leihbedarf + 6 GiB frei sind · mit dem Original waren {z(g['available_mib'] / 1024, sp, 1)} GiB frei, 32K-Stücke brauchen {z(g['extra_mib_32768'] / 1024, sp, 1)} GiB mehr → 8K-Stücke · „0.2.19 mit altem Patch“: der bisherige Patch xtx2 unverändert auf 0.2.19 (wie geliefert liest 0.2.19 genauso langsam) · Schalter: STRATA_GFX11_CHUNK=1 (Stratas eigener) · {XTX_NAME} trägt ihn in seiner Tabelle · Prozent: Abstand zu 0.2.18-xtx2 · das Release liest auch damit langsamer (Puffer 96 statt 384 Plätze) · kleinster freier RAM wie auf 0.2.18 · leise Karteneinstellung, versteckte Zahl jedes Mal gefunden · Median aus 2 × 2 Läufen, Release + Schalter: ein Lauf · Daten: messen/daten/{XTX_DATEN}/{BREMSE}",
-               f"Cause: Strata's new RDNA3 chunk rule turns on the RAM guard #2090 · it takes bigger prompt chunks only when the cache loan + 6 GiB is available · with the original {z(g['available_mib'] / 1024, sp, 1)} GiB were available, 32K chunks need {z(g['extra_mib_32768'] / 1024, sp, 1)} GiB more → 8K chunks · '0.2.19 with the old patch': my previous patch xtx2 unchanged on 0.2.19 (0.2.19 as shipped reads as slowly) · switch: STRATA_GFX11_CHUNK=1 (Strata's own) · {XTX_NAME} carries it in its table · per cent: difference to 0.2.18-xtx2 · the release still reads slower with it (ring 96 instead of 384 slots) · lowest available RAM as on 0.2.18 · quiet card setting, hidden number found every time · median of 2 × 2 runs, release + switch: one run · data: messen/daten/{XTX_DATEN}/{BREMSE}"))
+             T(f"Ursache: Stratas neue RDNA3-Stückregel schaltet den RAM-Wächter #2090 ein · er nimmt größere Prompt-Stücke nur, wenn Leihbedarf + 6 GiB frei sind · mit dem Original waren {z(g['available_mib'] / 1024, sp, 1)} GiB frei, 32K-Stücke brauchen {z(g['extra_mib_32768'] / 1024, sp, 1)} GiB mehr → 8K-Stücke · „0.2.19 mit altem Patch“: der bisherige Patch xtx2 unverändert auf 0.2.19 (wie geliefert liest 0.2.19 genauso langsam) · Schalter: STRATA_GFX11_CHUNK=1 (Stratas eigener) · {"0.2.19-xtx3"} trägt ihn in seiner Tabelle · Prozent: Abstand zu 0.2.18-xtx2 · das Release liest auch damit langsamer (Puffer 96 statt 384 Plätze) · kleinster freier RAM wie auf 0.2.18 · leise Karteneinstellung, versteckte Zahl jedes Mal gefunden · Median aus 2 × 2 Läufen, Release + Schalter: ein Lauf · Daten: messen/daten/{XTX_0219}/{BREMSE}",
+               f"Cause: Strata's new RDNA3 chunk rule turns on the RAM guard #2090 · it takes bigger prompt chunks only when the cache loan + 6 GiB is available · with the original {z(g['available_mib'] / 1024, sp, 1)} GiB were available, 32K chunks need {z(g['extra_mib_32768'] / 1024, sp, 1)} GiB more → 8K chunks · '0.2.19 with the old patch': my previous patch xtx2 unchanged on 0.2.19 (0.2.19 as shipped reads as slowly) · switch: STRATA_GFX11_CHUNK=1 (Strata's own) · {"0.2.19-xtx3"} carries it in its table · per cent: difference to 0.2.18-xtx2 · the release still reads slower with it (ring 96 instead of 384 slots) · lowest available RAM as on 0.2.18 · quiet card setting, hidden number found every time · median of 2 × 2 runs, release + switch: one run · data: messen/daten/{XTX_0219}/{BREMSE}"))
     r_ = b["steered"]
-    return "bremse", titel, T(f"Strata 0.2.19 auf einer RX 7900 XTX in einem NAS mit 64 GB RAM: Ein RAM-Wächter hält die Prompt-Stücke klein. Die unzensierte Fassung liest 128K mit {z(r_['xtx2_0219']['128K'], sp, 0)} statt {z(alt['128K'], sp, 0)} Token/s; mit dem Ableger {XTX_NAME} sind es {z(x3['128K'], sp, 0)}, mit dem Release und Stratas eigenem Schalter {z(r_['release_0219_chunk1']['128K'], sp, 0)}.",
-                              f"Strata 0.2.19 on an RX 7900 XTX in a NAS with 64 GB of RAM: a RAM guard keeps the prompt chunks small. The uncensored version reads 128K at {z(r_['xtx2_0219']['128K'], sp, 0)} instead of {z(alt['128K'], sp, 0)} tokens/s; with my build {XTX_NAME} it is {z(x3['128K'], sp, 0)}, with the release and Strata's own switch {z(r_['release_0219_chunk1']['128K'], sp, 0)}."), s, h
+    return "bremse", titel, T(f"Strata 0.2.19 auf einer RX 7900 XTX in einem NAS mit 64 GB RAM: Ein RAM-Wächter hält die Prompt-Stücke klein. Die unzensierte Fassung liest 128K mit {z(r_['xtx2_0219']['128K'], sp, 0)} statt {z(alt['128K'], sp, 0)} Token/s; mit dem Ableger {"0.2.19-xtx3"} sind es {z(x3['128K'], sp, 0)}, mit dem Release und Stratas eigenem Schalter {z(r_['release_0219_chunk1']['128K'], sp, 0)}.",
+                              f"Strata 0.2.19 on an RX 7900 XTX in a NAS with 64 GB of RAM: a RAM guard keeps the prompt chunks small. The uncensored version reads 128K at {z(r_['xtx2_0219']['128K'], sp, 0)} instead of {z(alt['128K'], sp, 0)} tokens/s; with my build {"0.2.19-xtx3"} it is {z(x3['128K'], sp, 0)}, with the release and Strata's own switch {z(r_['release_0219_chunk1']['128K'], sp, 0)}."), s, h
 
 
 def schalter_lang(d, sp):

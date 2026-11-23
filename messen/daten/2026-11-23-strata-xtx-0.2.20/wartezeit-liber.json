@@ -1,0 +1,88 @@
+{
+ "model": "liber",
+ "beginn": "2026-11-23T12:48:55",
+ "faelle": {
+  "kurze_frage": [
+   {
+    "prompt_token": 34,
+    "erste_anfrage_s": 0.36,
+    "folgefrage_s": 0.24,
+    "folge_prompt_token": 62
+   },
+   {
+    "prompt_token": 32,
+    "erste_anfrage_s": 0.26,
+    "folgefrage_s": 0.17,
+    "folge_prompt_token": 60
+   },
+   {
+    "prompt_token": 32,
+    "erste_anfrage_s": 0.28,
+    "folgefrage_s": 0.19,
+    "folge_prompt_token": 60
+   }
+  ],
+  "eine_seite": [
+   {
+    "prompt_token": 694,
+    "erste_anfrage_s": 1.66,
+    "folgefrage_s": 0.19,
+    "folge_prompt_token": 732
+   },
+   {
+    "prompt_token": 651,
+    "erste_anfrage_s": 1.5,
+    "folgefrage_s": 0.17,
+    "folge_prompt_token": 687
+   },
+   {
+    "prompt_token": 665,
+    "erste_anfrage_s": 1.46,
+    "folgefrage_s": 0.18,
+    "folge_prompt_token": 701
+   }
+  ],
+  "artikel_10_seiten": [
+   {
+    "prompt_token": 7092,
+    "erste_anfrage_s": 6.13,
+    "folgefrage_s": 0.19,
+    "folge_prompt_token": 7130
+   },
+   {
+    "prompt_token": 6864,
+    "erste_anfrage_s": 5.65,
+    "folgefrage_s": 0.22,
+    "folge_prompt_token": 6900
+   },
+   {
+    "prompt_token": 6871,
+    "erste_anfrage_s": 5.57,
+    "folgefrage_s": 0.2,
+    "folge_prompt_token": 6907
+   }
+  ],
+  "bericht_50_seiten": [
+   {
+    "prompt_token": 34999,
+    "erste_anfrage_s": 12.59,
+    "folgefrage_s": 0.21,
+    "folge_prompt_token": 35037
+   },
+   {
+    "prompt_token": 34960,
+    "erste_anfrage_s": 12.88,
+    "folgefrage_s": 0.23,
+    "folge_prompt_token": 34998
+   }
+  ],
+  "buch_300_seiten": [
+   {
+    "prompt_token": 191891,
+    "erste_anfrage_s": 55.25,
+    "folgefrage_s": 0.26,
+    "folge_prompt_token": 191929
+   }
+  ]
+ }
+}

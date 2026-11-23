@@ -1,0 +1,26 @@
+{
+ "model": "liber",
+ "beginn": "2026-11-23T12:41:50",
+ "laeufe": [
+  {
+   "platte_kalt": true,
+   "erste_antwort_s": 21.18
+  },
+  {
+   "platte_kalt": false,
+   "erste_antwort_s": 19.48
+  },
+  {
+   "platte_kalt": false,
+   "erste_antwort_s": 20.49
+  },
+  {
+   "platte_kalt": false,
+   "erste_antwort_s": 23.49
+  },
+  {
+   "platte_kalt": false,
+   "erste_antwort_s": 20.48
+  }
+ ]
+}

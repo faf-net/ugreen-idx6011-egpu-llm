@@ -1,0 +1,277 @@
+{
+ "model": "faber",
+ "beginn": "2026-11-23T12:50:44",
+ "phasen": {
+  "allein": {
+   "A": {
+    "fragen": 5,
+    "warten_median_s": 0.22,
+    "warten_max_s": 0.37,
+    "tps_median": 71.8,
+    "gesamt_median_s": 2.4,
+    "summe_s": 17.7
+   },
+   "laeufe": [
+    {
+     "erste_antwort_s": 0.37,
+     "gesamt_s": 6.15,
+     "prompt_token": 36,
+     "neu_token": 400,
+     "schreib_s": 5.78,
+     "person": "A",
+     "frage": 1,
+     "beginn_s": 1795434666.7,
+     "tps": 69.2
+    },
+    {
+     "erste_antwort_s": 0.22,
+     "gesamt_s": 5.79,
+     "prompt_token": 465,
+     "neu_token": 400,
+     "schreib_s": 5.57,
+     "person": "A",
+     "frage": 2,
+     "beginn_s": 1795434672.9,
+     "tps": 71.8
+    },
+    {
+     "erste_antwort_s": 0.22,
+     "gesamt_s": 1.51,
+     "prompt_token": 893,
+     "neu_token": 109,
+     "schreib_s": 1.29,
+     "person": "A",
+     "frage": 3,
+     "beginn_s": 1795434678.7,
+     "tps": 84.5
+    },
+    {
+     "erste_antwort_s": 0.22,
+     "gesamt_s": 2.38,
+     "prompt_token": 1032,
+     "neu_token": 159,
+     "schreib_s": 2.16,
+     "person": "A",
+     "frage": 4,
+     "beginn_s": 1795434680.2,
+     "tps": 73.6
+    },
+    {
+     "erste_antwort_s": 0.22,
+     "gesamt_s": 1.88,
+     "prompt_token": 1218,
+     "neu_token": 115,
+     "schreib_s": 1.66,
+     "person": "A",
+     "frage": 5,
+     "beginn_s": 1795434682.6,
+     "tps": 69.3
+    }
+   ]
+  },
+  "gleichzeitig": {
+   "A": {
+    "fragen": 5,
+    "warten_median_s": 5.81,
+    "warten_max_s": 7.02,
+    "tps_median": 71.9,
+    "gesamt_median_s": 9.5,
+    "summe_s": 49.1
+   },
+   "B": {
+    "fragen": 5,
+    "warten_median_s": 7.46,
+    "warten_max_s": 8.02,
+    "tps_median": 76.3,
+    "gesamt_median_s": 9.1,
+    "summe_s": 44.7
+   },
+   "dauer_s": 49.1,
+   "laeufe": [
+    {
+     "erste_antwort_s": 0.32,
+     "gesamt_s": 5.56,
+     "prompt_token": 25,
+     "neu_token": 400,
+     "schreib_s": 5.24,
+     "person": "B",
+     "frage": 1,
+     "beginn_s": 1795434694.5,
+     "tps": 76.3
+    },
+    {
+     "erste_antwort_s": 5.81,
+     "gesamt_s": 11.93,
+     "prompt_token": 36,
+     "neu_token": 400,
+     "schreib_s": 6.12,
+     "person": "A",
+     "frage": 1,
+     "beginn_s": 1795434694.5,
+     "tps": 65.4
+    },
+    {
+     "erste_antwort_s": 7.46,
+     "gesamt_s": 12.23,
+     "prompt_token": 452,
+     "neu_token": 400,
+     "schreib_s": 4.77,
+     "person": "B",
+     "frage": 2,
+     "beginn_s": 1795434700.0,
+     "tps": 83.9
+    },
+    {
+     "erste_antwort_s": 7.02,
+     "gesamt_s": 12.35,
+     "prompt_token": 465,
+     "neu_token": 400,
+     "schreib_s": 5.34,
+     "person": "A",
+     "frage": 2,
+     "beginn_s": 1795434706.4,
+     "tps": 74.9
+    },
+    {
+     "erste_antwort_s": 8.02,
+     "gesamt_s": 9.61,
+     "prompt_token": 882,
+     "neu_token": 132,
+     "schreib_s": 1.59,
+     "person": "B",
+     "frage": 3,
+     "beginn_s": 1795434712.2,
+     "tps": 83.0
+    },
+    {
+     "erste_antwort_s": 4.48,
+     "gesamt_s": 9.46,
+     "prompt_token": 893,
+     "neu_token": 400,
+     "schreib_s": 4.98,
+     "person": "A",
+     "frage": 3,
+     "beginn_s": 1795434718.7,
+     "tps": 80.3
+    },
+    {
+     "erste_antwort_s": 8.0,
+     "gesamt_s": 9.06,
+     "prompt_token": 1038,
+     "neu_token": 69,
+     "schreib_s": 1.05,
+     "person": "B",
+     "frage": 4,
+     "beginn_s": 1795434721.9,
+     "tps": 65.7
+    },
+    {
+     "erste_antwort_s": 4.4,
+     "gesamt_s": 6.62,
+     "prompt_token": 1324,
+     "neu_token": 159,
+     "schreib_s": 2.21,
+     "person": "A",
+     "frage": 4,
+     "beginn_s": 1795434728.2,
+     "tps": 71.9
+    },
+    {
+     "erste_antwort_s": 5.61,
+     "gesamt_s": 8.21,
+     "prompt_token": 1136,
+     "neu_token": 188,
+     "schreib_s": 2.6,
+     "person": "B",
+     "frage": 5,
+     "beginn_s": 1795434730.9,
+     "tps": 72.3
+    },
+    {
+     "erste_antwort_s": 6.23,
+     "gesamt_s": 8.75,
+     "prompt_token": 1510,
+     "neu_token": 176,
+     "schreib_s": 2.52,
+     "person": "A",
+     "frage": 5,
+     "beginn_s": 1795434734.8,
+     "tps": 69.8
+    }
+   ]
+  },
+  "wechsel": {
+   "warten_s": [
+    0.25,
+    18.61,
+    23.0,
+    19.1,
+    21.54,
+    18.9
+   ],
+   "warten_median_s": 19.1,
+   "laeufe": [
+    {
+     "erste_antwort_s": 0.25,
+     "gesamt_s": 2.97,
+     "prompt_token": 36,
+     "neu_token": 200,
+     "schreib_s": 2.72,
+     "person": "A",
+     "model": "faber",
+     "runde": 1
+    },
+    {
+     "erste_antwort_s": 18.61,
+     "gesamt_s": 21.4,
+     "prompt_token": 25,
+     "neu_token": 200,
+     "schreib_s": 2.79,
+     "person": "B",
+     "model": "velox",
+     "runde": 1
+    },
+    {
+     "erste_antwort_s": 23.0,
+     "gesamt_s": 26.29,
+     "prompt_token": 27,
+     "neu_token": 200,
+     "schreib_s": 3.29,
+     "person": "A",
+     "model": "faber",
+     "runde": 2
+    },
+    {
+     "erste_antwort_s": 19.1,
+     "gesamt_s": 21.8,
+     "prompt_token": 25,
+     "neu_token": 200,
+     "schreib_s": 2.7,
+     "person": "B",
+     "model": "velox",
+     "runde": 2
+    },
+    {
+     "erste_antwort_s": 21.54,
+     "gesamt_s": 24.67,
+     "prompt_token": 26,
+     "neu_token": 200,
+     "schreib_s": 3.13,
+     "person": "A",
+     "model": "faber",
+     "runde": 3
+    },
+    {
+     "erste_antwort_s": 18.9,
+     "gesamt_s": 21.73,
+     "prompt_token": 28,
+     "neu_token": 200,
+     "schreib_s": 2.84,
+     "person": "B",
+     "model": "velox",
+     "runde": 3
+    }
+   ]
+  }
+ }
+}
