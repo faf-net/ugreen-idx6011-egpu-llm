@@ -43,7 +43,7 @@ The 4,675 MiB are already the halved loan. 4,675 + 3,072 = 7,747 MiB are needed,
 
 ## Over the context depth
 
-| Prompt tokens | 1,000 | 4,076 | 16,192 | 64,967 | 130,144 | 247,791 |
+| Prompt tokens | 995 | 4,077 | 16,254 | 65,025 | 130,027 | 248,054 |
 |---|---:|---:|---:|---:|---:|---:|
 | plain: prompt tokens/s | 756 | 1,531 | 2,538 | 3,451 | 3,411 | 3,312 |
 | steered: prompt tokens/s | 740 | 1,501 | 2,388 | 3,474 | 3,463 | 3,356 |
