@@ -6,6 +6,24 @@ In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modell
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
+## Nachtrag 24.11.2026: Strata 0.2.21 holt beim Einlesen auf (Abhilfe für #6687), der Eigenbau läuft darauf unverändert als `0.2.21-xtx3`
+
+Engine und Control 0.1.67. Ohne fest gehaltene Experten zählt der RAM-Wächter aus 0.2.19 jetzt nur noch die Hälfte des Leihspeichers und hält 3 statt 6 GiB Reserve ([#6687](https://github.com/Niko1221/Strata/issues/6687)). Auf diesem NAS liest das unveränderte Release damit in 16K- statt 8K-Stücken. 32K-Stücke verfehlt es knapp: Gebraucht werden 4.675 MiB Leihe plus 3.072 MiB Reserve, frei waren 7.688 MiB (im zweiten Lauf 7.736), es fehlten 59 (11) MiB.
+
+| Median | Release 0.2.21 | Vergleich |
+|---|---:|---:|
+| Paare im Wechsel, dieselbe Sitzung: Schreiben, Token/s | 65,5 | 66,0 (Release 0.2.20) |
+| `strata_bench.py --long`, 3 Läufe im Wechsel: Prompt 4K / 16K / 32K, Token/s | 843 / 1.980 / 2.217 | **1.625 / 2.511 / 3.049** (`0.2.21-xtx3`); Release 0.2.20: 818 / 1.503 / 1.475 |
+| dieselben Läufe: Schreiben Chat / Agent, Token/s | 72,9 / 76,8 | 74,9 / **85,4** (`0.2.21-xtx3`) |
+| eine Runde mit voller Leistung: Prompt 4K / 16K / 32K | 784 / 1.996 / 2.326 | 1.604 / 2.482 / 3.056 |
+| Prompt mit 128.000 / 250.000 Token, versteckte Zahl in der Mitte | 47 / 103 s | 36 / 77 s (`faber` und `liber`); Release 0.2.20: 73 / 175 s |
+| Aufgabensatz, bestanden von 102 | nicht bewertet | `faber` 96, `liber` 97 (`0.2.21-xtx3`) |
+
+- **Der Patch ließ sich unverändert anwenden.** Gegen den laufenden Bau (`0.2.20-xtx3`) liest der neue gleich schnell (99 bis 101 %), schreibt gleich schnell, die Stückgröße im Engine-Log ist 32.768. Mit abgeschalteter Tabelle liest er wie das Release (16K 2.001, 58K 2.054 Token/s in 16K-Stücken; auf 0.2.20 waren es 1.454 und 1.427 in 8K-Stücken). Aufgabensatz 96 und 97: Die zwei Aufgaben, die `faber` gegenüber dem 23.11. verlor (ein Tippfehler im erzeugten Code, die Frage nach einem erfundenen Buch), kippen zwischen Läufen; `liber` verlor das Buch und gewann eine Werkzeugaufgabe. 250.000 Token in 73,5 bis 75,1 s, Selbstrettung mit `liber` geprüft, 90 Minuten Dauerlast mit `liber` ohne Fehler (1.316 Anfragen, 188 von 188 versteckten Zahlen, verfügbarer RAM nie unter 5,5 GiB). In Betrieb seit 24.11., 20:38; Abnahme bestanden, `liber` zuerst.
+- **Der Vorsprung schrumpft, bleibt aber.** Bei 32K liest der Eigenbau 1,4-mal, bei 4K 1,9-mal so schnell wie das Release. Den Rest tragen die übrigen 26 Schalter der Tabelle, nicht die Stückgröße.
+- **Folgeanfragen gegen die Stream-Schwelle.** In #6687 halbierte ein anderer Nutzer (RX 7800 XT) mit der Schwelle 1.024 statt 3.072 die Wartezeit auf eine Folgeanfrage mit 1.600 neuen Token. Mein Bau streamt ab 4.095 Token (Grenze des CPU-Anteils, sie hat Vorrang vor `STRATA_PREFILL_STREAM_MIN`). Gemessen mit 4K- und 32K-Vorspann aus dem Gesprächs-Cache und 500 / 1.600 / 3.000 neuen Token, Grenze 4.096 / 2.048 / 1.024, beide Modelle, zwei Runden leise und eine max: Mit 4.096 wartet `liber` 1,5 bis 3,4 s; mit 2.048 bei 3.000 neuen Token 5,3 statt 3,4 s, mit 1.024 schon bei 1.600 neuen Token 5,2 statt 2,6 s. Die Schwelle hatte sich im Log tatsächlich verschoben (1023), der Vorspann kam aus dem Cache, 108 von 108 versteckten Zahlen gefunden. Bei einem 125B-Modell mit Experten im RAM kostet der gestreamte Weg pauschal rund 5 s. Die Grenze bleibt bei 4.096.
+- Daten: [`messen/daten/2026-11-24-strata-xtx-0.2.21/`](../messen/daten/2026-11-24-strata-xtx-0.2.21/) (README darin).
+
 ## Nachtrag 23.11.2026: Strata 0.2.20 ändert hier nichts, der Eigenbau läuft darauf unverändert als `0.2.20-xtx3`
 
 Engine und Control 0.1.66. Für Flash-Next auf dieser Karte bringt das Release keine Änderung. Der RAM-Wächter aus 0.2.19 ist noch da: Das unveränderte Release liest in 8K-Stücken (die Logzeilen von 0.2.18, 0.2.19 und 0.2.20 stehen in [#6687](https://github.com/Niko1221/Strata/issues/6687)). Neu für Hy4-Flash: Seine Engine folgt jetzt der RAM-Aufteilung, die Stratas Setup schreibt, damit ist [#6556](https://github.com/Niko1221/Strata/issues/6556) behoben: Mit genau den Angaben des Setups schreibt es mit 12,7 bis 13,4 statt 0,3 bis 0,6 Token/s, bei mindestens 9,5 GiB verfügbarem RAM und ohne Auslagerung ([`messen/daten/2026-11-23-hy4-0.2.20/`](../messen/daten/2026-11-23-hy4-0.2.20/README.de.md)).

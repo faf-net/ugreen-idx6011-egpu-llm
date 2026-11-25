@@ -14,6 +14,7 @@ Nur Standardbibliothek; für --png zusätzlich playwright mit Chromium. Die Schr
 """
 import html, json, math, os, statistics, sys
 from collections import defaultdict
+from decimal import Decimal, ROUND_HALF_UP
 
 W, L, R = 960, 72, 928
 PAPER, INK, MUTED, TITLE, BASE = "#efeae1", "#2a2724", "#6a6258", "#171512", "#8b8377"
@@ -31,6 +32,8 @@ def z(x, sp, nk=None):
     """Zahl in der Schreibweise der Sprache; ohne nk: ab 100 ganzzahlig, darunter eine Nachkommastelle."""
     if nk is None:
         nk = 0 if abs(x) >= 100 else 1
+    # kaufmännisch runden (102,5 -> 103), damit Diagramm und Text dieselbe Zahl zeigen
+    x = Decimal(repr(float(x))).quantize(Decimal(1).scaleb(-nk), rounding=ROUND_HALF_UP)
     s = f"{x:,.{nk}f}"
     return s.replace(",", "X").replace(".", ",").replace("X", ".") if sp == "de" else s
 
@@ -230,12 +233,13 @@ def standard(pfad):
 
 
 TIEFE_DATEI = "tiefe-20261116.jsonl"   # 16.11.2026, Strata 0.2.14; Oktober (0.1.44.1): tiefe-20261017.jsonl
-TIEFE_XTX = "tiefe-20261123-0.2.20.jsonl"   # 23.11.2026, Eigenbau 0.2.20-xtx3 (Label faber-xtx, liber-xtx, faber-xtx-ohne-mtp); 0.2.19-xtx3: tiefe-20261122-0.2.19.jsonl, 0.2.18-xtx2 am selben Tag: tiefe-20261122.jsonl, 0.2.17: tiefe-20261121.jsonl, 0.2.16: tiefe-20261119.jsonl
-XTX_DATEN = "2026-11-23-strata-xtx-0.2.20"    # Nachmessung im Betrieb auf dem Eigenbau 0.2.20-xtx3
+TIEFE_XTX = "tiefe-20261124-0.2.21.jsonl"   # 24.11.2026, Eigenbau 0.2.21-xtx3 (Label faber-xtx, liber-xtx, faber-xtx-ohne-mtp); 0.2.20-xtx3: tiefe-20261123-0.2.20.jsonl, 0.2.19-xtx3: tiefe-20261122-0.2.19.jsonl, 0.2.18-xtx2 am selben Tag: tiefe-20261122.jsonl, 0.2.17: tiefe-20261121.jsonl, 0.2.16: tiefe-20261119.jsonl
+XTX_DATEN = "2026-11-24-strata-xtx-0.2.21"    # Nachmessung im Betrieb auf dem Eigenbau 0.2.21-xtx3
+XTX_0220 = "2026-11-23-strata-xtx-0.2.20"     # 0.2.20-xtx3 (23.11.2026)
 XTX_0219 = "2026-11-22-strata-xtx-0.2.19"     # 0.2.19-xtx3 (Bremse #2090, Bremsendiagramm)
-XTX_VER = "0.2.20"                     # Strata-Version, auf der der Eigenbau im Betrieb läuft
-XTX_NAME = "0.2.20-xtx3"               # Name des Baus im Betrieb (Schema <Release>-xtx<Patchstand> seit 22.11.2026)
-XTX_TAG = {"de": "23.11.2026", "en": "23 Nov 2026"}   # Tag der Nachmessung
+XTX_VER = "0.2.21"                     # Strata-Version, auf der der Eigenbau im Betrieb läuft
+XTX_NAME = "0.2.21-xtx3"               # Name des Baus im Betrieb (Schema <Release>-xtx<Patchstand> seit 22.11.2026)
+XTX_TAG = {"de": "24.11.2026", "en": "24 Nov 2026"}   # Tag der Nachmessung
 XTX_VOR = "2026-11-22-strata-xtx-0.2.18"      # Nachmessung auf der Basis 0.2.18 (0.2.18-xtx2), zum Nachschlagen
 XTX_0217 = "2026-11-21-strata-xtx-0.2.17"     # Nachmessung auf der Basis 0.2.17 (0.2.17-xtx2)
 XTX_0216 = "2026-11-19-strata-xtx-0.2.16"     # Nachmessung auf der Basis 0.2.16 (davor 2026-11-18-strata-xtx auf 0.2.15)
@@ -379,7 +383,8 @@ VERSIONEN = [("0.2.0β", "2026-10-19/strata-0.2.0-beta/strata-bench-results.json
              ("0.2.17", [f"{XTX_0217}/strata-bench-alternating/round{n}-release-0.2.17.json" for n in (1, 2, 3)]),   # dasselbe am 21.11.
              ("0.2.18", [f"{XTX_VOR}/strata-bench-alternating/round{n}-release-0.2.18.json" for n in (1, 2, 3)]),   # und am 22.11. mittags
              ("0.2.19", [f"{XTX_0219}/strata-bench-alternating/round{n}-release-0.2.19.json" for n in (1, 2, 3)]),   # und am 22.11. abends
-             ("0.2.20", [f"{XTX_DATEN}/strata-bench-alternating/round{n}-release-0.2.20.json" for n in (1, 2, 3)])]   # und am 23.11. mittags
+             ("0.2.20", [f"{XTX_0220}/strata-bench-alternating/round{n}-release-0.2.20.json" for n in (1, 2, 3)]),   # und am 23.11. mittags
+             ("0.2.21", [f"{XTX_DATEN}/strata-bench-alternating/round{n}-release-0.2.21.json" for n in (1, 2, 3)])]   # und am 24.11. abends
 XTX_BENCH = [f"{XTX_DATEN}/strata-bench-alternating/round{n}-strata-xtx-{XTX_VER}.json" for n in (1, 2, 3)]            # der Eigenbau auf derselben Basis
 IN_BETRIEB, GEPRUEFT = "0.2.14", XTX_VER   # letztes Release im Betrieb · Basis des Eigenbaus
 # Der Eigenbau auf jeder Basis, die mit strata_bench im Wechsel gemessen ist (21.11.2026). 0.2.15 bewusst nicht: dort gibt es nur Tiefenreihe
@@ -388,6 +393,7 @@ XTX_VERLAUF = [("0.2.16", [f"{XTX_0216}/strata-bench-alternating/round{n}-strata
                ("0.2.17", [f"{XTX_0217}/strata-bench-alternating/round{n}-strata-xtx-0.2.17.json" for n in (1, 2, 3)], None),
                ("0.2.18", [f"{XTX_VOR}/strata-bench-alternating/round{n}-strata-xtx-0.2.18.json" for n in (1, 2, 3)], None),
                ("0.2.19", [f"{XTX_0219}/strata-bench-alternating/round{n}-strata-xtx-0.2.19.json" for n in (1, 2, 3)], None),
+               ("0.2.20", [f"{XTX_0220}/strata-bench-alternating/round{n}-strata-xtx-0.2.20.json" for n in (1, 2, 3)], None),
                (XTX_VER, XTX_BENCH, None)]
 
 
@@ -409,8 +415,8 @@ def versionen(d, sp):
     verlauf = [(namen.index(v), *xtx_basis(q, o)) for v, q, o in XTX_VERLAUF if v in namen]
     n = len(werte)
     s = Svg()
-    zahlwort = {8: ("Eight", "Acht"), 9: ("Nine", "Neun"), 10: ("Ten", "Zehn"), 11: ("Eleven", "Elf"), 12: ("Twelve", "Zwölf"), 13: ("Thirteen", "Dreizehn"), 14: ("Fourteen", "Vierzehn"), 15: ("Fifteen", "Fünfzehn")}.get(n, (str(n), str(n)))
-    titel = f"{zahlwort[0]} Strata releases on the same card, and my own build reads prompts about twice as fast" if en else f"{zahlwort[1]} Strata-Versionen auf derselben Karte, und der Eigenbau liest Prompts etwa doppelt so schnell"
+    zahlwort = {8: ("Eight", "Acht"), 9: ("Nine", "Neun"), 10: ("Ten", "Zehn"), 11: ("Eleven", "Elf"), 12: ("Twelve", "Zwölf"), 13: ("Thirteen", "Dreizehn"), 14: ("Fourteen", "Vierzehn"), 15: ("Fifteen", "Fünfzehn"), 16: ("Sixteen", "Sechzehn"), 17: ("Seventeen", "Siebzehn")}.get(n, (str(n), str(n)))
+    titel = f"{zahlwort[0]} Strata releases on the same card, and my own build reads prompts 1.3 to 1.9 times as fast" if en else f"{zahlwort[1]} Strata-Versionen auf derselben Karte, der Eigenbau liest 1,3- bis 1,9-mal so schnell"
     kopf(s, "Flash-Next 125B IQ3_XXS · RX 7900 XTX · tools/strata_bench.py --long", titel)
     felder = ((L, 456, (("agent", STAHL, True, "agent" if en else "Agent"), ("chat", ACC, False, "chat" if en else "Chat")), 100, 20,
                "A · Decode · tokens/s" if en else "A · Schreiben · Token/s", "median per release · higher is faster" if en else "Median je Version · höher ist schneller", True),
@@ -460,8 +466,8 @@ def versionen(d, sp):
             s.text(X(n - 1) + 12, p.Y(werte[-1]["4K"]) + 3, z(werte[-1]["4K"], sp), 8.5, ACC, "mono")
     s.text(L + 24, 344, "0.2.1's worker plan for hybrid CPUs lifted decode." if en else "Der Worker-Plan von 0.2.1 hob das Schreibtempo.", 15, INK, "serif", kursiv=True)
     h = fuss(s, 424, (("linie", STAHL, "Strata releases, unchanged" if en else "Strata-Releases, unverändert"), ("raute", STAHL, f"my own build strata-xtx, 0.2.16-xtx1 to {XTX_NAME}" if en else f"Eigenbau strata-xtx, 0.2.16-xtx1 bis {XTX_NAME}"), ("raute-hohl", TON["rose"][1], "0.2.19 with the old patch (comparison test)" if en else "0.2.19 mit altem Patch (Vergleichstest)")),
-             f"median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, from 0.2.11 with them running · 0.2.14: median of four runs · 0.2.15: three runs alternating with 0.2.14 on 16 Nov · 0.2.16 to 0.2.19: three runs each alternating with my own build on 19, 21, 22 Nov (midday) and 22 Nov (evening) · {XTX_VER} and my own build: three runs each, alternating, on {XTX_TAG['en']} (midday) · open diamond: my previous patch unchanged on 0.2.19, 16K from the comparison test (same order as strata_bench 16K) · releases were in use up to 0.2.14 (until 18 Nov 2026) · since then my own build runs, now as {XTX_NAME} · decode of the own build in the same runs: chat {z(xtx['chat'], sp)}, agent {z(xtx['agent'], sp)} tokens/s · data: messen/daten/<date>-v<release>/strata-bench*/ and <date>-strata-xtx-<release>/strata-bench-alternating/" if en else
-             f"Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, ab 0.2.11 mit laufenden · 0.2.14: Median aus vier Läufen · 0.2.15: drei Läufe im Wechsel mit 0.2.14 am 16.11. · 0.2.16 bis 0.2.19: je drei Läufe im Wechsel mit dem Eigenbau am 19., 21., 22.11. (mittags) und 22.11. (abends) · {XTX_VER} und der Eigenbau: je drei Läufe im Wechsel am {XTX_TAG['de']} (mittags) · hohle Raute: der bisherige Patch unverändert auf 0.2.19, 16K aus dem Vergleichstest (gleiche Größenordnung wie strata_bench 16K) · im Betrieb liefen Releases bis 0.2.14 (bis 18.11.2026) · seitdem läuft der Eigenbau, jetzt als {XTX_NAME} · Schreibtempo des Eigenbaus in denselben Läufen: Chat {z(xtx['chat'], sp)}, Agent {z(xtx['agent'], sp)} Token/s · Daten: messen/daten/<Datum>-v<Version>/strata-bench*/ und <Datum>-strata-xtx-<Version>/strata-bench-alternating/")
+             f"median per run · from 0.2.3.1: --kv-resident 32768 and 9 GiB conversation cache · 0.2.8 measured with the NAS services stopped, from 0.2.11 with them running · 0.2.14: median of four runs · 0.2.15: three runs alternating with 0.2.14 on 16 Nov · 0.2.16 to 0.2.20: three runs each alternating with my own build on 19, 21, 22 Nov (midday), 22 Nov (evening) and 23 Nov · {XTX_VER} and my own build: three runs each, alternating, on {XTX_TAG['en']} (evening) · open diamond: my previous patch unchanged on 0.2.19, 16K from the comparison test (same order as strata_bench 16K) · releases were in use up to 0.2.14 (until 18 Nov 2026) · since then my own build runs, now as {XTX_NAME} · decode of the own build in the same runs: chat {z(xtx['chat'], sp)}, agent {z(xtx['agent'], sp)} tokens/s · data: messen/daten/<date>-v<release>/strata-bench*/ and <date>-strata-xtx-<release>/strata-bench-alternating/" if en else
+             f"Median je Lauf · ab 0.2.3.1: --kv-resident 32768 und 9 GiB Gesprächs-Cache · 0.2.8 mit gestoppten NAS-Diensten gemessen, ab 0.2.11 mit laufenden · 0.2.14: Median aus vier Läufen · 0.2.15: drei Läufe im Wechsel mit 0.2.14 am 16.11. · 0.2.16 bis 0.2.20: je drei Läufe im Wechsel mit dem Eigenbau am 19., 21., 22.11. (mittags), 22.11. (abends) und 23.11. · {XTX_VER} und der Eigenbau: je drei Läufe im Wechsel am {XTX_TAG['de']} (abends) · hohle Raute: der bisherige Patch unverändert auf 0.2.19, 16K aus dem Vergleichstest (gleiche Größenordnung wie strata_bench 16K) · im Betrieb liefen Releases bis 0.2.14 (bis 18.11.2026) · seitdem läuft der Eigenbau, jetzt als {XTX_NAME} · Schreibtempo des Eigenbaus in denselben Läufen: Chat {z(xtx['chat'], sp)}, Agent {z(xtx['agent'], sp)} Token/s · Daten: messen/daten/<Datum>-v<Version>/strata-bench*/ und <Datum>-strata-xtx-<Version>/strata-bench-alternating/")
     return "versionen", titel, (f"Chat and agent decode speed and prompt reading speed at 4K, 16K and 32K for Strata releases 0.2.0-beta to {VERSIONEN[-1][0]} on one RX 7900 XTX; decode stays within its scatter, prompt reading at 16K and 32K rises with 0.2.14 and holds since. My own build strata-xtx on {XTX_VER} reads {z(xtx['4K'], sp)}, {z(xtx['16K'], sp)} and {z(xtx['32K'], sp)} tokens per second at 4K, 16K and 32K." if en else
                                 f"Schreibtempo für Chat und Agent und Einlesetempo bei 4K, 16K und 32K für die Strata-Versionen 0.2.0-beta bis {VERSIONEN[-1][0]} auf einer RX 7900 XTX; das Schreibtempo bleibt in seiner Streuung, das Einlesen bei 16K und 32K steigt mit 0.2.14 und hält seitdem. Der Eigenbau strata-xtx auf {XTX_VER} liest bei 4K, 16K und 32K {z(xtx['4K'], sp)}, {z(xtx['16K'], sp)} und {z(xtx['32K'], sp)} Token je Sekunde."), s, h
 
@@ -876,7 +882,7 @@ def dflash2(d, sp):
 
 def betriebsdatei(d, name):
     """Betriebsmessung: die Nachmessung auf Strata 0.2.14 vom 16.11.2026, wo es sie gibt, sonst die Messung vom 15.11.2026."""
-    for ordner in (XTX_DATEN, XTX_0219, XTX_VOR, XTX_0217, XTX_0216, "2026-11-16-betrieb"):   # neueste Messung zuerst, auch wenn sie im Vorgängerordner liegt (21.11.2026)
+    for ordner in (XTX_DATEN, XTX_0220, XTX_0219, XTX_VOR, XTX_0217, XTX_0216, "2026-11-16-betrieb"):   # neueste Messung zuerst, auch wenn sie im Vorgängerordner liegt (21.11.2026)
         neu = os.path.join(d, ordner, name)
         if os.path.exists(neu):
             return neu

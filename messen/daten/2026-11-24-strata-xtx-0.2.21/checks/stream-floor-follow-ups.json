@@ -1,0 +1,1202 @@
+{
+ "f-liber-ref": [
+  {
+   "ok": true,
+   "schreiben": 60.1,
+   "frisch4K": 706.1,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.74,
+   "4K_n500": {
+    "s": 1.582,
+    "prompt_ms": 1458.8,
+    "gelesen": 559,
+    "wieder": 3985,
+    "gesamt": 4544,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.43,
+   "4K_n1600": {
+    "s": 2.589,
+    "prompt_ms": 2476.7,
+    "gelesen": 1641,
+    "wieder": 3986,
+    "gesamt": 5627,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.35,
+   "4K_n3000": {
+    "s": 3.407,
+    "prompt_ms": 3299.8,
+    "gelesen": 3025,
+    "wieder": 3986,
+    "gesamt": 7011,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.43,
+   "32K_n500": {
+    "s": 1.456,
+    "prompt_ms": 1350.3,
+    "gelesen": 558,
+    "wieder": 32106,
+    "gesamt": 32664,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.43,
+   "32K_n1600": {
+    "s": 2.476,
+    "prompt_ms": 2369.6,
+    "gelesen": 1644,
+    "wieder": 32106,
+    "gesamt": 33750,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 7.06,
+   "32K_n3000": {
+    "s": 3.457,
+    "prompt_ms": 3352.8,
+    "gelesen": 3024,
+    "wieder": 32103,
+    "gesamt": 35127,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.71,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 62.0,
+   "frisch4K": 704.8,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.67,
+   "4K_n500": {
+    "s": 1.621,
+    "prompt_ms": 1482.6,
+    "gelesen": 557,
+    "wieder": 3986,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.39,
+   "4K_n1600": {
+    "s": 2.731,
+    "prompt_ms": 2615.6,
+    "gelesen": 1645,
+    "wieder": 3985,
+    "gesamt": 5630,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.38,
+   "4K_n3000": {
+    "s": 3.417,
+    "prompt_ms": 3308.9,
+    "gelesen": 3024,
+    "wieder": 3986,
+    "gesamt": 7010,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.3,
+   "32K_n500": {
+    "s": 1.549,
+    "prompt_ms": 1429.9,
+    "gelesen": 560,
+    "wieder": 32104,
+    "gesamt": 32664,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.29,
+   "32K_n1600": {
+    "s": 2.56,
+    "prompt_ms": 2446.3,
+    "gelesen": 1643,
+    "wieder": 32105,
+    "gesamt": 33748,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 6.88,
+   "32K_n3000": {
+    "s": 3.351,
+    "prompt_ms": 3239.1,
+    "gelesen": 3024,
+    "wieder": 32106,
+    "gesamt": 35130,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.53,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 46.3,
+   "frisch4K": 779.0,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.5,
+   "4K_n500": {
+    "s": 1.566,
+    "prompt_ms": 1439.1,
+    "gelesen": 561,
+    "wieder": 3984,
+    "gesamt": 4545,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.25,
+   "4K_n1600": {
+    "s": 2.678,
+    "prompt_ms": 2565.2,
+    "gelesen": 1644,
+    "wieder": 3987,
+    "gesamt": 5631,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.22,
+   "4K_n3000": {
+    "s": 3.486,
+    "prompt_ms": 3347.6,
+    "gelesen": 3025,
+    "wieder": 3984,
+    "gesamt": 7009,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.2,
+   "32K_n500": {
+    "s": 1.634,
+    "prompt_ms": 1512.0,
+    "gelesen": 556,
+    "wieder": 32105,
+    "gesamt": 32661,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.22,
+   "32K_n1600": {
+    "s": 2.634,
+    "prompt_ms": 2518.4,
+    "gelesen": 1644,
+    "wieder": 32104,
+    "gesamt": 33748,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 6.98,
+   "32K_n3000": {
+    "s": 3.416,
+    "prompt_ms": 3313.1,
+    "gelesen": 3025,
+    "wieder": 32106,
+    "gesamt": 35131,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.7,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "max"
+  }
+ ],
+ "f-liber-g2048": [
+  {
+   "ok": true,
+   "schreiben": 59.2,
+   "frisch4K": 700.7,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.67,
+   "4K_n500": {
+    "s": 1.624,
+    "prompt_ms": 1508.9,
+    "gelesen": 557,
+    "wieder": 3986,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.42,
+   "4K_n1600": {
+    "s": 2.628,
+    "prompt_ms": 2489.5,
+    "gelesen": 1645,
+    "wieder": 3985,
+    "gesamt": 5630,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.3,
+   "4K_n3000": {
+    "s": 5.299,
+    "prompt_ms": 5166.8,
+    "gelesen": 3024,
+    "wieder": 3986,
+    "gesamt": 7010,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.23,
+   "32K_n500": {
+    "s": 1.487,
+    "prompt_ms": 1384.9,
+    "gelesen": 560,
+    "wieder": 32104,
+    "gesamt": 32664,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.23,
+   "32K_n1600": {
+    "s": 2.546,
+    "prompt_ms": 2426.5,
+    "gelesen": 1643,
+    "wieder": 32105,
+    "gesamt": 33748,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 6.85,
+   "32K_n3000": {
+    "s": 5.272,
+    "prompt_ms": 5162.3,
+    "gelesen": 3024,
+    "wieder": 32106,
+    "gesamt": 35130,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.55,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 58.5,
+   "frisch4K": 676.2,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.67,
+   "4K_n500": {
+    "s": 1.606,
+    "prompt_ms": 1482.3,
+    "gelesen": 559,
+    "wieder": 3985,
+    "gesamt": 4544,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.42,
+   "4K_n1600": {
+    "s": 2.619,
+    "prompt_ms": 2500.9,
+    "gelesen": 1641,
+    "wieder": 3986,
+    "gesamt": 5627,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.26,
+   "4K_n3000": {
+    "s": 5.278,
+    "prompt_ms": 5173.7,
+    "gelesen": 3025,
+    "wieder": 3986,
+    "gesamt": 7011,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.2,
+   "32K_n500": {
+    "s": 1.568,
+    "prompt_ms": 1462.4,
+    "gelesen": 558,
+    "wieder": 32106,
+    "gesamt": 32664,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.21,
+   "32K_n1600": {
+    "s": 2.536,
+    "prompt_ms": 2402.5,
+    "gelesen": 1644,
+    "wieder": 32106,
+    "gesamt": 33750,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 7.09,
+   "32K_n3000": {
+    "s": 5.248,
+    "prompt_ms": 5146.3,
+    "gelesen": 3024,
+    "wieder": 32103,
+    "gesamt": 35127,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.7,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 60.7,
+   "frisch4K": 693.8,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.62,
+   "4K_n500": {
+    "s": 1.585,
+    "prompt_ms": 1464.6,
+    "gelesen": 557,
+    "wieder": 3986,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.37,
+   "4K_n1600": {
+    "s": 2.612,
+    "prompt_ms": 2499.0,
+    "gelesen": 1643,
+    "wieder": 3984,
+    "gesamt": 5627,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.33,
+   "4K_n3000": {
+    "s": 5.248,
+    "prompt_ms": 5121.6,
+    "gelesen": 3024,
+    "wieder": 3986,
+    "gesamt": 7010,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.33,
+   "32K_n500": {
+    "s": 1.523,
+    "prompt_ms": 1419.1,
+    "gelesen": 559,
+    "wieder": 32104,
+    "gesamt": 32663,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.29,
+   "32K_n1600": {
+    "s": 2.559,
+    "prompt_ms": 2453.6,
+    "gelesen": 1643,
+    "wieder": 32107,
+    "gesamt": 33750,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 7.04,
+   "32K_n3000": {
+    "s": 5.24,
+    "prompt_ms": 5121.2,
+    "gelesen": 3025,
+    "wieder": 32104,
+    "gesamt": 35129,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.71,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "max"
+  }
+ ],
+ "f-liber-g1024": [
+  {
+   "ok": true,
+   "schreiben": 60.3,
+   "frisch4K": 687.7,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.64,
+   "4K_n500": {
+    "s": 1.578,
+    "prompt_ms": 1456.5,
+    "gelesen": 561,
+    "wieder": 3984,
+    "gesamt": 4545,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.38,
+   "4K_n1600": {
+    "s": 5.154,
+    "prompt_ms": 5039.0,
+    "gelesen": 1644,
+    "wieder": 3987,
+    "gesamt": 5631,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.33,
+   "4K_n3000": {
+    "s": 5.29,
+    "prompt_ms": 5156.6,
+    "gelesen": 3025,
+    "wieder": 3984,
+    "gesamt": 7009,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.31,
+   "32K_n500": {
+    "s": 1.511,
+    "prompt_ms": 1387.3,
+    "gelesen": 556,
+    "wieder": 32105,
+    "gesamt": 32661,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.25,
+   "32K_n1600": {
+    "s": 5.157,
+    "prompt_ms": 5026.8,
+    "gelesen": 1644,
+    "wieder": 32104,
+    "gesamt": 33748,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 7.1,
+   "32K_n3000": {
+    "s": 5.273,
+    "prompt_ms": 5151.9,
+    "gelesen": 3025,
+    "wieder": 32106,
+    "gesamt": 35131,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.69,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 60.4,
+   "frisch4K": 688.0,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.63,
+   "4K_n500": {
+    "s": 1.587,
+    "prompt_ms": 1469.3,
+    "gelesen": 558,
+    "wieder": 3985,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.4,
+   "4K_n1600": {
+    "s": 5.16,
+    "prompt_ms": 5051.2,
+    "gelesen": 1642,
+    "wieder": 3986,
+    "gesamt": 5628,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.35,
+   "4K_n3000": {
+    "s": 5.284,
+    "prompt_ms": 5180.2,
+    "gelesen": 3025,
+    "wieder": 3986,
+    "gesamt": 7011,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.31,
+   "32K_n500": {
+    "s": 1.525,
+    "prompt_ms": 1419.1,
+    "gelesen": 559,
+    "wieder": 32106,
+    "gesamt": 32665,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.29,
+   "32K_n1600": {
+    "s": 5.086,
+    "prompt_ms": 4983.9,
+    "gelesen": 1644,
+    "wieder": 32103,
+    "gesamt": 33747,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 6.93,
+   "32K_n3000": {
+    "s": 5.254,
+    "prompt_ms": 5161.1,
+    "gelesen": 3024,
+    "wieder": 32107,
+    "gesamt": 35131,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.55,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 62.7,
+   "frisch4K": 676.1,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 7.63,
+   "4K_n500": {
+    "s": 1.574,
+    "prompt_ms": 1452.7,
+    "gelesen": 558,
+    "wieder": 3985,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 7.43,
+   "4K_n1600": {
+    "s": 5.136,
+    "prompt_ms": 5020.6,
+    "gelesen": 1642,
+    "wieder": 3986,
+    "gesamt": 5628,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 7.37,
+   "4K_n3000": {
+    "s": 5.256,
+    "prompt_ms": 5154.0,
+    "gelesen": 3025,
+    "wieder": 3986,
+    "gesamt": 7011,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 7.28,
+   "32K_n500": {
+    "s": 1.509,
+    "prompt_ms": 1408.3,
+    "gelesen": 559,
+    "wieder": 32106,
+    "gesamt": 32665,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 7.36,
+   "32K_n1600": {
+    "s": 5.1,
+    "prompt_ms": 4996.1,
+    "gelesen": 1644,
+    "wieder": 32103,
+    "gesamt": 33747,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 6.97,
+   "32K_n3000": {
+    "s": 5.207,
+    "prompt_ms": 5105.6,
+    "gelesen": 3024,
+    "wieder": 32107,
+    "gesamt": 35131,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 6.67,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "max"
+  }
+ ],
+ "f-faber-ref": [
+  {
+   "ok": true,
+   "schreiben": 63.8,
+   "frisch4K": 760.3,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.15,
+   "4K_n500": {
+    "s": 1.455,
+    "prompt_ms": 1352.3,
+    "gelesen": 557,
+    "wieder": 3986,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.88,
+   "4K_n1600": {
+    "s": 2.43,
+    "prompt_ms": 2337.5,
+    "gelesen": 1643,
+    "wieder": 3984,
+    "gesamt": 5627,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.81,
+   "4K_n3000": {
+    "s": 3.234,
+    "prompt_ms": 3126.7,
+    "gelesen": 3024,
+    "wieder": 3986,
+    "gesamt": 7010,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.96,
+   "32K_n500": {
+    "s": 1.463,
+    "prompt_ms": 1353.6,
+    "gelesen": 559,
+    "wieder": 32104,
+    "gesamt": 32663,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.94,
+   "32K_n1600": {
+    "s": 2.45,
+    "prompt_ms": 2341.1,
+    "gelesen": 1643,
+    "wieder": 32107,
+    "gesamt": 33750,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.66,
+   "32K_n3000": {
+    "s": 3.3,
+    "prompt_ms": 3197.6,
+    "gelesen": 3025,
+    "wieder": 32104,
+    "gesamt": 35129,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.3,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 58.1,
+   "frisch4K": 733.2,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.17,
+   "4K_n500": {
+    "s": 1.468,
+    "prompt_ms": 1365.7,
+    "gelesen": 557,
+    "wieder": 3986,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.89,
+   "4K_n1600": {
+    "s": 2.441,
+    "prompt_ms": 2341.8,
+    "gelesen": 1643,
+    "wieder": 3984,
+    "gesamt": 5627,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.84,
+   "4K_n3000": {
+    "s": 3.195,
+    "prompt_ms": 3098.5,
+    "gelesen": 3024,
+    "wieder": 3986,
+    "gesamt": 7010,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.85,
+   "32K_n500": {
+    "s": 1.444,
+    "prompt_ms": 1350.5,
+    "gelesen": 559,
+    "wieder": 32104,
+    "gesamt": 32663,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.86,
+   "32K_n1600": {
+    "s": 2.495,
+    "prompt_ms": 2403.1,
+    "gelesen": 1643,
+    "wieder": 32107,
+    "gesamt": 33750,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.55,
+   "32K_n3000": {
+    "s": 3.359,
+    "prompt_ms": 3253.9,
+    "gelesen": 3025,
+    "wieder": 32104,
+    "gesamt": 35129,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.41,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 62.0,
+   "frisch4K": 708.5,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.11,
+   "4K_n500": {
+    "s": 1.468,
+    "prompt_ms": 1373.6,
+    "gelesen": 559,
+    "wieder": 3985,
+    "gesamt": 4544,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.83,
+   "4K_n1600": {
+    "s": 2.433,
+    "prompt_ms": 2332.8,
+    "gelesen": 1641,
+    "wieder": 3986,
+    "gesamt": 5627,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.8,
+   "4K_n3000": {
+    "s": 3.236,
+    "prompt_ms": 3117.7,
+    "gelesen": 3025,
+    "wieder": 3986,
+    "gesamt": 7011,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.75,
+   "32K_n500": {
+    "s": 1.441,
+    "prompt_ms": 1343.9,
+    "gelesen": 558,
+    "wieder": 32106,
+    "gesamt": 32664,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.78,
+   "32K_n1600": {
+    "s": 2.395,
+    "prompt_ms": 2308.3,
+    "gelesen": 1644,
+    "wieder": 32106,
+    "gesamt": 33750,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.54,
+   "32K_n3000": {
+    "s": 3.308,
+    "prompt_ms": 3212.7,
+    "gelesen": 3024,
+    "wieder": 32103,
+    "gesamt": 35127,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.46,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 4095); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "max"
+  }
+ ],
+ "f-faber-g2048": [
+  {
+   "ok": true,
+   "schreiben": 65.6,
+   "frisch4K": 744.1,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.17,
+   "4K_n500": {
+    "s": 1.429,
+    "prompt_ms": 1332.0,
+    "gelesen": 558,
+    "wieder": 3985,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.91,
+   "4K_n1600": {
+    "s": 2.407,
+    "prompt_ms": 2309.2,
+    "gelesen": 1642,
+    "wieder": 3986,
+    "gesamt": 5628,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.79,
+   "4K_n3000": {
+    "s": 4.903,
+    "prompt_ms": 4807.6,
+    "gelesen": 3025,
+    "wieder": 3986,
+    "gesamt": 7011,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.79,
+   "32K_n500": {
+    "s": 1.467,
+    "prompt_ms": 1368.2,
+    "gelesen": 559,
+    "wieder": 32106,
+    "gesamt": 32665,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.82,
+   "32K_n1600": {
+    "s": 2.431,
+    "prompt_ms": 2342.0,
+    "gelesen": 1644,
+    "wieder": 32103,
+    "gesamt": 33747,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.69,
+   "32K_n3000": {
+    "s": 4.964,
+    "prompt_ms": 4855.8,
+    "gelesen": 3024,
+    "wieder": 32107,
+    "gesamt": 35131,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.41,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 62.8,
+   "frisch4K": 654.9,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.22,
+   "4K_n500": {
+    "s": 1.495,
+    "prompt_ms": 1371.1,
+    "gelesen": 561,
+    "wieder": 3984,
+    "gesamt": 4545,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.95,
+   "4K_n1600": {
+    "s": 2.43,
+    "prompt_ms": 2334.6,
+    "gelesen": 1644,
+    "wieder": 3987,
+    "gesamt": 5631,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.84,
+   "4K_n3000": {
+    "s": 4.898,
+    "prompt_ms": 4790.1,
+    "gelesen": 3025,
+    "wieder": 3984,
+    "gesamt": 7009,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.76,
+   "32K_n500": {
+    "s": 1.47,
+    "prompt_ms": 1369.9,
+    "gelesen": 556,
+    "wieder": 32105,
+    "gesamt": 32661,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.82,
+   "32K_n1600": {
+    "s": 2.528,
+    "prompt_ms": 2413.6,
+    "gelesen": 1644,
+    "wieder": 32104,
+    "gesamt": 33748,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.69,
+   "32K_n3000": {
+    "s": 4.958,
+    "prompt_ms": 4857.4,
+    "gelesen": 3025,
+    "wieder": 32106,
+    "gesamt": 35131,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.38,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 62.4,
+   "frisch4K": 692.8,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.17,
+   "4K_n500": {
+    "s": 1.502,
+    "prompt_ms": 1372.4,
+    "gelesen": 557,
+    "wieder": 3986,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.93,
+   "4K_n1600": {
+    "s": 2.466,
+    "prompt_ms": 2369.2,
+    "gelesen": 1645,
+    "wieder": 3985,
+    "gesamt": 5630,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.87,
+   "4K_n3000": {
+    "s": 4.869,
+    "prompt_ms": 4784.1,
+    "gelesen": 3024,
+    "wieder": 3986,
+    "gesamt": 7010,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.83,
+   "32K_n500": {
+    "s": 1.498,
+    "prompt_ms": 1383.4,
+    "gelesen": 560,
+    "wieder": 32104,
+    "gesamt": 32664,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.81,
+   "32K_n1600": {
+    "s": 2.477,
+    "prompt_ms": 2379.9,
+    "gelesen": 1643,
+    "wieder": 32105,
+    "gesamt": 33748,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.71,
+   "32K_n3000": {
+    "s": 4.938,
+    "prompt_ms": 4842.2,
+    "gelesen": 3024,
+    "wieder": 32106,
+    "gesamt": 35130,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.4,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 2047); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "max"
+  }
+ ],
+ "f-faber-g1024": [
+  {
+   "ok": true,
+   "schreiben": 61.6,
+   "frisch4K": 725.1,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.16,
+   "4K_n500": {
+    "s": 1.482,
+    "prompt_ms": 1381.6,
+    "gelesen": 559,
+    "wieder": 3985,
+    "gesamt": 4544,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.94,
+   "4K_n1600": {
+    "s": 4.76,
+    "prompt_ms": 4611.9,
+    "gelesen": 1641,
+    "wieder": 3986,
+    "gesamt": 5627,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.95,
+   "4K_n3000": {
+    "s": 4.915,
+    "prompt_ms": 4780.8,
+    "gelesen": 3025,
+    "wieder": 3986,
+    "gesamt": 7011,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.88,
+   "32K_n500": {
+    "s": 1.494,
+    "prompt_ms": 1391.6,
+    "gelesen": 558,
+    "wieder": 32106,
+    "gesamt": 32664,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.85,
+   "32K_n1600": {
+    "s": 4.757,
+    "prompt_ms": 4645.7,
+    "gelesen": 1644,
+    "wieder": 32106,
+    "gesamt": 33750,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.59,
+   "32K_n3000": {
+    "s": 4.933,
+    "prompt_ms": 4829.7,
+    "gelesen": 3024,
+    "wieder": 32103,
+    "gesamt": 35127,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.41,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 61.2,
+   "frisch4K": 781.3,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.16,
+   "4K_n500": {
+    "s": 1.486,
+    "prompt_ms": 1384.4,
+    "gelesen": 557,
+    "wieder": 3986,
+    "gesamt": 4543,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.91,
+   "4K_n1600": {
+    "s": 4.736,
+    "prompt_ms": 4639.8,
+    "gelesen": 1645,
+    "wieder": 3985,
+    "gesamt": 5630,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.89,
+   "4K_n3000": {
+    "s": 4.848,
+    "prompt_ms": 4759.0,
+    "gelesen": 3024,
+    "wieder": 3986,
+    "gesamt": 7010,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.92,
+   "32K_n500": {
+    "s": 1.496,
+    "prompt_ms": 1396.6,
+    "gelesen": 560,
+    "wieder": 32104,
+    "gesamt": 32664,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.97,
+   "32K_n1600": {
+    "s": 4.782,
+    "prompt_ms": 4663.8,
+    "gelesen": 1643,
+    "wieder": 32105,
+    "gesamt": 33748,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.72,
+   "32K_n3000": {
+    "s": 4.909,
+    "prompt_ms": 4811.3,
+    "gelesen": 3024,
+    "wieder": 32106,
+    "gesamt": 35130,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.33,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "leise"
+  },
+  {
+   "ok": true,
+   "schreiben": 65.5,
+   "frisch4K": 745.4,
+   "frisch4K_nadel": true,
+   "ram_nach_laden_gib": 4.15,
+   "4K_n500": {
+    "s": 1.472,
+    "prompt_ms": 1368.7,
+    "gelesen": 561,
+    "wieder": 3984,
+    "gesamt": 4545,
+    "richtig": true
+   },
+   "4K_n500_ram_min": 3.91,
+   "4K_n1600": {
+    "s": 4.756,
+    "prompt_ms": 4655.5,
+    "gelesen": 1644,
+    "wieder": 3987,
+    "gesamt": 5631,
+    "richtig": true
+   },
+   "4K_n1600_ram_min": 3.88,
+   "4K_n3000": {
+    "s": 4.855,
+    "prompt_ms": 4767.5,
+    "gelesen": 3025,
+    "wieder": 3984,
+    "gesamt": 7009,
+    "richtig": true
+   },
+   "4K_n3000_ram_min": 3.82,
+   "32K_n500": {
+    "s": 1.474,
+    "prompt_ms": 1364.4,
+    "gelesen": 556,
+    "wieder": 32105,
+    "gesamt": 32661,
+    "richtig": true
+   },
+   "32K_n500_ram_min": 3.85,
+   "32K_n1600": {
+    "s": 4.751,
+    "prompt_ms": 4654.7,
+    "gelesen": 1644,
+    "wieder": 32104,
+    "gesamt": 33748,
+    "richtig": true
+   },
+   "32K_n1600_ram_min": 3.73,
+   "32K_n3000": {
+    "s": 4.96,
+    "prompt_ms": 4859.9,
+    "gelesen": 3025,
+    "wieder": 32106,
+    "gesamt": 35131,
+    "richtig": true
+   },
+   "32K_n3000_ram_min": 3.45,
+   "log": [
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's",
+    "strata serve: the lent prompt buffers are sized for the request's own short last chunk (tail 0 tokens, not the stream floor's 1023); STRATA_PREFILL_TAIL_LOAN=0 keeps the floor's"
+   ],
+   "modus": "max"
+  }
+ ]
+}

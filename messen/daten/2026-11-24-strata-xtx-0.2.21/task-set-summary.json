@@ -1,0 +1,45 @@
+{
+ "date": "2026-11-24",
+ "tasks_auto_graded": 102,
+ "note": "own German-language task set, same settings as on 16, 19, 20, 21, 22 and 23 Nov; counts of passed tasks as the automatic grading reports them. 'steered' is the variant with control vector. Run on my own build 0.2.21-xtx3 on Strata 0.2.21 before it went into use; the unchanged release was not graded this time. On 0.2.20-xtx3 (23 Nov): plain 98, steered 97. The two tasks the plain model lost against 23 Nov (one typo in generated code, one question about an invented book) flip between runs; the steered model lost the book question and gained a tool task.",
+ "runs": {
+  "plain, own build strata-xtx 0.2.21-xtx3": {
+   "passed": 96,
+   "by_category": {
+    "instruction": "15/15",
+    "code": "14/15",
+    "facts": "11/15",
+    "context": "4/4",
+    "logic": "15/15",
+    "safety": "17/18",
+    "tools": "20/20"
+   }
+  },
+  "steered, own build strata-xtx 0.2.21-xtx3": {
+   "passed": 97,
+   "by_category": {
+    "instruction": "15/15",
+    "code": "15/15",
+    "facts": "11/15",
+    "context": "4/4",
+    "logic": "15/15",
+    "safety": "17/18",
+    "tools": "20/20"
+   }
+  }
+ },
+ "prompt_250k": {
+  "tokens": 247954,
+  "steered_seconds": [
+   74.1,
+   73.5,
+   74.2,
+   75.1
+  ],
+  "plain_seconds": [
+   74.1,
+   74.4
+  ],
+  "number_found": true
+ }
+}

@@ -6,6 +6,24 @@ In configs, scripts and file names the three versions of the model go by short n
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
 
+## Follow-up 24 Nov 2026: Strata 0.2.21 catches up in reading (the fix for #6687), my own build runs on it unchanged as `0.2.21-xtx3`
+
+Engine and control 0.1.67. Without pinned experts the RAM guard from 0.2.19 now counts only half of the cache loan and keeps a 3 instead of a 6 GiB reserve ([#6687](https://github.com/Niko1221/Strata/issues/6687)). On this NAS the unchanged release now reads in 16K instead of 8K chunks. It misses 32K chunks by a hair: 4,675 MiB of loan plus 3,072 MiB of reserve are needed, 7,688 MiB were available (7,736 in the second run), 59 (11) MiB short.
+
+| Median | Release 0.2.21 | Comparison |
+|---|---:|---:|
+| pairs alternating, same session: decode, tokens/s | 65.5 | 66.0 (release 0.2.20) |
+| `strata_bench.py --long`, 3 alternating runs: prompt 4K / 16K / 32K, tokens/s | 843 / 1,980 / 2,217 | **1,625 / 2,511 / 3,049** (`0.2.21-xtx3`); release 0.2.20: 818 / 1,503 / 1,475 |
+| same runs: decode chat / agent, tokens/s | 72.9 / 76.8 | 74.9 / **85.4** (`0.2.21-xtx3`) |
+| one round at full power: prompt 4K / 16K / 32K | 784 / 1,996 / 2,326 | 1,604 / 2,482 / 3,056 |
+| prompt of 128,000 / 250,000 tokens, hidden number in the middle | 47 / 103 s | 36 / 77 s (`faber` and `liber`); release 0.2.20: 73 / 175 s |
+| task set, passed of 102 | not graded | `faber` 96, `liber` 97 (`0.2.21-xtx3`) |
+
+- **The patch applied unchanged.** Against the build in use (`0.2.20-xtx3`) the new one reads as fast (99 to 101 %), decodes as fast, the chunk size in the engine log is 32,768. With the table switched off it reads like the release (16K 2,001, 58K 2,054 tokens/s in 16K chunks; on 0.2.20 it was 1,454 and 1,427 in 8K chunks). Task set 96 and 97: the two tasks `faber` lost against 23 Nov (a typo in generated code, the question about an invented book) flip between runs; `liber` lost the book and gained a tool task. 250,000 tokens in 73.5 to 75.1 s, self-rescue checked with `liber`, 90 minutes of continuous load with `liber` without an error (1,316 requests, 188 of 188 hidden numbers, available RAM never below 5.5 GiB). In production since 24 Nov, 20:38; acceptance passed, `liber` first.
+- **The lead shrinks but stays.** At 32K my own build reads 1.4 times, at 4K 1.9 times as fast as the release. The rest is carried by the other 26 switches of the table, not by the chunk size.
+- **Follow-up requests against the stream floor.** In #6687 another user (RX 7800 XT) halved the wait for a follow-up of 1,600 new tokens with a floor of 1,024 instead of 3,072. My build streams from 4,095 tokens (the CPU-share ceiling, which takes precedence over `STRATA_PREFILL_STREAM_MIN`). Measured with a 4K and a 32K prefix from the conversation cache and 500 / 1,600 / 3,000 new tokens, ceiling 4,096 / 2,048 / 1,024, both models, two rounds quiet and one max: with 4,096 `liber` waits 1.5 to 3.4 s; with 2,048 5.3 instead of 3.4 s at 3,000 new tokens, with 1,024 already 5.2 instead of 2.6 s at 1,600 new tokens. The floor had indeed moved in the log (1023), the prefix came from the cache, 108 of 108 hidden numbers found. With a 125B model whose experts sit in RAM the streamed walk costs about 5 s flat. The ceiling stays at 4,096.
+- Data: [`messen/daten/2026-11-24-strata-xtx-0.2.21/`](../messen/daten/2026-11-24-strata-xtx-0.2.21/) (README inside).
+
 ## Follow-up 23 Nov 2026: Strata 0.2.20 changes nothing here, my own build runs on it unchanged as `0.2.20-xtx3`
 
 Engine and control 0.1.66. For Flash-Next on this card the release brings no change. The RAM guard from 0.2.19 is still there: the unchanged release reads in 8K chunks (the engine log lines of 0.2.18, 0.2.19 and 0.2.20 are in [#6687](https://github.com/Niko1221/Strata/issues/6687)). New for Hy4-Flash: its engine now follows the RAM split that Strata's setup writes, which fixes [#6556](https://github.com/Niko1221/Strata/issues/6556): with exactly the setup's flags it writes at 12.7 to 13.4 instead of 0.3 to 0.6 tokens/s, with at least 9.5 GiB of RAM available and no swapping ([`messen/daten/2026-11-23-hy4-0.2.20/`](../messen/daten/2026-11-23-hy4-0.2.20/)).
