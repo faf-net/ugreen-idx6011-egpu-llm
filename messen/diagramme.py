@@ -1190,7 +1190,7 @@ def aufbau(d, sp):
     knoten(A_, r3, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
     s.text(491, r3 + 40, "MCP", 7, MUTED, "mono", "middle", sperr="0.1em")                              # Beschriftung des Pfeils Hermes -> n8n
     knoten(C_, r3, T("Abläufe", "Workflows"), "n8n", T("Zeitpläne, mit Flash-Next", "schedules, with Flash-Next"))   # seit 22.11.2026, Hermes ruft es per MCP, die Abläufe fragen Flash-Next
-    knoten(C_, r4, T("Gedächtnis", "Memory"), "Hindsight", T("Fakten, mit Flash-Next", "facts, with Flash-Next"))   # seit 26.11.2026 im Bild; zieht Fakten mit dem Sprachmodell, Suche und Reranker auf der CPU
+    knoten(C_, r4, T("Gedächtnis", "Memory"), "Hindsight", T("Vektor-DB, mit Flash-Next", "vector DB, with Flash-Next"))   # seit 26.11.2026 im Bild; zieht Fakten mit dem Sprachmodell, Suche und Reranker auf der CPU
     knoten(C_, r1, T("Programmieren", "Coding"), "OpenCode 2", T("Dienst · Browser, Terminal", "service · browser, terminal"))
     knoten(B_, r1, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
     knoten(B_, r2, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches through a VPN"), "extern")
