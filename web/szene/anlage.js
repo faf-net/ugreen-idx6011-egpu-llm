@@ -114,7 +114,7 @@ function Anlage(canvas, s) {
   C.font = '700 ' + Math.round(12 * k) + 'px "JetBrains Mono", Consolas, monospace'; C.textAlign = 'center';
   for (var z = 0; z < 6; z++) marke('0' + (z + 1), TX + z * TA + TB / 2, NY + 40, '#0d0c0b');
   C.font = '700 ' + Math.round(8 * k) + 'px "JetBrains Mono", Consolas, monospace';
-  marke('85', DX + 11, NY + 27, '#f5f1eb');   // Schreibtempo bis 85 T/s (0.2.21-xtx3, Agent 85,4 im Wechsel, 24.11.2026)
+  marke('83', DX + 11, NY + 27, '#f5f1eb');   // Schreibtempo bis 83 T/s (0.2.22-xtx3, Agent 83,3 im Wechsel, 26.11.2026)
   C.font = '500 ' + Math.round(6 * k) + 'px "JetBrains Mono", Consolas, monospace';
   marke('T/s', DX + 11, NY + 37, '#a49c90');
   C.textAlign = 'start';
