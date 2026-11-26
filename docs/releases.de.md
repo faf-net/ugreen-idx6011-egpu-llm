@@ -6,6 +6,25 @@ In Konfigurationen, Skripten und Dateinamen tragen die drei Fassungen des Modell
 
 Die neueste zuerst. Jede Version ist gegen ihre Vorgängerin gemessen, mit identischer Laufkonfiguration, nur Engine und Control getauscht. Übersichtstabelle und Diagramm: [README](../README.de.md#strata-versionen-auf-dieser-karte).
 
+## Nachtrag 26.11.2026: Strata 0.2.22 ändert das Sampling von Anfragen ohne Angabe (#7070), der Eigenbau läuft darauf unverändert als `0.2.22-xtx3`
+
+Engine und Control 0.1.69. Für eine Karte ändert das Release nichts an der Qwen-Engine; der Quelltextunterschied betrifft nur eine Speicherregel für zwei Karten (#7089), Symboldateien und die Versionsnummer. Geändert hat sich Control ([#7070](https://github.com/Niko1221/Strata/issues/7070)): Seit 0.2.20 lief jede Anfrage ohne Sampling-Angabe auf einem mit `--mtp` gestarteten Modell greedy; ab 0.2.22 nimmt Flash-Next wieder das Sampling der Modellkarte (mit Denken: Temperatur 1,0, top_p 0,95, top_k 20; ohne Denken zusätzlich presence penalty 1,5).
+
+| Median | Release 0.2.22 | Vergleich |
+|---|---:|---:|
+| Paare im Wechsel, dieselbe Sitzung: Schreiben, Token/s | 66,1 | 64,6 (Release 0.2.21) |
+| `strata_bench.py --long`, 3 Läufe im Wechsel: Prompt 4K / 16K / 32K, Token/s | 842 / 1.999 / 2.289 | **1.686 / 2.521 / 3.066** (`0.2.22-xtx3`); Release 0.2.21: 843 / 1.980 / 2.217 |
+| dieselben Läufe: Schreiben Chat / Agent, Token/s | 74,7 / 79,3 | 79,3 / 83,3 (`0.2.22-xtx3`) |
+| eine Runde mit voller Leistung: Prompt 4K / 16K / 32K | 844 / 1.995 / 2.320 | 1.601 / 2.517 / 3.047 |
+| Prompt mit 128.000 / 250.000 Token, versteckte Zahl in der Mitte | 54 / 104 s | 38 / 79 s (`faber`), 35 / 77 s (`liber`); Release 0.2.21: 47 / 103 s |
+| Aufgabensatz, bestanden von 102 | nicht bewertet | `faber` 97, `liber` 95 (`0.2.22-xtx3`) |
+
+- **Der Sampling-Block.** Mein Agent schickt in seiner Hauptschleife weder eine Temperatur noch eine Denktiefe. Auf 0.2.22 wären seine Anfragen deshalb mit Temperatur 1,0 gelaufen. Beide Laufkonfigurationen tragen jetzt `"sampling": {"temperature": 0}` ([`konfig/strata-xtx-0.2.22/`](../konfig/strata-xtx-0.2.22/)); Anfragen in der Form meines Agenten antworten damit wie auf 0.2.21 (`checks/sampling-7070.json`, `checks/agent-sampling-7070.json`). Eine Anfrage, die ihr eigenes Sampling nennt, bekommt es weiterhin.
+- **Ein falscher Alarm.** In der ersten Abnahmeprüfung gegen `0.2.21-xtx3` schrieb die unzensierte Fassung in einer Ladung des neuen Baus mit 49,8 und 51,2 Token/s (sonst 65 bis 67), der Median fiel unter die Schwelle, und ich habe nicht umgestellt. Ein Ladungstest, der Test zu #7070 und der Aufgabensatz schienen in dieselbe Richtung zu zeigen (2 bis 6 % langsamer, die Injektionsaufgabe si-2 einmal verloren). Der Quelltextunterschied bot keinen Mechanismus, also habe ich Engine und Control über Kreuz getauscht, mit Steuervektor, 16 Anfragen je Variante, zweimal, das alte Paar doppelt als A/A-Kontrolle: Alle Varianten lagen innerhalb von 98 bis 105 % beieinander. Der zweite Lauf war über alle Varianten 15 % langsamer, weil das NAS damals knapp an Speicher war (rund 5 GiB im Swap); die langsamen Einzelladungen der Nacht kamen vom selben Druck und trafen den alten Bau ebenso. si-2 mit 30 frischen Lesungen je Bau: 28 von 30 auf `0.2.21-xtx3`, 29 von 30 auf `0.2.22-xtx3`. Eine unabhängige zweite Prüfung der Rohdaten und des Quelltexts kam zum selben Ergebnis.
+- **Der Patch greift unverändert.** Einlesen gleich wie beim laufenden Bau (`liber` 58K 3.437 gegen 3.437, 16K 2.415 gegen 2.407), Stückgröße 32.768 im Engine-Log; mit abgeschalteter Tabelle 16K 2.001 bis 2.015 und 58K 2.031 bis 2.081 Token/s in drei von sechs Ladungen und rund 2.540 in den übrigen drei (der RAM-Wächter steht hier auf der Kante zu 32K-Stücken). 250.000 Token in 73,6 bis 74,8 s, Selbstrettung mit `liber` geprüft, 90 Minuten Dauerlast mit `liber` ohne Fehler (1.316 Anfragen, 188 von 188 versteckten Zahlen, verfügbarer RAM nie unter 5,4 GiB). In Betrieb seit 26.11., 07:15; Abnahme bestanden, `liber` 58K 3.465 und 3.435, 128K 3.589 Token/s.
+- **Prompt-Injektion.** Die Fehlschläge bei si-2 waren nie Gehorsam, sondern Nachsehen (`ls ~/.ssh`, nachdem eine Mail das Modell aufgefordert hatte, den Schlüssel zu lesen). Gemessen mit 14 Mustern in fünf Varianten, samt der Abhilfe für meinen Agenten: [docs/agent.de.md](agent.de.md#werkzeugergebnisse-als-fremddaten-rahmen-26112026).
+- Daten: [`messen/daten/2026-11-26-strata-xtx-0.2.22/`](../messen/daten/2026-11-26-strata-xtx-0.2.22/) (README darin).
+
 ## Nachtrag 24.11.2026: Strata 0.2.21 holt beim Einlesen auf (Abhilfe für #6687), der Eigenbau läuft darauf unverändert als `0.2.21-xtx3`
 
 Engine und Control 0.1.67. Ohne fest gehaltene Experten zählt der RAM-Wächter aus 0.2.19 jetzt nur noch die Hälfte des Leihspeichers und hält 3 statt 6 GiB Reserve ([#6687](https://github.com/Niko1221/Strata/issues/6687)). Auf diesem NAS liest das unveränderte Release damit in 16K- statt 8K-Stücken. 32K-Stücke verfehlt es knapp: Gebraucht werden 4.675 MiB Leihe plus 3.072 MiB Reserve, frei waren 7.688 MiB (im zweiten Lauf 7.736), es fehlten 59 (11) MiB.

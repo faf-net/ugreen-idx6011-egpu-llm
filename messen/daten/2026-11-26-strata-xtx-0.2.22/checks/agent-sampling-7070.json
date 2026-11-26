@@ -1,0 +1,252 @@
+{
+ "tempo": {
+  "h-alt": [
+   {
+    "ok": false,
+    "anfragen": [
+     {
+      "tps": 60.3,
+      "draft_n": 375,
+      "draft_ok": 201,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 57.9,
+      "draft_n": 394,
+      "draft_ok": 211,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 61.4,
+      "draft_n": 375,
+      "draft_ok": 214,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 57.0,
+      "draft_n": 355,
+      "draft_ok": 211,
+      "token": 500,
+      "wiederholung": 1.0
+     }
+    ],
+    "ram_min_gib": 7.44,
+    "log": []
+   },
+   {
+    "ok": false,
+    "anfragen": [
+     {
+      "tps": 52.5,
+      "draft_n": 362,
+      "draft_ok": 207,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 60.7,
+      "draft_n": 396,
+      "draft_ok": 223,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 59.4,
+      "draft_n": 375,
+      "draft_ok": 218,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 57.8,
+      "draft_n": 397,
+      "draft_ok": 200,
+      "token": 500,
+      "wiederholung": 1.0
+     }
+    ],
+    "ram_min_gib": 7.36,
+    "log": []
+   }
+  ],
+  "h-neu": [
+   {
+    "ok": false,
+    "anfragen": [
+     {
+      "tps": 65.8,
+      "draft_n": 373,
+      "draft_ok": 242,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 55.7,
+      "draft_n": 371,
+      "draft_ok": 198,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 57.1,
+      "draft_n": 391,
+      "draft_ok": 210,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 60.3,
+      "draft_n": 362,
+      "draft_ok": 240,
+      "token": 500,
+      "wiederholung": 1.0
+     }
+    ],
+    "ram_min_gib": 7.33,
+    "log": []
+   },
+   {
+    "ok": false,
+    "anfragen": [
+     {
+      "tps": 44.7,
+      "draft_n": 378,
+      "draft_ok": 210,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 50.4,
+      "draft_n": 388,
+      "draft_ok": 246,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 46.0,
+      "draft_n": 375,
+      "draft_ok": 230,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 41.1,
+      "draft_n": 390,
+      "draft_ok": 174,
+      "token": 500,
+      "wiederholung": 1.0
+     }
+    ],
+    "ram_min_gib": 7.39,
+    "log": []
+   }
+  ],
+  "h-neu-t0": [
+   {
+    "ok": false,
+    "anfragen": [
+     {
+      "tps": 62.4,
+      "draft_n": 366,
+      "draft_ok": 215,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 64.3,
+      "draft_n": 355,
+      "draft_ok": 220,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 59.6,
+      "draft_n": 359,
+      "draft_ok": 202,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 63.9,
+      "draft_n": 379,
+      "draft_ok": 215,
+      "token": 500,
+      "wiederholung": 1.0
+     }
+    ],
+    "ram_min_gib": 7.36,
+    "log": []
+   },
+   {
+    "ok": false,
+    "anfragen": [
+     {
+      "tps": 53.2,
+      "draft_n": 367,
+      "draft_ok": 207,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 58.8,
+      "draft_n": 351,
+      "draft_ok": 220,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 60.8,
+      "draft_n": 360,
+      "draft_ok": 208,
+      "token": 500,
+      "wiederholung": 1.0
+     },
+     {
+      "tps": 59.6,
+      "draft_n": 385,
+      "draft_ok": 211,
+      "token": 500,
+      "wiederholung": 1.0
+     }
+    ],
+    "ram_min_gib": 7.45,
+    "log": []
+   }
+  ]
+ },
+ "qualitaet": {
+  "h-alt": {
+   "werkzeug": [
+    19,
+    20
+   ],
+   "sicherheit": [
+    16,
+    18
+   ]
+  },
+  "h-neu": {
+   "werkzeug": [
+    19,
+    20
+   ],
+   "sicherheit": [
+    17,
+    18
+   ]
+  },
+  "h-neu-t0": {
+   "werkzeug": [
+    20,
+    20
+   ],
+   "sicherheit": [
+    17,
+    18
+   ]
+  }
+ }
+}

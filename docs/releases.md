@@ -6,6 +6,25 @@ In configs, scripts and file names the three versions of the model go by short n
 
 Newest first. Each release was measured against the one before it with the identical run config, only engine and control swapped. Summary table and chart: [README](../README.md#strata-releases-on-this-card).
 
+## Follow-up 26 Nov 2026: Strata 0.2.22 changes the sampling of requests without one (#7070), my own build runs on it unchanged as `0.2.22-xtx3`
+
+Engine and control 0.1.69. For one card the release changes nothing in the Qwen engine; the source diff only touches a two-card memory rule (#7089), symbol files and the version. What does change is in control ([#7070](https://github.com/Niko1221/Strata/issues/7070)): since 0.2.20 every request that named no sampling ran greedy on a model started with `--mtp`; from 0.2.22 Flash-Next takes the model card's sampling again (with thinking: temperature 1.0, top_p 0.95, top_k 20; without thinking also presence penalty 1.5).
+
+| Median | Release 0.2.22 | Comparison |
+|---|---:|---:|
+| pairs alternating, same session: decode, tokens/s | 66.1 | 64.6 (release 0.2.21) |
+| `strata_bench.py --long`, 3 alternating runs: prompt 4K / 16K / 32K, tokens/s | 842 / 1,999 / 2,289 | **1,686 / 2,521 / 3,066** (`0.2.22-xtx3`); release 0.2.21: 843 / 1,980 / 2,217 |
+| same runs: decode chat / agent, tokens/s | 74.7 / 79.3 | 79.3 / 83.3 (`0.2.22-xtx3`) |
+| one round at full power: prompt 4K / 16K / 32K | 844 / 1,995 / 2,320 | 1,601 / 2,517 / 3,047 |
+| prompt of 128,000 / 250,000 tokens, hidden number in the middle | 54 / 104 s | 38 / 79 s (`faber`), 35 / 77 s (`liber`); release 0.2.21: 47 / 103 s |
+| task set, passed of 102 | not graded | `faber` 97, `liber` 95 (`0.2.22-xtx3`) |
+
+- **The sampling block.** My agent sends neither a temperature nor a reasoning effort in its main loop. On 0.2.22 its requests would therefore have run at temperature 1.0. Both run configs now carry `"sampling": {"temperature": 0}` ([`konfig/strata-xtx-0.2.22/`](../konfig/strata-xtx-0.2.22/)); requests shaped like my agent's then answer as on 0.2.21 (`checks/sampling-7070.json`, `checks/agent-sampling-7070.json`). A request that names its own sampling still gets it.
+- **A false alarm.** In the first gate test against `0.2.21-xtx3` the uncensored version decoded at 49.8 and 51.2 tokens/s in one load of the new build (65 to 67 otherwise), the median fell below the gate, and I did not switch. A loads test, the #7070 test and the task set seemed to point the same way (2 to 6 % slower, the injection task si-2 lost once). The source diff offered no mechanism, so I swapped engine and control crosswise, steered, 16 requests per variant, twice, with the old pair twice as an A/A control: all variants within 98 to 105 % of each other. The second run was 15 % slower across all variants, because the NAS was short of memory at the time (about 5 GiB in swap); the slow single loads of the night came from the same pressure and hit the old build too. si-2 with 30 fresh reads per build: 28 of 30 on `0.2.21-xtx3`, 29 of 30 on `0.2.22-xtx3`. An independent second review of the raw data and the source came to the same result.
+- **The patch applied unchanged.** Reading equal to the build in use (`liber` 58K 3,437 against 3,437, 16K 2,415 against 2,407), chunk size 32,768 in the engine log; with the table switched off 16K 2,001 to 2,015 and 58K 2,031 to 2,081 tokens/s in three of six loads and about 2,540 in the other three (the RAM guard sits on the edge of 32K chunks here). 250,000 tokens in 73.6 to 74.8 s, self-rescue checked with `liber`, 90 minutes of continuous load with `liber` without an error (1,316 requests, 188 of 188 hidden numbers, available RAM never below 5.4 GiB). In production since 26 Nov, 07:15; acceptance passed, `liber` 58K 3,465 and 3,435, 128K 3,589 tokens/s.
+- **Prompt injection.** The si-2 failures were never obedience but looking (`ls ~/.ssh` after a mail told the model to read the key). Measured with 14 patterns in five variants and the fix for my agent: [docs/agent.md](agent.md#framing-tool-results-as-foreign-data-26-nov-2026).
+- Data: [`messen/daten/2026-11-26-strata-xtx-0.2.22/`](../messen/daten/2026-11-26-strata-xtx-0.2.22/) (README inside).
+
 ## Follow-up 24 Nov 2026: Strata 0.2.21 catches up in reading (the fix for #6687), my own build runs on it unchanged as `0.2.21-xtx3`
 
 Engine and control 0.1.67. Without pinned experts the RAM guard from 0.2.19 now counts only half of the cache loan and keeps a 3 instead of a 6 GiB reserve ([#6687](https://github.com/Niko1221/Strata/issues/6687)). On this NAS the unchanged release now reads in 16K instead of 8K chunks. It misses 32K chunks by a hair: 4,675 MiB of loan plus 3,072 MiB of reserve are needed, 7,688 MiB were available (7,736 in the second run), 59 (11) MiB short.

@@ -1,0 +1,470 @@
+[
+ {
+  "modell": "l-liber-alt",
+  "vorher_faber": false,
+  "laden_s": 20.1,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 70.2,
+    "draft_n": 369,
+    "draft_ok": 210,
+    "token": 500,
+    "takt_mhz": 2849.5,
+    "watt": 227.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 66.8,
+    "draft_n": 395,
+    "draft_ok": 209,
+    "token": 500,
+    "takt_mhz": 2849,
+    "watt": 225.0,
+    "auslastung": 99,
+    "punkte": 17
+   },
+   {
+    "tps": 68.7,
+    "draft_n": 369,
+    "draft_ok": 210,
+    "token": 500,
+    "takt_mhz": 2849.5,
+    "watt": 225.0,
+    "auslastung": 99.0,
+    "punkte": 16
+   }
+  ],
+  "ram_min_gib": 7.4
+ },
+ {
+  "modell": "l-liber-neu",
+  "vorher_faber": false,
+  "laden_s": 20.3,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 66.3,
+    "draft_n": 382,
+    "draft_ok": 203,
+    "token": 500,
+    "takt_mhz": 2850,
+    "watt": 226.0,
+    "auslastung": 99,
+    "punkte": 17
+   },
+   {
+    "tps": 68.4,
+    "draft_n": 370,
+    "draft_ok": 212,
+    "token": 500,
+    "takt_mhz": 2848.0,
+    "watt": 225.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 68.1,
+    "draft_n": 374,
+    "draft_ok": 208,
+    "token": 500,
+    "takt_mhz": 2850.0,
+    "watt": 224.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   }
+  ],
+  "ram_min_gib": 7.37
+ },
+ {
+  "modell": "l-liber-neu",
+  "vorher_faber": true,
+  "laden_s": 21.4,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 66.7,
+    "draft_n": 382,
+    "draft_ok": 202,
+    "token": 500,
+    "takt_mhz": 2847,
+    "watt": 222.0,
+    "auslastung": 99,
+    "punkte": 17
+   },
+   {
+    "tps": 60.0,
+    "draft_n": 368,
+    "draft_ok": 199,
+    "token": 500,
+    "takt_mhz": 2852.0,
+    "watt": 209.5,
+    "auslastung": 99.0,
+    "punkte": 18
+   },
+   {
+    "tps": 56.0,
+    "draft_n": 395,
+    "draft_ok": 219,
+    "token": 500,
+    "takt_mhz": 2853.0,
+    "watt": 204.0,
+    "auslastung": 99.0,
+    "punkte": 20
+   }
+  ],
+  "ram_min_gib": 4.16
+ },
+ {
+  "modell": "l-liber-alt",
+  "vorher_faber": true,
+  "laden_s": 22.5,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 70.6,
+    "draft_n": 372,
+    "draft_ok": 221,
+    "token": 500,
+    "takt_mhz": 2850.5,
+    "watt": 219.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 67.5,
+    "draft_n": 399,
+    "draft_ok": 203,
+    "token": 500,
+    "takt_mhz": 2850.0,
+    "watt": 227.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 66.8,
+    "draft_n": 363,
+    "draft_ok": 213,
+    "token": 500,
+    "takt_mhz": 2851,
+    "watt": 217.0,
+    "auslastung": 99,
+    "punkte": 17
+   }
+  ],
+  "ram_min_gib": 4.18
+ },
+ {
+  "modell": "l-liber-alt",
+  "vorher_faber": false,
+  "laden_s": 21.2,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 69.2,
+    "draft_n": 377,
+    "draft_ok": 216,
+    "token": 500,
+    "takt_mhz": 2849.0,
+    "watt": 221.0,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 69.7,
+    "draft_n": 365,
+    "draft_ok": 213,
+    "token": 500,
+    "takt_mhz": 2847.5,
+    "watt": 224.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 67.3,
+    "draft_n": 379,
+    "draft_ok": 208,
+    "token": 500,
+    "takt_mhz": 2849,
+    "watt": 225.0,
+    "auslastung": 99,
+    "punkte": 17
+   }
+  ],
+  "ram_min_gib": 7.42
+ },
+ {
+  "modell": "l-liber-neu",
+  "vorher_faber": false,
+  "laden_s": 20.2,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 67.0,
+    "draft_n": 399,
+    "draft_ok": 211,
+    "token": 500,
+    "takt_mhz": 2849.5,
+    "watt": 224.0,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 66.8,
+    "draft_n": 374,
+    "draft_ok": 221,
+    "token": 500,
+    "takt_mhz": 2850,
+    "watt": 218.0,
+    "auslastung": 99,
+    "punkte": 17
+   },
+   {
+    "tps": 67.1,
+    "draft_n": 356,
+    "draft_ok": 204,
+    "token": 500,
+    "takt_mhz": 2850.0,
+    "watt": 219.0,
+    "auslastung": 99.0,
+    "punkte": 16
+   }
+  ],
+  "ram_min_gib": 7.32
+ },
+ {
+  "modell": "l-liber-neu",
+  "vorher_faber": true,
+  "laden_s": 21.8,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 69.8,
+    "draft_n": 378,
+    "draft_ok": 212,
+    "token": 500,
+    "takt_mhz": 2849,
+    "watt": 225.0,
+    "auslastung": 99,
+    "punkte": 15
+   },
+   {
+    "tps": 72.4,
+    "draft_n": 371,
+    "draft_ok": 219,
+    "token": 500,
+    "takt_mhz": 2848.5,
+    "watt": 226.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 69.8,
+    "draft_n": 383,
+    "draft_ok": 214,
+    "token": 500,
+    "takt_mhz": 2847.0,
+    "watt": 227.0,
+    "auslastung": 99.0,
+    "punkte": 16
+   }
+  ],
+  "ram_min_gib": 4.16
+ },
+ {
+  "modell": "l-liber-alt",
+  "vorher_faber": true,
+  "laden_s": 21.4,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 66.0,
+    "draft_n": 381,
+    "draft_ok": 212,
+    "token": 500,
+    "takt_mhz": 2846.5,
+    "watt": 220.0,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 68.0,
+    "draft_n": 385,
+    "draft_ok": 213,
+    "token": 500,
+    "takt_mhz": 2852,
+    "watt": 219.0,
+    "auslastung": 99,
+    "punkte": 17
+   },
+   {
+    "tps": 69.1,
+    "draft_n": 366,
+    "draft_ok": 218,
+    "token": 500,
+    "takt_mhz": 2849.0,
+    "watt": 225.0,
+    "auslastung": 99.0,
+    "punkte": 16
+   }
+  ],
+  "ram_min_gib": 4.04
+ },
+ {
+  "modell": "l-liber-alt",
+  "vorher_faber": false,
+  "laden_s": 21.2,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 67.5,
+    "draft_n": 370,
+    "draft_ok": 209,
+    "token": 500,
+    "takt_mhz": 2846,
+    "watt": 221.0,
+    "auslastung": 99,
+    "punkte": 17
+   },
+   {
+    "tps": 68.4,
+    "draft_n": 382,
+    "draft_ok": 212,
+    "token": 500,
+    "takt_mhz": 2849.0,
+    "watt": 220.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 70.9,
+    "draft_n": 368,
+    "draft_ok": 220,
+    "token": 500,
+    "takt_mhz": 2849.0,
+    "watt": 225.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   }
+  ],
+  "ram_min_gib": 7.46
+ },
+ {
+  "modell": "l-liber-neu",
+  "vorher_faber": false,
+  "laden_s": 20.2,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 68.5,
+    "draft_n": 373,
+    "draft_ok": 209,
+    "token": 500,
+    "takt_mhz": 2850.5,
+    "watt": 223.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 67.0,
+    "draft_n": 369,
+    "draft_ok": 211,
+    "token": 500,
+    "takt_mhz": 2850,
+    "watt": 222.0,
+    "auslastung": 99,
+    "punkte": 17
+   },
+   {
+    "tps": 65.8,
+    "draft_n": 364,
+    "draft_ok": 211,
+    "token": 500,
+    "takt_mhz": 2850,
+    "watt": 221.0,
+    "auslastung": 99,
+    "punkte": 17
+   }
+  ],
+  "ram_min_gib": 7.48
+ },
+ {
+  "modell": "l-liber-neu",
+  "vorher_faber": true,
+  "laden_s": 21.4,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 66.8,
+    "draft_n": 366,
+    "draft_ok": 208,
+    "token": 500,
+    "takt_mhz": 2851.0,
+    "watt": 220.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 68.3,
+    "draft_n": 370,
+    "draft_ok": 217,
+    "token": 500,
+    "takt_mhz": 2849,
+    "watt": 218.0,
+    "auslastung": 99,
+    "punkte": 17
+   },
+   {
+    "tps": 66.3,
+    "draft_n": 370,
+    "draft_ok": 204,
+    "token": 500,
+    "takt_mhz": 2849.5,
+    "watt": 221.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   }
+  ],
+  "ram_min_gib": 4.09
+ },
+ {
+  "modell": "l-liber-alt",
+  "vorher_faber": true,
+  "laden_s": 22.6,
+  "ok": false,
+  "anfragen": [
+   {
+    "tps": 68.2,
+    "draft_n": 371,
+    "draft_ok": 208,
+    "token": 500,
+    "takt_mhz": 2850.5,
+    "watt": 220.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   },
+   {
+    "tps": 62.8,
+    "draft_n": 348,
+    "draft_ok": 205,
+    "token": 500,
+    "takt_mhz": 2849.0,
+    "watt": 216.5,
+    "auslastung": 99.0,
+    "punkte": 18
+   },
+   {
+    "tps": 68.9,
+    "draft_n": 385,
+    "draft_ok": 208,
+    "token": 500,
+    "takt_mhz": 2850.0,
+    "watt": 225.5,
+    "auslastung": 99.0,
+    "punkte": 16
+   }
+  ],
+  "ram_min_gib": 4.19
+ }
+]
