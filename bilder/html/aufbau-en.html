@@ -18,7 +18,7 @@
   <div class="frame"><div class="scroll">
     <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="aufbau-en-title aufbau-en-desc">
       <title id="aufbau-en-title">Chat, agent and pictures on one card, and almost nothing lea</title>
-      <desc id="aufbau-en-desc">Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, as does OpenCode 2, which runs as a service in the home network and is used from the browser or the terminal. Hermes starts fixed workflows in n8n through MCP, which in turn ask Flash-Next through llama-swap. llama-swap loads either the language model or ComfyUI on the RX 7900 XTX. The agent reads web pages through Crawl4AI on the iDX, which fetches them through a VPN. Only search queries, the pages the agent reads and messenger messages leave the house.</desc>
+      <desc id="aufbau-en-desc">Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, as does OpenCode 2, which runs as a service in the home network and is used from the browser or the terminal. Hermes starts fixed workflows in n8n through MCP, which in turn ask Flash-Next through llama-swap. What the agent learns from conversations is stored by Hindsight in the home network; the same language model extracts the facts. llama-swap loads either the language model or ComfyUI on the RX 7900 XTX. The agent reads web pages through Crawl4AI on the iDX, which fetches them through a VPN. Only search queries, the pages the agent reads and messenger messages leave the house.</desc>
       <rect width="960" height="600" fill="#efeae1"/>
       <text x="72.0" y="36.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.16em">UGREEN IDX6011 PRO · EGPU DOCK · RX 7900 XTX · THE SETUP</text>
       <text x="72.0" y="68.0" fill="#171512" font-size="25" font-family="'Instrument Serif', Georgia, serif">Chat, agent and pictures on one card, and almost nothing leaves the house</text>
@@ -40,6 +40,7 @@
       <path d="M 432,160 H 464 Q 472,160 472,168 V 232 Q 472,240 480,240 H 510" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-en)"/>
       <path d="M 432,344 H 464 Q 472,344 472,336 V 272 Q 472,264 480,264 H 510" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-en)"/>
       <path d="M 432,360 H 510" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-en)"/>
+      <path d="M 432,368 H 464 Q 472,368 472,376 V 428 Q 472,436 480,436 H 510" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-en)"/>
       <path d="M 592,316 V 282" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-en)"/>
       <path d="M 592,188 V 222" fill="none" stroke="#6a6258" stroke-width="1.2" marker-end="url(#pf-en)"/>
       <path d="M 672,240 H 696 Q 704,240 704,232 V 184 Q 704,176 712,176 H 742" fill="none" stroke="#975b34" stroke-width="1.6" marker-end="url(#pf-en-a)"/>
@@ -60,6 +61,11 @@
       <text x="524.0" y="332.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">WORKFLOWS</text>
       <text x="524.0" y="349.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">n8n</text>
       <text x="524.0" y="363.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">schedules, with Flash-Next</text>
+      <rect x="512" y="408" width="160" height="56" rx="6" fill="#efeae1"/>
+      <rect x="512" y="408" width="160" height="56" rx="6" fill="#2a2724" fill-opacity="0.04" stroke="#2a2724" stroke-width="1"/>
+      <text x="524.0" y="424.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">MEMORY</text>
+      <text x="524.0" y="441.0" fill="#2a2724" font-size="12" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif" font-weight="600">Hindsight</text>
+      <text x="524.0" y="455.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">facts, with Flash-Next</text>
       <rect x="512" y="132" width="160" height="56" rx="6" fill="#efeae1"/>
       <rect x="512" y="132" width="160" height="56" rx="6" fill="#2a2724" fill-opacity="0.04" stroke="#2a2724" stroke-width="1"/>
       <text x="524.0" y="148.0" fill="#6a6258" font-size="7.5" font-family="'JetBrains Mono', Consolas, monospace" font-weight="500" letter-spacing="0.14em">CODING</text>
@@ -106,7 +112,7 @@
       <path d="M 280,558 H 312" fill="none" stroke="#6a6258" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#pf-en)"/>
       <text x="324.0" y="562.0" fill="#2a2724" font-size="10" font-family="'Atkinson Hyperlegible Next', 'Segoe UI', sans-serif">leaves the house</text>
       <text x="928.0" y="563.0" fill="#2a2724" font-size="15" font-family="'Instrument Serif', Georgia, serif" text-anchor="end" font-style="italic">Only search queries, pages the agent reads and messenger messages leave the house.</text>
-      <text x="72.0" y="584.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Chat, search, agent and workflows run as containers, OpenCode as a service in the home network, the models on the card in the dock</text>
+      <text x="72.0" y="584.0" fill="#6a6258" font-size="8.5" font-family="'JetBrains Mono', Consolas, monospace">Chat, search, agent, memory and workflows run as containers, OpenCode as a service in the home network, the models on the card in the dock</text>
     </svg>
   </div></div>
 </body>
