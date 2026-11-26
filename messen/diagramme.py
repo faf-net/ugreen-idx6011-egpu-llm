@@ -1137,24 +1137,29 @@ def gegenprobe(d, sp):
 
 
 def aufbau(d, sp):
-    """Schaubild der Anlage: wer mit wem spricht, und was das Haus verlässt."""
+    """Schaubild der Anlage: wer mit wem spricht, und was das Haus verlässt.
+    Fassung 26.11.2026 (Gutachten): Die Zone „im Heimnetz“ ist die Hauswand. Alles außerhalb ist draußen und gestrichelt
+    in Stahl; gestrichelte Pfeile verlassen das Haus. Der Agent sucht über einen Suchdienst mit Konto, der Chat über SearXNG."""
     en = sp == "en"
     T = lambda de, en_: en_ if en else de
     s = Svg()
-    titel = T("Chat, Agent und Bilder auf einer Karte, und fast nichts verlässt das Haus", "Chat, agent and pictures on one card, and almost nothing leaves the house")
+    titel = T("Chat, Agent und Bilder auf einer Karte, und fast nichts verlässt das Haus", "Chat, agent and images on one card, and almost nothing leaves the house")
     kopf(s, T("UGREEN iDX6011 Pro · eGPU-Dock · RX 7900 XTX · der Aufbau", "UGREEN iDX6011 Pro · eGPU dock · RX 7900 XTX · the setup"), titel)
     pf = f"pf-{sp}"
     s.roh(f'<defs><marker id="{pf}" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7 z" fill="{MUTED}"/></marker>'
-          f'<marker id="{pf}-a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7 z" fill="{ACC}"/></marker></defs>')
+          f'<marker id="{pf}-a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7 z" fill="{ACC}"/></marker>'
+          f'<marker id="{pf}-s" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7 z" fill="{STAHL}"/></marker>'
+          f'<marker id="{pf}-s2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M1,1 L7,4 L1,7 z" fill="{STAHL}"/></marker></defs>')
 
     def zone(x, y, w, h, name, bw):
         s.roh(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{INK}" fill-opacity="0.025" stroke="{INK}" stroke-opacity="0.16" stroke-width="0.8" stroke-dasharray="5,4"/>')
         s.roh(f'<rect x="{x + 12}" y="{y - 6}" width="{bw}" height="12" fill="{PAPER}"/>')
         s.text(x + 18, y + 3, name.upper(), 8, MUTED, "mono", weight=500, sperr="0.14em")
 
-    def pfeil(dpfad, gestrichelt=False, fokus=False):
-        farbe = ACC if fokus else MUTED
-        s.roh(f'<path d="{dpfad}" fill="none" stroke="{farbe}" stroke-width="{1.6 if fokus else 1.2}"' + (' stroke-dasharray="5,4"' if gestrichelt else "") + f' marker-end="url(#{pf}{"-a" if fokus else ""})"/>')
+    def pfeil(dpfad, raus=False, fokus=False, beide=False):
+        farbe = ACC if fokus else (STAHL if raus else MUTED)
+        mk = "-a" if fokus else ("-s" if raus else "")
+        s.roh(f'<path d="{dpfad}" fill="none" stroke="{farbe}" stroke-width="{1.6 if fokus else 1.2}"' + (' stroke-dasharray="5,4"' if raus else "") + (f' marker-start="url(#{pf}-s2)"' if beide else "") + f' marker-end="url(#{pf}{"-s2" if beide else mk})"/>')
 
     def knoten(x, y, marke, name, sub, art="normal", w=160, h=56):
         farbe = {"fokus": ACC, "extern": STAHL}.get(art, INK)
@@ -1164,53 +1169,69 @@ def aufbau(d, sp):
         s.text(x + 12, y + 33, name, 12, INK, "sans", weight=600)
         s.text(x + 12, y + 47, sub, 8.5, MUTED, "mono")
 
-    # Raster: Spalte A Geräte, B Oberflächen mit ihren Netz-Werkzeugen, C Weiche, D Karte; vier Zeilen. So kreuzt keine Linie eine andere.
-    A_, B_, C_, D_ = 72, 272, 512, 744
-    r1, r2, r3, r4 = 132, 224, 316, 408
-    zone(254, 104, 674, 392, T("im Heimnetz", "in the home network"), 96 if not en else 150)
-    zone(728, 124, 184, 264, T("RX 7900 XTX im Dock", "RX 7900 XTX in the dock"), 152 if not en else 158)
+    # Raster: A draußen links (Geräte, Messenger, Suchdienst, Postfach), B Oberflächen und Webleser, C Dienste, D Karte.
+    A_, B_, C_, D_ = 72, 272, 512, 736
+    r1, r2, r3, r4, r5 = 196, 288, 380, 472, 564
+    OBEN, UNTEN = 96, 672                     # Knoten draußen über und unter dem Haus
+    zone(254, 168, 674, 480, T("im Heimnetz", "in the home network"), 96 if not en else 150)
+    zone(722, r1 - 8, 194, 264, T("RX 7900 XTX im Dock", "RX 7900 XTX in the dock"), 152 if not en else 158)
     # Pfeile zuerst, dann die Knoten
-    pfeil(f"M 200,{r1 + 28} H 270")                                                                     # Geräte -> Open WebUI
-    pfeil(f"M 200,{r1 + 44} H 228 Q 236,{r1 + 44} 236,{r1 + 52} V {r3 + 8} Q 236,{r3 + 16} 244,{r3 + 16} H 270")   # Geräte -> Hermes direkt (Browser, im Heimnetz)
-    pfeil(f"M 136,{r1 + 56} V {r3 - 2}", gestrichelt=True)                                              # Geräte -> Messenger-Dienst
-    pfeil(f"M 200,{r3 + 38} H 270", gestrichelt=True)                                                   # Messenger-Dienst -> Hermes
-    pfeil(f"M 136,{r1} V {r1 - 32} Q 136,{r1 - 40} 144,{r1 - 40} H 584 Q 592,{r1 - 40} 592,{r1 - 32} V {r1 - 2}")   # Geräte -> OpenCode 2 (Dienst im Heimnetz seit 22.11.2026), oben herum (Frank 22.11.2026)
-    pfeil(f"M 352,{r1 + 56} V {r2 - 2}")                                                                # Open WebUI -> SearXNG
-    pfeil(f"M 352,{r3} V {r2 + 58}")                                                                    # Hermes -> SearXNG
-    pfeil(f"M 352,{r3 + 56} V {r4 - 2}")                                                                # Hermes -> Crawl4AI, direkt darunter
-    pfeil(f"M 432,{r1 + 28} H 464 Q 472,{r1 + 28} 472,{r1 + 36} V {r2 + 8} Q 472,{r2 + 16} 480,{r2 + 16} H 510")   # Open WebUI -> llama-swap
-    pfeil(f"M 432,{r3 + 28} H 464 Q 472,{r3 + 28} 472,{r3 + 20} V {r2 + 48} Q 472,{r2 + 40} 480,{r2 + 40} H 510")  # Hermes -> llama-swap
-    pfeil(f"M 432,{r3 + 44} H 510")                                                                     # Hermes -> n8n (MCP), knapp unter dem Pfeil zu llama-swap
-    pfeil(f"M 432,{r3 + 52} H 464 Q 472,{r3 + 52} 472,{r3 + 60} V {r4 + 20} Q 472,{r4 + 28} 480,{r4 + 28} H 510")  # Hermes -> Hindsight (Gedächtnis, Frank 26.11.2026)
-    pfeil(f"M 592,{r3} V {r2 + 58}")                                                                    # n8n -> llama-swap: die Abläufe fragen Flash-Next (Frank 22.11.2026)
-    pfeil(f"M 592,{r1 + 56} V {r2 - 2}")                                                                    # OpenCode 2 -> llama-swap, von oben (Zeile von Open WebUI, Frank 22.11.2026)
-    pfeil(f"M 672,{r2 + 16} H 696 Q 704,{r2 + 16} 704,{r2 + 8} V 184 Q 704,176 712,176 H 742", fokus=True)        # llama-swap -> Sprachmodell
-    pfeil(f"M 672,{r2 + 40} H 696 Q 704,{r2 + 40} 704,{r2 + 48} V {r3 + 20} Q 704,{r3 + 28} 712,{r3 + 28} H 742")  # llama-swap -> ComfyUI
-    knoten(A_, r1, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("Browser, Messenger", "browser, messenger"), w=128)
-    knoten(A_, r3, T("extern", "external"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
-    s.text(491, r3 + 40, "MCP", 7, MUTED, "mono", "middle", sperr="0.1em")                              # Beschriftung des Pfeils Hermes -> n8n
-    knoten(C_, r3, T("Abläufe", "Workflows"), "n8n", T("Zeitpläne, mit Flash-Next", "schedules, with Flash-Next"))   # seit 22.11.2026, Hermes ruft es per MCP, die Abläufe fragen Flash-Next
-    knoten(C_, r4, T("Gedächtnis", "Memory"), "Hindsight", T("Vektor-DB, mit Flash-Next", "vector DB, with Flash-Next"))   # seit 26.11.2026 im Bild; zieht Fakten mit dem Sprachmodell, Suche und Reranker auf der CPU
-    knoten(C_, r1, T("Programmieren", "Coding"), "OpenCode 2", T("Dienst · Browser, Terminal", "service · browser, terminal"))
+    pfeil(f"M 200,{r1 + 28} H 270")                                                                                   # Geräte -> Open WebUI
+    pfeil(f"M 200,{r1 + 44} H 228 Q 236,{r1 + 44} 236,{r1 + 52} V {r2 + 20} Q 236,{r2 + 28} 244,{r2 + 28} H 270")   # Geräte -> OpenCode
+    pfeil(f"M 200,{r1 + 44} H 228 Q 236,{r1 + 44} 236,{r1 + 52} V {r3 + 6} Q 236,{r3 + 14} 244,{r3 + 14} H 270")    # Geräte -> Hermes (Browser)
+    pfeil(f"M 136,{r1 + 58} V {r3 - 2}", raus=True, beide=True)                                                                  # Geräte -> Messenger-Dienst
+    pfeil(f"M 202,{r3 + 28} H 270", raus=True, beide=True)                                                                       # Messenger-Dienst -> Hermes
+    pfeil(f"M 272,{r3 + 42} H 228 Q 220,{r3 + 42} 220,{r3 + 50} V {r4 + 20} Q 220,{r4 + 28} 212,{r4 + 28} H 202", raus=True)   # Hermes -> Suchdienst
+    pfeil(f"M 272,{r3 + 42} H 228 Q 220,{r3 + 42} 220,{r3 + 50} V {r5 + 20} Q 220,{r5 + 28} 212,{r5 + 28} H 202", raus=True)   # Hermes -> Postfach (verschickt)
+    pfeil(f"M 432,{r1 + 28} H 510")                                                                                   # Open WebUI -> SearXNG
+    pfeil(f"M 432,{r1 + 44} H 464 Q 472,{r1 + 44} 472,{r1 + 52} V {r2 + 8} Q 472,{r2 + 16} 480,{r2 + 16} H 510")    # Open WebUI -> llama-swap
+    pfeil(f"M 432,{r2 + 28} H 510")                                                                                   # OpenCode -> llama-swap
+    pfeil(f"M 432,{r3 + 14} H 464 Q 472,{r3 + 14} 472,{r3 + 6} V {r2 + 48} Q 472,{r2 + 40} 480,{r2 + 40} H 510")    # Hermes -> llama-swap
+    pfeil(f"M 432,{r3 + 28} H 510")                                                                                   # Hermes -> n8n (MCP)
+    pfeil(f"M 432,{r3 + 42} H 464 Q 472,{r3 + 42} 472,{r3 + 50} V {r4 + 20} Q 472,{r4 + 28} 480,{r4 + 28} H 510")    # Hermes -> Hindsight
+    pfeil(f"M 432,{r3 + 42} H 464 Q 472,{r3 + 42} 472,{r3 + 50} V {r5 + 20} Q 472,{r5 + 28} 480,{r5 + 28} H 510")    # Hermes -> Post (Bridge)
+    pfeil(f"M 352,{r3 + 56} V {r4 - 2}")                                                                              # Hermes -> Crawl4AI
+    pfeil(f"M 592,{r3} V {r2 + 58}")                                                                                  # n8n -> llama-swap
+    pfeil(f"M 592,{r1} V {OBEN + 58}", raus=True)                                                                     # SearXNG -> Suchmaschinen (VPN)
+    pfeil(f"M 352,{r4 + 56} V {UNTEN - 2}", raus=True)                                                               # Crawl4AI -> Webseiten (VPN)
+    s.roh(f'<path d="M 592,{r5 + 58} V {UNTEN - 2}" fill="none" stroke="{STAHL}" stroke-width="1.2" stroke-dasharray="5,4" marker-start="url(#{pf}-s2)" marker-end="url(#{pf}-s2)"/>')   # Bridge <-> Proton Mail, beide Richtungen
+    s.text(600, UNTEN - 9, T("verschlüsselt", "encrypted"), 8, STAHL, "mono", sperr="0.1em")
+    pfeil(f"M 672,{r2 + 16} H 696 Q 704,{r2 + 16} 704,{r2 + 8} V {r1 + 52} Q 704,{r1 + 44} 712,{r1 + 44} H 734", fokus=True)   # llama-swap -> Sprachmodell
+    pfeil(f"M 672,{r2 + 40} H 696 Q 704,{r2 + 40} 704,{r2 + 48} V {r3 + 20} Q 704,{r3 + 28} 712,{r3 + 28} H 734")  # llama-swap -> ComfyUI
+    # draußen
+    knoten(C_, OBEN, T("draußen", "outside"), T("Suchmaschinen", "Search engines"), T("über ein VPN", "through a VPN"), "extern")
+    knoten(A_, r3, T("draußen", "outside"), T("Messenger-Dienst", "Messenger service"), T("z. B. Signal", "e.g. Signal"), "extern", w=128)
+    knoten(A_, r4, T("draußen", "outside"), T("Suchdienst", "Search service"), T("z. B. Exa, mit Konto", "e.g. Exa, account"), "extern", w=128)
+    knoten(A_, r5, T("draußen", "outside"), T("Postfach, PGP", "Mailbox, PGP"), T("senden und lesen", "send and read"), "extern", w=128)
+    knoten(B_, UNTEN, T("draußen", "outside"), T("Webseiten", "Web pages"), T("über ein VPN", "through a VPN"), "extern")
+    knoten(C_, UNTEN, T("draußen", "outside"), "Proton Mail", T("verschlüsselt gespeichert", "stored encrypted"), "extern")
+    # im Haus
+    knoten(A_, r1, T("Geräte", "Devices"), T("Laptop, Handy", "Laptop, phone"), T("zu Hause, unterwegs", "home or away"), w=128)
+    s.text(491, r3 + 24, "MCP", 8, MUTED, "mono", "middle", sperr="0.1em")
     knoten(B_, r1, "Chat", "Open WebUI", T("Konten, Verlauf, Dateien", "accounts, history, files"))
-    knoten(B_, r2, T("Suche", "Search"), "SearXNG", T("sucht über ein VPN im Netz", "searches through a VPN"), "extern")
-    knoten(B_, r3, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben, Bilder", "tools, tasks, pictures"))
-    # Webleser: seit 19.11.2026 im Heimnetz, nur der Agent ruft ihn; er holt die Seiten über ein VPN (wie SearXNG).
-    knoten(B_, r4, T("Seiten lesen", "Read pages"), "Crawl4AI", T("liest über ein VPN im Netz", "reads through a VPN"), "extern")
-    knoten(C_, r2, T("Weiche", "Switch"), "llama-swap", T("ein Modell zur Zeit", "one model at a time"))
-    knoten(D_, 148, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 80 T/s · 256K", "Strata · 80 tok/s · 256K"), "fokus", w=152)
-    knoten(D_, r3, T("Bilder", "Pictures"), "ComfyUI", T("8–66 s je Bild", "8–66 s per picture"), w=152)
-    y = 536
+    knoten(B_, r2, T("Programmieren", "Coding"), "OpenCode 2", T("Browser, Terminal", "browser, terminal"))
+    knoten(B_, r3, "Agent", "Hermes Agent", T("Werkzeuge, Aufgaben", "tools, tasks"))
+    knoten(B_, r4, T("Seiten lesen", "Read pages"), "Crawl4AI", T("Webleser", "web reader"))
+    knoten(C_, r1, T("Suche", "Search"), "SearXNG", T("Metasuche des Chats", "the chat's metasearch"))
+    knoten(C_, r2, T("Weiche", "Switch"), "llama-swap", T("eine Adresse, ein Modell", "one address, one model"))
+    knoten(C_, r3, T("Abläufe", "Workflows"), "n8n", T("Zeitpläne, mit Flash-Next", "schedules, with Flash-Next"))
+    knoten(C_, r5, T("Post", "Mail"), "Proton Bridge", T("entschlüsselt, nur lesen", "decrypts, read only"))
+    knoten(C_, r4, T("Gedächtnis", "Memory"), "Hindsight", T("Vektor-DB, mit Flash-Next", "vector DB, with Flash-Next"))
+    knoten(D_, r1 + 16, T("Sprache", "Language"), "Flash-Next 125B", T("Strata · 75–80 T/s · 256K", "Strata · 75–80 tok/s · 256K"), "fokus", w=168)
+    knoten(D_, r3, T("Bilder", "Images"), "ComfyUI", T("8–66 s je Bild", "8–66 s per image"), w=168)
+    y = UNTEN + 84
     s.line(40, y, W - 40, y, 'stroke="#2a2724" stroke-opacity="0.14" stroke-width="0.8"')
     s.roh(f'<path d="M 72,{y + 22} H 104" fill="none" stroke="{MUTED}" stroke-width="1.2" marker-end="url(#{pf})"/>')
     s.text(116, y + 26, T("bleibt im Heimnetz", "stays in the home network"), 10, INK, "sans")
-    s.roh(f'<path d="M 280,{y + 22} H 312" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#{pf})"/>')
+    s.roh(f'<path d="M 280,{y + 22} H 312" fill="none" stroke="{STAHL}" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#{pf}-s)"/>')
     s.text(324, y + 26, T("verlässt das Haus", "leaves the house"), 10, INK, "sans")
-    s.text(R, y + 27, T("Nur Suchanfragen, gelesene Seiten und Messenger-Nachrichten verlassen das Haus.", "Only search queries, pages the agent reads and messenger messages leave the house."), 15, INK, "serif", "end", kursiv=True)
-    s.text(L, y + 48, T("Chat, Suche, Agent, Gedächtnis und Abläufe laufen als Container, OpenCode als Dienst im Heimnetz, die Modelle auf der Karte im Dock",
-                        "Chat, search, agent, memory and workflows run as containers, OpenCode as a service in the home network, the models on the card in the dock"), 8.5, MUTED, "mono")
-    return "aufbau", titel, T("Laptop und Handy sprechen im Heimnetz mit Open WebUI und mit Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst; beide fragen llama-swap, ebenso OpenCode 2, das als Dienst im Heimnetz läuft und vom Browser oder Terminal aus bedient wird. Hermes startet über MCP feste Abläufe in n8n, die ihrerseits Flash-Next über llama-swap fragen. Was der Agent aus Gesprächen lernt, speichert Hindsight im Heimnetz; die Fakten zieht dasselbe Sprachmodell heraus. llama-swap lädt auf der RX 7900 XTX entweder das Sprachmodell oder ComfyUI. Webseiten liest der Agent über Crawl4AI auf der iDX, das sie über ein VPN abruft. Nur Suchanfragen, die vom Agenten gelesenen Seiten und Messenger-Nachrichten verlassen das Haus.",
-                              "Laptop and phone talk to Open WebUI and to Hermes Agent in the home network, to the agent also through a messenger service; both ask llama-swap, as does OpenCode 2, which runs as a service in the home network and is used from the browser or the terminal. Hermes starts fixed workflows in n8n through MCP, which in turn ask Flash-Next through llama-swap. What the agent learns from conversations is stored by Hindsight in the home network; the same language model extracts the facts. llama-swap loads either the language model or ComfyUI on the RX 7900 XTX. The agent reads web pages through Crawl4AI on the iDX, which fetches them through a VPN. Only search queries, the pages the agent reads and messenger messages leave the house."), s, 600
+    s.roh(f'<rect x="488" y="{y + 15}" width="28" height="14" rx="3" fill="{STAHL}" fill-opacity="0.04" stroke="{STAHL}" stroke-dasharray="5,4"/>')
+    s.text(528, y + 26, T("liegt draußen", "is outside"), 10, INK, "sans")
+    s.text(L, y + 56, T("Das Haus verlässt nur, was Chat und Agent im Netz suchen oder lesen, was der Agent verschickt und was über den Messenger läuft.",
+                        "Only what chat and agent search or read on the net, what the agent sends, and what travels through the messenger leaves the house."), 15, INK, "serif", kursiv=True)
+    return "aufbau", titel, T("Laptop und Handy, zu Hause oder unterwegs, sprechen mit Open WebUI, OpenCode 2 und Hermes Agent, mit dem Agenten auch über einen Messenger-Dienst. Alle drei fragen das Sprachmodell über die Weiche llama-swap, die auf der RX 7900 XTX entweder Flash-Next 125B oder ComfyUI lädt. Der Chat sucht über SearXNG, das Suchmaschinen über ein VPN fragt. Der Agent sucht über einen Suchdienst mit Konto, liest Webseiten über Crawl4AI und ein VPN, startet Abläufe in n8n über MCP, liest die Post über die Proton Bridge, die sie im Haus entschlüsselt (Proton Mail draußen speichert sie verschlüsselt), merkt sich Gespräche in Hindsight und nutzt ein eigenes Postfach mit PGP: alle signiert, an mich zusätzlich verschlüsselt; Mails von mir entschlüsselt er im Haus und prüft die Signatur. Gestrichelt ist, was das Haus verlässt.",
+                              "Laptop and phone, at home or away, talk to Open WebUI, OpenCode 2 and Hermes Agent, to the agent also through a messenger service. All three ask the language model through the llama-swap switch, which loads either Flash-Next 125B or ComfyUI on the RX 7900 XTX. The chat searches through SearXNG, which asks search engines through a VPN. The agent searches through a search service with an account, reads web pages through Crawl4AI and a VPN, starts workflows in n8n through MCP, reads mail through the Proton Bridge, which decrypts it at home (Proton Mail outside stores it encrypted), remembers conversations in Hindsight and uses its own mailbox with PGP: all signed, to me also encrypted; it decrypts my mail at home and checks the signature. Dashed is what leaves the house."), s, y + 76
+
 
 
 def parallel(d, sp):
